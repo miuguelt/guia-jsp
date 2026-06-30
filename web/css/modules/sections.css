@@ -375,6 +375,12 @@
     }
 }
 
+@media (max-width: 360px) {
+    .timeline-item {
+        padding-left: 40px;
+    }
+}
+
 .timeline-header {
     display: flex;
     justify-content: space-between;

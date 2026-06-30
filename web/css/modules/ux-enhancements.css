@@ -247,10 +247,24 @@ body.reading-mode .main-content {
     max-width: 100%;
     width: 100%;
     margin: 0 auto;
-    padding: 2rem 3rem;
+    padding: 1rem 1.25rem;
     min-height: 100vh;
     min-height: 100dvh;
-}@media (min-width: 1200px) {
+}
+
+@media (min-width: 640px) {
+    body.reading-mode .main-content {
+        padding: 1.5rem 2rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    body.reading-mode .main-content {
+        padding: 2rem 3rem;
+    }
+}
+
+@media (min-width: 1200px) {
     body.reading-mode .main-content {
         padding: 2rem 6rem;
     }

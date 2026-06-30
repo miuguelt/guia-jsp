@@ -10,7 +10,7 @@ WORKDIR /app
 
 # Copiar solo pom.xml primero para cachear dependencias
 COPY recursos/codigo-ejemplo/pom.xml .
-RUN mvn dependency:go-offline -B || true
+RUN mvn dependency:resolve -B
 
 # Copiar código fuente y compilar
 COPY recursos/codigo-ejemplo/src ./src

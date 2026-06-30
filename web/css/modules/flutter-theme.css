@@ -12,3 +12,5 @@
         .step-card-flutter{border-left:3px solid #1389FD}
         .flutter-nav-icon{color:#1389FD}
         [data-theme=dark] .flutter-nav-icon{color:#54C5F8}
+.flutter-btn{border-color:#1389FD!important;color:#1389FD!important}
+[data-theme=dark] .flutter-btn{border-color:#54C5F8!important;color:#54C5F8!important}

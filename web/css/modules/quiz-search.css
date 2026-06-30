@@ -131,6 +131,10 @@
     font-size: 0.85rem;
     font-weight: 600;
     white-space: nowrap;
+    overflow-x: auto;
+    max-width: 100%;
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .url-part span {
@@ -1018,7 +1022,7 @@ body.sidebar-collapsed .main-sidebar {
 /* Botón flotante para mostrar sidebar cuando está oculto */
 .sidebar-show-btn {
     position: fixed;
-    top: 16px;
+    top: calc(var(--header-height) + 8px);
     left: 16px;
     width: 40px;
     height: 40px;
@@ -1034,6 +1038,15 @@ body.sidebar-collapsed .main-sidebar {
     font-size: 1rem;
     box-shadow: var(--shadow-lg);
     transition: var(--transition);
+}
+
+@media (max-width: 480px) {
+    .sidebar-show-btn {
+        top: calc(var(--header-height) + 4px);
+        left: 8px;
+        width: 36px;
+        height: 36px;
+    }
 }
 
 body.sidebar-collapsed .sidebar-show-btn {

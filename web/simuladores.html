@@ -202,14 +202,17 @@
         /* Flow Animation */
         .flow-container {
             position: relative;
-            height: 80px;
+            min-height: 80px;
             margin: 20px 0;
             background: var(--bg-alt);
             border-radius: var(--radius);
-            overflow: hidden;
+            overflow-x: auto;
             display: flex;
             align-items: center;
             justify-content: space-around;
+            gap: 8px;
+            padding: 8px;
+            flex-wrap: wrap;
         }
 
         .flow-step {
@@ -993,6 +996,44 @@
             letter-spacing: 0.5px; font-weight: 600;
         }
         .section-nav-link .nav-title { font-size: 0.9rem; font-weight: 600; color: var(--text); margin-top: 2px; }
+
+        /* Mobile page nav */
+        .mobile-page-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg);
+            border-top: 1px solid var(--border);
+            padding: 8px 16px;
+            z-index: 999;
+            justify-content: space-around;
+            gap: 4px;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.08);
+        }
+        .mobile-page-nav-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.65rem;
+            font-weight: 600;
+        }
+        .mobile-page-nav-link i {
+            font-size: 1.1rem;
+        }
+        .mobile-page-nav-link.active {
+            color: var(--primary);
+            background: rgba(0,102,74,0.06);
+        }
+        @media (max-width: 768px) {
+            .mobile-page-nav { display: flex; }
+        }
     </style>
 </head>
 <body>
@@ -1005,7 +1046,7 @@
             </div>
             <h1><i class="fas fa-flask"></i> Simuladores Interactivos</h1>
             <div class="header-actions">
-                <nav class="page-switcher" style="margin:0">
+                <nav class="page-switcher">
                     <a href="index.html" class="page-switcher-link"><i class="fab fa-java"></i> JSP</a>
                     <a href="flutter-guide.html" class="page-switcher-link"><i class="fab fa-flutter"></i> Flutter</a>
                     <a href="simuladores.html" class="page-switcher-link active"><i class="fas fa-flask"></i> Labs</a>
@@ -2737,16 +2778,11 @@
         console.log('%c🎮 Simuladores JSP | ? para atajos', 'font-size:14px;font-weight:bold;color:#00664a');
     });
     </script>
-    <nav class="mobile-page-nav" style="display:none;position:fixed;bottom:0;left:0;right:0;background:var(--bg);border-top:1px solid var(--border);padding:8px 16px;z-index:999;justify-content:space-around;gap:4px;box-shadow:0 -4px 12px rgba(0,0,0,0.08)">
-        <a href="index.html" class="mobile-page-nav-link" style="display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 12px;border-radius:6px;text-decoration:none;color:var(--text-muted);font-size:0.65rem;font-weight:600"><i class="fab fa-java" style="font-size:1.1rem"></i><span>JSP</span></a>
-        <a href="flutter-guide.html" class="mobile-page-nav-link" style="display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 12px;border-radius:6px;text-decoration:none;color:var(--text-muted);font-size:0.65rem;font-weight:600"><i class="fab fa-flutter" style="font-size:1.1rem"></i><span>Flutter</span></a>
-        <a href="simuladores.html" class="mobile-page-nav-link" style="display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 12px;border-radius:6px;text-decoration:none;color:var(--primary);font-size:0.65rem;font-weight:600;background:rgba(0,102,74,0.06)"><i class="fas fa-flask" style="font-size:1.1rem"></i><span>Labs</span></a>
+    <nav class="mobile-page-nav">
+        <a href="index.html" class="mobile-page-nav-link"><i class="fab fa-java"></i><span>JSP</span></a>
+        <a href="flutter-guide.html" class="mobile-page-nav-link"><i class="fab fa-flutter"></i><span>Flutter</span></a>
+        <a href="simuladores.html" class="mobile-page-nav-link active"><i class="fas fa-flask"></i><span>Labs</span></a>
     </nav>
-    <script>
-    if (window.innerWidth <= 768) {
-        document.querySelector('.mobile-page-nav').style.display = 'flex';
-    }
-    window.scrollTo(0, 0);
-    </script>
+    <script>window.scrollTo(0, 0);</script>
 </body>
 </html>
