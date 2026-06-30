@@ -1,53 +1,5 @@
-# ============================================
-# DOCKERFILE MULTI-STAGE
-# Sistema de Inventario JSP + MVC | SENA ADSO
-# Build: Maven → WAR → Tomcat 10.1 + JDK 21
-# ============================================
-
-# ---- Stage 1: Build ----
-FROM maven:3.9-eclipse-temurin-21 AS build
-WORKDIR /app
-
-# Configurar Maven para redes lentas y memoria limitada
-ENV MAVEN_OPTS="-Xmx512m -XX:+UseG1GC -Dmaven.wagon.http.retryHandler.count=5 -Dmaven.wagon.http.retryHandler.requestSentEnabled=true -Dhttp.keepAlive=false"
-RUN mvn --version
-
-# Copiar solo pom.xml primero para cachear dependencias
-COPY recursos/codigo-ejemplo/pom.xml .
-RUN mvn dependency:resolve dependency:resolve-plugins -B
-
-# Copiar código fuente y compilar
-COPY recursos/codigo-ejemplo/src ./src
-RUN mvn clean package -DskipTests -B
-
-# ---- Stage 2: Run ----
-FROM tomcat:10.1-jdk21-temurin
-
-LABEL maintainer="ADSO SENA <adso@sena.edu.co>"
-LABEL version="1.0"
-LABEL description="Sistema de Inventario JSP MVC - SENA ADSO"
-
-# Eliminar apps por defecto
-RUN rm -rf /usr/local/tomcat/webapps/*
-
-# Configurar zona horaria
-ENV TZ=America/Bogota
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
-# Copiar WAR generado desde la etapa de build
-COPY --from=build /app/target/*.war /usr/local/tomcat/webapps/ROOT.war
-
-# Health check para Coolify
-HEALTHCHECK --interval=30s --timeout=3s --start-period=30s --retries=3 \
-    CMD curl -f http://localhost:8080/ || exit 1
-
-# Variables de entorno para conexión BD (Coolify las inyecta)
-ENV DB_HOST=localhost
-ENV DB_PORT=5432
-ENV DB_NAME=inventario_db
-ENV DB_USER=postgres
-ENV DB_PASSWORD=postgres
-
-EXPOSE 8080
-
-CMD ["catalina.sh", "run"]
+FROM nginx:alpine
+COPY web /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

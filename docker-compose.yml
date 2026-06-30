@@ -1,23 +1,12 @@
-# ============================================
-# DOCKER COMPOSE - SISTEMA DE INVENTARIO MVC
-# Uso: docker compose up -d
-# Nota: Requiere una BD PostgreSQL externa.
-# Configurar vía DATABASE_URL (formato: postgresql://user:pass@host:port/dbname)
-# ============================================
-
 services:
-
-  # ---- Aplicación Java (Tomcat + WAR) ----
-  app:
+  guia:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: inventario-app
+    container_name: guia-jsp
     restart: unless-stopped
-    expose:
-      - "8080"
-    environment:
-      DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:postgres@localhost:5434/inventario_db}
+    ports:
+      - "8080:80"
     networks:
       - coolify
 
