@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 680" width="100%" height="100%">
+  <defs>
+    <linearGradient id="jdbc-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#dc2626;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ef4444;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="orm-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#16a34a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#22c55e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow2">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+  
+  <!-- Título -->
+  <text x="500" y="45" font-family="Inter, sans-serif" font-size="26" font-weight="700" fill="#1a2e28" text-anchor="middle">
+    JDBC vs ORM (JPA/Hibernate) - Comparación de Arquitectura
+  </text>
+  
+  <!-- JDBC (Izquierda) -->
+  <g transform="translate(30, 80)">
+    <rect x="0" y="0" width="440" height="510" rx="16" fill="#fef2f2" stroke="#fecaca" stroke-width="2"/>
+    <rect x="0" y="0" width="440" height="60" rx="16" fill="url(#jdbc-grad)"/>
+    <text x="220" y="38" font-family="Inter, sans-serif" font-size="20" font-weight="700" fill="white" text-anchor="middle">JDBC Puro</text>
+    
+    <!-- Capas JDBC -->
+    <g transform="translate(20, 80)">
+      <rect x="0" y="0" width="400" height="65" rx="8" fill="white" stroke="#fecaca" stroke-width="1" filter="url(#shadow2)"/>
+      <text x="200" y="27" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#1a2e28" text-anchor="middle">Servlet (Controlador)</text>
+      <text x="200" y="47" font-family="JetBrains Mono, monospace" font-size="11" fill="#6b7e78" text-anchor="middle">doGet() / doPost()</text>
+    </g>
+    
+    <g transform="translate(20, 165)">
+      <rect x="0" y="0" width="400" height="65" rx="8" fill="white" stroke="#fecaca" stroke-width="1" filter="url(#shadow2)"/>
+      <text x="200" y="27" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#1a2e28" text-anchor="middle">DAO (Data Access Object)</text>
+      <text x="200" y="47" font-family="JetBrains Mono, monospace" font-size="11" fill="#6b7e78" text-anchor="middle">PreparedStatement + SQL manual</text>
+    </g>
+    
+    <g transform="translate(20, 250)">
+      <rect x="0" y="0" width="400" height="65" rx="8" fill="white" stroke="#fecaca" stroke-width="1" filter="url(#shadow2)"/>
+      <text x="200" y="27" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#1a2e28" text-anchor="middle">Record / Entidad</text>
+      <text x="200" y="47" font-family="JetBrains Mono, monospace" font-size="11" fill="#6b7e78" text-anchor="middle">record Producto(id, nombre, precio)</text>
+    </g>
+    
+    <g transform="translate(20, 335)">
+      <rect x="0" y="0" width="400" height="65" rx="8" fill="white" stroke="#fecaca" stroke-width="1" filter="url(#shadow2)"/>
+      <text x="200" y="27" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#1a2e28" text-anchor="middle">JDBC Connection</text>
+      <text x="200" y="47" font-family="JetBrains Mono, monospace" font-size="11" fill="#6b7e78" text-anchor="middle">DriverManager.getConnection()</text>
+    </g>
+    
+    <g transform="translate(20, 420)">
+      <rect x="0" y="0" width="400" height="65" rx="8" fill="#336791" filter="url(#shadow2)"/>
+      <text x="200" y="27" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="white" text-anchor="middle">PostgreSQL</text>
+      <text x="200" y="47" font-family="JetBrains Mono, monospace" font-size="11" fill="rgba(255,255,255,0.8)" text-anchor="middle">SQL: SELECT * FROM productos</text>
+    </g>
+    
+    <!-- Flechas JDBC -->
+    <line x1="220" y1="145" x2="220" y2="165" stroke="#dc2626" stroke-width="2"/>
+    <line x1="220" y1="230" x2="220" y2="250" stroke="#dc2626" stroke-width="2"/>
+    <line x1="220" y1="315" x2="220" y2="335" stroke="#dc2626" stroke-width="2"/>
+    <line x1="220" y1="400" x2="220" y2="420" stroke="#dc2626" stroke-width="2"/>
+    
+    <!-- Características JDBC -->
+    <g transform="translate(20, 490)">
+      <text x="0" y="0" font-family="Inter, sans-serif" font-size="11" fill="#dc2626" font-weight="600">✓ Control total del SQL</text>
+      <text x="0" y="16" font-family="Inter, sans-serif" font-size="11" fill="#dc2626" font-weight="600">✓ Sin dependencias extra</text>
+      <text x="210" y="0" font-family="Inter, sans-serif" font-size="11" fill="#6b7e78">✗ Más código boilerplate</text>
+      <text x="210" y="16" font-family="Inter, sans-serif" font-size="11" fill="#6b7e78">✗ SQL manual en DAOs</text>
+    </g>
+  </g>
+  
+  <!-- VS -->
+  <g transform="translate(480, 310)">
+    <circle cx="20" cy="20" r="25" fill="#1a2e28" filter="url(#shadow2)"/>
+    <text x="20" y="27" font-family="Inter, sans-serif" font-size="17" font-weight="700" fill="white" text-anchor="middle">VS</text>
+  </g>
+  
+  <!-- ORM JPA/Hibernate (Derecha) -->
+  <g transform="translate(530, 80)">
+    <rect x="0" y="0" width="440" height="510" rx="16" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="2"/>
+    <rect x="0" y="0" width="440" height="60" rx="16" fill="url(#orm-grad)"/>
+    <text x="220" y="38" font-family="Inter, sans-serif" font-size="20" font-weight="700" fill="white" text-anchor="middle">ORM - JPA / Hibernate</text>
+    
+    <!-- Capas ORM -->
+    <g transform="translate(20, 80)">
+      <rect x="0" y="0" width="400" height="65" rx="8" fill="white" stroke="#bbf7d0" stroke-width="1" filter="url(#shadow2)"/>
+      <text x="200" y="27" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#1a2e28" text-anchor="middle">Servlet (Controlador)</text>
+      <text x="200" y="47" font-family="JetBrains Mono, monospace" font-size="11" fill="#6b7e78" text-anchor="middle">doGet() / doPost()</text>
+    </g>
+    
+    <g transform="translate(20, 165)">
+      <rect x="0" y="0" width="400" height="65" rx="8" fill="white" stroke="#bbf7d0" stroke-width="1" filter="url(#shadow2)"/>
+      <text x="200" y="27" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#1a2e28" text-anchor="middle">Repository / DAO</text>
+      <text x="200" y="47" font-family="JetBrains Mono, monospace" font-size="11" fill="#6b7e78" text-anchor="middle">EntityManager.find(Producto.class, id)</text>
+    </g>
+    
+    <g transform="translate(20, 250)">
+      <rect x="0" y="0" width="400" height="65" rx="8" fill="white" stroke="#bbf7d0" stroke-width="1" filter="url(#shadow2)"/>
+      <text x="200" y="27" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#1a2e28" text-anchor="middle">Entidad @Entity</text>
+      <text x="200" y="47" font-family="JetBrains Mono, monospace" font-size="11" fill="#6b7e78" text-anchor="middle">@Table @Id @Column @GeneratedValue</text>
+    </g>
+    
+    <g transform="translate(20, 335)">
+      <rect x="0" y="0" width="400" height="65" rx="8" fill="white" stroke="#bbf7d0" stroke-width="1" filter="url(#shadow2)"/>
+      <text x="200" y="27" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#1a2e28" text-anchor="middle">JPA Provider (Hibernate)</text>
+      <text x="200" y="47" font-family="JetBrains Mono, monospace" font-size="11" fill="#6b7e78" text-anchor="middle">Genera SQL automáticamente</text>
+    </g>
+    
+    <g transform="translate(20, 420)">
+      <rect x="0" y="0" width="400" height="65" rx="8" fill="#336791" filter="url(#shadow2)"/>
+      <text x="200" y="27" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="white" text-anchor="middle">PostgreSQL</text>
+      <text x="200" y="47" font-family="JetBrains Mono, monospace" font-size="11" fill="rgba(255,255,255,0.8)" text-anchor="middle">SQL generado por Hibernate</text>
+    </g>
+    
+    <!-- Flechas ORM -->
+    <line x1="220" y1="145" x2="220" y2="165" stroke="#16a34a" stroke-width="2"/>
+    <line x1="220" y1="230" x2="220" y2="250" stroke="#16a34a" stroke-width="2"/>
+    <line x1="220" y1="315" x2="220" y2="335" stroke="#16a34a" stroke-width="2"/>
+    <line x1="220" y1="400" x2="220" y2="420" stroke="#16a34a" stroke-width="2"/>
+    
+    <!-- Características ORM -->
+    <g transform="translate(20, 490)">
+      <text x="0" y="0" font-family="Inter, sans-serif" font-size="11" fill="#16a34a" font-weight="600">✓ Menos código boilerplate</text>
+      <text x="0" y="16" font-family="Inter, sans-serif" font-size="11" fill="#16a34a" font-weight="600">✓ SQL generado automáticamente</text>
+      <text x="210" y="0" font-family="Inter, sans-serif" font-size="11" fill="#6b7e78">✗ Dependencia de Hibernate</text>
+      <text x="210" y="16" font-family="Inter, sans-serif" font-size="11" fill="#6b7e78">✗ Menos control del SQL</text>
+    </g>
+  </g>
+  
+  <!-- Analogía Flask -->
+  <g transform="translate(30, 605)">
+    <rect x="0" y="0" width="940" height="55" rx="10" fill="#f0f4f2" stroke="#e0e8e4" stroke-width="1.2"/>
+    <text x="20" y="22" font-family="Inter, sans-serif" font-size="13" font-weight="700" fill="#1a2e28">Analogía con Flask (Python):</text>
+    <text x="20" y="40" font-family="Inter, sans-serif" font-size="12" fill="#6b7e78">JDBC Puro ≈ SQL Alchemy Core (SQL manual)  |  JPA/Hibernate ≈ SQL Alchemy ORM (objetos Python ↔ tablas de base de datos)</text>
+  </g>
+</svg>

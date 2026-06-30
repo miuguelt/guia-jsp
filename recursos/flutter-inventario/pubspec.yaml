@@ -1,0 +1,39 @@
+name: flutter_inventario
+description: App Flutter para inventario - Guia SENA ADSO
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  # Cliente HTTP con interceptores para JWT, logs y manejo de errores
+  dio: ^5.4.0
+  # Riverpod para manejo de estado reactivo y escalable
+  flutter_riverpod: ^2.4.0
+  riverpod_annotation: ^2.3.0
+  # Freezed para clases inmutables (alternativa a código manual)
+  freezed_annotation: ^2.4.0
+  # Serialización JSON manual con fromJson/toJson
+  json_annotation: ^4.8.0
+  # Navegación declarativa con GoRouter
+  go_router: ^13.0.0
+  # Almacenamiento local para persistir el token JWT
+  shared_preferences: ^2.2.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  # Mockito para mocks en pruebas unitarias
+  mockito: ^5.4.4
+  # Generadores de código para freezed, json_serializable, riverpod y mockito
+  build_runner: ^2.4.0
+  freezed: ^2.4.0
+  json_serializable: ^6.7.0
+  riverpod_generator: ^2.3.0
+
+flutter:
+  uses-material-design: true

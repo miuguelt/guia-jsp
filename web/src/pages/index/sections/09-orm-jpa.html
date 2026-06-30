@@ -1,0 +1,226 @@
+            <section class="section section-alt" id="orm-jpa">
+                <div class="container">
+                    <div class="breadcrumbs">
+                        <div class="breadcrumb-item"><a href="#inicio">Inicio</a>
+                        </div><i class="fas fa-chevron-right breadcrumb-separator"></i>
+                        <div class="breadcrumb-item breadcrumb-current">
+                            ORM: JPA/Hibernate
+                        </div><span class="reading-time"><i class="fas fa-clock"></i>10 min</span>
+                    </div>
+                    <div class="section-header">
+                        <div class="section-number">
+                            06
+                        </div>
+                        <h2 class="section-title">
+                            ORM: JPA/Hibernate vs JDBC
+                        </h2>
+                        <p class="section-subtitle">
+                            Del SQL manual a la persistencia con objetos
+                        </p>
+                    </div>
+                    <div class="comparison-intro">
+                        <div class="comparison-icon"><i class="fas fa-exchange-alt"></i>
+                        </div>
+                        <div class="comparison-text">
+                            <h3>
+                                ¿Qué es un ORM?
+                            </h3>
+                            <p>
+                                Un ORM (Object-Relational Mapping) mapea automáticamente objetos Java a tablas de base de datos, eliminando la necesidad de escribir SQL manual. Es el equivalente a<strong>SQLAlchemy</strong>en Flask/Python.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="orm-comparison">
+                        <div class="orm-side jdbc">
+                            <div class="orm-header"><i class="fas fa-database"></i>
+                                <h3>
+                                    JDBC Puro (Actual)
+                                </h3>
+                            </div>
+                            <div class="orm-content">
+                                <h4>
+                                    Entidad (Record)
+                                </h4>
+                                <div class="code-block small">
+                                    <pre><code class="language-java">public record Producto(    int id,    String codigo,    String nombre,    BigDecimal precio) {</code></pre>
+                                </div>
+                                <h4>
+                                    DAO con SQL manual
+                                </h4>
+                                <div class="code-block small">
+                                    <pre><code class="language-java">public boolean insertar(Producto p) {
+    try (Connection conn = ConexionDB.conectar();
+    PreparedStatement ps = conn.prepareStatement(         "INSERT INTO productos " +         "(codigo, nombre, precio) " +         "VALUES (?, ?, ?)")) {
+        ps.setString(1, p.codigo());
+        ps.setString(2, p.nombre());
+        ps.setBigDecimal(3, p.precio());
+        return ps.executeUpdate() &gt; 0;
+    }
+}</code></pre>
+                                </div>
+                                <div class="pros-cons">
+                                    <div class="pros">
+                                        <h5><i class="fas fa-check"></i>Ventajas
+                                        </h5>
+                                        <ul>
+                                            <li>
+                                                Control total del SQL
+                                            </li>
+                                            <li>
+                                                Sin dependencias extra
+                                            </li>
+                                            <li>
+                                                Ideal para aprender
+                                            </li>
+                                            <li>
+                                                Performance predecible
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="cons">
+                                        <h5><i class="fas fa-times"></i>Desventajas
+                                        </h5>
+                                        <ul>
+                                            <li>
+                                                Mucho código boilerplate
+                                            </li>
+                                            <li>
+                                                SQL repetido en cada DAO
+                                            </li>
+                                            <li>
+                                                Mapeo manual ResultSet → Objeto
+                                            </li>
+                                            <li>
+                                                Difícil mantener en proyectos grandes
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="orm-vs"><span>VS</span>
+                        </div>
+                        <div class="orm-side jpa">
+                            <div class="orm-header"><i class="fas fa-magic"></i>
+                                <h3>
+                                    JPA/Hibernate (ORM)
+                                </h3>
+                            </div>
+                            <div class="orm-content">
+                                <h4>
+                                    Entidad (@Entity)
+                                </h4>
+                                <div class="code-block small">
+                                    <pre><code class="language-java">public class Producto {
+    private int id;
+    private String codigo;
+    private String nombre;
+    private BigDecimal precio;
+    // Getters y setters
+}</code></pre>
+                                </div>
+                                <h4>
+                                    Repository (sin SQL)
+                                </h4>
+                                <div class="code-block small">
+                                    <pre><code class="language-java">{
+    em.persist(p);
+    // ¡Eso es todo!
+}
+public Producto buscar(int id) {
+    return em.find(Producto.class, id);
+}
+}</code></pre>
+                                </div>
+                                <div class="pros-cons">
+                                    <div class="pros">
+                                        <h5><i class="fas fa-check"></i>Ventajas
+                                        </h5>
+                                        <ul>
+                                            <li>
+                                                Menos código (70% menos)
+                                            </li>
+                                            <li>
+                                                SQL generado automáticamente
+                                            </li>
+                                            <li>
+                                                Como SQLAlchemy en Flask
+                                            </li>
+                                            <li>
+                                                Fácil de mantener
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="cons">
+                                        <h5><i class="fas fa-times"></i>Desventajas
+                                        </h5>
+                                        <ul>
+                                            <li>
+                                                Dependencia de Hibernate
+                                            </li>
+                                            <li>
+                                                Menos control del SQL
+                                            </li>
+                                            <li>
+                                                Curva de aprendizaje
+                                            </li>
+                                            <li>
+                                                Performance puede variar
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flask-analogy">
+                        <h3><i class="fab fa-python"></i>Analogía con Flask + SQLAlchemy
+                        </h3>
+                        <div class="analogy-grid">
+                            <div class="analogy-item">
+                                <div class="analogy-label">
+                                    Flask (Python)
+                                </div>
+                                <div class="code-block small">
+                                    <pre><code class="language-python"># Modelo SQLAlchemyclass Producto(db.Model):    id = db.Column(db.Integer, primary_key=True)    codigo = db.Column(db.String(50))    nombre = db.Column(db.String(100))    precio = db.Column(db.Numeric(10,2))# Guardarp = Producto(codigo="P1", nombre="Laptop")db.session.add(p)db.session.commit()</code></pre>
+                                </div>
+                            </div>
+                            <div class="analogy-arrow"><i class="fas fa-arrow-right"></i><span>Equivalente en</span><i class="fas fa-arrow-right"></i>
+                            </div>
+                            <div class="analogy-item">
+                                <div class="analogy-label">
+                                    Jakarta EE (Java)
+                                </div>
+                                <div class="code-block small">
+                                    <pre><code class="language-java">// Entidad JPA
+
+(name = "productos")
+public class Producto {
+    private int id;
+    private String codigo;
+    private String nombre;
+    private BigDecimal precio;
+}
+// Guardar
+em.persist(producto);</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="recommendation-box"><i class="fas fa-lightbulb"></i>
+                        <div>
+                            <h4>
+                                Recomendación para el Aprendiz
+                            </h4>
+                            <p><strong>Aprende primero JDBC puro</strong>(como en esta guía) para entender cómo funciona realmente la persistencia. Luego, cuando domines los conceptos, migra a JPA/Hibernate para proyectos más grandes. Esta base sólida te permitirá entender qué hace el ORM "bajo el capó".
+                            </p>
+                        </div>
+                    </div>
+                    <div class="diagram-container">
+                        <h3>
+                            Comparación Visual: JDBC vs ORM
+                        </h3><img src="img/jdbc-vs-orm.svg" alt="Comparación JDBC vs ORM" class="diagram-svg">
+                    </div>
+                </div>
+            </section>
+            <!-- Simuladores -->

@@ -1,0 +1,104 @@
+version: '3.8'
+
+# =========================================================================
+# Arquitectura de Microservicios: PostgreSQL + Auth API + Productos API + React SPA
+# =========================================================================
+# Cada servicio es independiente, escalable y desplegable por separado.
+# - Auth Service: puerto 8001 (login, register, JWT)
+# - Productos Service: puerto 8002 (CRUD productos, valida JWT)
+# - Usuarios Service: puerto 8003 (CRUD usuarios, solo Admin)
+# - React Frontend: puerto 80 (SPA que consume todos los servicios)
+# =========================================================================
+
+services:
+  # ===== Base de datos compartida =====
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: inventario_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: sena_adso_2026
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./recursos/sql/inventario_db.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d inventario_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - microservices-net
+
+  # ===== Auth Service (Microservicio 1) =====
+  auth-service:
+    build:
+      context: ./recursos/fastapi-inventario
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8000"
+    environment:
+      DATABASE_URL: postgresql://postgres:sena_adso_2026@db:5432/inventario_db
+      SECRET_KEY: sena-adso-jwt-secret-key-2026
+      SERVICE_NAME: auth
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - microservices-net
+
+  # ===== Products Service (Microservicio 2) =====
+  products-service:
+    build:
+      context: ./recursos/fastapi-inventario
+      dockerfile: Dockerfile
+    ports:
+      - "8002:8000"
+    environment:
+      DATABASE_URL: postgresql://postgres:sena_adso_2026@db:5432/inventario_db
+      SECRET_KEY: sena-adso-jwt-secret-key-2026
+      SERVICE_NAME: products
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - microservices-net
+
+  # ===== Users Service (Microservicio 3) =====
+  users-service:
+    build:
+      context: ./recursos/fastapi-inventario
+      dockerfile: Dockerfile
+    ports:
+      - "8003:8000"
+    environment:
+      DATABASE_URL: postgresql://postgres:sena_adso_2026@db:5432/inventario_db
+      SECRET_KEY: sena-adso-jwt-secret-key-2026
+      SERVICE_NAME: users
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - microservices-net
+
+  # ===== Frontend React (SPA) =====
+  frontend:
+    build:
+      context: ./recursos/frontend-inventario
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - auth-service
+      - products-service
+      - users-service
+    networks:
+      - microservices-net
+
+volumes:
+  pgdata:
+
+networks:
+  microservices-net:
+    driver: bridge

@@ -1,0 +1,163 @@
+            <section class="section" id="reflexion">
+                <div class="container">
+                    <div class="breadcrumbs">
+                        <div class="breadcrumb-item"><a href="#inicio">Inicio</a>
+                        </div><i class="fas fa-chevron-right breadcrumb-separator"></i>
+                        <div class="breadcrumb-item breadcrumb-current">
+                            Reflexión Inicial
+                        </div><span class="reading-time"><i class="fas fa-clock"></i>5 min</span>
+                    </div>
+                    <div class="section-header">
+                        <div class="section-number">
+                            03
+                        </div>
+                        <h2 class="section-title">
+                            3.1 Reflexión Inicial
+                        </h2>
+                        <p class="section-subtitle">
+                            El problema del código espagueti y por qué MVC lo soluciona
+                        </p>
+                    </div>
+                    <div class="case-study">
+                        <div class="case-header"><i class="fas fa-exclamation-triangle"></i>
+                            <h3>
+                                Caso de Estudio: El Código Espagueti
+                            </h3>
+                        </div>
+                        <div class="case-content">
+                            <p>
+                                Imagina que eres el nuevo desarrollador en una empresa. Tu jefe te pide modificar una página JSP que muestra una lista de productos. Al abrir el archivo, encuentras algo así:
+                            </p>
+                            <div class="code-window bad-code">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot red"></span><span class="dot red"></span>
+                                    </div><span class="window-title"><i class="fas fa-times-circle"></i>Código Problemático</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-jsp">&lt;%@ page import="java.sql.*" %&gt;&lt;%
+String url = "jdbc:postgresql://localhost:5432/mi_db";
+String user = "postgres";
+String pass = "mi_password_secreta";
+Connection conn = DriverManager.getConnection(url, user, pass);
+String sql = "SELECT * FROM productos WHERE precio &gt; " + request.getParameter("precio");
+Statement stmt = conn.createStatement();
+ResultSet rs = stmt.executeQuery(sql);%&gt;&lt;html&gt;&lt;body&gt;
+&lt;table&gt;
+&lt;% while(rs.next()) { %&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;%= rs.getString("nombre") %&gt;&lt;/td&gt;
+&lt;td&gt;&lt;%= rs.getDouble("precio") %&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;% } %&gt;
+&lt;/table&gt;
+&lt;%
+if (request.getParameter("accion") != null && request.getParameter("accion").equals("eliminar")) {
+String id = request.getParameter("id");
+conn.createStatement().executeUpdate("DELETE FROM productos WHERE id = " + id);
+}
+%&gt;&lt;/body&gt;&lt;/html&gt;</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="problems-grid">
+                        <div class="problem-card danger">
+                            <div class="problem-icon"><i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h4>
+                                Problemas de Seguridad
+                            </h4>
+                            <ul>
+                                <li>
+                                    Contraseña hardcodeada en el código
+                                </li>
+                                <li>
+                                    Inyección SQL directa (concatenación)
+                                </li>
+                                <li>
+                                    Sin validación de entrada del usuario
+                                </li>
+                                <li>
+                                    Sin control de acceso ni autenticación
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="problem-card warning">
+                            <div class="problem-icon"><i class="fas fa-code-branch"></i>
+                            </div>
+                            <h4>
+                                Problemas de Mantenibilidad
+                            </h4>
+                            <ul>
+                                <li>
+                                    HTML y Java mezclados en el mismo archivo
+                                </li>
+                                <li>
+                                    Lógica de negocio, acceso a datos y presentación juntos
+                                </li>
+                                <li>
+                                    Imposible de probar unitariamente
+                                </li>
+                                <li>
+                                    Difícil de entender y modificar
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="problem-card info">
+                            <div class="problem-icon"><i class="fas fa-users"></i>
+                            </div>
+                            <h4>
+                                Problemas de Colaboración
+                            </h4>
+                            <ul>
+                                <li>
+                                    Dos desarrolladores no pueden trabajar en el mismo archivo
+                                </li>
+                                <li>
+                                    Cambiar la base de datos requiere modificar vistas
+                                </li>
+                                <li>
+                                    Cambiar el diseño requiere tocar lógica de negocio
+                                </li>
+                                <li>
+                                    No hay separación de responsabilidades
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="reflection-questions">
+                        <h3><i class="fas fa-question-circle"></i>Preguntas de Reflexión
+                        </h3>
+                        <div class="questions-list">
+                            <div class="question-item"><span class="question-number">1</span>
+                                <p>
+                                    ¿Puedes identificar al menos 3 problemas de seguridad en este código?
+                                </p>
+                            </div>
+                            <div class="question-item"><span class="question-number">2</span>
+                                <p>
+                                    ¿Qué pasaría si necesitas cambiar la base de datos de PostgreSQL a MySQL? ¿Cuántos archivos tendrías que modificar?
+                                </p>
+                            </div>
+                            <div class="question-item"><span class="question-number">3</span>
+                                <p>
+                                    ¿Cómo harías para probar la lógica de negocio sin tener un servidor web funcionando?
+                                </p>
+                            </div>
+                            <div class="question-item"><span class="question-number">4</span>
+                                <p>
+                                    Si dos desarrolladores necesitan trabajar en este archivo al mismo tiempo, ¿qué problemas podrían surgir?
+                                </p>
+                            </div>
+                            <div class="question-item"><span class="question-number">5</span>
+                                <p>
+                                    ¿Por qué el patrón MVC soluciona todos estos problemas?
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Fundamentos -->

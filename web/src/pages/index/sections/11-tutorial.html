@@ -1,0 +1,760 @@
+            <section class="section" id="tutorial">
+                <div class="container">
+                    <div class="breadcrumbs">
+                        <div class="breadcrumb-item"><a href="#inicio">Inicio</a>
+                        </div><i class="fas fa-chevron-right breadcrumb-separator"></i>
+                        <div class="breadcrumb-item breadcrumb-current">
+                            Tutorial
+                        </div><span class="reading-time"><i class="fas fa-clock"></i>30 min</span>
+                    </div>
+                    <div class="section-header">
+                        <div class="section-number">
+                            08
+                        </div>
+                        <h2 class="section-title">
+                            3.3 Tutorial Práctico Paso a Paso
+                        </h2>
+                        <p class="section-subtitle">
+                            Construye el Sistema de Inventario desde cero
+                        </p>
+                    </div>
+                    <!-- 🧪 PRIMER EJEMPLO EJECUTABLE: Hola Mundo Servlet -->
+                    <div class="step-card" id="jsp-hello">
+                        <div class="step-header">
+                            <div class="step-number">
+                                🧪
+                            </div>
+                            <div class="step-info">
+                                <h3>
+                                    Primer Ejemplo: Hola Mundo con Servlet + JSP
+                                </h3>
+                                <p>
+                                    Tu primer Servlet ejecutable — ¡en 5 minutos!
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <div class="info-banner" style="background:var(--accent-light, #e8f5e9);border-left:4px solid #28a745;"><i class="fas fa-rocket" style="color:#28a745;"></i>
+                                <div>
+                                    <h4>
+                                        Objetivo: Ver "Hola Mundo" en el navegador
+                                    </h4>
+                                    <p>
+                                        Crea, compila y ejecuta tu primer Servlet. Al final verás<code>¡Hola Mundo desde Jakarta EE 10!</code>en http://localhost:8080/hola-mundo.
+                                    </p>
+                                </div>
+                            </div>
+                            <h4>
+                                Paso 1: Crear la estructura del proyecto
+                            </h4>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title"><i class="fas fa-terminal"></i>Terminal — Crear proyecto</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-bash"># Crea esta estructura de carpetas manualmente:
+mkdir hola-mundo-servlet\src\main\java\com\sena\holamundo
+mkdir hola-mundo-servlet\src\main\webapp\WEB-INF
+mkdir hola-mundo-servlet\src\main\resources</code></pre>
+                                </div>
+                            </div>
+                            <h4>
+                                Paso 2: Crear pom.xml (Maven)
+                            </h4>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title"><i class="fas fa-file-code"></i>hola-mundo-servlet/pom.xml</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;project xmlns="http://maven.apache.org/POM/4.0.0"&gt;
+&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+&lt;groupId&gt;com.sena&lt;/groupId&gt;
+&lt;artifactId&gt;hola-mundo&lt;/artifactId&gt;
+&lt;version&gt;1.0&lt;/version&gt;
+&lt;packaging&gt;war&lt;/packaging&gt;
+&lt;properties&gt;
+&lt;maven.compiler.source&gt;21&lt;/maven.compiler.source&gt;
+&lt;maven.compiler.target&gt;21&lt;/maven.compiler.target&gt;
+&lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+&lt;/properties&gt;
+&lt;dependencies&gt;
+&lt;dependency&gt;
+&lt;groupId&gt;jakarta.servlet&lt;/groupId&gt;
+&lt;artifactId&gt;jakarta.servlet-api&lt;/artifactId&gt;
+&lt;version&gt;6.0.0&lt;/version&gt;
+&lt;scope&gt;provided&lt;/scope&gt;
+&lt;/dependency&gt;
+&lt;/dependencies&gt;&lt;/project&gt;</code></pre>
+                                </div>
+                            </div>
+                            <h4>
+                                Paso 3: Crear el Servlet (Controlador)
+                            </h4>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title"><i class="fab fa-java"></i>src/main/java/com/sena/holamundo/HolaMundoServlet.java</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-java">package com.sena.holamundo;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+public class HolaMundoServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+    throws ServletException, IOException {
+        resp.setContentType("text/html;
+        charset=UTF-8");
+        PrintWriter out = resp.getWriter();
+        out.println("&lt;!DOCTYPE html&gt;");
+        out.println("&lt;html&gt;&lt;head&gt;&lt;title&gt;Hola Mundo&lt;/title&gt;&lt;/head&gt;&lt;body&gt;");
+        out.println("&lt;h1&gt;¡Hola Mundo desde Jakarta EE 10!&lt;/h1&gt;");
+        out.println("&lt;p&gt;Mi primer Servlet con JDK 21&lt;/p&gt;");
+        out.println("&lt;p&gt;Fecha: " + new java.util.Date() + "&lt;/p&gt;");
+        out.println("&lt;/body&gt;&lt;/html&gt;");
+    }
+}</code></pre>
+                                </div>
+                            </div>
+                            <h4>
+                                Paso 4: Compilar y generar el WAR
+                            </h4>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title"><i class="fas fa-terminal"></i>Terminal — Compilar con Maven</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-bash">cd hola-mundo-servlet
+mvn clean package
+# Resultado esperado:
+# [INFO] Building war: hola-mundo-servlet\target\hola-mundo-1.0.war
+# [INFO] BUILD SUCCESS</code></pre>
+                                </div>
+                            </div>
+                            <h4>
+                                Paso 5: Desplegar en Tomcat y probar
+                            </h4>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title"><i class="fas fa-terminal"></i>Terminal — Desplegar y probar</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-bash"># 1. Copiar el WAR a Tomcatcopy target\hola-mundo-1.0.war C:\apache-tomcat-10.1.x\webapps\# 2. Iniciar Tomcat (si no está corriendo)C:\apache-tomcat-10.1.x\bin\startup.bat# 3. Abrir en el navegador:#
+http://localhost:8080/hola-mundo-1.0/hola-mundo# Resultado esperado en el navegador:# ┌──────────────────────────────────────────────┐# │
+│# │  ¡Hola Mundo desde Jakarta EE 10!
+│# │  Mi primer Servlet con JDK 21
+│# │  Fecha: Sun Jun 28 12:00:00 COT 2026
+│# │
+│# └──────────────────────────────────────────────┘</code></pre>
+                                </div>
+                            </div>
+                            <div class="recommendation-box"><i class="fas fa-check-circle" style="color:#28a745;"></i>
+                                <div>
+                                    <h4>
+                                        ¡Ya tienes tu primer Servlet funcionando!
+                                    </h4>
+                                    <p>
+                                        Acabas de crear, compilar y ejecutar un Servlet Jakarta EE 10. Has visto el flujo completo: código → compilar → desplegar → navegador. Ahora que entiendes el mecanismo básico, continuemos con el proyecto completo del Sistema de Inventario.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="info-banner" style="margin-top:1rem;background:var(--accent-light, #fff3cd);border-left:4px solid #ffc107;"><i class="fas fa-exchange-alt" style="color:#ffc107;"></i>
+                                <div>
+                                    <h4>
+                                        🔗 Puente JSP → FastAPI: JWT desde Java
+                                    </h4>
+                                    <p>
+                                        En el proyecto JSP encontrarás<code>JwtUtil.java</code>que genera tokens JWT usando la misma<code>SECRET_KEY</code>que FastAPI. Esto significa que<strong>React puede autenticarse tanto contra JSP como contra FastAPI</strong>con el mismo token. Es el puente entre el monolito y los microservicios:
+                                    </p>
+                                    <pre style="margin-top:0.5rem;font-size:0.85rem;overflow-x:auto;">// JwtUtil.java — genera el mismo JWT que FastAPI
+String token = JwtUtil.generarToken("admin", "Administrador");
+// → React usa este token con: Authorization: Bearer &lt;token&gt;</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tutorial-steps">
+                        <div class="step-card" id="step-1">
+                            <div class="step-header">
+                                <div class="step-number">
+                                    1
+                                </div>
+                                <div class="step-info">
+                                    <h3>
+                                        Configuración del Entorno
+                                    </h3>
+                                    <p>
+                                        Instalación de herramientas necesarias
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <h4>
+                                    Herramientas Requeridas
+                                </h4>
+                                <div class="tools-grid">
+                                    <div class="tool-item"><i class="fab fa-java"></i>
+                                        <div><strong>JDK 21</strong><span>Compilación y ejecución</span>
+                                        </div>
+                                    </div>
+                                    <div class="tool-item"><i class="fas fa-box"></i>
+                                        <div><strong>Maven 3.9+</strong><span>Gestión de dependencias</span>
+                                        </div>
+                                    </div>
+                                    <div class="tool-item"><i class="fas fa-cat"></i>
+                                        <div><strong>Tomcat 10.1</strong><span>Servidor de aplicaciones</span>
+                                        </div>
+                                    </div>
+                                    <div class="tool-item"><i class="fas fa-database"></i>
+                                        <div><strong>PostgreSQL 12+</strong><span>Base de datos</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h4>
+                                    Verificar Instalaciones
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-terminal"></i>Terminal — Verificación</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-bash"># Verificar JDK 21java --version# Debe mostrar: java 21.x.x# Verificar Mavenmvn --version# Debe mostrar: Apache Maven 3.9.x# Verificar PostgreSQLpsql --version# Debe mostrar: psql (PostgreSQL) 12 o superior</code></pre>
+                                    </div>
+                                </div>
+                                <h4>
+                                    Iniciar Tomcat
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-terminal"></i>Windows — Iniciar Tomcat</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-bash"># Navegar al directorio de Tomcatcd C:\apache-tomcat-10.1.x\bin# Iniciar servidorstartup.bat# Verificar en: http://localhost:8080</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step-card" id="step-2">
+                            <div class="step-header">
+                                <div class="step-number">
+                                    2
+                                </div>
+                                <div class="step-info">
+                                    <h3>
+                                        Base de Datos PostgreSQL
+                                    </h3>
+                                    <p>
+                                        Crear tablas y datos de prueba
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <h4>
+                                    Crear Base de Datos
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-database"></i>SQL — Crear BD</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-sql">-- Crear base de datosCREATE DATABASE inventario_db;-- Conectar a la base de datos\c inventario_db</code></pre>
+                                    </div>
+                                </div>
+                                <h4>
+                                    Script Completo de Tablas
+                                </h4>
+                                <p>
+                                    El siguiente script crea las 3 tablas principales con datos de prueba:
+                                </p>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-database"></i>recursos/sql/inventario_db.sql</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-sql">-- Tabla de RolesCREATE TABLE roles (    id SERIAL PRIMARY KEY,    nombre VARCHAR(50) NOT NULL UNIQUE,    descripcion VARCHAR(200),    estado BOOLEAN DEFAULT TRUE,    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP);-- Insertar rolesINSERT INTO roles (nombre, descripcion) VALUES('Administrador', 'Acceso completo al sistema'),('Cliente', 'Acceso limitado para consultas'),('Invitado', 'Acceso de solo lectura');-- Tabla de UsuariosCREATE TABLE usuarios (    id SERIAL PRIMARY KEY,    username VARCHAR(50) NOT NULL UNIQUE,    password VARCHAR(255) NOT NULL,    nombre_completo VARCHAR(100) NOT NULL,    email VARCHAR(100) NOT NULL UNIQUE,    rol_id INTEGER NOT NULL,    estado BOOLEAN DEFAULT TRUE,    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+CONSTRAINT fk_usuarios_roles FOREIGN KEY (rol_id)         REFERENCES roles(id));-- Insertar usuarios (password: admin123)INSERT INTO usuarios (username, password, nombre_completo, email, rol_id) VALUES('admin', '$2a$10$N9qo8uLOickgx2ZMRZoMye...', 'Administrador', 'admin@sena.edu.co', 1),('cliente1', '$2a$10$N9qo8uLOickgx2ZMRZoMye...', 'Juan Pérez', 'juan@sena.edu.co', 2);-- Tabla de ProductosCREATE TABLE productos (    id SERIAL PRIMARY KEY,    codigo VARCHAR(50) NOT NULL UNIQUE,    nombre VARCHAR(100) NOT NULL,    descripcion TEXT,    precio DECIMAL(10,2) NOT NULL CHECK (precio &gt;= 0),    stock INTEGER NOT NULL DEFAULT 0 CHECK (stock &gt;= 0),    categoria VARCHAR(50),    estado BOOLEAN DEFAULT TRUE,    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP);-- Insertar productos de ejemploINSERT INTO productos (codigo, nombre, descripcion, precio, stock, categoria) VALUES('PROD-001', 'Laptop HP Pavilion', 'Laptop 15.6" Intel Core i5 8GB', 2500000.00, 15, 'Tecnología'),('PROD-002', 'Mouse Logitech M185', 'Mouse inalámbrico', 45000.00, 50, 'Accesorios'),('PROD-003', 'Teclado Mecánico Redragon', 'Teclado mecánico RGB', 180000.00, 30, 'Accesorios'),('PROD-004', 'Monitor Samsung 24"', 'Monitor Full HD IPS', 650000.00, 20, 'Tecnología'),('PROD-005', 'Audífonos Sony WH-1000XM4', 'Audífonos con cancelación de ruido', 1200000.00, 25, 'Audio');</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step-card" id="step-3">
+                            <div class="step-header">
+                                <div class="step-number">
+                                    3
+                                </div>
+                                <div class="step-info">
+                                    <h3>
+                                        Estructura del Proyecto Maven
+                                    </h3>
+                                    <p>
+                                        Organización estándar de directorios
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <h4>
+                                    Estructura de Directorios
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-folder-tree"></i>Estructura del Proyecto</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-text">inventario-mvc/├── pom.xml├── src/main/│   ├── java/com/sena/inventario/│   │   ├── modelo/│   │   │   ├── Rol.java│   │   │   ├── Usuario.java│   │   │   └── Producto.java│   │   ├── dao/│   │   │   ├── ConexionDB.java│   │   │   ├── RolDAO.java│   │   │   ├── UsuarioDAO.java│   │   │   └── ProductoDAO.java│   │   ├── controlador/│   │   │   ├── LoginServlet.java│   │   │   ├── ProductoServlet.java│   │   │   └── UsuarioServlet.java│   │   └── util/│   │       └── PasswordUtil.java│   ├── resources/│   │   └── db.properties│   └── webapp/│       ├── WEB-INF/│       │   └── web.xml│       ├── productos/│       │   ├── lista.jsp│       │   └── formulario.jsp│       ├── usuarios/│       │   ├── lista.jsp│       │   └── formulario.jsp│       ├── css/│       │   └── estilo.css│       ├── index.jsp│       └── login.jsp└── Dockerfile</code></pre>
+                                    </div>
+                                </div>
+                                <h4>
+                                    Archivo pom.xml
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-file-code"></i>pom.xml</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;project xmlns="http://maven.apache.org/POM/4.0.0"&gt;
+&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+&lt;groupId&gt;com.sena.inventario&lt;/groupId&gt;
+&lt;artifactId&gt;inventario-mvc&lt;/artifactId&gt;
+&lt;version&gt;1.0&lt;/version&gt;
+&lt;packaging&gt;war&lt;/packaging&gt;
+&lt;properties&gt;
+&lt;maven.compiler.source&gt;21&lt;/maven.compiler.source&gt;
+&lt;maven.compiler.target&gt;21&lt;/maven.compiler.target&gt;
+&lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+&lt;/properties&gt;
+&lt;dependencies&gt;
+&lt;!-- Jakarta Servlet API --&gt;
+&lt;dependency&gt;
+&lt;groupId&gt;jakarta.servlet&lt;/groupId&gt;
+&lt;artifactId&gt;jakarta.servlet-api&lt;/artifactId&gt;
+&lt;version&gt;6.0.0&lt;/version&gt;
+&lt;scope&gt;provided&lt;/scope&gt;
+&lt;/dependency&gt;
+&lt;!-- Jakarta JSTL --&gt;
+&lt;dependency&gt;
+&lt;groupId&gt;jakarta.servlet.jsp.jstl&lt;/groupId&gt;
+&lt;artifactId&gt;jakarta.servlet.jsp.jstl-api&lt;/artifactId&gt;
+&lt;version&gt;3.0.0&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;!-- PostgreSQL JDBC Driver --&gt;
+&lt;dependency&gt;
+&lt;groupId&gt;org.postgresql&lt;/groupId&gt;
+&lt;artifactId&gt;postgresql&lt;/artifactId&gt;
+&lt;version&gt;42.7.1&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;!-- BCrypt para contraseñas --&gt;
+&lt;dependency&gt;
+&lt;groupId&gt;at.favre.lib&lt;/groupId&gt;
+&lt;artifactId&gt;bcrypt&lt;/artifactId&gt;
+&lt;version&gt;0.10.2&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;/dependencies&gt;&lt;/project&gt;</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step-card" id="step-4">
+                            <div class="step-header">
+                                <div class="step-number">
+                                    4
+                                </div>
+                                <div class="step-info">
+                                    <h3>
+                                        Modelo - Records de JDK 21
+                                    </h3>
+                                    <p>
+                                        Entidades inmutables con sintaxis moderna
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <h4>
+                                    Producto.java - Record Principal
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fab fa-java"></i>Producto.java</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-java">package com.sena.inventario.modelo;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+public record Producto(    int id,    String codigo,    String nombre,    String descripcion,    BigDecimal precio,    int stock,    String categoria,    boolean estado,    LocalDateTime fechaRegistro,    LocalDateTime fechaActualizacion) {
+    public Producto(String codigo, String nombre, String descripcion,                     BigDecimal precio, int stock, String categoria) {
+        this(0, codigo, nombre, descripcion, precio, stock, categoria,              true, LocalDateTime.now(), LocalDateTime.now());
+    }
+}</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step-card" id="step-5">
+                            <div class="step-header">
+                                <div class="step-number">
+                                    5
+                                </div>
+                                <div class="step-info">
+                                    <h3>
+                                        DAO - Acceso a Datos con JDBC
+                                    </h3>
+                                    <p>
+                                        Patrón DAO con PreparedStatement
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <h4>
+                                    ProductoDAO.java - CRUD Completo
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fab fa-java"></i>ProductoDAO.java</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-java">package com.sena.inventario.dao;
+import com.sena.inventario.modelo.Producto;
+import java.math.BigDecimal;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+public class ProductoDAO {
+    private static final String SQL_INSERT =         "INSERT INTO productos (codigo, nombre, descripcion, precio, stock, categoria) " +        "VALUES (?, ?, ?, ?, ?, ?)";
+    private static final String SQL_SELECT_ALL =         "SELECT * FROM productos ORDER BY id";
+    private static final String SQL_SELECT_BY_ID =         "SELECT * FROM productos WHERE id = ?";
+    private static final String SQL_UPDATE =         "UPDATE productos SET codigo=?, nombre=?, descripcion=?, precio=?, " +        "stock=?, categoria=?, estado=? WHERE id=?";
+    private static final String SQL_DELETE =         "DELETE FROM productos WHERE id = ?";
+    // CREATE    public boolean insertar(Producto producto) {
+        try (Connection conn = ConexionDB.conectar();
+        PreparedStatement ps = conn.prepareStatement(SQL_INSERT)) {
+            ps.setString(1, producto.codigo());
+            ps.setString(2, producto.nombre());
+            ps.setString(3, producto.descripcion());
+            ps.setBigDecimal(4, producto.precio());
+            ps.setInt(5, producto.stock());
+            ps.setString(6, producto.categoria());
+            return ps.executeUpdate() &gt; 0;
+        }
+    catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    }
+}
+// READ    public List&lt;Producto&gt; listarTodos() {
+    List&lt;Producto&gt; productos = new ArrayList&lt;&gt;();
+    try (Connection conn = ConexionDB.conectar();
+    Statement stmt = conn.createStatement();
+    ResultSet rs = stmt.executeQuery(SQL_SELECT_ALL)) {
+        while (rs.next()) {
+            productos.add(new Producto(                    rs.getInt("id"),                    rs.getString("codigo"),                    rs.getString("nombre"),                    rs.getString("descripcion"),                    rs.getBigDecimal("precio"),                    rs.getInt("stock"),                    rs.getString("categoria"),                    rs.getBoolean("estado"),                    rs.getTimestamp("fecha_registro").toLocalDateTime(),                    rs.getTimestamp("fecha_actualizacion").toLocalDateTime()                ));
+        }
+}
+catch (SQLException e) {
+    e.printStackTrace();
+}
+return productos;
+}
+// UPDATE    public boolean actualizar(Producto producto) {
+    try (Connection conn = ConexionDB.conectar();
+    PreparedStatement ps = conn.prepareStatement(SQL_UPDATE)) {
+        ps.setString(1, producto.codigo());
+        ps.setString(2, producto.nombre());
+        ps.setString(3, producto.descripcion());
+        ps.setBigDecimal(4, producto.precio());
+        ps.setInt(5, producto.stock());
+        ps.setString(6, producto.categoria());
+        ps.setBoolean(7, producto.estado());
+        ps.setInt(8, producto.id());
+        return ps.executeUpdate() &gt; 0;
+    }
+catch (SQLException e) {
+    e.printStackTrace();
+    return false;
+}
+}
+// DELETE    public boolean eliminar(int id) {
+    try (Connection conn = ConexionDB.conectar();
+    PreparedStatement ps = conn.prepareStatement(SQL_DELETE)) {
+        ps.setInt(1, id);
+        return ps.executeUpdate() &gt; 0;
+    }
+catch (SQLException e) {
+    e.printStackTrace();
+    return false;
+}
+}
+}</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step-card" id="step-6">
+                            <div class="step-header">
+                                <div class="step-number">
+                                    6
+                                </div>
+                                <div class="step-info">
+                                    <h3>
+                                        Controlador - Servlets Jakarta EE
+                                    </h3>
+                                    <p>
+                                        Manejo de peticiones HTTP con @WebServlet
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <h4>
+                                    ProductoServlet.java - CRUD Completo
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fab fa-java"></i>ProductoServlet.java</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-java">package com.sena.inventario.controlador;
+import com.sena.inventario.dao.ProductoDAO;
+import com.sena.inventario.modelo.Producto;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.List;
+@WebServlet("/productos")
+public class ProductoServlet extends HttpServlet {
+    private final ProductoDAO productoDAO = new ProductoDAO();
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+        String accion = request.getParameter("accion");
+        if (accion == null) accion = "listar";
+        switch (accion) {
+            case "nuevo" -&gt; mostrarFormularioNuevo(request, response);
+            case "editar" -&gt; mostrarFormularioEditar(request, response);
+            case "eliminar" -&gt; eliminarProducto(request, response);
+            default -&gt; listarProductos(request, response);
+        }
+}
+@Override
+protected void doPost(HttpServletRequest request, HttpServletResponse response)
+throws ServletException, IOException {
+    if ("guardar".equals(request.getParameter("accion"))) {
+        guardarProducto(request, response);
+    }
+}
+private void listarProductos(HttpServletRequest req, HttpServletResponse resp)
+throws ServletException, IOException {
+    List&lt;Producto&gt; productos = productoDAO.listarTodos();
+    req.setAttribute("productos", productos);
+    req.getRequestDispatcher("/productos/lista.jsp").forward(req, resp);
+}
+private void guardarProducto(HttpServletRequest request, HttpServletResponse response)
+throws IOException {
+    String idStr = request.getParameter("id");
+    String codigo = request.getParameter("codigo");
+    String nombre = request.getParameter("nombre");
+    String descripcion = request.getParameter("descripcion");
+    BigDecimal precio = new BigDecimal(request.getParameter("precio"));
+    int stock = Integer.parseInt(request.getParameter("stock"));
+    String categoria = request.getParameter("categoria");
+    if (idStr == null || idStr.isEmpty()) {
+        Producto producto = new Producto(codigo, nombre, descripcion, precio, stock, categoria);
+        productoDAO.insertar(producto);
+    }
+else {
+    intid = Integer.parseInt(idStr);
+    booleanestado = "on".equals(request.getParameter("estado"));
+    Producto producto = new Producto(id, codigo, nombre, descripcion, precio, stock, categoria, estado);
+    productoDAO.actualizar(producto);
+}        response.sendRedirect(request.getContextPath() + "/productos");
+}
+}</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step-card" id="step-7">
+                            <div class="step-header">
+                                <div class="step-number">
+                                    7
+                                </div>
+                                <div class="step-info">
+                                    <h3>
+                                        Vista - JSP con JSTL
+                                    </h3>
+                                    <p>
+                                        Páginas dinámicas sin código Java
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <h4>
+                                    lista.jsp - Tabla de Productos con JSTL
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-code"></i>productos/lista.jsp</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-jsp">&lt;%@ page contentType="text/html;charset=UTF-8" language="java" %&gt;&lt;%@ taglib prefix="c" uri="jakarta.tags.core" %&gt;&lt;!DOCTYPE html&gt;&lt;html lang="es"&gt;&lt;head&gt;
+&lt;meta charset="UTF-8"&gt;
+&lt;title&gt;Lista de Productos&lt;/title&gt;&lt;/head&gt;&lt;body&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Código&lt;/th&gt;
+&lt;th&gt;Nombre&lt;/th&gt;
+&lt;th&gt;Precio&lt;/th&gt;
+&lt;th&gt;Stock&lt;/th&gt;
+&lt;th&gt;Acciones&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;c:forEach var="producto" items="${productos}"&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;c:out value="${producto.codigo}" /&gt;&lt;/td&gt;
+&lt;td&gt;&lt;c:out value="${producto.nombre}" /&gt;&lt;/td&gt;
+&lt;td&gt;$&lt;c:out value="${producto.precio}" /&gt;&lt;/td&gt;
+&lt;td&gt;&lt;c:out value="${producto.stock}" /&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;a href="productos?accion=editar&id=${producto.id}"&gt;Editar&lt;/a&gt;
+&lt;a href="productos?accion=eliminar&id=${producto.id}"&gt;Eliminar&lt;/a&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/c:forEach&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step-card" id="step-8">
+                            <div class="step-header">
+                                <div class="step-number">
+                                    8
+                                </div>
+                                <div class="step-info">
+                                    <h3>
+                                        Compilación y Despliegue
+                                    </h3>
+                                    <p>
+                                        Arrancar con Maven Cargo o Script Automatizado
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <div class="info-banner" style="background:var(--accent-light, #e8f5e9);border-left:4px solid #00664a;"><i class="fas fa-magic" style="color:#00664a;"></i>
+                                    <div>
+                                        <h4>
+                                            🚀 Método Recomendado: Ejecución Automática (Cero Configuración)
+                                        </h4>
+                                        <p>
+                                            Hemos configurado el plugin<strong>Cargo</strong>en<code>pom.xml</code>para que descargue y configure Tomcat 10 automáticamente. También cuenta con un script interactivo de PowerShell en la raíz que se encarga de verificar y preparar PostgreSQL y arrancar el servidor en un solo clic.
+                                        </p>
+                                    </div>
+                                </div>
+                                <h4>
+                                    Opción A: Ejecutar usando el script interactivo (Recomendado)
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-terminal"></i>PowerShell — Iniciar Todo</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-bash"># Ejecute el script en la raíz del proyecto para automatizar puertos, base de datos y Tomcat:.\run-project-jsp.ps1</code></pre>
+                                    </div>
+                                </div>
+                                <h4>
+                                    Opción B: Arrancar Tomcat manualmente vía Maven Cargo
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-terminal"></i>Terminal — Maven Cargo</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-bash"># 1. Ingrese a la carpeta del código de ejemplo
+cd recursos/codigo-ejemplo
+# 2. Compile e inicie el servidor Tomcat incrustado
+mvn clean package cargo:run
+# 3. Abra su navegador en: http://localhost:8080/inventario-mvc-1.0/</code></pre>
+                                    </div>
+                                </div>
+                                <h4>
+                                    Opción C: Despliegue Tradicional (Copia de WAR Manual)
+                                </h4>
+                                <p>
+                                    Si prefiere utilizar una instalación externa de Apache Tomcat de forma manual:
+                                </p>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-terminal"></i>Terminal — Despliegue Manual</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-bash"># 1. Compile y empaquete el archivo WARcd recursos/codigo-ejemplomvn clean package# 2. Copie el archivo generado a la carpeta webapps de su Tomcat manualcopy target\inventario-mvc-1.0.war C:\apache-tomcat-10.1.x\webapps\# 3. Reinicie el servidor TomcatC:\apache-tomcat-10.1.x\bin\shutdown.batC:\apache-tomcat-10.1.x\bin\startup.bat</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Ejercicios -->

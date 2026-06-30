@@ -1,0 +1,949 @@
+            <section class="section section-alt" id="fastapi">
+                <div class="container">
+                    <div class="breadcrumbs">
+                        <div class="breadcrumb-item"><a href="#inicio">Inicio</a>
+                        </div><i class="fas fa-chevron-right breadcrumb-separator"></i>
+                        <div class="breadcrumb-item breadcrumb-current">
+                            API REST con FastAPI
+                        </div><span class="reading-time"><i class="fas fa-clock"></i>30 min</span>
+                    </div>
+                    <div class="section-header">
+                        <div class="section-number">
+                            10
+                        </div>
+                        <h2 class="section-title">
+                            API REST con FastAPI + SQLAlchemy + JWT
+                        </h2>
+                        <p class="section-subtitle">
+                            Construye el backend moderno en Python — CRUD con 3 tablas relacionadas (PK/FK), autenticación JWT y control de roles
+                        </p>
+                    </div>
+                    <div class="info-banner"><i class="fas fa-info-circle"></i>
+                        <div>
+                            <h4>
+                                Transición desde JSP + MVC
+                            </h4>
+                            <p>
+                                Así como construiste el backend con Jakarta EE (Servlets + DAO + JSP), ahora lo harás con FastAPI: los<strong>Modelos Pydantic</strong>reemplazan los Records,<strong>SQLAlchemy</strong>reemplaza los DAOs, y los<strong>Routers</strong>reemplazan los Servlets. La diferencia principal: FastAPI retorna JSON en lugar de renderizar JSP, y React (en la siguiente guía) consumirá ese JSON.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- 🧪 PRIMER EJEMPLO EJECUTABLE: Hola Mundo FastAPI -->
+                    <div class="step-card" id="fastapi-hello">
+                        <div class="step-header">
+                            <div class="step-number">
+                                🧪
+                            </div>
+                            <div class="step-info">
+                                <h3>
+                                    Primer Ejemplo: Hola Mundo con FastAPI
+                                </h3>
+                                <p>
+                                    Tu primer endpoint API REST — ¡en 2 minutos!
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <div class="info-banner" style="background:var(--accent-light, #e8f5e9);border-left:4px solid #28a745;"><i class="fas fa-rocket" style="color:#28a745;"></i>
+                                <div>
+                                    <h4>
+                                        Objetivo: Ver JSON en el navegador
+                                    </h4>
+                                    <p>
+                                        Crea tu primera API REST con FastAPI. Al final verás<code>{"mensaje": "Hola Mundo desde FastAPI!"}</code>en http://localhost:8000.<strong>Nota:</strong>Así como el Servlet "Hola Mundo" fue tu primer ejemplo en Java, este es tu primer endpoint en Python.
+                                    </p>
+                                </div>
+                            </div>
+                            <h4>
+                                Paso 1: Crear el proyecto
+                            </h4>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title"><i class="fas fa-terminal"></i>Terminal — Crear y configurar</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-bash"># 1. Crear carpeta del proyectomkdir hola-mundo-fastapicd hola-mundo-fastapi# 2. Crear y activar entorno virtualpython -m venv venvvenv\Scripts\activate
+# Windows# source venv/bin/activate  # Linux/Mac# 3. Instalar FastAPI + servidorpip install fastapi uvicorn# Resultado:# Successfully installed fastapi-0.115.0 uvicorn-0.31.0</code></pre>
+                                </div>
+                            </div>
+                            <h4>
+                                Paso 2: Crear main.py (Equivalente al Servlet "Hola Mundo")
+                            </h4>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title"><i class="fab fa-python"></i>hola-mundo-fastapi/main.py</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-python">from fastapi
+import FastAPI# Creamos la aplicación (como
+@WebServlet)app = FastAPI(title="Mi Primera API", version="1.0.0")@app.get("/")async
+def root():    """GET / → Retorna JSON (como doGet pero sin HTML)"""    return {        "mensaje": "Hola Mundo desde FastAPI!",        "framework": "FastAPI + Python",        "equivalente": "Servlet Hola Mundo en Jakarta EE"    }@app.get("/health")async
+def health():    """GET /health → Verificar que funciona"""    return {"status": "ok", "version": "1.0.0"}@app.get("/sumar")async
+def sumar(a: int = 5, b: int = 3):    """GET /sumar?a=10&b=20 → JSON con resultado"""    resultado = a + b
+return {        "operacion": f"{a} + {b}",        "resultado": resultado    }</code></pre>
+                                </div>
+                            </div>
+                            <h4>
+                                Paso 3: Ejecutar y probar
+                            </h4>
+                            <h5>
+                                🐳 Con Docker:
+                            </h5>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title"><i class="fab fa-docker"></i>Terminal — Docker</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-bash"># Construir y ejecutar con Dockerdocker build -t hola-fastapi .docker run -d -p 8000:8000 --name hola-fastapi hola-fastapi# Ver logsdocker logs hola-fastapi# Probarcurl http://localhost:8000# Detenerdocker stop hola-fastapi && docker rm hola-fastapi</code></pre>
+                                </div>
+                            </div>
+                            <h5>
+                                🪟 Nativo Windows:
+                            </h5>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title"><i class="fas fa-terminal"></i>Terminal — Nativo</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-bash"># Activar entorno virtual (si no lo está)venv\Scripts\activate# Iniciar FastAPI (recarga automática con --reload)uvicorn main:app --reload --port 8000# Resultado esperado:# INFO:
+Uvicorn running on http://127.0.0.1:8000# INFO:
+Application startup complete.</code></pre>
+                                </div>
+                            </div>
+                            <h4>
+                                Paso 4: Probar los endpoints
+                            </h4>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title"><i class="fas fa-globe"></i>Navegador / curl — Probar API</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-bash"># Abrir en el navegador o usar curl:# 1. Endpoint raízcurl http://localhost:8000# Resultado: {"mensaje":"Hola Mundo desde FastAPI!","framework":"FastAPI + Python","equivalente":"Servlet Hola Mundo en Jakarta EE"}# 2. Health checkcurl http://localhost:8000/health# Resultado: {"status":"ok","version":"1.0.0"}# 3. Sumar con parámetroscurl "http://localhost:8000/sumar?a=10&b=20"# Resultado: {"operacion":"10 + 20","resultado":30}# 4. Documentación Swagger automática# Abrir en el navegador: http://localhost:8000/docs# Verás una UI interactiva donde puedes probar los endpoints# ┌────────────────────────────────────────────┐# │ Swagger UI
+│# │ ──────────────────────────
+│# │ GET /
+Root
+│# │ GET /health  Health Check
+│# │ GET /sumar   Sumar dos números
+│# │
+│# │ [Try it out] → Ejecuta desde el navegador  │# └────────────────────────────────────────────┘# 5. Documentación ReDoc alternativa# Abrir: http://localhost:8000/redoc</code></pre>
+                                </div>
+                            </div>
+                            <div class="recommendation-box"><i class="fas fa-check-circle" style="color:#28a745;"></i>
+                                <div>
+                                    <h4>
+                                        ¡Ya tienes tu primera API REST funcionando!
+                                    </h4>
+                                    <p>
+                                        Así como tu primer Servlet retornaba HTML, FastAPI retorna JSON. La diferencia clave: el JSON puede ser consumido por cualquier cliente (React, móvil, otros servicios), mientras que el HTML solo sirve para navegadores. Ahora que entiendes el mecanismo, construyamos la API completa de inventario con base de datos.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tutorial-steps">
+                        <div class="step-card" id="fastapi-step-1">
+                            <div class="step-header">
+                                <div class="step-number">
+                                    1
+                                </div>
+                                <div class="step-info">
+                                    <h3>
+                                        Configuración del Proyecto FastAPI
+                                    </h3>
+                                    <p>
+                                        Estructura y dependencias
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <h4>
+                                    Estructura de directorios
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-folder-tree"></i>Estructura del Proyecto FastAPI</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-text">fastapi-inventario/├── main.py                  # Punto de entrada (como index.jsp)├── config.py                # Config con pydantic-settings (lee .env)├── database.py              # Conexión SQLAlchemy (como ConexionDB.java)├── alembic.ini              # Migraciones (como Flyway en Java)├── migrations/              # Scripts de migración automáticos│   ├── env.py               # Config de Alembic│   ├── script.py.mako       # Template para nuevas migraciones│   └── versions/            # Migraciones generadas├── .env / .env.example      # Variables de entorno (DB, JWT, CORS)├── tests/                   # Pruebas automatizadas (pytest)│   └── test_api.py          # 8 tests: health, auth, CRUD, paginación├── models/                  # Modelos SQLAlchemy (tablas con relaciones FK)│   ├── producto.py          # Producto — FK → usuario_creador_id│   ├── rol.py               # Rol — PK referenciada por Usuario│   └── usuario.py           # Usuario — FK → roles.id├── schemas/                 # Esquemas Pydantic (validación)│   ├── producto.py          # Schema request/response + PaginatedResponse│   └── usuario.py           # Schema + Rol + Login + Token├── routers/                 # Rutas de la API (como Servlets)│   ├── producto.py          # CRUD productos con paginación (JWT)│   ├── auth.py              # Login/Register + JWT + verificación de roles│   ├── usuario.py           # CRUD usuarios (solo Admin)│   └── rol.py               # CRUD roles (Admin)└── requirements.txt         # Dependencias (como pom.xml)</code></pre>
+                                    </div>
+                                </div>
+                                <h4>
+                                    Migraciones de base de datos (Alembic)
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-database"></i>Terminal — Migraciones</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-bash"># Equivalente a Flyway/Liquibase en Java# pero nativo de Python con Alembic# 1. Crear migración automática (detecta cambios en modelos/)alembic revision --autogenerate -m "agregar tabla categorias"# 2. Aplicar migraciones pendientesalembic upgrade head# 3. Revertir última migraciónalembic downgrade -1# 4. Ver historialalembic history</code></pre>
+                                    </div>
+                                </div>
+                                <div class="recommendation-box"><i class="fas fa-code-branch"></i>
+                                    <div>
+                                        <h4>
+                                            🗺️ JSP (Flyway) vs FastAPI (Alembic)
+                                        </h4>
+                                        <p>
+                                            En JSP se usaba<strong>Flyway</strong>o scripts SQL manuales para versionar la BD. En FastAPI usamos<strong>Alembic</strong>que funciona igual: detecta cambios en los modelos Python y genera automáticamente los scripts SQL de migración. Ambos permiten<code>upgrade</code>(avanzar) y<code>downgrade</code>(retrocedir).
+                                        </p>
+                                    </div>
+                                </div>
+                                <h4>
+                                    Configuración con variables de entorno
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-file-code"></i>.env — Configuración centralizada</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-bash"># ===== .env (copiar de .env.example) =====# PostgreSQLDATABASE_URL=postgresql://postgres:postgres@localhost:5432/inventario_db# JWTSECRET_KEY=mi-clave-secreta-segura-2026ALGORITHM=HS256ACCESS_TOKEN_EXPIRE_MINUTES=60# CORSCORS_ORIGINS=http://localhost:5173,http://localhost:3000</code></pre>
+                                    </div>
+                                </div>
+                                <div class="recommendation-box"><i class="fas fa-shield-alt"></i>
+                                    <div>
+                                        <h4>
+                                            Buenas prácticas: .env vs configuración hardcodeada
+                                        </h4>
+                                        <p>
+                                            En JSP usábamos<code>db.properties</code>con valores fijos. Aquí usamos<strong>pydantic-settings</strong>que lee de<code>.env</code>o variables de entorno del sistema. Esto permite:
+                                        </p>
+                                        <ul style="margin-top:0.5rem;padding-left:1.5rem;">
+                                            <li><strong>Seguridad:</strong>contraseñas y claves fuera del código
+                                            </li>
+                                            <li><strong>Portabilidad:</strong>mismo código, distinta configuración por entorno
+                                            </li>
+                                            <li><strong>Docker-ready:</strong>las variables se pasan al contenedor con<code>-e</code>
+                                            </li>
+                                        </ul>
+                                        <p style="margin-top:0.5rem;">
+                                            FastAPI en Docker:<code>docker run -e DATABASE_URL=... -e SECRET_KEY=... mi-api</code>
+                                        </p>
+                                    </div>
+                                </div>
+                                <h4>
+                                    Tabla de relaciones (PK/FK)
+                                </h4>
+                                <div class="rubric-section">
+                                    <div class="rubric-table">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        Tabla
+                                                    </th>
+                                                    <th>
+                                                        PK
+                                                    </th>
+                                                    <th>
+                                                        FK
+                                                    </th>
+                                                    <th>
+                                                        Relación
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><code>roles</code>
+                                                    </td>
+                                                    <td><code>id (SERIAL)</code>
+                                                    </td>
+                                                    <td>
+                                                        —
+                                                    </td>
+                                                    <td>
+                                                        Tabla padre
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>usuarios</code>
+                                                    </td>
+                                                    <td><code>id (SERIAL)</code>
+                                                    </td>
+                                                    <td><code>rol_id → roles.id</code>
+                                                    </td>
+                                                    <td>
+                                                        Muchos usuarios → 1 rol
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>productos</code>
+                                                    </td>
+                                                    <td><code>id (SERIAL)</code>
+                                                    </td>
+                                                    <td><code>usuario_creador_id → usuarios.id</code>
+                                                    </td>
+                                                    <td>
+                                                        Muchos productos → 1 usuario creador
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="recommendation-box" style="margin-top:1rem;"><i class="fas fa-key"></i>
+                                    <div>
+                                        <h4>
+                                            Autenticación JWT — de sesiones a tokens
+                                        </h4>
+                                        <p>
+                                            Mientras que en JSP usábamos<code>HttpSession</code>para mantener la sesión del usuario, aquí usamos<strong>JWT (JSON Web Tokens)</strong>. El usuario envía su usuario/contraseña, el servidor valida y retorna un token firmado. El frontend guarda ese token y lo envía en cada petición vía header<code>Authorization: Bearer &lt;token&gt;</code>. Esto permite que la API sea<strong>stateless</strong>(sin sesiones en servidor), escalable y preparada para microservicios.
+                                        </p>
+                                    </div>
+                                </div>
+                                <h4>
+                                    Archivo requirements.txt
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-file-code"></i>requirements.txt</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-text">fastapi==0.115.0uvicorn==0.31.0sqlalchemy==2.0.35psycopg2-binary==2.9.9pydantic==2.9.0</code></pre>
+                                    </div>
+                                </div>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-terminal"></i>Terminal — Instalación</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-bash"># Crear y activar entorno virtualpython -m venv venvvenv\Scripts\activate
+# Windows# source venv/bin/activate  # Linux/Mac# Instalar dependenciaspip install -r requirements.txt# Resultado:# Successfully installed fastapi-0.115.0 uvicorn-0.31.0# sqlalchemy-2.0.35 psycopg2-binary-2.9.9 pydantic-2.9.0</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step-card" id="fastapi-step-2">
+                            <div class="step-header">
+                                <div class="step-number">
+                                    2
+                                </div>
+                                <div class="step-info">
+                                    <h3>
+                                        Modelo SQLAlchemy + Esquema Pydantic
+                                    </h3>
+                                    <p>
+                                        Equivalente a los Records de JDK 21
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <h4>
+                                    Modelo de Base de Datos (SQLAlchemy)
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fab fa-python"></i>models/producto.py</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-python">from sqlalchemy
+import Column, Integer, String, Numeric, Boolean, DateTime, textfrom database
+import Baseclass ProductoDB(Base):    """Modelo SQLAlchemy — mapea la tabla 'productos' de PostgreSQL.       Equivalente al Record Producto.java en JSP MVC."""    __tablename__ = "productos"    id = Column(Integer, primary_key=True, index=True)    codigo = Column(String(50), unique=True, nullable=False)    nombre = Column(String(100), nullable=False)    descripcion = Column(String(500), nullable=True)    precio = Column(Numeric(10, 2), nullable=False)    stock = Column(Integer, default=0)    categoria = Column(String(50), nullable=True)    estado = Column(Boolean, default=True)    fecha_registro = Column(DateTime, server_default=text("CURRENT_TIMESTAMP"))</code></pre>
+                                    </div>
+                                </div>
+                                <h4>
+                                    Esquema Pydantic (Validación)
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fab fa-python"></i>schemas/producto.py</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-python">from pydantic
+import BaseModel, Fieldfrom decimal
+import Decimalfrom datetime
+import datetimefrom typing
+import Optionalclass ProductoBase(BaseModel):    """Esquema base — validación de tipos automática.       Equivalente a los parámetros del Servlet."""    codigo: str = Field(..., min_length=3, max_length=50)    nombre: str = Field(..., min_length=2, max_length=100)    descripcion: Optional[str] = None    precio: Decimal = Field(..., gt=0, decimal_places=2)    stock: int = Field(default=0, ge=0)    categoria: Optional[str] = Noneclass ProductoCreate(ProductoBase):    """Para crear: hereda de ProductoBase (sin id)"""    passclass Producto(ProductoBase):    """Para responder: incluye id y metadatos"""    id: int    estado: bool = True    fecha_registro: Optional[datetime] = None
+class Config:        from_attributes = True  # Permite crear desde SQLAlchemy</code></pre>
+                                    </div>
+                                </div>
+                                <h4>
+                                    Conexión a Base de Datos
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fab fa-python"></i>database.py</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-python">from sqlalchemy
+import create_enginefrom sqlalchemy.orm
+import sessionmaker, DeclarativeBase# URL de conexión — como db.properties en JSP# Formato: postgresql://usuario:password@host:puerto/bdDATABASE_URL = "postgresql://postgres:postgres@localhost:5432/inventario_db"engine = create_engine(DATABASE_URL, echo=False)SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)class Base(DeclarativeBase):    """Clase base para modelos SQLAlchemy"""    passdef get_db():    """Dependencia que provee una sesión de BD por petición.       Como ConexionDB.conectar() pero automático."""    db = SessionLocal()    try:
+yield db    finally:        db.close()</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step-card" id="fastapi-step-3">
+                            <div class="step-header">
+                                <div class="step-number">
+                                    3
+                                </div>
+                                <div class="step-info">
+                                    <h3>
+                                        CRUD Endpoints — Productos
+                                    </h3>
+                                    <p>
+                                        Equivalente a ProductoServlet.java
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <h4>
+                                    Router de Productos (GET, POST, PUT, DELETE)
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fab fa-python"></i>routers/producto.py</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-python">from fastapi
+import APIRouter, Depends, HTTPException, statusfrom sqlalchemy.orm
+import Sessionfrom typing
+import Listfrom database
+import get_dbfrom models.producto
+import ProductoDBfrom schemas.producto
+import Producto, ProductoCreate# Prefijo /api/productos — como
+@WebServlet("/productos")router = APIRouter(prefix="/api/productos", tags=["Productos"])@router.get("/", response_model=List[Producto])async
+def listar_productos(    categoria: str | None = None,    db: Session = Depends(get_db)):    """GET /api/productos — Listar todos (con filtro opcional).       Equivalente a ProductoDAO.listarTodos()"""    query = db.query(ProductoDB)
+    if categoria:        query = query.filter(ProductoDB.categoria == categoria)    productos = query.all()
+return productos
+    # SQLAlchemy → Pydantic automático@router.get("/{producto_id}", response_model=Producto)async
+    def obtener_producto(producto_id: int, db: Session = Depends(get_db)):    """GET /api/productos/5 — Obtener por ID.       Equivalente a ProductoDAO.buscarPorId()"""    producto = db.query(ProductoDB).filter(ProductoDB.id == producto_id).first()
+    if
+    not producto:
+    raise HTTPException(status_code=404, detail="Producto no encontrado")
+    return producto@router.post("/", response_model=Producto, status_code=status.HTTP_201_CREATED)async
+        def crear_producto(producto: ProductoCreate, db: Session = Depends(get_db)):    """POST /api/productos — Crear producto.       Equivalente a doPost en ProductoServlet"""    db_producto = ProductoDB(**producto.model_dump())    db.add(db_producto)    db.commit()    db.refresh(db_producto)
+return db_producto@router.put("/{producto_id}", response_model=Producto)async
+    def actualizar_producto(producto_id: int, producto: ProductoCreate,                               db: Session = Depends(get_db)):    """PUT /api/productos/5 — Actualizar producto.       Equivalente a ProductoDAO.actualizar()"""    db_producto = db.query(ProductoDB).filter(ProductoDB.id == producto_id).first()
+    if
+    not db_producto:
+    raise HTTPException(status_code=404, detail="Producto no encontrado")
+        for key, value
+        in producto.model_dump().items():        setattr(db_producto, key, value)    db.commit()    db.refresh(db_producto)
+    return db_producto@router.delete("/{producto_id}", status_code=status.HTTP_204_NO_CONTENT)async
+        def eliminar_producto(producto_id: int, db: Session = Depends(get_db)):    """DELETE /api/productos/5 — Eliminar producto.       Equivalente a ProductoDAO.eliminar()"""    db_producto = db.query(ProductoDB).filter(ProductoDB.id == producto_id).first()
+    if
+    not db_producto:
+    raise HTTPException(status_code=404, detail="Producto no encontrado")    db.delete(db_producto)    db.commit()
+    return None</code></pre>
+                                    </div>
+                                </div>
+                                <h4>
+                                    Punto de entrada (main.py)
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fab fa-python"></i>main.py</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-python">from fastapi
+import FastAPIfrom fastapi.middleware.cors
+import CORSMiddlewarefrom database
+import engine, Basefrom routers
+import producto as producto_router# Crear tablas en BD si no existen (como ejecutar inventario_db.sql)Base.metadata.create_all(bind=engine)app = FastAPI(    title="API Inventario - SENA ADSO",    description="API REST del sistema de inventario. Continuación de la guía JSP + MVC",    version="1.0.0",    docs_url="/docs",     # Swagger UI interactivo    redoc_url="/redoc",   # Documentación alternativa)# CORS: permite que React (http://localhost:5173) consuma la APIapp.add_middleware(    CORSMiddleware,    allow_origins=["http://localhost:5173", "http://localhost:3000"],    allow_methods=["*"],    allow_headers=["*"],)# Registrar rutas (como
+@WebServlet, pero automático)app.include_router(producto_router.router)@app.get("/")async
+def root():    """Endpoint de bienvenida"""    return {"mensaje": "API Inventario - SENA ADSO",            "docs": "/docs",            "version": "1.0.0"}@app.get("/health")async
+def health_check():    """Verificar que la API funciona"""    return {"status": "ok", "database": "conectada"}</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step-card" id="fastapi-step-4">
+                            <div class="step-header">
+                                <div class="step-number">
+                                    4
+                                </div>
+                                <div class="step-info">
+                                    <h3>
+                                        Ejecutar y Probar la API
+                                    </h3>
+                                    <p>
+                                        Inicia el servidor y prueba los endpoints
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <h4>
+                                    Iniciar el servidor
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-terminal"></i>Terminal — Iniciar FastAPI</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-bash"># Activar entorno virtualvenv\Scripts\activate# Iniciar servidor (recarga automática con --reload)uvicorn main:app --reload --host 0.0.0.0 --port 8000# Resultado esperado:# INFO:
+Uvicorn running on http://0.0.0.0:8000# INFO:
+Application startup complete.# INFO:
+Swagger UI disponible en http://localhost:8000/docs</code></pre>
+                                    </div>
+                                </div>
+                                <h4>
+                                    Probar con Swagger UI
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-globe"></i>Swagger UI — http://localhost:8000/docs</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-text">┌─────────────────────────────────────────────────────────────┐│  Swagger UI — API Inventario SENA ADSO                      ││  ─────────────────────────────────────────────────          ││                                                             ││  ▸ GET    /api/productos/       Listar productos            ││  ▸ POST   /api/productos/       Crear producto              ││  ▸ GET    /api/productos/{id}   Obtener producto por ID     ││  ▸ PUT    /api/productos/{id}   Actualizar producto         ││  ▸ DELETE /api/productos/{id}   Eliminar producto           ││                                                             ││  [Try it out] → Ejecuta desde el navegador sin Postman      │└─────────────────────────────────────────────────────────────┘</code></pre>
+                                    </div>
+                                </div>
+                                <h4>
+                                    Probar con curl (o PowerShell)
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-terminal"></i>Terminal — Pruebas con curl</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-bash"># 1. Health checkcurl http://localhost:8000/health# Salida:# {"status":"ok","database":"conectada"}# 2. Listar productos (GET)curl http://localhost:8000/api/productos/# Salida (vacío inicialmente):# []# 3. Crear un producto (POST)curl -X POST http://localhost:8000/api/productos/ \  -H "Content-Type: application/json" \  -d "{\"codigo\":\"PROD-001\",\"nombre\":\"Laptop HP\",\"precio\":2500000.00,\"stock\":15,\"categoria\":\"Tecnologia\"}"# Salida:# {"id":1,"codigo":"PROD-001","nombre":"Laptop HP","descripcion":null,#  "precio":2500000.00,"stock":15,"categoria":"Tecnologia",#  "estado":true,"fecha_registro":"2026-06-28T10:30:00"}# 4. Listar productos (ahora con datos)curl http://localhost:8000/api/productos/# Salida:# [{"id":1,"codigo":"PROD-001","nombre":"Laptop HP","precio":2500000.00,"stock":15,...}]# 5. Obtener producto por IDcurl http://localhost:8000/api/productos/1# Salida:# {"id":1,"codigo":"PROD-001","nombre":"Laptop HP","precio":2500000.00,"stock":15,...}# 6. Actualizar producto (PUT)curl -X PUT http://localhost:8000/api/productos/1 \  -H "Content-Type: application/json" \  -d "{\"codigo\":\"PROD-001\",\"nombre\":\"Laptop HP Pavilion\",\"precio\":2600000.00,\"stock\":12,\"categoria\":\"Tecnologia\"}"# Salida:# {"id":1,"codigo":"PROD-001","nombre":"Laptop HP Pavilion","precio":2600000.00,"stock":12,...}# 7. Eliminar producto (DELETE)curl -X DELETE http://localhost:8000/api/productos/1# Salida: (vacío - código 204)# (No Content)</code></pre>
+                                    </div>
+                                </div>
+                                <h4>
+                                    🐳 vs 🪟 Ejecución: Docker vs Nativo Windows
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-terminal"></i>Terminal — Comparativa de ejecución</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-bash"># ─────────────────────────────────────────────# 🐳 OPCIÓN A: DOCKER (reproducible, producción)# ─────────────────────────────────────────────docker compose -f docker-compose.fullstack.yml up -d# Resultado: PostgreSQL + FastAPI + React en 30s# ─────────────────────────────────────────────# 🪟 OPCIÓN B: NATIVO WINDOWS (desarrollo, debugging)# ─────────────────────────────────────────────# Terminal 1: FastAPIcd recursos\fastapi-inventariovenv\Scripts\activateuvicorn main:app --reload --port 8000# Terminal 2: React (opcional, solo frontend)cd recursos\frontend-inventarionpm run dev# ⚡ Script automático (inicia todo):.\start-fullstack.ps1# ─────────────────────────────────────────────# 📊 COMPARACIÓN:# ─────────────────────────────────────────────# Característica
+Docker
+Nativo# ────────────
+──────
+─────# Instalación previa   Docker   PG + Python + Node# Puerto PostgreSQL
+5432
+5432 (servicio Win)# Puerto FastAPI
+8000
+8000# Puerto React
+80
+5173# Recarga automática   rebuild  --reload / npm dev# Tiempo inicio
+30s
+10s# Aislamiento
+✅
+❌</code></pre>
+                                    </div>
+                                </div>
+                                <h4>
+                                    Tabla Resumen: JSP/Servlet vs FastAPI
+                                </h4>
+                                <div class="rubric-section">
+                                    <div class="rubric-table">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        Concepto JSP + MVC
+                                                    </th>
+                                                    <th>
+                                                        Equivalente FastAPI
+                                                    </th>
+                                                    <th>
+                                                        Propósito
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        Record Producto.java
+                                                    </td>
+                                                    <td>
+                                                        Schema Pydantic
+                                                    </td>
+                                                    <td>
+                                                        Validación de datos
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        ProductoDAO.java
+                                                    </td>
+                                                    <td>
+                                                        Modelo SQLAlchemy
+                                                    </td>
+                                                    <td>
+                                                        Acceso a base de datos
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        ProductoServlet.java
+                                                    </td>
+                                                    <td>
+                                                        Router (routers/producto.py)
+                                                    </td>
+                                                    <td>
+                                                        Endpoints de la API
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        ConexionDB.java
+                                                    </td>
+                                                    <td>
+                                                        database.py + get_db()
+                                                    </td>
+                                                    <td>
+                                                        Conexión a PostgreSQL
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        db.properties
+                                                    </td>
+                                                    <td>
+                                                        DATABASE_URL
+                                                    </td>
+                                                    <td>
+                                                        Configuración de BD
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        pom.xml
+                                                    </td>
+                                                    <td>
+                                                        requirements.txt
+                                                    </td>
+                                                    <td>
+                                                        Gestión de dependencias
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        Tomcat (WAR)
+                                                    </td>
+                                                    <td>
+                                                        Uvicorn (uvicorn main:app)
+                                                    </td>
+                                                    <td>
+                                                        Servidor de aplicaciones
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        JSP/HTML (Server-side)
+                                                    </td>
+                                                    <td>
+                                                        JSON (API REST)
+                                                    </td>
+                                                    <td>
+                                                        Formato de respuesta
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>LoginServlet + HttpSession</strong>
+                                                    </td>
+                                                    <td><strong>routers/auth.py + JWT</strong>
+                                                    </td>
+                                                    <td><strong>Autenticación y sesión</strong>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Sesión en servidor (stateful)</strong>
+                                                    </td>
+                                                    <td><strong>Token JWT (stateless)</strong>
+                                                    </td>
+                                                    <td><strong>Microservicios ready</strong>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- Bonus: Testing + Logging -->
+                                <div class="step-card" id="fastapi-step-5" style="margin-top:2rem;">
+                                    <div class="step-header">
+                                        <div class="step-number">
+                                            ★
+                                        </div>
+                                        <div class="step-info">
+                                            <h3>
+                                                Bonus: Testing, Paginación y Logging
+                                            </h3>
+                                            <p>
+                                                Profesionaliza tu API con buenas prácticas
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="step-content">
+                                        <h4>
+                                            🧪 Pruebas automatizadas con pytest
+                                        </h4>
+                                        <p>
+                                            Así como en JSP usabas JUnit, aquí usamos<code>pytest</code>con<code>TestClient</code>de FastAPI:
+                                        </p>
+                                        <div class="code-window">
+                                            <div class="window-header">
+                                                <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                                </div><span class="window-title"><i class="fas fa-terminal"></i>Terminal — Ejecutar tests</span>
+                                                <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                                </button>
+                                            </div>
+                                            <div class="window-body">
+                                                <pre><code class="language-bash"># Instalar pytestpip install pytest httpx# Ejecutar todas las pruebaspytest tests/ -v# Resultado esperado:# tests/test_api.py::test_health_check PASSED# tests/test_api.py::test_login_credenciales_invalidas PASSED# tests/test_api.py::test_register_datos_invalidos PASSED# tests/test_api.py::test_listar_productos PASSED# tests/test_api.py::test_listar_productos_con_paginacion PASSED# tests/test_api.py::test_obtener_producto_no_existe PASSED# tests/test_api.py::test_ruta_no_existe PASSED# tests/test_api.py::test_docs_disponible PASSED# ───────────────────────────────────────────────# 8 passed in 2.34s</code></pre>
+                                            </div>
+                                        </div>
+                                        <h4 style="margin-top:1.5rem;">
+                                            📄 Logging automático de peticiones
+                                        </h4>
+                                        <p>
+                                            FastAPI registra cada petición con método, ruta, status y duración:
+                                        </p>
+                                        <div class="code-window">
+                                            <div class="window-header">
+                                                <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                                </div><span class="window-title"><i class="fas fa-terminal"></i>api.log — Logs en tiempo real</span>
+                                            </div>
+                                            <div class="window-body">
+                                                <pre><code class="language-text">2026-06-28 12:00:01 [INFO] api: GET /api/productos/ → 200 (0.032s)2026-06-28 12:00:02 [INFO] api.productos: Producto creado ID=10 por usuario=admin2026-06-28 12:00:03 [INFO] api: POST /api/productos/ → 201 (0.045s)2026-06-28 12:00:04 [WARNING] api: ValueError: ... → /api/productos/abc</code></pre>
+                                            </div>
+                                        </div>
+                                        <div class="comparison-box" style="margin-top:1rem;">
+                                            <div class="comparison-item old">
+                                                <h5><i class="fas fa-times-circle"></i>JSP (sin logs automáticos)
+                                                </h5>
+                                                <pre><code class="language-java">// En JSP tocaba agregar logger manual// en cada Servlet:Logger.getLogger("ProductoServlet")      .info("Producto creado");</code></pre>
+                                            </div>
+                                            <div class="comparison-arrow"><i class="fas fa-arrow-right"></i>
+                                            </div>
+                                            <div class="comparison-item new">
+                                                <h5><i class="fas fa-check-circle"></i>FastAPI (middleware global)
+                                                </h5>
+                                                <pre><code class="language-python"># Un solo middleware logea TODAS las rutas@app.middleware("http")async
+def log_requests(request, call_next):    start = datetime.now()    response = await call_next(request)    elapsed = (datetime.now() - start).total_seconds()    logger.info(f"{request.method} {request.url.path} → "                f"{response.status_code} ({elapsed:.3f}s)")
+return response</code></pre>
+                                            </div>
+                                        </div>
+                                        <h4 style="margin-top:1.5rem;">
+                                            📊 Paginación en la API
+                                        </h4>
+                                        <p>
+                                            El endpoint<code>GET /api/productos/</code>ahora soporta paginación:
+                                        </p>
+                                        <div class="code-window">
+                                            <div class="window-header">
+                                                <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                                </div><span class="window-title"><i class="fas fa-terminal"></i>curl — Probar paginación</span>
+                                                <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                                </button>
+                                            </div>
+                                            <div class="window-body">
+                                                <pre><code class="language-bash"># Página 1, 5 items por páginacurl "http://localhost:8000/api/productos/?pagina=1&tamano=5"# Resultado:# {#   "items": [...],#   "total": 25,#   "pagina": 1,#   "tamano": 5,#   "total_paginas": 5# }# Página 2curl "http://localhost:8000/api/productos/?pagina=2&tamano=5"# Equivalente en JSP:# SELECT * FROM productos LIMIT 5 OFFSET 5# En FastAPI: query.offset(5).limit(5).all()</code></pre>
+                                            </div>
+                                        </div>
+                                        <div class="info-banner" style="margin-top:1rem;background:#e8f5e9;border-left:4px solid #28a745;"><i class="fas fa-check-circle" style="color:#28a745;"></i>
+                                            <div>
+                                                <h4>
+                                                    🧪 JSP vs FastAPI: Testing
+                                                </h4>
+                                                <p><strong>JSP:</strong>Pruebas manuales (abrir navegador, probar CRUD uno por uno).
+                                                </p>
+                                                <p><strong>FastAPI:</strong><code>pytest tests/ -v</code>— 8 pruebas automatizadas en 2 segundos.
+                                                </p>
+                                                <p>
+                                                    El archivo<code>tests/test_api.py</code>incluye tests para health, auth, productos, paginación y errores.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="recommendation-box"><i class="fas fa-lightbulb"></i>
+                                    <div>
+                                        <h4>
+                                            ¡Siguiente paso!
+                                        </h4>
+                                        <p>
+                                            Ahora que tienes la API REST funcionando con FastAPI, continúa con la guía de<strong>React</strong>para construir el frontend moderno que consuma estos endpoints. Es el equivalente a tener los Servlets listos y ahora construir las vistas JSP, pero con tecnología moderna.
+                                        </p>
+                                    </div>
+                                </div>
+                                <!-- Ejercicios FastAPI -->
+                                <div class="exercise-section">
+                                    <h3><i class="fas fa-dumbbell"></i>Ejercicios de FastAPI
+                                    </h3>
+                                    <p>
+                                        Practica lo aprendido creando nuevas funcionalidades en tu API.
+                                    </p>
+                                    <div class="exercise-grid" style="margin-top:1.5rem;">
+                                        <div class="exercise-card">
+                                            <div class="exercise-header">
+                                                <div class="exercise-number">
+                                                    1
+                                                </div>
+                                                <div class="exercise-difficulty"><span class="difficulty-badge medium">Fácil</span>
+                                                </div>
+                                            </div>
+                                            <h3>
+                                                Endpoint de Búsqueda
+                                            </h3>
+                                            <p>
+                                                Agrega un endpoint<code>GET /api/productos/buscar?q=texto</code>que busque productos por nombre usando SQL<code>ILIKE</code>.
+                                            </p>
+                                            <div class="exercise-hint"><i class="fas fa-lightbulb"></i>
+                                                <p><strong>Pista:</strong>Usa<code>ProductoDB.nombre.ilike(f"%{q}%")</code>en SQLAlchemy
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="exercise-card">
+                                            <div class="exercise-header">
+                                                <div class="exercise-number">
+                                                    2
+                                                </div>
+                                                <div class="exercise-difficulty"><span class="difficulty-badge hard">Intermedio</span>
+                                                </div>
+                                            </div>
+                                            <h3>
+                                                Endpoint de Estadísticas
+                                            </h3>
+                                            <p>
+                                                Crea<code>GET /api/productos/estadisticas</code>que retorne: total productos, precio promedio, stock total, productos por categoría.
+                                            </p>
+                                            <div class="exercise-hint"><i class="fas fa-lightbulb"></i>
+                                                <p><strong>Pista:</strong>Usa<code>db.query(func.count(), func.avg())</code>de SQLAlchemy
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="exercise-card">
+                                            <div class="exercise-header">
+                                                <div class="exercise-number">
+                                                    3
+                                                </div>
+                                                <div class="exercise-difficulty"><span class="difficulty-badge expert">Reto</span>
+                                                </div>
+                                            </div>
+                                            <h3>
+                                                CRUD de Usuarios
+                                            </h3>
+                                            <p>
+                                                Crea un router completo<code>/api/usuarios</code>con GET, POST, PUT, DELETE. Usa el modelo<code>usuarios</code>de PostgreSQL con password hasheado (bcrypt).
+                                            </p>
+                                            <div class="exercise-hint"><i class="fas fa-lightbulb"></i>
+                                                <p><strong>Pista:</strong>Usa<code>from passlib.hash import bcrypt</code>para hashear passwords
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- TRANSICIÓN: FastAPI → React -->
+            <div class="transition-banner">
+                <div class="container">
+                    <div class="transition-content">
+                        <div class="transition-icon"><i class="fas fa-arrow-right"></i>
+                        </div>
+                        <div class="transition-text">
+                            <h3>
+                                Transición: De FastAPI (Backend) a React (Frontend)
+                            </h3>
+                            <p>
+                                Ya tienes tu API REST con JWT funcionando con FastAPI. Ahora necesitas una interfaz de usuario que consuma esos endpoints protegidos. Así como en JSP usabas<strong>JSTL + Expression Language</strong>y<code>session.getAttribute("usuario")</code>, en React usarás<strong>Componentes + Hooks + AuthContext</strong>y el JWT se guarda en<strong>localStorage</strong>y se envía automáticamente con cada petición.
+                            </p>
+                            <div class="transition-comparison">
+                                <div class="transition-old">
+                                    <h5><i class="fas fa-times-circle"></i>🏢 JSP (Monolito)
+                                    </h5>
+                                    <ul>
+                                        <li>
+                                            HTML + JSTL en servidor
+                                        </li>
+                                        <li>
+                                            HttpSession para auth
+                                        </li>
+                                        <li>
+                                            Cada clic recarga la página
+                                        </li>
+                                        <li>
+                                            LoginSession.java + filter
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="transition-arrow"><i class="fas fa-long-arrow-alt-right"></i>
+                                </div>
+                                <div class="transition-new">
+                                    <h5><i class="fas fa-check-circle"></i>🔗 React (Microservicios)
+                                    </h5>
+                                    <ul>
+                                        <li>
+                                            Componentes JSX en navegador
+                                        </li>
+                                        <li>
+                                            JWT en localStorage + Axios interceptor
+                                        </li>
+                                        <li>
+                                            SPA: sin recargas de página
+                                        </li>
+                                        <li>
+                                            AuthContext + ProtectedRoute
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Frontend con React -->

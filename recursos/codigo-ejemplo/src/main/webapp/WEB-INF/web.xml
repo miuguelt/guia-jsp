@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    ============================================
+    WEB.XML - DESCRIPTOR DE DESPLIEGUE
+    Sistema de Inventario - SENA ADSO
+    ============================================
+    Nota: Con Jakarta EE 10 y Servlet 6.0, 
+    la mayoría de la configuración se hace 
+    con anotaciones (@WebServlet). Este archivo
+    solo contiene configuraciones básicas.
+    ============================================
+-->
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
+                             https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+         version="6.0">
+
+    <!-- Nombre de la aplicación -->
+    <display-name>Sistema de Inventario MVC</display-name>
+    <description>
+        Aplicación web de inventario desarrollada con JSP, 
+        patrón MVC, Jakarta EE 10 y JDK 21
+    </description>
+
+    <!-- Página de bienvenida -->
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+
+    <!-- Configuración de sesión -->
+    <session-config>
+        <!-- Timeout de sesión en minutos (30 minutos) -->
+        <session-timeout>30</session-timeout>
+    </session-config>
+
+    <!-- Codificación de caracteres -->
+    <jsp-config>
+        <jsp-property-group>
+            <url-pattern>*.jsp</url-pattern>
+            <page-encoding>UTF-8</page-encoding>
+        </jsp-property-group>
+    </jsp-config>
+
+    <!-- Página de error por defecto -->
+    <error-page>
+        <error-code>404</error-code>
+        <location>/index.jsp</location>
+    </error-page>
+
+    <error-page>
+        <error-code>500</error-code>
+        <location>/index.jsp</location>
+    </error-page>
+
+</web-app>

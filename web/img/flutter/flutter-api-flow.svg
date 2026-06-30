@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" font-family="Inter, sans-serif">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8faf9;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#f0f4f2;stop-opacity:1"/>
+    </linearGradient>
+    <linearGradient id="flutterGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#54C5F8"/>
+      <stop offset="100%" style="stop-color:#1389FD"/>
+    </linearGradient>
+    <linearGradient id="apiGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#7c3aed"/>
+      <stop offset="100%" style="stop-color:#a78bfa"/>
+    </linearGradient>
+    <linearGradient id="msGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#059669"/>
+      <stop offset="100%" style="stop-color:#34d399"/>
+    </linearGradient>
+    <linearGradient id="dbGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#dc2626"/>
+      <stop offset="100%" style="stop-color:#f87171"/>
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrowBlue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1389FD"/>
+    </marker>
+    <marker id="arrowPurple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7c3aed"/>
+    </marker>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#059669"/>
+    </marker>
+  </defs>
+
+  <rect width="800" height="400" rx="12" fill="url(#bgGrad)" stroke="#e0e8e4" stroke-width="1"/>
+  <rect x="0" y="0" width="800" height="44" rx="12" fill="url(#flutterGrad)"/>
+  <rect x="0" y="22" width="800" height="22" fill="url(#flutterGrad)"/>
+  <text x="400" y="29" text-anchor="middle" fill="#fff" font-size="15" font-weight="700">Flujo de Consumo de API REST desde Flutter</text>
+
+  <!-- Flutter App -->
+  <rect x="30" y="65" width="180" height="140" rx="10" fill="#e0f2fe" stroke="#1389FD" stroke-width="2" filter="url(#shadow)"/>
+  <text x="120" y="90" text-anchor="middle" fill="#0369a1" font-size="13" font-weight="700">App Flutter</text>
+  
+  <rect x="40" y="100" width="160" height="28" rx="5" fill="#bae6fd" stroke="#38bdf8" stroke-width="1"/>
+  <text x="120" y="119" text-anchor="middle" fill="#0369a1" font-size="9" font-weight="600">Widgets / UI</text>
+  
+  <rect x="40" y="134" width="160" height="28" rx="5" fill="#bae6fd" stroke="#38bdf8" stroke-width="1"/>
+  <text x="120" y="153" text-anchor="middle" fill="#0369a1" font-size="9" font-weight="600">Provider / Riverpod</text>
+  
+  <rect x="40" y="168" width="160" height="28" rx="5" fill="#bae6fd" stroke="#38bdf8" stroke-width="1"/>
+  <text x="120" y="187" text-anchor="middle" fill="#0369a1" font-size="9" font-weight="600">Service / Repository</text>
+
+  <!-- Dart HTTP/OpenAPI -->
+  <rect x="280" y="65" width="180" height="140" rx="10" fill="#faf5ff" stroke="#7c3aed" stroke-width="2" filter="url(#shadow)"/>
+  <text x="370" y="90" text-anchor="middle" fill="#5b21b6" font-size="13" font-weight="700">Cliente HTTP</text>
+  
+  <rect x="290" y="100" width="160" height="28" rx="5" fill="#ede9fe" stroke="#a78bfa" stroke-width="1"/>
+  <text x="370" y="119" text-anchor="middle" fill="#6d28d9" font-size="9" font-weight="600">http / dio package</text>
+  
+  <rect x="290" y="134" width="160" height="28" rx="5" fill="#ede9fe" stroke="#a78bfa" stroke-width="1"/>
+  <text x="370" y="153" text-anchor="middle" fill="#6d28d9" font-size="9" font-weight="600">openapi_generator</text>
+  
+  <rect x="290" y="168" width="160" height="28" rx="5" fill="#ede9fe" stroke="#a78bfa" stroke-width="1"/>
+  <text x="370" y="187" text-anchor="middle" fill="#6d28d9" font-size="9" font-weight="600">JSON Serialization</text>
+
+  <!-- API Gateway / Microservice -->
+  <rect x="530" y="65" width="240" height="140" rx="10" fill="#ecfdf5" stroke="#059669" stroke-width="2" filter="url(#shadow)"/>
+  <text x="650" y="90" text-anchor="middle" fill="#065f46" font-size="13" font-weight="700">API REST (FastAPI)</text>
+
+  <rect x="540" y="100" width="110" height="28" rx="5" fill="#a7f3d0" stroke="#34d399" stroke-width="1"/>
+  <text x="595" y="119" text-anchor="middle" fill="#065f46" font-size="9" font-weight="600">GET /api/productos</text>
+  
+  <rect x="660" y="100" width="100" height="28" rx="5" fill="#a7f3d0" stroke="#34d399" stroke-width="1"/>
+  <text x="710" y="119" text-anchor="middle" fill="#065f46" font-size="9" font-weight="600">POST /api/login</text>
+
+  <rect x="540" y="134" width="110" height="28" rx="5" fill="#a7f3d0" stroke="#34d399" stroke-width="1"/>
+  <text x="595" y="153" text-anchor="middle" fill="#065f46" font-size="9" font-weight="600">PUT /api/productos</text>
+  
+  <rect x="660" y="134" width="100" height="28" rx="5" fill="#a7f3d0" stroke="#34d399" stroke-width="1"/>
+  <text x="710" y="153" text-anchor="middle" fill="#065f46" font-size="9" font-weight="600">DELETE /api/prod</text>
+
+  <rect x="540" y="168" width="220" height="28" rx="5" fill="#a7f3d0" stroke="#34d399" stroke-width="1"/>
+  <text x="650" y="187" text-anchor="middle" fill="#065f46" font-size="9" font-weight="600">OpenAPI Spec (openapi.json)</text>
+
+  <!-- Arrows -->
+  <!-- Flutter -> HTTP Client -->
+  <line x1="210" y1="115" x2="278" y2="115" stroke="#1389FD" stroke-width="2" marker-end="url(#arrowBlue)"/>
+  <line x1="278" y1="145" x2="210" y2="145" stroke="#1389FD" stroke-width="1.5" stroke-dasharray="5,3"/>
+  
+  <!-- HTTP Client -> API -->
+  <line x1="460" y1="115" x2="528" y2="115" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrowPurple)"/>
+  <line x1="528" y1="145" x2="460" y2="145" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="5,3"/>
+
+  <!-- Database -->
+  <rect x="530" y="235" width="240" height="55" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="650" y="258" text-anchor="middle" fill="#991b1b" font-size="12" font-weight="700">PostgreSQL 16</text>
+  <text x="650" y="275" text-anchor="middle" fill="#b91c1c" font-size="9">Base de Datos del Microservicio</text>
+
+  <!-- API -> DB -->
+  <line x1="650" y1="205" x2="650" y2="233" stroke="#059669" stroke-width="2" marker-end="url(#arrowGreen)"/>
+  
+  <!-- Labels -->
+  <text x="244" y="230" text-anchor="middle" fill="#64748b" font-size="10" font-style="italic">Solicitud HTTP (JSON)</text>
+  <text x="244" y="245" text-anchor="middle" fill="#64748b" font-size="10" font-style="italic">↕ Respuesta JSON</text>
+  
+  <!-- Bottom flow description -->
+  <rect x="30" y="235" width="430" height="140" rx="10" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1" filter="url(#shadow)"/>
+  <text x="245" y="258" text-anchor="middle" fill="#334155" font-size="12" font-weight="700">Flujo de Datos con OpenAPI</text>
+  
+  <text x="45" y="280" fill="#475569" font-size="10">1. El Widget llama al Provider/Service</text>
+  <text x="45" y="297" fill="#475569" font-size="10">2. El Service usa el cliente generado por OpenAPI</text>
+  <text x="45" y="314" fill="#475569" font-size="10">3. El cliente HTTP serializa/deserializa JSON automáticamente</text>
+  <text x="45" y="331" fill="#475569" font-size="10">4. El Service mapea DTOs a modelos de dominio</text>
+  <text x="45" y="348" fill="#475569" font-size="10">5. El Provider notifica al Widget con los nuevos datos</text>
+  <text x="45" y="365" fill="#475569" font-size="10">6. Flutter reconstruye la UI con setState() / notifyListeners()</text>
+</svg>

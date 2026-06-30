@@ -1,0 +1,16 @@
+.git/
+.gitignore
+.gitattributes
+.dockerignore
+.devbrain/
+logs/
+node_modules/
+web/node_modules/
+.vscode/
+.idea/
+*.md
+.DS_Store
+Thumbs.db
+start-windows.ps1
+generar_guia.py
+Guia_Aprendizaje_JSP_MVC.docx

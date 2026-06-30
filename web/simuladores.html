@@ -1,0 +1,2738 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simuladores Interactivos MVC | Guía JSP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary: #00664a;
+            --primary-light: #00896a;
+            --accent: #4a2c8a;
+            --info: #0284c7;
+            --bg: #ffffff;
+            --bg-alt: #f8faf9;
+            --text: #1a2e28;
+            --text-muted: #6b7e78;
+            --border: #e0e8e4;
+            --radius: 12px;
+            --shadow: 0 4px 12px rgba(0, 102, 74, 0.1);
+            --success: #16a34a;
+            --warning: #f59e0b;
+            --danger: #dc2626;
+        }
+
+        [data-theme="dark"] {
+            --primary: #00b386;
+            --primary-light: #4dd0a8;
+            --bg: #0f172a;
+            --bg-alt: #1e293b;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-alt);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 20px;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .header-actions { display: flex; gap: 8px; }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--bg-alt);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover { background: var(--primary); color: white; }
+
+        .simulator {
+            background: var(--bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 30px;
+            border: 1px solid var(--border);
+        }
+
+        .sim-header {
+            padding: 20px 24px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+        }
+
+        .sim-header h2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .sim-header p { font-size: 0.85rem; opacity: 0.9; }
+
+        .sim-body { padding: 24px; }
+
+        /* MVC Simulator */
+        .mvc-diagram {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .mvc-diagram { grid-template-columns: 1fr; }
+        }
+
+        .mvc-layer {
+            padding: 16px;
+            border-radius: var(--radius);
+            border: 2px solid var(--border);
+            transition: all 0.3s;
+            cursor: pointer;
+            background: var(--bg-alt);
+        }
+
+        .mvc-layer:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+
+        .mvc-layer.active {
+            border-color: var(--primary);
+            background: rgba(0, 102, 74, 0.05);
+        }
+
+        .mvc-layer.model { border-top: 4px solid var(--info); }
+        .mvc-layer.view { border-top: 4px solid var(--primary); }
+        .mvc-layer.controller { border-top: 4px solid var(--accent); }
+
+        .mvc-layer h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .mvc-layer.model h3 { color: var(--info); }
+        .mvc-layer.view h3 { color: var(--primary); }
+        .mvc-layer.controller h3 { color: var(--accent); }
+
+        .mvc-layer p { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px; }
+
+        .mvc-layer code {
+            display: block;
+            padding: 8px;
+            background: #1e1e2e;
+            color: #cdd6f4;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+        }
+
+        /* Flow Animation */
+        .flow-container {
+            position: relative;
+            height: 80px;
+            margin: 20px 0;
+            background: var(--bg-alt);
+            border-radius: var(--radius);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+        }
+
+        .flow-step {
+            padding: 8px 12px;
+            background: var(--bg);
+            border-radius: 8px;
+            border: 2px solid var(--border);
+            font-size: 0.75rem;
+            font-weight: 600;
+            opacity: 0.3;
+            transition: all 0.5s;
+        }
+
+        .flow-step.active {
+            opacity: 1;
+            border-color: var(--primary);
+            background: rgba(0, 102, 74, 0.05);
+            transform: scale(1.1);
+        }
+
+        .console {
+            background: #1e1e2e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 16px;
+            max-height: 200px;
+            overflow-y: auto;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+        }
+
+        .console-line {
+            color: #cdd6f4;
+            padding: 3px 0;
+            animation: fadeIn 0.3s ease;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .console-line .timestamp { color: #6b7e78; margin-right: 8px; }
+        .console-line .level-info { color: #0ea5e9; }
+        .console-line .level-success { color: #22c55e; }
+        .console-line .level-warn { color: #f59e0b; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes toastIn {
+            from { transform: translateX(120%) scale(0.8); opacity: 0; }
+            to { transform: translateX(0) scale(1); opacity: 1; }
+        }
+        @keyframes toastProgress {
+            from { width: 100%; }
+            to { width: 0%; }
+        }
+
+        /* CRUD */
+        .crud-panel {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .crud-panel { grid-template-columns: 1fr; }
+        }
+
+        .crud-form, .crud-table {
+            background: var(--bg-alt);
+            padding: 16px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+        }
+        .crud-table {
+            overflow-x: auto;
+        }
+
+        .form-group { margin-bottom: 10px; }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 6px 10px;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .crud-table table { width: 100%; border-collapse: collapse; }
+
+        .crud-table th {
+            background: var(--primary);
+            color: white;
+            padding: 8px;
+            text-align: left;
+            font-size: 0.8rem;
+        }
+
+        .crud-table td {
+            padding: 8px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.8rem;
+        }
+
+        .btn-sm { padding: 3px 8px; font-size: 0.7rem; border-radius: 4px; }
+        .btn-edit { background: var(--warning); color: white; }
+        .btn-delete { background: var(--danger); color: white; }
+
+        /* SQL Injection */
+        .sql-injection {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .sql-injection { grid-template-columns: 1fr; }
+        }
+
+        .sql-attack, .sql-safe {
+            padding: 16px;
+            border-radius: var(--radius);
+            border: 2px solid;
+        }
+
+        .sql-attack { border-color: var(--danger); background: rgba(220, 38, 38, 0.04); }
+        .sql-safe { border-color: var(--success); background: rgba(22, 163, 74, 0.04); }
+
+        .sql-attack h4, .sql-safe h4 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .sql-attack h4 { color: var(--danger); }
+        .sql-safe h4 { color: var(--success); }
+
+        .sql-input-group {
+            display: flex;
+            gap: 8px;
+            margin: 10px 0;
+        }
+
+        .sql-input-group input {
+            flex: 1;
+            padding: 6px 10px;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .sql-result {
+            background: #1e1e2e;
+            color: #cdd6f4;
+            padding: 10px;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            margin-top: 10px;
+            min-height: 60px;
+        }
+
+        .sql-result.danger { border-left: 4px solid var(--danger); }
+        .sql-result.safe { border-left: 4px solid var(--success); }
+
+        /* Servlet Lifecycle */
+        .lifecycle-container {
+            position: relative;
+        }
+
+        .lifecycle-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px;
+            margin-bottom: 16px;
+            background: var(--bg-alt);
+            border-radius: var(--radius);
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--text-muted);
+            transition: all 0.3s;
+        }
+
+        .status-indicator.active {
+            background: var(--success);
+            box-shadow: 0 0 8px var(--success);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .lifecycle-diagram {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            padding: 20px;
+            background: var(--bg-alt);
+            border-radius: var(--radius);
+            margin: 16px 0;
+            position: relative;
+        }
+
+        .lifecycle-step {
+            text-align: center;
+            padding: 16px;
+            background: var(--bg);
+            border-radius: var(--radius);
+            border: 2px solid var(--border);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            min-width: 140px;
+            position: relative;
+            opacity: 0.6;
+        }
+
+        .lifecycle-step.active {
+            border-color: var(--primary);
+            background: rgba(0, 102, 74, 0.08);
+            transform: scale(1.08);
+            box-shadow: 0 6px 20px rgba(0, 102, 74, 0.25);
+            opacity: 1;
+        }
+
+        .lifecycle-step.completed {
+            border-color: var(--success);
+            background: rgba(22, 163, 74, 0.05);
+            opacity: 0.85;
+        }
+
+        .lifecycle-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+
+        .lifecycle-step.active .lifecycle-icon {
+            animation: iconBounce 0.6s ease;
+        }
+
+        @keyframes iconBounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .lifecycle-step h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 4px; }
+        .lifecycle-step p { font-size: 0.75rem; color: var(--text-muted); }
+
+        .lifecycle-arrow {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            transition: all 0.3s;
+        }
+
+        .lifecycle-arrow.active {
+            color: var(--primary);
+            animation: arrowPulse 0.8s infinite;
+        }
+
+        @keyframes arrowPulse {
+            0%, 100% { transform: translateX(0); opacity: 1; }
+            50% { transform: translateX(5px); opacity: 0.7; }
+        }
+
+        .lifecycle-code-panel {
+            margin-top: 16px;
+            background: #1e1e2e;
+            border-radius: var(--radius);
+            padding: 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: #cdd6f4;
+            overflow-x: auto;
+            min-height: 120px;
+            transition: all 0.3s;
+        }
+
+        .lifecycle-code-panel .code-line {
+            padding: 2px 0;
+            transition: background 0.2s;
+        }
+
+        .lifecycle-code-panel .code-line.highlight {
+            background: rgba(137, 180, 250, 0.15);
+            border-left: 3px solid #89b4fa;
+            padding-left: 8px;
+        }
+
+        .code-keyword { color: #cba6f7; }
+        .code-method { color: #89b4fa; }
+        .code-comment { color: #6c7086; font-style: italic; }
+        .code-string { color: #a6e3a1; }
+
+        .request-simulator {
+            margin-top: 16px;
+            padding: 16px;
+            background: var(--bg-alt);
+            border-radius: var(--radius);
+            display: none;
+        }
+
+        .request-simulator.visible {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .request-controls {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        .request-btn {
+            padding: 8px 16px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .request-btn:hover {
+            border-color: var(--primary);
+            background: rgba(0, 102, 74, 0.05);
+        }
+
+        .request-btn.get { color: var(--success); }
+        .request-btn.post { color: var(--warning); }
+        .request-btn.delete { color: var(--danger); }
+
+        .request-counter {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px;
+            background: var(--bg);
+            border-radius: 6px;
+            font-size: 0.8rem;
+        }
+
+        .counter-value {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+
+        .speed-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+            justify-content: center;
+        }
+
+        .speed-control label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .speed-slider {
+            width: 120px;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--border);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .speed-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+        }
+
+        .controls {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+
+        .tabs-nav {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+        }
+
+        .tab-link {
+            padding: 10px 16px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .tab-link.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab-link:hover { color: var(--primary); }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .theme-toggle-btn {
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .theme-toggle-btn:hover { background: var(--primary); color: white; }
+
+        /* ===== ENHANCED SIMULATOR STYLES ===== */
+
+        /* MVC Flow - Scenario Selector & Particles */
+        .scenario-selector {
+            display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;
+        }
+        .scenario-btn {
+            padding: 6px 14px; border: 2px solid var(--border); border-radius: 8px;
+            background: var(--bg); color: var(--text); cursor: pointer;
+            font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 600;
+            transition: all 0.3s;
+        }
+        .scenario-btn:hover { border-color: var(--primary); color: var(--primary); }
+        .scenario-btn.active { border-color: var(--primary); background: var(--primary); color: white; }
+
+        .flow-particle {
+            position: absolute; width: 8px; height: 8px; border-radius: 50%;
+            background: var(--primary); opacity: 0; pointer-events: none;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .flow-particle.active { opacity: 0.8; transform: translateX(0) !important; }
+
+        .http-badge {
+            display: inline-block; padding: 2px 8px; border-radius: 4px;
+            font-size: 0.7rem; font-weight: 700; margin-left: 6px;
+        }
+        .http-badge.http-200 { background: rgba(22, 163, 74, 0.15); color: #16a34a; }
+        .http-badge.http-201 { background: rgba(22, 163, 74, 0.15); color: #16a34a; }
+        .http-badge.http-302 { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+        .http-badge.http-400 { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+        .http-badge.http-404 { background: rgba(220, 38, 38, 0.15); color: #dc2626; }
+        .http-badge.http-500 { background: rgba(220, 38, 38, 0.15); color: #dc2626; }
+
+        .payload-box {
+            margin-top: 12px; padding: 10px; background: #1e1e2e; border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: #cdd6f4;
+            display: none; max-height: 80px; overflow-y: auto;
+        }
+        .payload-box.visible { display: block; animation: fadeIn 0.3s ease; }
+        .payload-key { color: #89b4fa; }
+        .payload-string { color: #a6e3a1; }
+        .payload-number { color: #fab387; }
+
+        /* CRUD Enhanced */
+        .crud-toolbar {
+            display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;
+            align-items: center;
+        }
+        .crud-search {
+            flex: 1; min-width: 160px; padding: 6px 10px;
+            border: 1px solid var(--border); border-radius: 5px;
+            font-family: 'Inter', sans-serif; font-size: 0.8rem; background: var(--bg); color: var(--text);
+        }
+        .crud-search:focus { outline: none; border-color: var(--primary); }
+        .crud-filter select {
+            padding: 6px 10px; border: 1px solid var(--border); border-radius: 5px;
+            font-family: 'Inter', sans-serif; font-size: 0.8rem; background: var(--bg); color: var(--text);
+        }
+        .crud-pagination {
+            display: flex; gap: 4px; justify-content: center; margin-top: 10px; align-items: center;
+        }
+        .crud-pagination button {
+            padding: 4px 10px; border: 1px solid var(--border); border-radius: 4px;
+            background: var(--bg); color: var(--text); cursor: pointer; font-size: 0.75rem;
+            font-family: 'Inter', sans-serif; transition: all 0.2s;
+        }
+        .crud-pagination button:hover:not(:disabled) { border-color: var(--primary); color: var(--primary); }
+        .crud-pagination button:disabled { opacity: 0.4; cursor: default; }
+        .crud-pagination button.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .crud-pagination span { font-size: 0.75rem; color: var(--text-muted); }
+
+        .crud-table td.sortable { cursor: pointer; user-select: none; }
+        .crud-table td.sortable:hover { background: rgba(0, 102, 74, 0.05); }
+        .crud-table th .sort-icon { margin-left: 4px; font-size: 0.65rem; opacity: 0.4; }
+        .crud-table th .sort-icon.active { opacity: 1; color: white; }
+
+        @keyframes rowHighlight {
+            0% { background: rgba(0, 102, 74, 0.2); }
+            100% { background: transparent; }
+        }
+        .crud-table tr.highlight { animation: rowHighlight 1.5s ease-out; }
+        @keyframes rowDelete {
+            0% { opacity: 1; transform: translateX(0); }
+            100% { opacity: 0; transform: translateX(30px); }
+        }
+        .crud-table tr.deleting { animation: rowDelete 0.4s ease forwards; }
+
+        .crud-bulk-bar {
+            display: none; padding: 8px 12px; background: var(--primary);
+            color: white; border-radius: 6px; font-size: 0.8rem; margin-bottom: 8px;
+            align-items: center; gap: 8px;
+        }
+        .crud-bulk-bar.visible { display: flex; }
+        .crud-bulk-bar .btn { background: rgba(255,255,255,0.2); color: white; }
+        .crud-bulk-bar .btn:hover { background: rgba(255,255,255,0.3); }
+
+        .form-error {
+            font-size: 0.7rem; color: var(--danger); margin-top: 2px; display: none;
+        }
+        .form-error.visible { display: block; }
+        .form-group.invalid input { border-color: var(--danger); }
+        .form-group.valid input { border-color: var(--success); }
+
+        .stock-bar {
+            height: 4px; border-radius: 2px; margin-top: 4px;
+            transition: width 0.5s;
+        }
+
+        /* SQL Injection Enhanced */
+        .sql-db-visual {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px; margin: 16px 0;
+        }
+        .sql-db-table {
+            padding: 12px; border-radius: 8px; border: 1px solid var(--border);
+            background: var(--bg-alt); text-align: center; transition: all 0.3s;
+        }
+        .sql-db-table.affected {
+            border-color: var(--danger); background: rgba(220, 38, 38, 0.08);
+            box-shadow: 0 0 16px rgba(220, 38, 38, 0.2);
+            animation: dbPulse 1s ease infinite;
+        }
+        .sql-db-table.safe-state {
+            border-color: var(--success); background: rgba(22, 163, 74, 0.08);
+        }
+        @keyframes dbPulse {
+            0%, 100% { box-shadow: 0 0 8px rgba(220, 38, 38, 0.2); }
+            50% { box-shadow: 0 0 20px rgba(220, 38, 38, 0.4); }
+        }
+        .sql-db-table h5 { font-size: 0.8rem; margin-bottom: 4px; }
+        .sql-db-table p { font-size: 0.7rem; color: var(--text-muted); }
+        .sql-db-table .row-count { font-size: 1.2rem; font-weight: 700; color: var(--primary); }
+
+        .sql-auto-demo-btn.active-demo {
+            background: var(--danger); animation: demoPulse 1s infinite;
+        }
+        @keyframes demoPulse {
+            0%, 100% { box-shadow: 0 0 0 rgba(220, 38, 38, 0.4); }
+            50% { box-shadow: 0 0 16px rgba(220, 38, 38, 0.6); }
+        }
+
+        .sql-param-bind {
+            padding: 10px; background: #1e1e2e; border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #cdd6f4;
+            margin-top: 8px; display: none;
+        }
+        .sql-param-bind.visible { display: block; animation: fadeIn 0.3s ease; }
+        .sql-param-step { padding: 2px 0; opacity: 0; transition: all 0.3s; }
+        .sql-param-step.visible { opacity: 1; }
+
+        /* Servlet Lifecycle Enhanced */
+        .thread-pool {
+            display: flex; gap: 6px; flex-wrap: wrap; margin: 12px 0;
+            padding: 12px; background: var(--bg-alt); border-radius: 8px;
+        }
+        .thread-pool h5 {
+            width: 100%; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px;
+        }
+        .thread-item {
+            padding: 4px 10px; border-radius: 4px; font-size: 0.7rem;
+            font-family: 'JetBrains Mono', monospace; background: var(--border);
+            color: var(--text-muted); transition: all 0.3s;
+        }
+        .thread-item.busy {
+            background: var(--warning); color: white; animation: threadBusy 0.5s ease infinite alternate;
+        }
+        @keyframes threadBusy {
+            from { transform: scale(1); }
+            to { transform: scale(1.05); }
+        }
+        .thread-item.idle { background: var(--success); color: white; }
+
+        .request-queue {
+            padding: 8px; background: var(--bg-alt); border-radius: 6px;
+            margin: 8px 0; min-height: 36px;
+            display: flex; gap: 4px; align-items: center; flex-wrap: wrap;
+        }
+        .request-queue .queue-item {
+            padding: 4px 8px; border-radius: 4px; font-size: 0.65rem;
+            font-family: 'JetBrains Mono', monospace; background: var(--primary);
+            color: white; animation: queueIn 0.3s ease;
+        }
+        @keyframes queueIn {
+            from { transform: scale(0); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .queue-label { font-size: 0.7rem; color: var(--text-muted); font-weight: 600; }
+
+        .custom-request-form {
+            display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px;
+        }
+        .custom-request-form select, .custom-request-form input {
+            padding: 6px 10px; border: 1px solid var(--border); border-radius: 5px;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+            background: var(--bg); color: var(--text);
+        }
+        .custom-request-form input { flex: 1; min-width: 120px; }
+
+        .lifecycle-progress-bar {
+            height: 4px; background: var(--border); border-radius: 2px; margin: 12px 0; overflow: hidden;
+        }
+        .lifecycle-progress-fill {
+            height: 100%; background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 2px; transition: width 0.5s ease; width: 0%;
+        }
+
+        /* JDBC vs ORM Enhanced */
+        .orm-interactive {
+            margin-top: 16px;
+        }
+        .orm-toggle-bar {
+            display: flex; gap: 8px; margin-bottom: 12px;
+        }
+        .orm-metric {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+        }
+        .orm-metric-card {
+            padding: 14px; border-radius: 8px; border: 1px solid var(--border);
+            background: var(--bg-alt); text-align: center;
+        }
+        .orm-metric-card .metric-value {
+            font-size: 1.8rem; font-weight: 800; color: var(--primary);
+        }
+        .orm-metric-card .metric-label {
+            font-size: 0.75rem; color: var(--text-muted);
+        }
+        .orm-metric-card.jdbc .metric-value { color: var(--danger); }
+        .orm-metric-card.orm .metric-value { color: var(--success); }
+
+        .orm-bar-chart {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 12px 0;
+        }
+        .orm-bar {
+            height: 24px; border-radius: 4px; display: flex; align-items: center;
+            padding: 0 8px; font-size: 0.7rem; font-weight: 700; color: white;
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); width: 0%;
+        }
+        .orm-bar.jdbc-bar { background: #dc2626; }
+        .orm-bar.orm-bar-color { background: #16a34a; }
+
+        .orm-code-comparison {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+        }
+        .orm-code-panel {
+            padding: 12px; background: #1e1e2e; border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: #cdd6f4;
+            max-height: 200px; overflow-y: auto;
+        }
+        .orm-code-panel .line-count {
+            color: #6c7086; margin-right: 12px; user-select: none;
+        }
+        @media (max-width: 768px) {
+            .orm-code-comparison { grid-template-columns: 1fr; }
+            .orm-toggle-bar { flex-wrap: wrap; }
+        }
+
+        /* Page Switcher */
+        .page-switcher {
+            display: flex; align-items: center; gap: 2px;
+            background: var(--bg-alt); border-radius: 6px; padding: 3px; margin-left: 12px;
+        }
+        .page-switcher-link {
+            padding: 5px 12px; border-radius: 4px; font-size: 0.72rem; font-weight: 600;
+            color: var(--text-muted); text-decoration: none; transition: all 0.3s;
+            white-space: nowrap; display: flex; align-items: center; gap: 4px;
+        }
+        .page-switcher-link:hover { color: var(--text); background: var(--border); }
+        .page-switcher-link.active { background: var(--primary); color: white; }
+        @media (max-width: 768px) { .page-switcher { display: none; } }
+
+        /* Breadcrumbs */
+        .breadcrumbs {
+            display: flex; align-items: center; gap: 6px; padding: 10px 0;
+            font-size: 0.78rem; color: var(--text-muted); margin-bottom: 8px; flex-wrap: wrap;
+        }
+        .breadcrumbs a {
+            color: var(--text-muted); text-decoration: none; transition: all 0.3s;
+            display: flex; align-items: center; gap: 4px;
+        }
+        .breadcrumbs a:hover { color: var(--primary); }
+        .breadcrumbs .breadcrumb-sep { font-size: 0.65rem; opacity: 0.5; }
+        .breadcrumbs .breadcrumb-current { color: var(--text); font-weight: 600; }
+
+        /* Section Nav Prev/Next */
+        .section-nav {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+            margin-top: 48px; margin-bottom: 32px; padding-top: 32px; border-top: 1px solid var(--border);
+        }
+        @media (max-width: 600px) { .section-nav { grid-template-columns: 1fr; } }
+        .section-nav-link {
+            display: flex; align-items: center; gap: 12px; padding: 16px 20px;
+            border: 1px solid var(--border); border-radius: 10px; text-decoration: none;
+            color: var(--text); transition: all 0.3s; background: var(--bg);
+        }
+        .section-nav-link:hover {
+            border-color: var(--primary); background: rgba(0,102,74,0.03);
+            transform: translateY(-2px); box-shadow: var(--shadow);
+        }
+        .section-nav-link.next { justify-content: flex-end; text-align: right; }
+        .section-nav-link .nav-arrow {
+            width: 36px; height: 36px; border-radius: 50%; background: var(--bg-alt);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--primary); font-size: 0.85rem; flex-shrink: 0; transition: all 0.3s;
+        }
+        .section-nav-link:hover .nav-arrow { background: var(--primary); color: white; }
+        .section-nav-link .nav-label {
+            font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase;
+            letter-spacing: 0.5px; font-weight: 600;
+        }
+        .section-nav-link .nav-title { font-size: 0.9rem; font-weight: 600; color: var(--text); margin-top: 2px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <a href="index.html" class="btn btn-outline">
+                    <i class="fas fa-arrow-left"></i> Volver a la Guía
+                </a>
+            </div>
+            <h1><i class="fas fa-flask"></i> Simuladores Interactivos</h1>
+            <div class="header-actions">
+                <nav class="page-switcher" style="margin:0">
+                    <a href="index.html" class="page-switcher-link"><i class="fab fa-java"></i> JSP</a>
+                    <a href="flutter-guide.html" class="page-switcher-link"><i class="fab fa-flutter"></i> Flutter</a>
+                    <a href="simuladores.html" class="page-switcher-link active"><i class="fas fa-flask"></i> Labs</a>
+                </nav>
+                <button class="btn theme-toggle-btn" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="breadcrumbs">
+            <a href="index.html"><i class="fas fa-home"></i> Inicio</a>
+            <span class="breadcrumb-sep"><i class="fas fa-chevron-right"></i></span>
+            <span class="breadcrumb-current"><i class="fas fa-flask"></i> Simuladores Interactivos</span>
+        </div>
+
+        <div class="tabs-nav">
+            <button class="tab-link active" data-tab="mvc">MVC Flow</button>
+            <button class="tab-link" data-tab="crud">CRUD</button>
+            <button class="tab-link" data-tab="sql">SQL Injection</button>
+            <button class="tab-link" data-tab="lifecycle">Servlet Lifecycle</button>
+            <button class="tab-link" data-tab="orm">JDBC vs ORM</button>
+        </div>
+
+        <nav class="section-nav" id="tabsNav" style="margin-top:0;margin-bottom:16px;padding-top:0;border-top:none">
+            <a href="#" class="section-nav-link prev" id="tabPrev" style="visibility:hidden">
+                <div class="nav-arrow"><i class="fas fa-arrow-left"></i></div>
+                <div><div class="nav-label">Anterior</div><div class="nav-title" id="tabPrevTitle"></div></div>
+            </a>
+            <a href="#" class="section-nav-link next" id="tabNext">
+                <div><div class="nav-label">Siguiente</div><div class="nav-title" id="tabNextTitle"></div></div>
+                <div class="nav-arrow"><i class="fas fa-arrow-right"></i></div>
+            </a>
+        </nav>
+
+        <!-- MVC Simulator -->
+        <div class="tab-content active" id="tab-mvc">
+            <div class="simulator">
+                <div class="sim-header">
+                    <h2><i class="fas fa-layer-group"></i> Simulador de Flujo MVC</h2>
+                    <p>Observa cómo viaja una petición HTTP a través de las capas</p>
+                </div>
+                <div class="sim-body">
+                    <div class="mvc-diagram">
+                        <div class="mvc-layer view" id="layer-view">
+                            <h3><i class="fas fa-desktop"></i> Vista (JSP)</h3>
+                            <p>Muestra datos al usuario</p>
+                            <code>&lt;c:forEach items="${productos}"&gt;</code>
+                        </div>
+                        <div class="mvc-layer controller" id="layer-controller">
+                            <h3><i class="fas fa-microchip"></i> Controlador (Servlet)</h3>
+                            <p>Coordina el flujo</p>
+                            <code>@WebServlet("/productos")</code>
+                        </div>
+                        <div class="mvc-layer model" id="layer-model">
+                            <h3><i class="fas fa-database"></i> Modelo (DAO)</h3>
+                            <p>Accede a datos</p>
+                            <code>ProductoDAO.insertar()</code>
+                        </div>
+                    </div>
+
+                    <div class="scenario-selector">
+                        <button class="scenario-btn active" data-scenario="success">
+                            <i class="fas fa-check-circle"></i> Éxito (200)
+                        </button>
+                        <button class="scenario-btn" data-scenario="validation">
+                            <i class="fas fa-exclamation-triangle"></i> Error Validación (400)
+                        </button>
+                        <button class="scenario-btn" data-scenario="notfound">
+                            <i class="fas fa-search"></i> No Encontrado (404)
+                        </button>
+                        <button class="scenario-btn" data-scenario="error">
+                            <i class="fas fa-bug"></i> Error Servidor (500)
+                        </button>
+                    </div>
+
+                    <div class="flow-container" id="flowContainer">
+                        <div class="flow-step" id="step-1">👤 Usuario</div>
+                        <div class="flow-step" id="step-2">📄 Vista</div>
+                        <div class="flow-step" id="step-3">⚙️ Servlet</div>
+                        <div class="flow-step" id="step-4">🗄️ DAO</div>
+                        <div class="flow-step" id="step-5">💾 BD</div>
+                    </div>
+
+                    <div class="payload-box" id="payloadBox">
+                        <div style="color: #a6e3a1; margin-bottom: 4px;">// Payload HTTP</div>
+                        <div id="payloadContent"></div>
+                    </div>
+
+                    <div class="controls">
+                        <button class="btn btn-primary" id="btnSimulate">
+                            <i class="fas fa-play"></i> Simular Petición
+                        </button>
+                        <button class="btn btn-outline" id="btnReset">
+                            <i class="fas fa-redo"></i> Reiniciar
+                        </button>
+                    </div>
+
+                    <div class="console" id="console">
+                        <div class="console-line">
+                            <span class="timestamp">[00:00:00]</span>
+                            <span class="level-info">INFO</span>
+                            Simulador listo. Presiona "Simular Petición".
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CRUD Simulator -->
+        <div class="tab-content" id="tab-crud">
+            <div class="simulator">
+                <div class="sim-header">
+                    <h2><i class="fas fa-database"></i> Simulador CRUD Interactivo</h2>
+                    <p>Practica Crear, Leer, Actualizar y Eliminar productos</p>
+                </div>
+                <div class="sim-body">
+                    <div class="crud-bulk-bar" id="bulkBar">
+                        <span id="bulkCount">0</span> seleccionados
+                        <button class="btn btn-sm" id="btnBulkDelete"><i class="fas fa-trash"></i> Eliminar</button>
+                        <button class="btn btn-sm" id="btnBulkCancel" style="margin-left: auto;"><i class="fas fa-times"></i></button>
+                    </div>
+                    <div class="crud-toolbar">
+                        <input type="text" class="crud-search" id="crudSearch" placeholder="🔍 Buscar productos...">
+                        <div class="crud-filter">
+                            <select id="crudCategory">
+                                <option value="">Todas las categorías</option>
+                                <option value="Electrónica">Electrónica</option>
+                                <option value="Periféricos">Periféricos</option>
+                                <option value="Computo">Cómputo</option>
+                                <option value="Accesorios">Accesorios</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-secondary" id="btnSeedData" title="Generar datos de ejemplo">
+                            <i class="fas fa-dice"></i> +10
+                        </button>
+                    </div>
+                    <div class="crud-panel">
+                        <div class="crud-form">
+                            <h3 id="formTitle" style="font-size: 0.95rem; margin-bottom: 12px; color: var(--primary);">
+                                <i class="fas fa-plus"></i> Nuevo Producto
+                            </h3>
+                            <input type="hidden" id="productId">
+                            <div class="form-group">
+                                <label>Código:</label>
+                                <input type="text" id="codigo" placeholder="PROD-001">
+                                <div class="form-error" id="errCodigo">El código es obligatorio</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Nombre:</label>
+                                <input type="text" id="nombre" placeholder="Laptop HP">
+                                <div class="form-error" id="errNombre">El nombre debe tener al menos 3 caracteres</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Precio:</label>
+                                <input type="number" id="precio" placeholder="2500000" min="1">
+                                <div class="form-error" id="errPrecio">El precio debe ser mayor a 0</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Stock:</label>
+                                <input type="number" id="stock" placeholder="15" min="0">
+                                <div class="form-error" id="errStock">El stock no puede ser negativo</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Categoría:</label>
+                                <select id="crudProductCategory" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:5px;font-family:'Inter',sans-serif;font-size:0.85rem;background:var(--bg);color:var(--text);">
+                                    <option value="Electrónica">Electrónica</option>
+                                    <option value="Periféricos">Periféricos</option>
+                                    <option value="Computo">Cómputo</option>
+                                    <option value="Accesorios">Accesorios</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-primary" id="btnSave" style="width: 100%; margin-top: 8px;">
+                                <i class="fas fa-save"></i> Guardar
+                            </button>
+                            <button class="btn btn-outline" id="btnCancel" style="width: 100%; margin-top: 6px; display: none;">
+                                <i class="fas fa-times"></i> Cancelar
+                            </button>
+                        </div>
+                        
+                        <div class="crud-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th style="width: 32px;"><input type="checkbox" id="checkAll"></th>
+                                        <th class="sortable" data-sort="codigo">Código <i class="fas fa-sort sort-icon"></i></th>
+                                        <th class="sortable" data-sort="nombre">Nombre <i class="fas fa-sort sort-icon"></i></th>
+                                        <th class="sortable" data-sort="categoria">Categoría <i class="fas fa-sort sort-icon"></i></th>
+                                        <th class="sortable" data-sort="precio">Precio <i class="fas fa-sort sort-icon"></i></th>
+                                        <th class="sortable" data-sort="stock">Stock <i class="fas fa-sort sort-icon"></i></th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="productTable"></tbody>
+                            </table>
+                            <div class="crud-pagination" id="crudPagination"></div>
+                        </div>
+                    </div>
+
+                    <div class="console" id="crudConsole" style="margin-top: 16px;">
+                        <div class="console-line">
+                            <span class="timestamp">[00:00:00]</span>
+                            <span class="level-info">INFO</span>
+                            CRUD simulado — Datos en memoria con categorías y búsqueda.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SQL Injection Simulator -->
+        <div class="tab-content" id="tab-sql">
+            <div class="simulator">
+                <div class="sim-header">
+                    <h2><i class="fas fa-shield-alt"></i> Simulador de Inyección SQL</h2>
+                    <p>Aprende cómo prevenir ataques con PreparedStatement</p>
+                </div>
+                <div class="sim-body">
+                    <p style="margin-bottom: 16px; color: var(--text-muted); font-size: 0.9rem;">
+                        Intenta diferentes entradas y observa la diferencia entre código vulnerable y PreparedStatement seguro.
+                    </p>
+
+                    <div style="text-align:center;margin-bottom:12px;">
+                        <button class="btn btn-secondary" id="btnAutoDemo">
+                            <i class="fas fa-play"></i> Demo Automática
+                        </button>
+                    </div>
+
+                    <div class="sql-db-visual">
+                        <div class="sql-db-table" id="dbTable-usuarios">
+                            <h5>👥 usuarios</h5>
+                            <p>id, nombre, email, password</p>
+                            <div class="row-count" id="dbCount-usuarios">5</div>
+                            <p style="font-size:0.65rem;">registros</p>
+                        </div>
+                        <div class="sql-db-table" id="dbTable-productos">
+                            <h5>📦 productos</h5>
+                            <p>id, codigo, nombre, precio</p>
+                            <div class="row-count" id="dbCount-productos">12</div>
+                            <p style="font-size:0.65rem;">registros</p>
+                        </div>
+                        <div class="sql-db-table" id="dbTable-pedidos">
+                            <h5>📋 pedidos</h5>
+                            <p>id, usuario_id, total, fecha</p>
+                            <div class="row-count" id="dbCount-pedidos">28</div>
+                            <p style="font-size:0.65rem;">registros</p>
+                        </div>
+                    </div>
+
+                    <div class="sql-injection">
+                        <div class="sql-attack">
+                            <h4><i class="fas fa-times-circle"></i> Código Vulnerable</h4>
+                            <div class="sql-input-group">
+                                <input type="text" id="attackInput" placeholder='Ej: 1 OR 1=1' value='1'>
+                                <button class="btn btn-primary" id="btnAttack">Ejecutar</button>
+                            </div>
+                            <div class="sql-result danger" id="attackResult">Ingresa un valor y presiona Ejecutar</div>
+                        </div>
+                        <div class="sql-safe">
+                            <h4><i class="fas fa-check-circle"></i> Código Seguro (PreparedStatement)</h4>
+                            <div class="sql-input-group">
+                                <input type="text" id="safeInput" placeholder='Ej: 1 OR 1=1' value='1'>
+                                <button class="btn btn-primary" id="btnSafe">Ejecutar</button>
+                            </div>
+                            <div class="sql-result safe" id="safeResult">Ingresa un valor y presiona Ejecutar</div>
+                            <div class="sql-param-bind" id="paramBind">
+                                <div style="color:#89b4fa;margin-bottom:4px;">// PreparedStatement: bind de parámetros</div>
+                                <div id="paramSteps"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 20px; padding: 12px; background: var(--bg-alt); border-radius: 8px; border-left: 4px solid var(--info);">
+                        <h4 style="font-size: 0.9rem; margin-bottom: 6px; color: var(--info);">
+                            <i class="fas fa-lightbulb"></i> Ataques para probar
+                        </h4>
+                        <ul style="font-size: 0.8rem; color: var(--text-muted); margin-left: 20px;">
+                            <li><code>1 OR 1=1</code> — Devuelve TODOS los usuarios</li>
+                            <li><code>1 UNION SELECT * FROM productos</code> — Fuga de datos</li>
+                            <li><code>1; DROP TABLE usuarios--</code> — Elimina tabla completa</li>
+                            <li><code>' OR '1'='1</code> — Bypass de autenticación</li>
+                            <li><code>admin'--</code> — Comentario SQL para bypass</li>
+                            <li><code>1 AND 1=1</code> — Blind SQL injection</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Servlet Lifecycle -->
+        <div class="tab-content" id="tab-lifecycle">
+            <div class="simulator">
+                <div class="sim-header">
+                    <h2><i class="fas fa-cogs"></i> Ciclo de Vida del Servlet</h2>
+                    <p>Visualiza las fases: Constructor → init() → service() → destroy()</p>
+                </div>
+                <div class="sim-body">
+                    <div class="lifecycle-container">
+                        <div class="lifecycle-status">
+                            <div class="status-indicator" id="statusIndicator"></div>
+                            <span id="statusText">Servlet inactivo</span>
+                            <span style="margin-left: auto; font-size: 0.75rem; color: var(--text-muted);">
+                                Peticiones: <span class="counter-value" id="requestCount">0</span>
+                            </span>
+                        </div>
+
+                        <div class="lifecycle-diagram">
+                            <div class="lifecycle-step" id="life-1">
+                                <div class="lifecycle-icon"><i class="fas fa-power-off"></i></div>
+                                <h4>1. Constructor</h4>
+                                <p>Se crea la instancia del Servlet</p>
+                            </div>
+                            <div class="lifecycle-arrow" id="arrow-1"><i class="fas fa-arrow-right"></i></div>
+                            <div class="lifecycle-step" id="life-2">
+                                <div class="lifecycle-icon"><i class="fas fa-cog"></i></div>
+                                <h4>2. init()</h4>
+                                <p>Inicialización (una sola vez)</p>
+                            </div>
+                            <div class="lifecycle-arrow" id="arrow-2"><i class="fas fa-arrow-right"></i></div>
+                            <div class="lifecycle-step" id="life-3">
+                                <div class="lifecycle-icon"><i class="fas fa-exchange-alt"></i></div>
+                                <h4>3. service()</h4>
+                                <p>Atiende cada petición</p>
+                            </div>
+                            <div class="lifecycle-arrow" id="arrow-3"><i class="fas fa-arrow-right"></i></div>
+                            <div class="lifecycle-step" id="life-4">
+                                <div class="lifecycle-icon"><i class="fas fa-trash"></i></div>
+                                <h4>4. destroy()</h4>
+                                <p>Limpieza al apagar</p>
+                            </div>
+                        </div>
+
+                        <div class="lifecycle-code-panel" id="codePanel">
+                            <div class="code-line"><span class="code-comment">// El código del Servlet aparecerá aquí</span></div>
+                        </div>
+
+                        <div class="request-simulator" id="requestSimulator">
+                            <h4 style="margin-bottom: 12px; font-size: 0.9rem;">
+                                <i class="fas fa-globe"></i> Simulador de Peticiones HTTP
+                            </h4>
+                            <div class="request-controls">
+                                <button class="request-btn get" onclick="sendRequest('GET', '/productos')">
+                                    <i class="fas fa-arrow-down"></i> GET /productos
+                                </button>
+                                <button class="request-btn post" onclick="sendRequest('POST', '/productos')">
+                                    <i class="fas fa-arrow-up"></i> POST /productos
+                                </button>
+                                <button class="request-btn delete" onclick="sendRequest('DELETE', '/productos/1')">
+                                    <i class="fas fa-times"></i> DELETE /productos/1
+                                </button>
+                            </div>
+                            <div class="request-counter">
+                                <span>Peticiones atendidas en service():</span>
+                                <span class="counter-value" id="serviceRequestCount">0</span>
+                            </div>
+                            <div class="custom-request-form">
+                                <select id="customMethod">
+                                    <option value="GET">GET</option>
+                                    <option value="POST">POST</option>
+                                    <option value="PUT">PUT</option>
+                                    <option value="DELETE">DELETE</option>
+                                </select>
+                                <input type="text" id="customPath" placeholder="/productos" value="/productos">
+                                <button class="btn btn-sm btn-primary" id="btnCustomRequest" onclick="sendCustomRequest()">
+                                    <i class="fas fa-paper-plane"></i> Enviar
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="thread-pool" id="threadPool">
+                            <h5><i class="fas fa-threads"></i> Thread Pool del Contenedor (Tomcat)</h5>
+                            <div id="threadContainer" style="display:flex;gap:4px;flex-wrap:wrap;">
+                                <span class="thread-item idle" title="Thread-1 (idle)">T1</span>
+                                <span class="thread-item idle" title="Thread-2 (idle)">T2</span>
+                                <span class="thread-item idle" title="Thread-3 (idle)">T3</span>
+                                <span class="thread-item idle" title="Thread-4 (idle)">T4</span>
+                                <span class="thread-item idle" title="Thread-5 (idle)">T5</span>
+                            </div>
+                        </div>
+
+                        <div class="request-queue" id="requestQueue">
+                            <span class="queue-label"><i class="fas fa-clock"></i> Cola:</span>
+                            <span id="queueItems"></span>
+                        </div>
+
+                        <div class="lifecycle-progress-bar">
+                            <div class="lifecycle-progress-fill" id="lifecycleProgress"></div>
+                        </div>
+
+                        <div class="controls">
+                            <button class="btn btn-primary" id="btnLifecycle">
+                                <i class="fas fa-play"></i> Iniciar Ciclo
+                            </button>
+                            <button class="btn btn-secondary" id="btnResetLifecycle" style="display: none;">
+                                <i class="fas fa-redo"></i> Reiniciar
+                            </button>
+                        </div>
+
+                        <div class="speed-control">
+                            <label><i class="fas fa-tachometer-alt"></i> Velocidad:</label>
+                            <input type="range" class="speed-slider" id="speedSlider" min="0.5" max="3" step="0.5" value="1">
+                            <span id="speedLabel">1x</span>
+                        </div>
+
+                        <div class="console" id="lifecycleConsole">
+                            <div class="console-line">
+                                <span class="timestamp">[00:00:00]</span>
+                                <span class="level-info">INFO</span>
+                                Presiona "Iniciar Ciclo" para ver el ciclo de vida.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- JDBC vs ORM -->
+        <div class="tab-content" id="tab-orm">
+            <div class="simulator">
+                <div class="sim-header">
+                    <h2><i class="fas fa-code-branch"></i> JDBC vs ORM (JPA/Hibernate)</h2>
+                    <p>Compara el enfoque tradicional con el enfoque ORM</p>
+                </div>
+                <div class="sim-body">
+                    <div class="orm-toggle-bar">
+                        <button class="btn btn-primary" id="btnJdbcFocus" style="flex:1;">
+                            <i class="fas fa-database"></i> Ver JDBC
+                        </button>
+                        <button class="btn btn-outline" id="btnOrmFocus" style="flex:1;">
+                            <i class="fas fa-magic"></i> Ver ORM
+                        </button>
+                        <button class="btn btn-secondary" id="btnCompareFocus" style="flex:1;">
+                            <i class="fas fa-balance-scale"></i> Comparar
+                        </button>
+                    </div>
+
+                    <div class="orm-metric" id="ormMetrics">
+                        <div class="orm-metric-card jdbc">
+                            <div class="metric-value" id="jdbcLines">~45</div>
+                            <div class="metric-label">Líneas JDPC (CRUD completo)</div>
+                        </div>
+                        <div class="orm-metric-card orm">
+                            <div class="metric-value" id="ormLines">~12</div>
+                            <div class="metric-label">Líneas JPA (CRUD completo)</div>
+                        </div>
+                    </div>
+
+                    <div class="orm-bar-chart">
+                        <div>
+                            <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:4px;">JDBC Boilerplate</div>
+                            <div class="orm-bar jdbc-bar" id="jdbcBar" style="width:100%;">45 líneas</div>
+                        </div>
+                        <div>
+                            <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:4px;">JPA Código</div>
+                            <div class="orm-bar orm-bar-color" id="ormBar" style="width:27%;">12 líneas</div>
+                        </div>
+                    </div>
+
+                    <div class="orm-code-comparison" id="ormCodeComparison">
+                        <div>
+                            <h4 style="color:var(--danger);font-size:0.85rem;margin-bottom:6px;">
+                                <i class="fas fa-database"></i> JDBC — CRUD completo
+                            </h4>
+                            <div class="orm-code-panel" id="jdbcCodePanel"></div>
+                        </div>
+                        <div>
+                            <h4 style="color:var(--success);font-size:0.85rem;margin-bottom:6px;">
+                                <i class="fas fa-magic"></i> JPA — CRUD completo
+                            </h4>
+                            <div class="orm-code-panel" id="ormCodePanel"></div>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px;">
+                        <div style="padding: 12px; border-radius: var(--radius); border: 2px solid var(--danger); background: rgba(220, 38, 38, 0.04);">
+                            <h4 style="color: var(--danger); margin-bottom: 6px; font-size: 0.85rem;">
+                                <i class="fas fa-database"></i> JDBC Puro
+                            </h4>
+                            <ul style="font-size: 0.78rem; list-style: none;">
+                                <li style="padding: 2px 0; color: var(--success);">✓ Control total del SQL</li>
+                                <li style="padding: 2px 0; color: var(--success);">✓ Sin dependencias extra</li>
+                                <li style="padding: 2px 0; color: var(--success);">✓ Optimizable al máximo</li>
+                                <li style="padding: 2px 0; color: var(--danger);">✗ Mucho código boilerplate</li>
+                                <li style="padding: 2px 0; color: var(--danger);">✗ Lento de desarrollar</li>
+                                <li style="padding: 2px 0; color: var(--danger);">✗ Errores SQL en runtime</li>
+                            </ul>
+                        </div>
+                        <div style="padding: 12px; border-radius: var(--radius); border: 2px solid var(--success); background: rgba(22, 163, 74, 0.04);">
+                            <h4 style="color: var(--success); margin-bottom: 6px; font-size: 0.85rem;">
+                                <i class="fas fa-magic"></i> JPA/Hibernate
+                            </h4>
+                            <ul style="font-size: 0.78rem; list-style: none;">
+                                <li style="padding: 2px 0; color: var(--success);">✓ 70% menos código</li>
+                                <li style="padding: 2px 0; color: var(--success);">✓ SQL generado automático</li>
+                                <li style="padding: 2px 0; color: var(--success);">✓ Errores en compilación</li>
+                                <li style="padding: 2px 0; color: var(--danger);">✗ Dependencia Hibernate</li>
+                                <li style="padding: 2px 0; color: var(--danger);">✗ Curva de aprendizaje</li>
+                                <li style="padding: 2px 0; color: var(--danger);">✗ N+1 queries problem</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div style="margin-top: 12px; padding: 10px; background: var(--bg-alt); border-radius: 8px; border-left: 4px solid var(--primary);">
+                        <p style="font-size: 0.8rem; color: var(--text-muted);">
+                            <strong style="color: var(--primary);">Analogía Flask:</strong> 
+                            JDBC ≈ <code>db.engine.execute("INSERT...")</code> | 
+                            JPA ≈ <code>db.session.add(objeto)</code> (SQLAlchemy ORM)
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Request Lifecycle (Nuevo) -->
+            <div class="section-card glass-panel" style="margin-top:2rem;padding:2rem;">
+                <h2><i class="fas fa-sync-alt"></i> Ciclo de Petición: Servlet → JSP</h2>
+                <p style="color:var(--text-muted);margin-bottom:1rem;">Animación del flujo completo de una petición HTTP en el patrón MVC.</p>
+                <div class="sim-lifecycle-container"></div>
+            </div>
+
+            <!-- CRUD Security (Nuevo) -->
+            <div class="section-card glass-panel" style="margin-top:2rem;padding:2rem;">
+                <h2><i class="fas fa-shield-alt"></i> CRUD Security: SQL Injection vs PreparedStatement</h2>
+                <p style="color:var(--text-muted);margin-bottom:1rem;">Compara código vulnerable con PreparedStatement seguro.</p>
+                <div class="sim-security-container"></div>
+            </div>
+
+            <!-- JSTL Builder (Nuevo) -->
+            <div class="section-card glass-panel" style="margin-top:2rem;padding:2rem;">
+                <h2><i class="fas fa-tags"></i> JSTL Expression Builder</h2>
+                <p style="color:var(--text-muted);margin-bottom:1rem;">Genera expresiones JSTL interactivamente.</p>
+                <div class="sim-jstl-container"></div>
+            </div>
+
+            <!-- Session Simulator (Nuevo) -->
+            <div class="section-card glass-panel" style="margin-top:2rem;padding:2rem;">
+                <h2><i class="fas fa-lock"></i> Session Management Simulator</h2>
+                <p style="color:var(--text-muted);margin-bottom:1rem;">Simula el ciclo de vida de una sesión HTTP.</p>
+                <div class="sim-session-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme toggle
+        const themeToggle = document.getElementById('themeToggle');
+        function loadTheme() {
+            const saved = localStorage.getItem('theme');
+            if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                if (themeToggle) themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+        }
+        loadTheme();
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                const current = document.documentElement.getAttribute('data-theme');
+                if (current === 'dark') {
+                    document.documentElement.removeAttribute('data-theme');
+                    localStorage.setItem('theme', 'light');
+                    themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('theme', 'dark');
+                    themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                }
+            });
+        }
+
+        // Tabs
+        const tabNames = ['mvc', 'crud', 'sql', 'lifecycle', 'orm'];
+        const tabLabels = { mvc: 'MVC Flow', crud: 'CRUD', sql: 'SQL Injection', lifecycle: 'Servlet Lifecycle', orm: 'JDBC vs ORM' };
+
+        function updateTabNav(currentTab) {
+            const idx = tabNames.indexOf(currentTab);
+            const prev = document.getElementById('tabPrev');
+            const next = document.getElementById('tabNext');
+            const prevTitle = document.getElementById('tabPrevTitle');
+            const nextTitle = document.getElementById('tabNextTitle');
+
+            if (idx > 0) {
+                prev.style.visibility = 'visible';
+                prevTitle.textContent = tabLabels[tabNames[idx - 1]];
+                prev.onclick = (e) => { e.preventDefault(); switchTab(tabNames[idx - 1]); };
+            } else {
+                prev.style.visibility = 'hidden';
+            }
+
+            if (idx < tabNames.length - 1) {
+                next.style.visibility = 'visible';
+                nextTitle.textContent = tabLabels[tabNames[idx + 1]];
+                next.onclick = (e) => { e.preventDefault(); switchTab(tabNames[idx + 1]); };
+            } else {
+                next.style.visibility = 'hidden';
+            }
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-link').forEach(l => l.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            const link = document.querySelector(`.tab-link[data-tab="${tab}"]`);
+            if (link) link.classList.add('active');
+            const content = document.getElementById('tab-' + tab);
+            if (content) content.classList.add('active');
+            updateTabNav(tab);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        document.querySelectorAll('.tab-link').forEach(link => {
+            link.addEventListener('click', () => {
+                const tab = link.getAttribute('data-tab');
+                document.querySelectorAll('.tab-link').forEach(l => l.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                link.classList.add('active');
+                document.getElementById('tab-' + tab).classList.add('active');
+                updateTabNav(tab);
+            });
+        });
+
+        updateTabNav('mvc');
+
+        // Console helper
+        function addLog(consoleEl, message, level = 'info') {
+            const time = new Date().toLocaleTimeString();
+            const line = document.createElement('div');
+            line.className = 'console-line';
+            line.innerHTML = `<span class="timestamp">[${time}]</span> <span class="level-${level}">${level.toUpperCase()}</span> ${message}`;
+            consoleEl.appendChild(line);
+            consoleEl.scrollTop = consoleEl.scrollHeight;
+        }
+
+        // MVC Simulator
+        let currentScenario = 'success';
+        let isSimulating = false;
+        const btnSimulate = document.getElementById('btnSimulate');
+        const btnResetMvc = document.getElementById('btnReset');
+        const consoleEl = document.getElementById('console');
+        const payloadBox = document.getElementById('payloadBox');
+        const payloadContent = document.getElementById('payloadContent');
+        const layers = {
+            view: document.getElementById('layer-view'),
+            controller: document.getElementById('layer-controller'),
+            model: document.getElementById('layer-model')
+        };
+
+        const scenarios = {
+            success: {
+                steps: [
+                    { step: 1, layer: null, msg: '👤 Usuario hace clic en "Crear Producto"', http: null, payload: null },
+                    { step: 2, layer: 'view', msg: '📄 formulario.jsp envía POST /productos', http: '200', payload: { method: 'POST', path: '/productos', body: { codigo: 'PROD-004', nombre: 'Monitor 27\"', precio: 850000 } } },
+                    { step: 3, layer: 'controller', msg: '⚙️ ProductoServlet.doPost() recibe y valida datos', http: '200', payload: { action: 'doPost()', params: { codigo: 'PROD-004', nombre: 'Monitor 27\"' } } },
+                    { step: 4, layer: 'model', msg: '🗄️ ProductoDAO.insertar() ejecuta PreparedStatement', http: '200', payload: { sql: 'INSERT INTO productos (codigo, nombre, precio) VALUES (?, ?, ?)', params: ['PROD-004', 'Monitor 27\"', 850000] } },
+                    { step: 5, layer: null, msg: '💾 PostgreSQL: 1 fila insertada', http: '201', payload: { rows_affected: 1, table: 'productos' } }
+                ],
+                finalMsgs: [
+                    { msg: '✓ 201 Created: Producto creado exitosamente', level: 'success' },
+                    { msg: '↳ Redirect → /productos con lista actualizada', level: 'info' }
+                ]
+            },
+            validation: {
+                steps: [
+                    { step: 1, layer: null, msg: '👤 Usuario envía formulario con precio inválido', http: null, payload: null },
+                    { step: 2, layer: 'view', msg: '📄 Vista envía POST con datos incorrectos', http: '200', payload: { method: 'POST', path: '/productos', body: { codigo: '', nombre: 'Producto', precio: -500 } } },
+                    { step: 3, layer: 'controller', msg: '⚠️ Servlet detecta validación: precio negativo', http: '400', payload: { errors: [{ field: 'precio', message: 'El precio debe ser > 0' }] } },
+                    { step: 4, layer: null, msg: '↳ Retorna a la vista con errores de validación', http: '400', payload: null },
+                    { step: 5, layer: null, msg: '📄 Vista muestra mensajes de error al usuario', http: '400', payload: null }
+                ],
+                finalMsgs: [
+                    { msg: '⚠️ 400 Bad Request: Error de validación en el formulario', level: 'warn' },
+                    { msg: '💡 El controlador NUNCA llegó al DAO — validación temprana', level: 'info' }
+                ]
+            },
+            notfound: {
+                steps: [
+                    { step: 1, layer: null, msg: '👤 Usuario busca ID=999', http: null, payload: null },
+                    { step: 2, layer: 'view', msg: '📄 Vista envía GET /productos/999', http: '200', payload: { method: 'GET', path: '/productos/999' } },
+                    { step: 3, layer: 'controller', msg: '⚙️ Servlet.doGet() con id=999', http: '200', payload: { action: 'doGet()', id: 999 } },
+                    { step: 4, layer: 'model', msg: '🗄️ DAO ejecuta SELECT WHERE id=999', http: '200', payload: { sql: 'SELECT * FROM productos WHERE id = ?', params: [999] } },
+                    { step: 5, layer: null, msg: '💾 BD: 0 filas encontradas', http: '404', payload: { rows_affected: 0, table: 'productos' } }
+                ],
+                finalMsgs: [
+                    { msg: '🔍 404 Not Found: No existe producto con ID 999', level: 'warn' },
+                    { msg: '↳ Servlet envía error 404 a la vista', level: 'info' }
+                ]
+            },
+            error: {
+                steps: [
+                    { step: 1, layer: null, msg: '👤 Usuario intenta crear producto duplicado', http: null, payload: null },
+                    { step: 2, layer: 'view', msg: '📄 Vista envía POST /productos', http: '200', payload: { method: 'POST', path: '/productos', body: { codigo: 'PROD-001' } } },
+                    { step: 3, layer: 'controller', msg: '⚙️ Servlet.doPost() recibe solicitud', http: '200', payload: { action: 'doPost()' } },
+                    { step: 4, layer: 'model', msg: '🗄️ DAO ejecuta INSERT — ¡Error! Código duplicado', http: '500', payload: { sql: 'INSERT INTO productos (codigo, nombre) VALUES (?, ?)', error: 'ERROR: duplicate key value violates unique constraint' } },
+                    { step: 5, layer: null, msg: '💾 PostgreSQL: Unique constraint violation', http: '500', payload: { error: '23505: duplicate key', table: 'productos', constraint: 'uk_codigo' } }
+                ],
+                finalMsgs: [
+                    { msg: '🐛 500 Internal Server Error: Excepción en SQL', level: 'warn' },
+                    { msg: '↳ Servlet captura excepción y muestra página de error', level: 'info' },
+                    { msg: '💡 PreparedStatement evita inyección pero no duplicados', level: 'info' }
+                ]
+            }
+        };
+
+        function clearFlow() {
+            for (let i = 1; i <= 5; i++) {
+                document.getElementById(`step-${i}`).classList.remove('active');
+            }
+            Object.values(layers).forEach(l => l.classList.remove('active'));
+            payloadBox.classList.remove('visible');
+        }
+
+        function showPayload(payloadData) {
+            if (!payloadData) { payloadBox.classList.remove('visible'); return; }
+            let html = '';
+            for (const [key, val] of Object.entries(payloadData)) {
+                if (typeof val === 'object') {
+                    html += `<div><span class="payload-key">${key}:</span> ${JSON.stringify(val)}</div>`;
+                } else if (typeof val === 'string' && (val.startsWith('SELECT') || val.startsWith('INSERT') || val.startsWith('UPDATE') || val.startsWith('DELETE'))) {
+                    html += `<div><span class="payload-key">${key}:</span> <span style="color:#f59e0b">${val}</span></div>`;
+                } else if (typeof val === 'number') {
+                    html += `<div><span class="payload-key">${key}:</span> <span class="payload-number">${val}</span></div>`;
+                } else {
+                    html += `<div><span class="payload-key">${key}:</span> <span class="payload-string">"${val}"</span></div>`;
+                }
+            }
+            payloadContent.innerHTML = html;
+            payloadBox.classList.add('visible');
+        }
+
+        async function simulateFlow() {
+            if (isSimulating) return;
+            isSimulating = true;
+            btnSimulate.disabled = true;
+            
+            clearFlow();
+            const scenario = scenarios[currentScenario];
+            
+            for (let i = 0; i < scenario.steps.length; i++) {
+                const { step, layer, msg, http, payload } = scenario.steps[i];
+                const delay = 400 + Math.random() * 600;
+                await new Promise(r => setTimeout(r, delay));
+                
+                document.getElementById(`step-${step}`).classList.add('active');
+                if (layer) layers[layer].classList.add('active');
+                
+                const httpBadge = http ? `<span class="http-badge http-${http}">${http}</span>` : '';
+                addLog(consoleEl, `${msg} ${httpBadge}`);
+                
+                showPayload(payload);
+                if (payload) {
+                    addLog(consoleEl, `   📦 Datos: ${JSON.stringify(payload).substring(0, 80)}...`, 'info');
+                }
+                
+                if (i > 0) {
+                    const prevStep = document.getElementById(`step-${i}`);
+                    if (prevStep) setTimeout(() => prevStep.classList.remove('active'), 300);
+                }
+            }
+            
+            await new Promise(r => setTimeout(r, 500));
+            for (const { msg, level } of scenario.finalMsgs) {
+                addLog(consoleEl, msg, level);
+                await new Promise(r => setTimeout(r, 300));
+            }
+            
+            btnSimulate.disabled = false;
+            isSimulating = false;
+        }
+
+        // Scenario selector
+        document.querySelectorAll('.scenario-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (isSimulating) return;
+                document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentScenario = btn.dataset.scenario;
+                clearFlow();
+                addLog(consoleEl, `Escenario cambiado: "${btn.textContent.trim()}"`, 'info');
+            });
+        });
+
+        if (btnSimulate) btnSimulate.addEventListener('click', simulateFlow);
+        if (btnResetMvc) {
+            btnResetMvc.addEventListener('click', () => {
+                if (isSimulating) return;
+                clearFlow();
+                consoleEl.innerHTML = '<div class="console-line"><span class="timestamp">[' + new Date().toLocaleTimeString() + ']</span> <span class="level-info">INFO</span> Simulador reiniciado.</div>';
+                btnSimulate.disabled = false;
+                isSimulating = false;
+            });
+        }
+
+        // CRUD Simulator
+        let products = [
+            { id: 1, codigo: 'PROD-001', nombre: 'Laptop HP Pavilion', precio: 2500000, stock: 15, categoria: 'Electrónica' },
+            { id: 2, codigo: 'PROD-002', nombre: 'Mouse Logitech M185', precio: 45000, stock: 50, categoria: 'Periféricos' },
+            { id: 3, codigo: 'PROD-003', nombre: 'Teclado Mecánico RGB', precio: 180000, stock: 30, categoria: 'Periféricos' },
+            { id: 4, codigo: 'PROD-004', nombre: 'Monitor Samsung 27\"', precio: 850000, stock: 12, categoria: 'Electrónica' },
+            { id: 5, codigo: 'PROD-005', nombre: 'Webcam HD 1080p', precio: 95000, stock: 25, categoria: 'Accesorios' }
+        ];
+        let nextId = 6;
+        let editingId = null;
+        let crudSort = { field: null, dir: 'asc' };
+        let crudPage = 1;
+        const PAGE_SIZE = 5;
+        const crudConsole = document.getElementById('crudConsole');
+
+        const catNames = ['Electrónica', 'Periféricos', 'Computo', 'Accesorios'];
+        const prodNames = ['Audífonos Bluetooth', 'Hub USB-C', 'Disco SSD 1TB', 'Cargador Laptop', 'Base Enfriadora', 'Cable HDMI 2m', 'Mousepad XL', 'Micrófono Condenser', 'UPS 1500VA', 'Switch 8 puertos', 'Impresora Multifuncional', 'Router WiFi 6'];
+
+        function getFilteredProducts() {
+            const query = document.getElementById('crudSearch')?.value.toLowerCase() || '';
+            const cat = document.getElementById('crudCategory')?.value || '';
+            let filtered = products.filter(p => {
+                const matchSearch = !query || p.nombre.toLowerCase().includes(query) || p.codigo.toLowerCase().includes(query);
+                const matchCat = !cat || p.categoria === cat;
+                return matchSearch && matchCat;
+            });
+            if (crudSort.field) {
+                filtered.sort((a, b) => {
+                    const va = a[crudSort.field], vb = b[crudSort.field];
+                    if (typeof va === 'string') return crudSort.dir === 'asc' ? va.localeCompare(vb) : vb.localeCompare(va);
+                    return crudSort.dir === 'asc' ? va - vb : vb - va;
+                });
+            }
+            return filtered;
+        }
+
+        function renderTable() {
+            const filtered = getFilteredProducts();
+            const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+            crudPage = Math.min(crudPage, totalPages);
+            const start = (crudPage - 1) * PAGE_SIZE;
+            const page = filtered.slice(start, start + PAGE_SIZE);
+            const tbody = document.getElementById('productTable');
+            
+            if (page.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--text-muted);">${filtered.length === 0 ? 'No se encontraron productos' : 'Sin resultados'}</td></tr>`;
+            } else {
+                tbody.innerHTML = page.map(p => {
+                    const stockPct = Math.min(p.stock / 50 * 100, 100);
+                    const stockColor = p.stock > 20 ? '#16a34a' : p.stock > 5 ? '#f59e0b' : '#dc2626';
+                    return `<tr data-id="${p.id}">
+                        <td><input type="checkbox" class="crud-check" value="${p.id}"></td>
+                        <td><code>${p.codigo}</code></td>
+                        <td>${p.nombre}</td>
+                        <td><span style="background:var(--bg-alt);padding:2px 8px;border-radius:4px;font-size:0.75rem;">${p.categoria}</span></td>
+                        <td style="font-weight:600;">$${p.precio.toLocaleString()}</td>
+                        <td>
+                            <div style="display:flex;align-items:center;gap:6px;">
+                                <span>${p.stock}</span>
+                                <div style="flex:1;max-width:60px;height:6px;background:var(--border);border-radius:3px;overflow:hidden;">
+                                    <div style="height:100%;width:${stockPct}%;background:${stockColor};border-radius:3px;transition:width 0.5s;"></div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-edit" onclick="editProduct(${p.id})"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-sm btn-delete" onclick="deleteProduct(${p.id})"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>`;
+                }).join('');
+            }
+
+            // Pagination
+            const pag = document.getElementById('crudPagination');
+            if (totalPages <= 1) { pag.innerHTML = `<span>${filtered.length} producto${filtered.length !== 1 ? 's' : ''}</span>`; }
+            else {
+                let html = `<button onclick="goCrudPage(1)" ${crudPage <= 1 ? 'disabled' : ''}><i class="fas fa-angle-double-left"></i></button>`;
+                html += `<button onclick="goCrudPage(${crudPage - 1})" ${crudPage <= 1 ? 'disabled' : ''}><i class="fas fa-angle-left"></i></button>`;
+                for (let i = Math.max(1, crudPage - 2); i <= Math.min(totalPages, crudPage + 2); i++) {
+                    html += `<button class="${i === crudPage ? 'active' : ''}" onclick="goCrudPage(${i})">${i}</button>`;
+                }
+                html += `<button onclick="goCrudPage(${crudPage + 1})" ${crudPage >= totalPages ? 'disabled' : ''}><i class="fas fa-angle-right"></i></button>`;
+                html += `<button onclick="goCrudPage(${totalPages})" ${crudPage >= totalPages ? 'disabled' : ''}><i class="fas fa-angle-double-right"></i></button>`;
+                html += `<span>${filtered.length} total</span>`;
+                pag.innerHTML = html;
+            }
+        }
+
+        window.goCrudPage = (p) => { crudPage = p; renderTable(); };
+
+        function validateField(field) {
+            const el = document.getElementById(field);
+            const val = el.value.trim();
+            const grp = el.closest('.form-group');
+            const err = document.getElementById('err' + field.charAt(0).toUpperCase() + field.slice(1));
+            let valid = true;
+            if (field === 'codigo') valid = val.length > 0;
+            else if (field === 'nombre') valid = val.length >= 3;
+            else if (field === 'precio') valid = parseFloat(val) > 0;
+            else if (field === 'stock') valid = parseInt(val) >= 0;
+            grp.classList.toggle('invalid', !valid && val.length > 0);
+            grp.classList.toggle('valid', valid && val.length > 0);
+            if (err) err.classList.toggle('visible', !valid && val.length > 0);
+            return valid || val.length === 0;
+        }
+
+        ['codigo', 'nombre', 'precio', 'stock'].forEach(f => {
+            const el = document.getElementById(f);
+            if (el) el.addEventListener('input', () => validateField(f));
+        });
+
+        function highlightRow(id) {
+            const row = document.querySelector(`tr[data-id="${id}"]`);
+            if (row) { row.classList.add('highlight'); setTimeout(() => row.classList.remove('highlight'), 1500); }
+        }
+
+        window.editProduct = (id) => {
+            const p = products.find(x => x.id === id);
+            if (!p) return;
+            editingId = id;
+            document.getElementById('productId').value = id;
+            document.getElementById('codigo').value = p.codigo;
+            document.getElementById('nombre').value = p.nombre;
+            document.getElementById('precio').value = p.precio;
+            document.getElementById('stock').value = p.stock;
+            document.getElementById('crudProductCategory').value = p.categoria;
+            document.getElementById('formTitle').innerHTML = '<i class="fas fa-edit"></i> Editar: ' + p.nombre;
+            document.getElementById('btnCancel').style.display = 'block';
+            addLog(crudConsole, `SELECT * FROM productos WHERE id = ${id} → 1 fila`, 'info');
+        };
+
+        window.deleteProduct = (id) => {
+            const p = products.find(x => x.id === id);
+            if (!p) return;
+            const row = document.querySelector(`tr[data-id="${id}"]`);
+            if (row) row.classList.add('deleting');
+            setTimeout(() => {
+                if (confirm(`¿Eliminar "${p.nombre}" ($${p.precio.toLocaleString()})?`)) {
+                    products = products.filter(x => x.id !== id);
+                    renderTable();
+                    addLog(crudConsole, `DELETE FROM productos WHERE id = ${id} → 1 row affected`, 'warn');
+                } else {
+                    renderTable();
+                }
+            }, 300);
+        };
+
+        // Sort
+        document.querySelectorAll('.crud-table th.sortable').forEach(th => {
+            th.addEventListener('click', () => {
+                const field = th.dataset.sort;
+                if (crudSort.field === field) crudSort.dir = crudSort.dir === 'asc' ? 'desc' : 'asc';
+                else { crudSort.field = field; crudSort.dir = 'asc'; }
+                document.querySelectorAll('.crud-table th .sort-icon').forEach(i => i.className = 'fas fa-sort sort-icon');
+                const icon = th.querySelector('.sort-icon');
+                if (icon) icon.className = `fas fa-sort-${crudSort.dir === 'asc' ? 'up' : 'down'} sort-icon active`;
+                renderTable();
+                addLog(crudConsole, `ORDER BY ${field} ${crudSort.dir.toUpperCase()}`, 'info');
+            });
+        });
+
+        // Check all
+        document.getElementById('checkAll')?.addEventListener('change', function() {
+            document.querySelectorAll('.crud-check').forEach(c => c.checked = this.checked);
+            updateBulkBar();
+        });
+
+        function updateBulkBar() {
+            const checked = document.querySelectorAll('.crud-check:checked');
+            const bar = document.getElementById('bulkBar');
+            document.getElementById('bulkCount').textContent = checked.length;
+            bar.classList.toggle('visible', checked.length > 0);
+        }
+
+        document.getElementById('btnBulkDelete')?.addEventListener('click', () => {
+            const checked = document.querySelectorAll('.crud-check:checked');
+            const ids = Array.from(checked).map(c => parseInt(c.value));
+            if (ids.length === 0) return;
+            if (confirm(`¿Eliminar ${ids.length} producto${ids.length > 1 ? 's' : ''}?`)) {
+                products = products.filter(p => !ids.includes(p.id));
+                renderTable();
+                addLog(crudConsole, `DELETE FROM productos WHERE id IN (${ids.join(',')}) → ${ids.length} rows affected`, 'warn');
+                document.getElementById('bulkBar').classList.remove('visible');
+                document.getElementById('checkAll').checked = false;
+            }
+        });
+
+        document.getElementById('btnBulkCancel')?.addEventListener('click', () => {
+            document.querySelectorAll('.crud-check:checked').forEach(c => c.checked = false);
+            document.getElementById('bulkBar').classList.remove('visible');
+            document.getElementById('checkAll').checked = false;
+        });
+
+        // Search & Filter
+        document.getElementById('crudSearch')?.addEventListener('input', () => { crudPage = 1; renderTable(); });
+        document.getElementById('crudCategory')?.addEventListener('change', () => { crudPage = 1; renderTable(); });
+
+        // Seed data
+        document.getElementById('btnSeedData')?.addEventListener('click', () => {
+            let added = 0;
+            for (let i = 0; i < 10; i++) {
+                const name = prodNames[Math.floor(Math.random() * prodNames.length)];
+                const cat = catNames[Math.floor(Math.random() * catNames.length)];
+                if (products.some(p => p.nombre === name)) continue;
+                products.push({
+                    id: nextId++, codigo: 'PROD-' + String(nextId).padStart(3, '0'),
+                    nombre: name, precio: Math.round(50000 + Math.random() * 2000000),
+                    stock: Math.round(Math.random() * 60), categoria: cat
+                });
+                added++;
+            }
+            renderTable();
+            addLog(crudConsole, `INSERT masivo: ${added} productos generados`, 'success');
+        });
+
+        document.getElementById('btnSave').addEventListener('click', () => {
+            const codigo = document.getElementById('codigo').value.trim();
+            const nombre = document.getElementById('nombre').value.trim();
+            const precio = parseFloat(document.getElementById('precio').value);
+            const stock = parseInt(document.getElementById('stock').value);
+            const categoria = document.getElementById('crudProductCategory').value;
+            
+            const valid = ['codigo','nombre','precio','stock'].every(f => validateField(f));
+            if (!valid || !codigo || !nombre || isNaN(precio) || isNaN(stock)) {
+                addLog(crudConsole, '⚠️ ERROR: Corrige los campos resaltados', 'warn');
+                return;
+            }
+            
+            if (editingId) {
+                const idx = products.findIndex(x => x.id === editingId);
+                products[idx] = { ...products[idx], codigo, nombre, precio, stock, categoria };
+                addLog(crudConsole, `UPDATE productos SET codigo='${codigo}', nombre='${nombre}', precio=${precio}, stock=${stock}, categoria='${categoria}' WHERE id = ${editingId}`, 'success');
+                renderTable();
+                highlightRow(editingId);
+                editingId = null;
+                document.getElementById('formTitle').innerHTML = '<i class="fas fa-plus"></i> Nuevo Producto';
+                document.getElementById('btnCancel').style.display = 'none';
+            } else {
+                const newId = nextId++;
+                products.push({ id: newId, codigo, nombre, precio, stock, categoria });
+                addLog(crudConsole, `INSERT INTO productos (codigo, nombre, precio, stock, categoria) VALUES ('${codigo}', '${nombre}', ${precio}, ${stock}, '${categoria}')`, 'success');
+                crudPage = Math.ceil(products.length / PAGE_SIZE);
+                renderTable();
+                setTimeout(() => highlightRow(newId), 100);
+            }
+            
+            ['codigo','nombre','precio','stock'].forEach(id => {
+                document.getElementById(id).value = '';
+                const grp = document.getElementById(id).closest('.form-group');
+                grp?.classList.remove('valid', 'invalid');
+            });
+        });
+
+        document.getElementById('btnCancel').addEventListener('click', () => {
+            editingId = null;
+            ['codigo','nombre','precio','stock'].forEach(id => {
+                document.getElementById(id).value = '';
+                const grp = document.getElementById(id).closest('.form-group');
+                grp?.classList.remove('valid', 'invalid');
+                const err = document.getElementById('err' + id.charAt(0).toUpperCase() + id.slice(1));
+                if (err) err.classList.remove('visible');
+            });
+            document.getElementById('formTitle').innerHTML = '<i class="fas fa-plus"></i> Nuevo Producto';
+            document.getElementById('btnCancel').style.display = 'none';
+            addLog(crudConsole, 'Operación cancelada', 'warn');
+        });
+
+        renderTable();
+
+        // SQL Injection Simulator
+        let sqlAutoDemoRunning = false;
+        let sqlAutoDemoTimer = null;
+
+        const sqlAttackPatterns = [
+            { input: '1 OR 1=1', label: 'Tautología (OR 1=1)' },
+            { input: "1 UNION SELECT * FROM productos", label: 'UNION SQL Injection' },
+            { input: "1; DROP TABLE usuarios--", label: 'DROP TABLE' },
+            { input: "' OR '1'='1", label: 'Bypass autenticación' },
+            { input: "admin'--", label: 'Comentario SQL' }
+        ];
+        let demoIndex = 0;
+
+        function resetDbTables() {
+            document.querySelectorAll('.sql-db-table').forEach(t => {
+                t.classList.remove('affected', 'safe-state');
+            });
+        }
+
+        function updateAttackResult(input) {
+            const result = document.getElementById('attackResult');
+            const sql = `SELECT * FROM usuarios WHERE id = ${input}`;
+            const isInjection = /OR|--|;|UNION|'/.test(input.toUpperCase());
+            
+            resetDbTables();
+            const dbEl = document.getElementById('dbTable-usuarios');
+            const countEl = document.getElementById('dbCount-usuarios');
+            
+            if (isInjection) {
+                if (/DROP/i.test(input)) {
+                    dbEl.classList.add('affected');
+                    result.innerHTML = `
+                        <div style="color: #ff6b6b; font-weight: 600;">⚠️ ¡VULNERABLE! Tabla ELIMINADA</div>
+                        <div style="margin-top: 6px;">SQL ejecutado:</div>
+                        <div style="color: #ffa500;word-break:break-all;">${sql}</div>
+                        <div style="margin-top: 6px;color:#ff6b6b;">🔥 La tabla <strong>usuarios</strong> ha sido eliminada</div>
+                    `;
+                    countEl.textContent = '❌';
+                } else if (/UNION/i.test(input)) {
+                    dbEl.classList.add('affected');
+                    document.getElementById('dbTable-productos').classList.add('affected');
+                    result.innerHTML = `
+                        <div style="color: #ff6b6b; font-weight: 600;">⚠️ ¡VULNERABLE! Fuga de datos</div>
+                        <div style="margin-top: 6px;">SQL ejecutado:</div>
+                        <div style="color: #ffa500;word-break:break-all;">${sql}</div>
+                        <div style="margin-top: 6px;color:#ff6b6b;">📦 Se filtraron datos de la tabla <strong>productos</strong></div>
+                    `;
+                    countEl.textContent = '5 + 12';
+                } else {
+                    dbEl.classList.add('affected');
+                    result.innerHTML = `
+                        <div style="color: #ff6b6b; font-weight: 600;">⚠️ ¡VULNERABLE! Ataque exitoso</div>
+                        <div style="margin-top: 6px;">SQL ejecutado:</div>
+                        <div style="color: #ffa500;word-break:break-all;">${sql}</div>
+                        <div style="margin-top: 6px;">Resultado: Se devuelven TODOS los registros</div>
+                    `;
+                    countEl.textContent = 'TODOS';
+                }
+            } else {
+                dbEl.classList.add('safe-state');
+                result.innerHTML = `
+                    <div style="color: #4dd0a8;">SQL ejecutado:</div>
+                    <div style="word-break:break-all;">${sql}</div>
+                    <div style="margin-top: 6px;">Resultado: 1 fila devuelta (operación normal)</div>
+                `;
+            }
+        }
+
+        function updateSafeResult(input) {
+            const result = document.getElementById('safeResult');
+            const paramBind = document.getElementById('paramBind');
+            const paramSteps = document.getElementById('paramSteps');
+            
+            result.innerHTML = `
+                <div style="color: #4dd0a8; font-weight: 600;">✓ SEGURO — PreparedStatement</div>
+                <div style="margin-top: 6px;">SQL preparado:</div>
+                <div style="color: #4dd0a8;">SELECT * FROM usuarios WHERE id = ?</div>
+                <div style="margin-top: 6px;color:var(--text-muted);">⬇ El input se envía como <strong>dato literal</strong>, no como SQL</div>
+                <div style="margin-top: 6px; color: #4dd0a8;">✓ 0 filas devueltas (id="${input}" no encontrado)</div>
+            `;
+
+            resetDbTables();
+            document.getElementById('dbTable-usuarios').classList.add('safe-state');
+
+            paramBind.classList.add('visible');
+            paramSteps.innerHTML = [
+                '<div class="sql-param-step visible">1. PreparedStatement ps = conn.prepareStatement(<span style="color:#a6e3a1;">"SELECT * FROM usuarios WHERE id = ?"</span>);</div>',
+                '<div class="sql-param-step visible">2. ps.setString(1, <span style="color:#f59e0b;">"' + input.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '"</span>);  <span style="color:#6c7086;">// El motor escapa automáticamente</span></div>',
+                '<div class="sql-param-step visible" style="color:#4dd0a8;">3. ps.executeQuery() → Busca literal <strong>"' + input.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '"</strong> sin interpretar SQL</div>'
+            ].join('');
+        }
+
+        document.getElementById('btnAttack').addEventListener('click', () => {
+            updateAttackResult(document.getElementById('attackInput').value);
+        });
+        document.getElementById('attackInput').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') updateAttackResult(e.target.value);
+        });
+
+        document.getElementById('btnSafe').addEventListener('click', () => {
+            updateSafeResult(document.getElementById('safeInput').value);
+        });
+        document.getElementById('safeInput').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') updateSafeResult(e.target.value);
+        });
+
+        // Auto demo
+        document.getElementById('btnAutoDemo').addEventListener('click', function() {
+            if (sqlAutoDemoRunning) {
+                clearInterval(sqlAutoDemoTimer);
+                sqlAutoDemoRunning = false;
+                this.innerHTML = '<i class="fas fa-play"></i> Demo Automática';
+                this.classList.remove('active-demo');
+                return;
+            }
+            sqlAutoDemoRunning = true;
+            this.innerHTML = '<i class="fas fa-stop"></i> Detener Demo';
+            this.classList.add('active-demo');
+            
+            const runDemoStep = () => {
+                const pattern = sqlAttackPatterns[demoIndex % sqlAttackPatterns.length];
+                demoIndex++;
+                document.getElementById('attackInput').value = pattern.input;
+                document.getElementById('safeInput').value = pattern.input;
+                updateAttackResult(pattern.input);
+                setTimeout(() => updateSafeResult(pattern.input), 400);
+            };
+            
+            runDemoStep();
+            sqlAutoDemoTimer = setInterval(runDemoStep, 3500);
+        });
+
+        // Servlet Lifecycle
+        const btnLifecycle = document.getElementById('btnLifecycle');
+        const btnResetLifecycle = document.getElementById('btnResetLifecycle');
+        const lifecycleConsole = document.getElementById('lifecycleConsole');
+        const statusIndicator = document.getElementById('statusIndicator');
+        const statusText = document.getElementById('statusText');
+        const requestCount = document.getElementById('requestCount');
+        const serviceRequestCount = document.getElementById('serviceRequestCount');
+        const requestSimulator = document.getElementById('requestSimulator');
+        const codePanel = document.getElementById('codePanel');
+        const speedSlider = document.getElementById('speedSlider');
+        const speedLabel = document.getElementById('speedLabel');
+        const lifecycleProgress = document.getElementById('lifecycleProgress');
+        const threadContainer = document.getElementById('threadContainer');
+        const queueItems = document.getElementById('queueItems');
+        
+        const lifeSteps = ['life-1', 'life-2', 'life-3', 'life-4'];
+        const arrows = ['arrow-1', 'arrow-2', 'arrow-3'];
+        
+        let animationSpeed = 1;
+        let requestCounter = 0;
+        let serviceCounter = 0;
+        let isRunning = false;
+        let queuedRequests = [];
+
+        speedSlider.addEventListener('input', (e) => {
+            animationSpeed = parseFloat(e.target.value);
+            speedLabel.textContent = animationSpeed + 'x';
+        });
+
+        function updateProgress(pct) {
+            lifecycleProgress.style.width = pct + '%';
+        }
+
+        function occupyThread(id) {
+            const threads = threadContainer.querySelectorAll('.thread-item');
+            if (threads[id]) {
+                threads[id].classList.remove('idle');
+                threads[id].classList.add('busy');
+            }
+        }
+
+        function releaseThread(id) {
+            const threads = threadContainer.querySelectorAll('.thread-item');
+            if (threads[id]) {
+                threads[id].classList.remove('busy');
+                threads[id].classList.add('idle');
+            }
+        }
+
+        function addToQueue(label) {
+            const el = document.createElement('span');
+            el.className = 'queue-item';
+            el.textContent = label;
+            queueItems.appendChild(el);
+            setTimeout(() => el.remove(), 2000);
+        }
+
+        const codeSnippets = {
+            constructor: [
+                '<span class="code-keyword">public class</span> ProductoServlet <span class="code-keyword">extends</span> HttpServlet {',
+                '    <span class="code-comment">// 1. CONSTRUCTOR - Se crea la instancia</span>',
+                '    <span class="code-keyword">public</span> <span class="code-method">ProductoServlet</span>() {',
+                '        System.out.println(<span class="code-string">"Servlet creado"</span>);',
+                '    }',
+                '}'
+            ],
+            init: [
+                '<span class="code-keyword">public class</span> ProductoServlet <span class="code-keyword">extends</span> HttpServlet {',
+                '    <span class="code-keyword">private</span> List&lt;Producto&gt; productos;',
+                '',
+                '    <span class="code-comment">// 2. INIT() - Se ejecuta UNA SOLA VEZ</span>',
+                '    <span class="code-keyword">@Override</span>',
+                '    <span class="code-keyword">public void</span> <span class="code-method">init</span>() <span class="code-keyword">throws</span> ServletException {',
+                '        productos = <span class="code-keyword">new</span> ArrayList&lt;&gt;();',
+                '        System.out.println(<span class="code-string">"Inicializando Servlet"</span>);',
+                '    }',
+                '}'
+            ],
+            service: [
+                '<span class="code-keyword">public class</span> ProductoServlet <span class="code-keyword">extends</span> HttpServlet {',
+                '    <span class="code-comment">// 3. SERVICE() - Atiende CADA petición</span>',
+                '    <span class="code-keyword">@Override</span>',
+                '    <span class="code-keyword">protected void</span> <span class="code-method">doGet</span>(HttpServletRequest req, HttpServletResponse resp) {',
+                '        <span class="code-comment">// Listar productos</span>',
+                '        req.setAttribute(<span class="code-string">"productos"</span>, productos);',
+                '        req.getRequestDispatcher(<span class="code-string">"productos.jsp"</span>).forward(req, resp);',
+                '    }',
+                '',
+                '    <span class="code-keyword">@Override</span>',
+                '    <span class="code-keyword">protected void</span> <span class="code-method">doPost</span>(HttpServletRequest req, HttpServletResponse resp) {',
+                '        <span class="code-comment">// Guardar producto</span>',
+                '        productos.add(<span class="code-keyword">new</span> Producto(req.getParameter(<span class="code-string">"nombre"</span>)));',
+                '    }',
+                '}'
+            ],
+            destroy: [
+                '<span class="code-keyword">public class</span> ProductoServlet <span class="code-keyword">extends</span> HttpServlet {',
+                '    <span class="code-comment">// 4. DESTROY() - Limpieza final</span>',
+                '    <span class="code-keyword">@Override</span>',
+                '    <span class="code-keyword">public void</span> <span class="code-method">destroy</span>() {',
+                '        productos.clear();',
+                '        System.out.println(<span class="code-string">"Servlet destruido"</span>);',
+                '    }',
+                '}'
+            ]
+        };
+
+        function updateCodePanel(phase) {
+            const lines = codeSnippets[phase];
+            codePanel.innerHTML = lines.map((line, i) => 
+                `<div class="code-line" style="animation: fadeIn 0.3s ease ${i * 0.05}s both;">${line}</div>`
+            ).join('');
+        }
+
+        function setStatus(text, active) {
+            statusText.textContent = text;
+            if (active) {
+                statusIndicator.classList.add('active');
+            } else {
+                statusIndicator.classList.remove('active');
+            }
+        }
+
+        function activateArrow(index) {
+            arrows.forEach((arrow, i) => {
+                const el = document.getElementById(arrow);
+                if (i === index) {
+                    el.classList.add('active');
+                } else {
+                    el.classList.remove('active');
+                }
+            });
+        }
+
+        function clearArrows() {
+            arrows.forEach(arrow => {
+                document.getElementById(arrow).classList.remove('active');
+            });
+        }
+
+        function processRequest(method, path) {
+            if (!isRunning) return;
+            
+            serviceCounter++;
+            requestCounter++;
+            const threadId = (serviceCounter - 1) % 5;
+            
+            serviceRequestCount.textContent = serviceCounter;
+            requestCount.textContent = requestCounter;
+            addToQueue(`${method}`);
+            
+            const methodColors = { GET: 'success', POST: 'warning', PUT: 'info', DELETE: 'danger' };
+            const methodMap = { GET: 'doGet()', POST: 'doPost()', PUT: 'doPut()', DELETE: 'doDelete()' };
+            
+            occupyThread(threadId);
+            
+            setTimeout(() => {
+                addLog(lifecycleConsole, 
+                    `Petición ${serviceCounter}: ${method} ${path} → ${methodMap[method] || 'service()'} [Thread-${threadId + 1}]`, 
+                    methodColors[method] || 'info');
+                
+                const step3 = document.getElementById('life-3');
+                step3.style.transform = 'scale(1.12)';
+                step3.style.boxShadow = '0 6px 24px rgba(0, 102, 74, 0.4)';
+                setTimeout(() => {
+                    step3.style.transform = 'scale(1.08)';
+                    step3.style.boxShadow = '0 6px 20px rgba(0, 102, 74, 0.25)';
+                    releaseThread(threadId);
+                }, 400);
+            }, 200);
+        }
+
+        window.sendRequest = function(method, path) {
+            processRequest(method, path);
+        };
+
+        window.sendCustomRequest = function() {
+            const method = document.getElementById('customMethod').value;
+            let path = document.getElementById('customPath').value.trim();
+            if (!path) path = '/productos';
+            if (!path.startsWith('/')) path = '/' + path;
+            processRequest(method, path);
+        };
+
+        async function runLifecycle() {
+            if (isRunning) return;
+            isRunning = true;
+            
+            btnLifecycle.style.display = 'none';
+            btnResetLifecycle.style.display = 'none';
+            
+            lifeSteps.forEach(s => {
+                const el = document.getElementById(s);
+                el.classList.remove('active', 'completed');
+            });
+            clearArrows();
+            lifecycleConsole.innerHTML = '';
+            serviceCounter = 0;
+            serviceRequestCount.textContent = '0';
+            requestCount.textContent = '0';
+            updateProgress(0);
+            
+            const delay = (ms) => new Promise(r => setTimeout(r, ms / animationSpeed));
+            
+            setStatus('Creando instancia del Servlet...', true);
+            document.getElementById('life-1').classList.add('active');
+            updateCodePanel('constructor');
+            addLog(lifecycleConsole, '1. Constructor() - Se crea la instancia del Servlet', 'info');
+            updateProgress(10);
+            await delay(1200);
+            document.getElementById('life-1').classList.add('completed');
+            document.getElementById('life-1').classList.remove('active');
+            
+            activateArrow(0);
+            await delay(300);
+            clearArrows();
+            
+            setStatus('Inicializando Servlet...', true);
+            document.getElementById('life-2').classList.add('active');
+            updateCodePanel('init');
+            addLog(lifecycleConsole, '2. init() - Inicialización: cargar configuración, abrir conexiones', 'info');
+            updateProgress(30);
+            await delay(1200);
+            document.getElementById('life-2').classList.add('completed');
+            document.getElementById('life-2').classList.remove('active');
+            
+            activateArrow(1);
+            await delay(300);
+            clearArrows();
+            
+            setStatus('Servlet ACTIVO - Listo para atender peticiones', true);
+            document.getElementById('life-3').classList.add('active');
+            updateCodePanel('service');
+            addLog(lifecycleConsole, '3. service() - Servlet listo para atender peticiones HTTP', 'success');
+            updateProgress(50);
+            
+            requestSimulator.classList.add('visible');
+            
+            await delay(600);
+            addLog(lifecycleConsole, '   → Envía peticiones manuales o espera la demo automática', 'info');
+            
+            await delay(2500);
+            
+            if (serviceCounter === 0) {
+                addLog(lifecycleConsole, '   Demo: GET /productos → doGet() [Thread-1]', 'success');
+                processRequest('GET', '/productos');
+                await delay(600);
+            }
+            
+            if (serviceCounter < 2) {
+                addLog(lifecycleConsole, '   Demo: POST /productos → doPost() [Thread-2]', 'warning');
+                processRequest('POST', '/productos');
+                await delay(600);
+            }
+            
+            if (serviceCounter < 3) {
+                addLog(lifecycleConsole, '   Demo: DELETE /productos/1 → doDelete() [Thread-3]', 'danger');
+                processRequest('DELETE', '/productos/1');
+                await delay(600);
+            }
+
+            if (serviceCounter < 4) {
+                addLog(lifecycleConsole, '   Demo: PUT /productos/1 → doPut() [Thread-4]', 'info');
+                processRequest('PUT', '/productos/1');
+                await delay(600);
+            }
+            
+            document.getElementById('life-3').classList.add('completed');
+            document.getElementById('life-3').classList.remove('active');
+            updateProgress(80);
+            requestSimulator.classList.remove('visible');
+            
+            activateArrow(2);
+            await delay(300);
+            clearArrows();
+            
+            setStatus('Deteniendo Servlet...', false);
+            document.getElementById('life-4').classList.add('active');
+            updateCodePanel('destroy');
+            addLog(lifecycleConsole, '4. destroy() - Limpieza: cerrar conexiones, liberar recursos', 'info');
+            updateProgress(95);
+            await delay(1200);
+            document.getElementById('life-4').classList.add('completed');
+            document.getElementById('life-4').classList.remove('active');
+            
+            setStatus('Servlet destruido - Ciclo completado', false);
+            updateProgress(100);
+            addLog(lifecycleConsole, `✓ Ciclo completado. Total peticiones atendidas: ${requestCounter}`, 'success');
+            
+            btnResetLifecycle.style.display = 'inline-flex';
+            isRunning = false;
+        }
+
+        function resetLifecycle() {
+            lifeSteps.forEach(s => {
+                const el = document.getElementById(s);
+                el.classList.remove('active', 'completed');
+            });
+            clearArrows();
+            lifecycleConsole.innerHTML = `
+                <div class="console-line">
+                    <span class="timestamp">[00:00:00]</span>
+                    <span class="level-info">INFO</span>
+                    Presiona "Iniciar Ciclo" para ver el ciclo de vida.
+                </div>
+            `;
+            statusIndicator.classList.remove('active');
+            statusText.textContent = 'Servlet inactivo';
+            requestCount.textContent = '0';
+            serviceRequestCount.textContent = '0';
+            requestSimulator.classList.remove('visible');
+            codePanel.innerHTML = '<div class="code-line"><span class="code-comment">// El código del Servlet aparecerá aquí</span></div>';
+            btnResetLifecycle.style.display = 'none';
+            btnLifecycle.style.display = 'inline-flex';
+            requestCounter = 0;
+            serviceCounter = 0;
+            updateProgress(0);
+            threadContainer.querySelectorAll('.thread-item').forEach(t => {
+                t.classList.remove('busy');
+                t.classList.add('idle');
+            });
+            queueItems.innerHTML = '';
+            isRunning = false;
+        }
+
+        if (btnLifecycle) btnLifecycle.addEventListener('click', runLifecycle);
+        if (btnResetLifecycle) btnResetLifecycle.addEventListener('click', resetLifecycle);
+
+        // JDBC vs ORM Interactive
+        const ormCodeExamples = {
+            jdbc: [
+                {line: 'public class ProductoDAO {', count: 'L1'},
+                {line: '    public List&lt;Producto&gt; listar() {', count: 'L2'},
+                {line: '        String sql = "SELECT * FROM productos";', count: 'L3'},
+                {line: '        try (Connection conn = ConexionDB.conectar();', count: 'L4'},
+                {line: '             Statement stmt = conn.createStatement()) {', count: 'L5'},
+                {line: '            ResultSet rs = stmt.executeQuery(sql);', count: 'L6'},
+                {line: '            List&lt;Producto&gt; lista = new ArrayList&lt;&gt;();', count: 'L7'},
+                {line: '            while (rs.next()) {', count: 'L8'},
+                {line: '                Producto p = new Producto();', count: 'L9'},
+                {line: '                p.setId(rs.getInt("id"));', count: 'L10'},
+                {line: '                p.setCodigo(rs.getString("codigo"));', count: 'L11'},
+                {line: '                p.setNombre(rs.getString("nombre"));', count: 'L12'},
+                {line: '                p.setPrecio(rs.getBigDecimal("precio"));', count: 'L13'},
+                {line: '                lista.add(p);', count: 'L14'},
+                {line: '            }', count: 'L15'},
+                {line: '            return lista;', count: 'L16'},
+                {line: '        } catch (SQLException e) {', count: 'L17'},
+                {line: '            throw new RuntimeException(e);', count: 'L18'},
+                {line: '        }', count: 'L19'},
+                {line: '    }', count: 'L20'},
+                {line: '', count: ''},
+                {line: '    public boolean insertar(Producto p) {', count: 'L21'},
+                {line: '        String sql = "INSERT INTO productos (codigo, nombre, precio) VALUES (?, ?, ?)";', count: 'L22'},
+                {line: '        try (Connection conn = ConexionDB.conectar();', count: 'L23'},
+                {line: '             PreparedStatement ps = conn.prepareStatement(sql)) {', count: 'L24'},
+                {line: '            ps.setString(1, p.getCodigo());', count: 'L25'},
+                {line: '            ps.setString(2, p.getNombre());', count: 'L26'},
+                {line: '            ps.setBigDecimal(3, p.getPrecio());', count: 'L27'},
+                {line: '            return ps.executeUpdate() > 0;', count: 'L28'},
+                {line: '        } catch (SQLException e) {', count: 'L29'},
+                {line: '            throw new RuntimeException(e);', count: 'L30'},
+                {line: '        }', count: 'L31'},
+                {line: '    }', count: 'L32'},
+                {line: '', count: ''},
+                {line: '    public boolean actualizar(Producto p) {', count: 'L33'},
+                {line: '        String sql = "UPDATE productos SET codigo=?, nombre=?, precio=? WHERE id=?";', count: 'L34'},
+                {line: '        try { /* PreparedStatement con 4 params */ }', count: 'L35'},
+                {line: '    }', count: 'L36'},
+                {line: '', count: ''},
+                {line: '    public boolean eliminar(int id) {', count: 'L37'},
+                {line: '        String sql = "DELETE FROM productos WHERE id=?";', count: 'L38'},
+                {line: '        try (PreparedStatement ps = conn.prepareStatement(sql)) {', count: 'L39'},
+                {line: '            ps.setInt(1, id);', count: 'L40'},
+                {line: '            return ps.executeUpdate() > 0;', count: 'L41'},
+                {line: '        }', count: 'L42'},
+                {line: '    }', count: 'L43'},
+                {line: '}', count: 'L44'}
+            ],
+            orm: [
+                {line: '@Entity', count: 'L1'},
+                {line: '@Table(name = "productos")', count: 'L2'},
+                {line: 'public class Producto {', count: 'L3'},
+                {line: '    @Id @GeneratedValue', count: 'L4'},
+                {line: '    private Long id;', count: 'L5'},
+                {line: '    private String codigo;', count: 'L6'},
+                {line: '    private String nombre;', count: 'L7'},
+                {line: '    private BigDecimal precio;', count: 'L8'},
+                {line: '    // Getters y setters...', count: 'L9'},
+                {line: '}', count: 'L10'},
+                {line: '', count: ''},
+                {line: 'public interface ProductoRepository extends JpaRepository&lt;Producto, Long&gt; {', count: 'L11'},
+                {line: '    // CRUD automático listo!', count: 'L12'},
+                {line: '}', count: 'L13'},
+                {line: '', count: ''},
+                {line: '// Uso:', count: ''},
+                {line: 'List&lt;Producto&gt; lista = repo.findAll();  // SELECT automático', count: 'L14'},
+                {line: 'repo.save(producto);                    // INSERT automático', count: 'L15'},
+                {line: 'repo.save(producto);                    // UPDATE automático', count: 'L16'},
+                {line: 'repo.deleteById(1L);                    // DELETE automático', count: 'L17'}
+            ]
+        };
+
+        function renderOrmCode(type, panelId) {
+            const panel = document.getElementById(panelId);
+            const lines = type === 'jdbc' ? ormCodeExamples.jdbc : ormCodeExamples.orm;
+            panel.innerHTML = lines.map(l => 
+                `<div><span class="line-count">${l.count}</span>${l.line || ''}</div>`
+            ).join('');
+        }
+
+        renderOrmCode('jdbc', 'jdbcCodePanel');
+        renderOrmCode('orm', 'ormCodePanel');
+
+        function animateOrmBars(jdbcPct, ormPct) {
+            const jdbcBar = document.getElementById('jdbcBar');
+            const ormBar = document.getElementById('ormBar');
+            if (jdbcBar) jdbcBar.style.width = jdbcPct + '%';
+            if (ormBar) ormBar.style.width = ormPct + '%';
+        }
+
+        // ORM Focus buttons
+        document.getElementById('btnJdbcFocus')?.addEventListener('click', function() {
+            document.querySelectorAll('.orm-toggle-bar .btn').forEach(b => {
+                b.className = 'btn btn-outline';
+            });
+            this.className = 'btn btn-primary';
+            document.getElementById('ormCodeComparison').style.gridTemplateColumns = '1fr 0fr';
+            document.getElementById('ormCodePanel').style.display = 'none';
+            document.getElementById('jdbcCodePanel').style.display = 'block';
+            document.getElementById('jdbcCodePanel').style.maxHeight = '300px';
+            animateOrmBars(100, 27);
+        });
+
+        document.getElementById('btnOrmFocus')?.addEventListener('click', function() {
+            document.querySelectorAll('.orm-toggle-bar .btn').forEach(b => {
+                b.className = 'btn btn-outline';
+            });
+            this.className = 'btn btn-primary';
+            document.getElementById('ormCodeComparison').style.gridTemplateColumns = '0fr 1fr';
+            document.getElementById('jdbcCodePanel').style.display = 'none';
+            document.getElementById('ormCodePanel').style.display = 'block';
+            document.getElementById('ormCodePanel').style.maxHeight = '300px';
+            animateOrmBars(100, 27);
+        });
+
+        document.getElementById('btnCompareFocus')?.addEventListener('click', function() {
+            document.querySelectorAll('.orm-toggle-bar .btn').forEach(b => {
+                b.className = 'btn btn-outline';
+            });
+            this.className = 'btn btn-primary';
+            document.getElementById('ormCodeComparison').style.gridTemplateColumns = '1fr 1fr';
+            document.getElementById('jdbcCodePanel').style.display = 'block';
+            document.getElementById('ormCodePanel').style.display = 'block';
+            document.getElementById('jdbcCodePanel').style.maxHeight = '300px';
+            document.getElementById('ormCodePanel').style.maxHeight = '300px';
+            animateOrmBars(100, 27);
+        });
+
+        // Trigger compare on load
+        document.getElementById('btnCompareFocus')?.click();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.min.js"></script>
+    <script src="js/simuladores-jsp.js"></script>
+    <script>
+    // Toast system and focus mode for simuladores
+    document.addEventListener('DOMContentLoaded', function() {
+        // Toast container
+        var tc = document.createElement('div');
+        tc.className = 'toast-container';
+        tc.style.cssText = 'position:fixed;top:20px;right:20px;z-index:99999;display:flex;flex-direction:column;gap:8px;pointer-events:none';
+        document.body.appendChild(tc);
+
+        window.showSimToast = function(msg, type) {
+            type = type || 'success';
+            var icons = {success:'check-circle', info:'info-circle', warning:'exclamation-triangle', error:'times-circle'};
+            var t = document.createElement('div');
+            t.style.cssText = 'display:flex;align-items:center;gap:10px;padding:12px 18px;background:var(--bg);border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.15);border:1px solid var(--border);pointer-events:auto;animation:toastIn 0.4s cubic-bezier(0.68,-0.55,0.265,1.55);max-width:380px;font-size:0.85rem;color:var(--text);font-weight:500;position:relative;overflow:hidden';
+            var iconColor = type === 'success' ? '#16a34a' : type === 'info' ? '#0284c7' : type === 'warning' ? '#f59e0b' : '#dc2626';
+            t.innerHTML = '<div style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;flex-shrink:0;background:' + iconColor + '1a;color:' + iconColor + '"><i class="fas fa-' + icons[type] + '"></i></div><span style="flex:1">' + msg + '</span><div style="position:absolute;bottom:0;left:0;height:3px;border-radius:0 0 12px 12px;background:' + iconColor + ';animation:toastProgress 4s linear forwards;width:100%"></div>';
+            tc.appendChild(t);
+            setTimeout(function() { t.style.transform = 'translateX(120%)'; t.style.opacity = '0'; t.style.transition = 'all 0.3s ease'; setTimeout(function() { if(t.parentNode) t.parentNode.removeChild(t); }, 300); }, 4000);
+        };
+
+        // Focus mode for code blocks
+        document.querySelectorAll('.code-block').forEach(function(block) {
+            var header = block.querySelector('.code-header') || block.querySelector('[style*="background:var(--code-bg)"]');
+            if (!header || block.querySelector('.focus-toggle-btn')) return;
+            var btn = document.createElement('button');
+            btn.innerHTML = '<i class="fas fa-expand"></i>';
+            btn.style.cssText = 'padding:4px 10px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:4px;color:rgba(255,255,255,0.5);font-size:0.65rem;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;gap:4px;font-family:Inter,sans-serif;margin-left:auto';
+            btn.title = 'Modo enfoque';
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                var active = block.classList.contains('focus-mode');
+                var ov = document.getElementById('codeOverlay');
+                if (active) {
+                    block.classList.remove('focus-mode');
+                    block.style.position = '';
+                    block.style.top = '';
+                    block.style.left = '';
+                    block.style.transform = '';
+                    block.style.width = '';
+                    block.style.maxHeight = '';
+                    block.style.zIndex = '';
+                    block.style.boxShadow = '';
+                    block.style.border = '';
+                    btn.innerHTML = '<i class="fas fa-expand"></i>';
+                    if (ov) { ov.style.opacity = '0'; ov.style.pointerEvents = 'none'; }
+                    document.body.style.overflow = '';
+                } else {
+                    if (!ov) {
+                        ov = document.createElement('div');
+                        ov.id = 'codeOverlay';
+                        ov.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);z-index:10000;opacity:0;pointer-events:none;transition:opacity 0.3s ease';
+                        document.body.appendChild(ov);
+                    }
+                    block.style.position = 'fixed';
+                    block.style.top = '50%';
+                    block.style.left = '50%';
+                    block.style.transform = 'translate(-50%,-50%) scale(1)';
+                    block.style.width = 'min(90vw,1000px)';
+                    block.style.maxHeight = '80vh';
+                    block.style.zIndex = '10001';
+                    block.style.boxShadow = '0 20px 80px rgba(0,0,0,0.5)';
+                    block.style.border = '2px solid var(--primary, #00664a)';
+                    block.style.overflow = 'auto';
+                    block.classList.add('focus-mode');
+                    btn.innerHTML = '<i class="fas fa-compress"></i>';
+                    ov.style.opacity = '1';
+                    ov.style.pointerEvents = 'auto';
+                    document.body.style.overflow = 'hidden';
+                    ov.addEventListener('click', function() { btn.click(); }, {once: true});
+                }
+            });
+            header.appendChild(btn);
+        });
+
+        // Keyboard shortcut hint
+        console.log('%c🎮 Simuladores JSP | ? para atajos', 'font-size:14px;font-weight:bold;color:#00664a');
+    });
+    </script>
+    <nav class="mobile-page-nav" style="display:none;position:fixed;bottom:0;left:0;right:0;background:var(--bg);border-top:1px solid var(--border);padding:8px 16px;z-index:999;justify-content:space-around;gap:4px;box-shadow:0 -4px 12px rgba(0,0,0,0.08)">
+        <a href="index.html" class="mobile-page-nav-link" style="display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 12px;border-radius:6px;text-decoration:none;color:var(--text-muted);font-size:0.65rem;font-weight:600"><i class="fab fa-java" style="font-size:1.1rem"></i><span>JSP</span></a>
+        <a href="flutter-guide.html" class="mobile-page-nav-link" style="display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 12px;border-radius:6px;text-decoration:none;color:var(--text-muted);font-size:0.65rem;font-weight:600"><i class="fab fa-flutter" style="font-size:1.1rem"></i><span>Flutter</span></a>
+        <a href="simuladores.html" class="mobile-page-nav-link" style="display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 12px;border-radius:6px;text-decoration:none;color:var(--primary);font-size:0.65rem;font-weight:600;background:rgba(0,102,74,0.06)"><i class="fas fa-flask" style="font-size:1.1rem"></i><span>Labs</span></a>
+    </nav>
+    <script>
+    if (window.innerWidth <= 768) {
+        document.querySelector('.mobile-page-nav').style.display = 'flex';
+    }
+    window.scrollTo(0, 0);
+    </script>
+</body>
+</html>

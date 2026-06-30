@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    ============================================
+    POM.XML - SISTEMA DE INVENTARIO JSP MVC
+    Autor: SENA ADSO
+    Descripción: Configuración Maven para el proyecto
+    de inventario con JSP, Jakarta EE y PostgreSQL
+    ============================================
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- ============================================
+         INFORMACIÓN DEL PROYECTO
+         ============================================ -->
+    <groupId>com.sena.inventario</groupId>
+    <artifactId>inventario-mvc</artifactId>
+    <version>1.0</version>
+    <packaging>war</packaging>
+
+    <name>Sistema de Inventario MVC</name>
+    <description>
+        Aplicación web de inventario desarrollada con JSP, 
+        patrón MVC, Jakarta EE 10 y JDK 21
+    </description>
+    <url>https://github.com/sena-adso/inventario-mvc</url>
+
+    <!-- ============================================
+         PROPIEDADES DEL PROYECTO
+         ============================================ -->
+    <properties>
+        <!-- Codificación -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        
+        <!-- Versiones de dependencias -->
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <jakarta.servlet.version>6.0.0</jakarta.servlet.version>
+        <jakarta.jsp.version>3.1.1</jakarta.jsp.version>
+        <jakarta.jstl.version>3.0.0</jakarta.jstl.version>
+        <postgresql.version>42.7.1</postgresql.version>
+        <bcrypt.version>0.10.2</bcrypt.version>
+        
+        <!-- Versiones de plugins -->
+        <maven.war.plugin.version>3.4.0</maven.war.plugin.version>
+        <maven.compiler.plugin.version>3.12.1</maven.compiler.plugin.version>
+    </properties>
+
+    <!-- ============================================
+         DEPENDENCIAS DEL PROYECTO
+         ============================================ -->
+    <dependencies>
+        
+        <!-- Jakarta Servlet API (proporcionada por Tomcat) -->
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>${jakarta.servlet.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Jakarta JSP API (proporcionada por Tomcat) -->
+        <dependency>
+            <groupId>jakarta.servlet.jsp</groupId>
+            <artifactId>jakarta.servlet.jsp-api</artifactId>
+            <version>${jakarta.jsp.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Jakarta JSTL (JSP Standard Tag Library) -->
+        <dependency>
+            <groupId>jakarta.servlet.jsp.jstl</groupId>
+            <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+            <version>${jakarta.jstl.version}</version>
+        </dependency>
+
+        <!-- Implementación de JSTL (GlassFish) -->
+        <dependency>
+            <groupId>org.glassfish.web</groupId>
+            <artifactId>jakarta.servlet.jsp.jstl</artifactId>
+            <version>${jakarta.jstl.version}</version>
+        </dependency>
+
+        <!-- PostgreSQL JDBC Driver -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+        </dependency>
+
+        <!-- BCrypt para encriptación de contraseñas -->
+        <dependency>
+            <groupId>at.favre.lib</groupId>
+            <artifactId>bcrypt</artifactId>
+            <version>${bcrypt.version}</version>
+        </dependency>
+
+    </dependencies>
+
+    <!-- ============================================
+         CONFIGURACIÓN DE BUILD
+         ============================================ -->
+    <build>
+        <!-- Nombre final del archivo WAR -->
+        <finalName>${project.artifactId}-${project.version}</finalName>
+        
+        <plugins>
+            
+            <!-- Plugin de compilación de Java -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin.version}</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+
+            <!-- Plugin de empaquetado WAR -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>${maven.war.plugin.version}</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
+
+            <!-- Plugin Cargo para automatizar la descarga y ejecución de Tomcat 10 -->
+            <plugin>
+                <groupId>org.codehaus.cargo</groupId>
+                <artifactId>cargo-maven3-plugin</artifactId>
+                <version>1.10.11</version>
+                <configuration>
+                    <container>
+                        <containerId>tomcat10x</containerId>
+                        <type>installed</type>
+                        <zipUrlInstaller>
+                            <url>https://repo1.maven.org/maven2/org/apache/tomcat/tomcat/10.1.18/tomcat-10.1.18.zip</url>
+                            <downloadDir>${settings.localRepository}/org/codehaus/cargo/downloads</downloadDir>
+                            <extractDir>${project.build.directory}/tomcat</extractDir>
+                        </zipUrlInstaller>
+                    </container>
+                    <configuration>
+                        <properties>
+                            <cargo.servlet.port>8080</cargo.servlet.port>
+                        </properties>
+                    </configuration>
+                </configuration>
+            </plugin>
+
+        </plugins>
+        
+        <!-- Recursos -->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
+
+</project>

@@ -1,0 +1,786 @@
+# =============================================================================
+# Especificación OpenAPI 3.0.3 — API de Inventario
+# =============================================================================
+# Esta especificación describe los endpoints REST del sistema de inventario
+# para el proyecto guía SENA ADSO. Es consumida por la app Flutter para
+# generar el cliente HTTP de forma automatizada.
+#
+# Servidor base: http://localhost:8000/api
+# Formato autenticación: Bearer JWT
+# =============================================================================
+
+openapi: "3.0.3"
+
+# ---------------------------------------------------------------------------
+# Información general de la API
+# ---------------------------------------------------------------------------
+info:
+  title: "API de Inventario"
+  version: "1.0.0"
+  description: >
+    API REST para gestión de inventario - Microservicios.
+    Proporciona operaciones CRUD para productos, usuarios y roles,
+    con autenticación mediante JWT y paginación en listados.
+
+# ---------------------------------------------------------------------------
+# Servidores disponibles
+# ---------------------------------------------------------------------------
+servers:
+  - url: "http://localhost:8000/api"
+    description: "Servidor de desarrollo local"
+
+# =============================================================================
+# Rutas (paths)
+# =============================================================================
+paths:
+
+  # ---------------------------------------------------------------------------
+  # Autenticación
+  # ---------------------------------------------------------------------------
+
+  # POST /auth/login — Inicio de sesión
+  /auth/login:
+    post:
+      tags: [auth]
+      operationId: login
+      summary: "Iniciar sesión"
+      description: >
+        Autentica un usuario con username y password.
+        Retorna un token JWT junto con los datos del usuario autenticado.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        "200":
+          description: "Autenticación exitosa — retorna JWT y datos del usuario"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "401":
+          description: "Credenciales inválidas"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # POST /auth/register — Registro de nuevo usuario
+  /auth/register:
+    post:
+      tags: [auth]
+      operationId: registerUser
+      summary: "Registrar usuario"
+      description: >
+        Crea un nuevo usuario en el sistema. La contraseña se hashea
+        con BCrypt antes de almacenarse.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterRequest"
+      responses:
+        "201":
+          description: "Usuario registrado exitosamente"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Usuario"
+        "400":
+          description: "El username o email ya existe en el sistema"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # GET /auth/me — Perfil del usuario autenticado
+  /auth/me:
+    get:
+      tags: [auth]
+      operationId: getUserProfile
+      summary: "Obtener perfil del usuario autenticado"
+      description: >
+        Retorna los datos del usuario actual autenticado mediante JWT.
+        El token debe enviarse en el header Authorization: Bearer <token>.
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: "Datos del perfil del usuario autenticado"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Usuario"
+        "401":
+          description: "Token JWT inválido o expirado"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # ---------------------------------------------------------------------------
+  # Productos — CRUD completo con paginación y filtros
+  # ---------------------------------------------------------------------------
+
+  # GET /productos — Listar productos (paginado)
+  /productos:
+    get:
+      tags: [productos]
+      operationId: listarProductos
+      summary: "Listar productos"
+      description: >
+        Obtiene un listado paginado de productos.
+        Acepta filtros opcionales por categoría y término de búsqueda.
+      parameters:
+        - name: search
+          in: query
+          description: "Término de búsqueda para filtrar por nombre o código del producto"
+          required: false
+          schema:
+            type: string
+        - name: categoria
+          in: query
+          description: "Filtrar productos por categoría exacta"
+          required: false
+          schema:
+            type: string
+        - name: pagina
+          in: query
+          description: "Número de página (empieza en 1)"
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: tamano
+          in: query
+          description: "Cantidad de items por página (máx 100)"
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+      responses:
+        "200":
+          description: "Lista paginada de productos"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Producto"
+                  total:
+                    type: integer
+                    description: "Total de productos que coinciden con la búsqueda"
+                  pagina:
+                    type: integer
+                    description: "Número de página actual"
+                  tamano:
+                    type: integer
+                    description: "Cantidad de items por página"
+                  total_paginas:
+                    type: integer
+                    description: "Total de páginas disponibles"
+
+    # POST /productos — Crear producto
+    post:
+      tags: [productos]
+      operationId: crearProducto
+      summary: "Crear producto"
+      description: >
+        Crea un nuevo producto en el inventario.
+        Requiere autenticación mediante JWT.
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductoCreate"
+      responses:
+        "201":
+          description: "Producto creado exitosamente"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Producto"
+        "401":
+          description: "No autenticado — token requerido"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "422":
+          description: "Error de validación — datos inválidos"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # Rutas con parámetro {id}
+  /productos/{id}:
+    # GET /productos/{id} — Obtener producto por ID
+    get:
+      tags: [productos]
+      operationId: obtenerProducto
+      summary: "Obtener producto por ID"
+      description: "Retorna los detalles completos de un producto específico."
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: "ID único del producto"
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: "Producto encontrado"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Producto"
+        "404":
+          description: "Producto no encontrado"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    # PUT /productos/{id} — Actualizar producto
+    put:
+      tags: [productos]
+      operationId: actualizarProducto
+      summary: "Actualizar producto"
+      description: >
+        Actualiza los datos de un producto existente.
+        Requiere autenticación JWT.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: "ID único del producto a actualizar"
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductoUpdate"
+      responses:
+        "200":
+          description: "Producto actualizado exitosamente"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Producto"
+        "404":
+          description: "Producto no encontrado"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    # DELETE /productos/{id} — Eliminar producto
+    delete:
+      tags: [productos]
+      operationId: eliminarProducto
+      summary: "Eliminar producto"
+      description: >
+        Elimina un producto del inventario de forma permanente.
+        Requiere autenticación JWT.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: "ID único del producto a eliminar"
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: "Producto eliminado exitosamente — sin contenido en la respuesta"
+        "404":
+          description: "Producto no encontrado"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # ---------------------------------------------------------------------------
+  # Usuarios — CRUD (solo administradores)
+  # ---------------------------------------------------------------------------
+
+  # GET /usuarios — Listar usuarios
+  /usuarios:
+    get:
+      tags: [usuarios]
+      operationId: listarUsuarios
+      summary: "Listar usuarios"
+      description: >
+        Obtiene la lista completa de usuarios registrados.
+        Requiere rol de Administrador.
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: "Lista de usuarios del sistema"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Usuario"
+        "403":
+          description: "Acceso denegado — se requiere rol de Administrador"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    # POST /usuarios — Crear usuario (admin)
+    post:
+      tags: [usuarios]
+      operationId: crearUsuario
+      summary: "Crear usuario"
+      description: >
+        Crea un nuevo usuario en el sistema.
+        Requiere rol de Administrador.
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UsuarioCreate"
+      responses:
+        "201":
+          description: "Usuario creado exitosamente"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Usuario"
+        "400":
+          description: "El username o email ya existe"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # Rutas con parámetro {id}
+  /usuarios/{id}:
+    # GET /usuarios/{id} — Obtener usuario por ID
+    get:
+      tags: [usuarios]
+      operationId: obtenerUsuario
+      summary: "Obtener usuario por ID"
+      description: "Retorna los detalles de un usuario específico. Requiere rol de Administrador."
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: "ID único del usuario"
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: "Usuario encontrado"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Usuario"
+        "404":
+          description: "Usuario no encontrado"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    # PUT /usuarios/{id} — Actualizar usuario
+    put:
+      tags: [usuarios]
+      operationId: actualizarUsuario
+      summary: "Actualizar usuario"
+      description: "Actualiza los datos de un usuario existente. Requiere rol de Administrador."
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: "ID único del usuario a actualizar"
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UsuarioCreate"
+      responses:
+        "200":
+          description: "Usuario actualizado exitosamente"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Usuario"
+        "404":
+          description: "Usuario no encontrado"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # ---------------------------------------------------------------------------
+  # Roles
+  # ---------------------------------------------------------------------------
+
+  # GET /roles — Listar roles
+  /roles:
+    get:
+      tags: [roles]
+      operationId: listarRoles
+      summary: "Listar roles"
+      description: "Obtiene la lista de todos los roles disponibles en el sistema."
+      responses:
+        "200":
+          description: "Lista de roles del sistema"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Rol"
+
+# =============================================================================
+# Componentes reutilizables
+# =============================================================================
+components:
+
+  # ---------------------------------------------------------------------------
+  # Esquemas de seguridad — Bearer JWT
+  # ---------------------------------------------------------------------------
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: >
+        Token JWT obtenido al iniciar sesión en /auth/login.
+        Incluir en el header Authorization como: Bearer {token}
+
+  # ---------------------------------------------------------------------------
+  # Esquemas de datos (DTOs)
+  # ---------------------------------------------------------------------------
+  schemas:
+
+    # =========================================================================
+    # Producto
+    # =========================================================================
+
+    Producto:
+      type: object
+      description: "Producto completo del inventario con todos sus campos"
+      required: [id, codigo, nombre, precio, stock, estado]
+      properties:
+        id:
+          type: integer
+          description: "Identificador único del producto"
+        codigo:
+          type: string
+          description: "Código único del producto (ej. PROD-001)"
+          minLength: 3
+          maxLength: 50
+        nombre:
+          type: string
+          description: "Nombre descriptivo del producto"
+          minLength: 2
+          maxLength: 100
+        descripcion:
+          type: string
+          description: "Descripción detallada del producto"
+          nullable: true
+        precio:
+          type: number
+          format: decimal
+          description: "Precio unitario del producto (mayor a 0)"
+          exclusiveMinimum: 0
+        stock:
+          type: integer
+          description: "Cantidad disponible en inventario"
+          minimum: 0
+        categoria:
+          type: string
+          description: "Categoría del producto (ej. Tecnología, Oficina)"
+          nullable: true
+        estado:
+          type: boolean
+          description: "Indica si el producto está activo (true) o inactivo (false)"
+          default: true
+        usuario_creador_id:
+          type: integer
+          description: "ID del usuario que registró el producto"
+          nullable: true
+        fecha_registro:
+          type: string
+          format: date-time
+          description: "Fecha y hora de creación del producto"
+          nullable: true
+
+    ProductoCreate:
+      type: object
+      description: "Datos necesarios para crear un nuevo producto"
+      required: [codigo, nombre, precio]
+      properties:
+        codigo:
+          type: string
+          description: "Código único del producto"
+          minLength: 3
+          maxLength: 50
+        nombre:
+          type: string
+          description: "Nombre del producto"
+          minLength: 2
+          maxLength: 100
+        descripcion:
+          type: string
+          description: "Descripción del producto (campo opcional)"
+          nullable: true
+        precio:
+          type: number
+          format: decimal
+          description: "Precio unitario (debe ser mayor a 0)"
+          exclusiveMinimum: 0
+        stock:
+          type: integer
+          description: "Stock inicial del producto"
+          minimum: 0
+          default: 0
+        categoria:
+          type: string
+          description: "Categoría del producto (campo opcional)"
+          nullable: true
+
+    ProductoUpdate:
+      type: object
+      description: "Datos para actualizar un producto existente"
+      required: [codigo, nombre, precio]
+      properties:
+        codigo:
+          type: string
+          description: "Código único del producto"
+          minLength: 3
+          maxLength: 50
+        nombre:
+          type: string
+          description: "Nombre del producto"
+          minLength: 2
+          maxLength: 100
+        descripcion:
+          type: string
+          description: "Descripción del producto (campo opcional)"
+          nullable: true
+        precio:
+          type: number
+          format: decimal
+          description: "Precio unitario (debe ser mayor a 0)"
+          exclusiveMinimum: 0
+        stock:
+          type: integer
+          description: "Cantidad en stock"
+          minimum: 0
+          default: 0
+        categoria:
+          type: string
+          description: "Categoría del producto (campo opcional)"
+          nullable: true
+
+    # =========================================================================
+    # Usuario
+    # =========================================================================
+
+    Usuario:
+      type: object
+      description: "Usuario del sistema con datos completos"
+      required: [id, username, nombre_completo, email, rol_id, estado]
+      properties:
+        id:
+          type: integer
+          description: "Identificador único del usuario"
+        username:
+          type: string
+          description: "Nombre de usuario para inicio de sesión"
+          minLength: 3
+          maxLength: 50
+        nombre_completo:
+          type: string
+          description: "Nombre completo del usuario"
+          minLength: 3
+          maxLength: 100
+        email:
+          type: string
+          format: email
+          description: "Correo electrónico del usuario"
+        rol_id:
+          type: integer
+          description: "ID del rol asignado al usuario"
+        estado:
+          type: boolean
+          description: "Indica si el usuario está activo"
+          default: true
+        fecha_creacion:
+          type: string
+          format: date-time
+          description: "Fecha de creación del usuario"
+          nullable: true
+        rol:
+          $ref: "#/components/schemas/Rol"
+          description: "Objeto del rol asignado (incluye nombre y descripción)"
+
+    UsuarioCreate:
+      type: object
+      description: "Datos para crear un nuevo usuario en el sistema"
+      required: [username, nombre_completo, email, password, rol_id]
+      properties:
+        username:
+          type: string
+          description: "Nombre de usuario único"
+          minLength: 3
+          maxLength: 50
+        nombre_completo:
+          type: string
+          description: "Nombre completo del usuario"
+          minLength: 3
+          maxLength: 100
+        email:
+          type: string
+          format: email
+          description: "Correo electrónico válido del usuario"
+        password:
+          type: string
+          description: "Contraseña del usuario (mínimo 6 caracteres)"
+          minLength: 6
+        rol_id:
+          type: integer
+          description: "ID del rol a asignar al usuario"
+
+    # =========================================================================
+    # Autenticación
+    # =========================================================================
+
+    LoginRequest:
+      type: object
+      description: "Credenciales de inicio de sesión"
+      required: [username, password]
+      properties:
+        username:
+          type: string
+          description: "Nombre de usuario registrado"
+        password:
+          type: string
+          description: "Contraseña del usuario"
+
+    RegisterRequest:
+      type: object
+      description: "Datos de registro para crear un nuevo usuario"
+      required: [username, nombre_completo, email, password, rol_id]
+      properties:
+        username:
+          type: string
+          description: "Nombre de usuario único"
+          minLength: 3
+          maxLength: 50
+        nombre_completo:
+          type: string
+          description: "Nombre completo del usuario"
+          minLength: 3
+          maxLength: 100
+        email:
+          type: string
+          format: email
+          description: "Correo electrónico válido"
+        password:
+          type: string
+          description: "Contraseña (mínimo 6 caracteres)"
+          minLength: 6
+        rol_id:
+          type: integer
+          description: "ID del rol a asignar"
+
+    AuthResponse:
+      type: object
+      description: "Respuesta exitosa de autenticación con token JWT"
+      required: [access_token, token_type, usuario]
+      properties:
+        access_token:
+          type: string
+          description: "Token JWT para autenticar solicitudes posteriores"
+        token_type:
+          type: string
+          description: "Tipo de token (siempre 'bearer')"
+          default: bearer
+        usuario:
+          $ref: "#/components/schemas/Usuario"
+          description: "Datos del usuario autenticado"
+
+    # =========================================================================
+    # Error
+    # =========================================================================
+
+    ErrorResponse:
+      type: object
+      description: "Respuesta de error estándar de la API"
+      required: [detail]
+      properties:
+        detail:
+          type: string
+          description: "Mensaje descriptivo del error ocurrido"
+        error_code:
+          type: string
+          description: "Código interno del error (ej. VALIDATION_ERROR, INTERNAL_ERROR)"
+          nullable: true
+
+    # =========================================================================
+    # Rol
+    # =========================================================================
+
+    Rol:
+      type: object
+      description: "Rol de usuario dentro del sistema (ej. Administrador, Usuario)"
+      required: [id, nombre, estado]
+      properties:
+        id:
+          type: integer
+          description: "Identificador único del rol"
+        nombre:
+          type: string
+          description: "Nombre del rol (ej. Administrador, Usuario, Invitado)"
+          minLength: 3
+          maxLength: 50
+        descripcion:
+          type: string
+          description: "Descripción del rol y sus permisos asociados"
+          nullable: true
+        estado:
+          type: boolean
+          description: "Indica si el rol está activo en el sistema"
+          default: true
+        fecha_creacion:
+          type: string
+          format: date-time
+          description: "Fecha y hora de creación del rol"
+          nullable: true

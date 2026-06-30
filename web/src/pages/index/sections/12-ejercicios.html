@@ -1,0 +1,233 @@
+            <section class="section section-alt" id="ejercicios">
+                <div class="container">
+                    <div class="breadcrumbs">
+                        <div class="breadcrumb-item"><a href="#inicio">Inicio</a>
+                        </div><i class="fas fa-chevron-right breadcrumb-separator"></i>
+                        <div class="breadcrumb-item breadcrumb-current">
+                            Ejercicios
+                        </div><span class="reading-time"><i class="fas fa-clock"></i>2 horas</span>
+                    </div>
+                    <div class="section-header">
+                        <div class="section-number">
+                            09
+                        </div>
+                        <h2 class="section-title">
+                            3.4 Ejercicios de Transferencia
+                        </h2>
+                        <p class="section-subtitle">
+                            Ejercicios retadores para demostrar tu dominio
+                        </p>
+                    </div>
+                    <div class="exercise-grid">
+                        <div class="exercise-card">
+                            <div class="exercise-header">
+                                <div class="exercise-number">
+                                    1
+                                </div>
+                                <div class="exercise-difficulty"><span class="difficulty-badge medium">Intermedio</span>
+                                </div>
+                            </div>
+                            <h3>
+                                Buscador de Productos
+                            </h3>
+                            <p>
+                                Modifica el sistema para agregar un buscador de productos por nombre y rango de precios.
+                            </p>
+                            <h4>
+                                Requisitos:
+                            </h4>
+                            <ul class="requirement-list">
+                                <li><i class="fas fa-check"></i>Agregar campo de búsqueda en lista.jsp
+                                </li>
+                                <li><i class="fas fa-check"></i>Crear método<code>buscarPorNombre(String)</code>en ProductoDAO
+                                </li>
+                                <li><i class="fas fa-check"></i>Usar<code>LIKE</code>en SQL para búsqueda parcial
+                                </li>
+                                <li><i class="fas fa-check"></i>Agregar acción "buscar" en ProductoServlet
+                                </li>
+                                <li><i class="fas fa-check"></i>Mostrar resultados filtrados con contador
+                                </li>
+                                <li><i class="fas fa-star"></i><strong>Bonus:</strong>Búsqueda por rango de precios
+                                </li>
+                            </ul>
+                            <div class="exercise-hint"><i class="fas fa-lightbulb"></i>
+                                <p><strong>Pista:</strong>Usa<code>WHERE nombre LIKE ?</code>con<code>ps.setString(1, "%" + nombre + "%")</code>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="exercise-card">
+                            <div class="exercise-header">
+                                <div class="exercise-number">
+                                    2
+                                </div>
+                                <div class="exercise-difficulty"><span class="difficulty-badge hard">Avanzado</span>
+                                </div>
+                            </div>
+                            <h3>
+                                Tabla Categorías con Relación 1:N
+                            </h3>
+                            <p>
+                                Crea una nueva entidad Categoria y enlázala con Productos mediante una relación uno a muchos.
+                            </p>
+                            <h4>
+                                Requisitos:
+                            </h4>
+                            <ul class="requirement-list">
+                                <li><i class="fas fa-check"></i>Crear tabla<code>categorias</code>en PostgreSQL
+                                </li>
+                                <li><i class="fas fa-check"></i>Crear record<code>Categoria.java</code>
+                                </li>
+                                <li><i class="fas fa-check"></i>Crear<code>CategoriaDAO.java</code>con CRUD completo
+                                </li>
+                                <li><i class="fas fa-check"></i>Modificar tabla productos: agregar<code>categoria_id</code>FK
+                                </li>
+                                <li><i class="fas fa-check"></i>Crear<code>CategoriaServlet.java</code>con vistas JSP
+                                </li>
+                                <li><i class="fas fa-check"></i>Modificar formulario de productos con<code>&lt;select&gt;</code>de categorías
+                                </li>
+                                <li><i class="fas fa-star"></i><strong>Bonus:</strong>Eliminación en cascada o restricción
+                                </li>
+                            </ul>
+                            <div class="exercise-hint"><i class="fas fa-lightbulb"></i>
+                                <p><strong>Pista:</strong>Usa<code>INNER JOIN</code>en el DAO para obtener productos con nombre de categoría
+                                </p>
+                            </div>
+                        </div>
+                        <div class="exercise-card">
+                            <div class="exercise-header">
+                                <div class="exercise-number">
+                                    3
+                                </div>
+                                <div class="exercise-difficulty"><span class="difficulty-badge expert">Experto</span>
+                                </div>
+                            </div>
+                            <h3>
+                                Sistema de Auditoría con Filtros
+                            </h3>
+                            <p>
+                                Implementa un sistema de auditoría que registre todas las operaciones CRUD con filtros avanzados.
+                            </p>
+                            <h4>
+                                Requisitos:
+                            </h4>
+                            <ul class="requirement-list">
+                                <li><i class="fas fa-check"></i>Crear tabla<code>auditoria</code>(tabla, operacion, usuario, fecha, datos)
+                                </li>
+                                <li><i class="fas fa-check"></i>Crear record<code>Auditoria.java</code>y su DAO
+                                </li>
+                                <li><i class="fas fa-check"></i>Implementar Jakarta Servlet Filter para registrar peticiones
+                                </li>
+                                <li><i class="fas fa-check"></i>Modificar métodos DAO para registrar en auditoría
+                                </li>
+                                <li><i class="fas fa-check"></i>Crear vista con historial y filtros por fecha/tipo
+                                </li>
+                                <li><i class="fas fa-star"></i><strong>Bonus:</strong>Paginación (10 registros por página)
+                                </li>
+                            </ul>
+                            <div class="exercise-hint"><i class="fas fa-lightbulb"></i>
+                                <p><strong>Pista:</strong>Usa<code>LIMIT</code>y<code>OFFSET</code>en SQL para paginación
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- TRANSICIÓN: JSP → FastAPI (Monolito → Microservicios) -->
+            <div class="transition-banner">
+                <div class="container">
+                    <div class="transition-content">
+                        <div class="transition-icon"><i class="fas fa-arrow-right"></i>
+                        </div>
+                        <div class="transition-text">
+                            <h3>
+                                De Monolito (JSP) a Microservicios (FastAPI + React)
+                            </h3>
+                            <p>
+                                Hasta ahora has construido un<strong>monolito JSP</strong>: todo en un solo WAR (lógica, vistas, auth con sesiones). Ahora evolucionamos a una arquitectura de<strong>microservicios</strong>donde cada componente es independiente, escalable y desplegable por separado.
+                            </p>
+                            <div class="transition-comparison">
+                                <div class="transition-old">
+                                    <h5><i class="fas fa-times-circle"></i>🏢 Monolito JSP
+                                    </h5>
+                                    <ul>
+                                        <li>
+                                            Un solo WAR: login.jsp + productos.jsp + DAOs + Servlets
+                                        </li>
+                                        <li><strong>Sesión en servidor</strong>(HttpSession)
+                                        </li>
+                                        <li>
+                                            Todo en Tomcat (un solo punto de fallo)
+                                        </li>
+                                        <li>
+                                            Escalar = escalar TODO
+                                        </li>
+                                        <li>
+                                            Java obligatorio para todo
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="transition-arrow"><i class="fas fa-long-arrow-alt-right"></i>
+                                </div>
+                                <div class="transition-new">
+                                    <h5><i class="fas fa-check-circle"></i>🔗 Microservicios FastAPI + React
+                                    </h5>
+                                    <ul>
+                                        <li>
+                                            Servicios separados: Auth API, Productos API, React SPA
+                                        </li>
+                                        <li><strong>Token JWT stateless</strong>(sin sesión en servidor)
+                                        </li>
+                                        <li>
+                                            Cada servicio en su contenedor
+                                        </li>
+                                        <li>
+                                            Escalar solo lo que necesitas
+                                        </li>
+                                        <li>
+                                            Cada servicio con su tecnología óptima
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="architecture-evolution" style="margin-top:2rem;padding:1.5rem;background:rgba(255,255,255,0.05);border-radius:12px;">
+                                <h4 style="color:#e0e0e0;margin-bottom:1rem;">
+                                    Evolución de la arquitectura
+                                </h4>
+                                <pre style="font-size:0.8rem;color:#a0a0b0;line-height:1.7;font-family:monospace;white-space:pre;overflow-x:auto;"><code class="language-text">┌─────────────────────────────────────────────────────────────────┐
+│                                                                 │
+│  FASE 1: 🏢 MONOLITO JSP                                       │
+│  ┌──────────────────────────────────────────────────────┐      │
+│  │                   Tomcat (1 WAR)                     │      │
+│  │  ┌─────────┐  ┌─────────┐  ┌─────────┐              │      │
+│  │  │ Login   │  │Productos│  │ Usuarios│              │      │
+│  │  │ Servlet │←→│ Servlet │←→│ Servlet │              │      │
+│  │  └────┬────┘  └────┬────┘  └────┬────┘              │      │
+│  │       │            │            │                   │      │
+│  │  ┌────▼────────────▼────────────▼────┐              │      │
+│  │  │      DAOs (ProductoDAO, etc.)     │              │      │
+│  │  └────────────────┬──────────────────┘              │      │
+│  │                   │                                 │      │
+│  │              ┌────▼────┐                            │      │
+│  │              │PostgreSQL│                           │      │
+│  │              └─────────┘                            │      │
+│  └──────────────────────────────────────────────────────┘      │
+│                                                                 │
+│  FASE 2: 🔗 MICROSERVICIOS FastAPI + React                     │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐      │
+│  │  React   │  │  Auth    │  │  Product │  │  Usuario │      │
+│  │  SPA     │←→│  Service │←→│  Service │←→│  Service │      │
+│  │ :5173    │  │ :8001    │  │ :8002    │  │ :8003    │      │
+│  └──────────┘  └────┬─────┘  └────┬─────┘  └────┬─────┘      │
+│                     │             │             │             │
+│                ┌────▼─────────────▼─────────────▼────┐        │
+│                │          PostgreSQL                 │        │
+│                └────────────────────────────────────┘        │
+│                                                                 │
+│  Beneficios: Escalabilidad · Aislamiento · Tecnología libre    │
+└─────────────────────────────────────────────────────────────────┘</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- API REST con FastAPI -->

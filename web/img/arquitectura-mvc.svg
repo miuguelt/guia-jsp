@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620" width="100%" height="100%">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00664a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00896a;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4a2c8a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7c3aed;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0284c7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0ea5e9;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+  
+  <!-- Título -->
+  <text x="500" y="45" font-family="Inter, sans-serif" font-size="26" font-weight="700" fill="#1a2e28" text-anchor="middle">
+    Arquitectura MVC - JSP + Jakarta EE
+  </text>
+  
+  <!-- Usuario (Navegador) -->
+  <g transform="translate(60, 220)">
+    <circle cx="45" cy="45" r="40" fill="#f0f4f2" stroke="#00664a" stroke-width="2.5" filter="url(#shadow)"/>
+    <circle cx="45" cy="34" r="14" fill="#00664a"/>
+    <path d="M 22 62 Q 45 50 68 62" fill="#00664a"/>
+    <text x="45" y="105" font-family="Inter, sans-serif" font-size="15" font-weight="700" fill="#1a2e28" text-anchor="middle">Usuario</text>
+    <text x="45" y="123" font-family="Inter, sans-serif" font-size="12" fill="#6b7e78" text-anchor="middle">(Navegador)</text>
+  </g>
+  
+  <!-- Flecha Usuario → Controlador -->
+  <g>
+    <line x1="170" y1="265" x2="280" y2="265" stroke="#00664a" stroke-width="2" stroke-dasharray="5,5"/>
+    <polygon points="280,265 270,260 270,270" fill="#00664a"/>
+    <text x="225" y="250" font-family="Inter, sans-serif" font-size="11" fill="#6b7e78" text-anchor="middle">HTTP Request</text>
+  </g>
+  
+  <!-- Controlador (Servlet) -->
+  <g transform="translate(300, 195)">
+    <rect x="0" y="0" width="200" height="140" rx="14" fill="url(#grad2)" filter="url(#shadow)"/>
+    <text x="100" y="32" font-family="Inter, sans-serif" font-size="18" font-weight="700" fill="white" text-anchor="middle">Controlador</text>
+    <text x="100" y="52" font-family="Inter, sans-serif" font-size="12" fill="rgba(255,255,255,0.8)" text-anchor="middle">Servlet (Java)</text>
+    <line x1="20" y1="65" x2="180" y2="65" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+    <text x="100" y="86" font-family="JetBrains Mono, monospace" font-size="11" fill="rgba(255,255,255,0.9)" text-anchor="middle">@WebServlet("/productos")</text>
+    <text x="100" y="103" font-family="JetBrains Mono, monospace" font-size="10" fill="rgba(255,255,255,0.73)" text-anchor="middle">doGet() / doPost()</text>
+    <text x="100" y="120" font-family="JetBrains Mono, monospace" font-size="10" fill="rgba(255,255,255,0.73)" text-anchor="middle">forward() / sendRedirect()</text>
+  </g>
+  
+  <!-- Flecha Controlador → Modelo -->
+  <g>
+    <line x1="400" y1="335" x2="400" y2="395" stroke="#4a2c8a" stroke-width="2" stroke-dasharray="5,5"/>
+    <polygon points="400,395 395,385 405,385" fill="#4a2c8a"/>
+    <text x="415" y="370" font-family="Inter, sans-serif" font-size="11" fill="#6b7e78">Invoca DAO</text>
+  </g>
+  
+  <!-- Modelo (DAO + Records) -->
+  <g transform="translate(300, 405)">
+    <rect x="0" y="0" width="200" height="120" rx="14" fill="url(#grad3)" filter="url(#shadow)"/>
+    <text x="100" y="30" font-family="Inter, sans-serif" font-size="18" font-weight="700" fill="white" text-anchor="middle">Modelo</text>
+    <text x="100" y="48" font-family="Inter, sans-serif" font-size="12" fill="rgba(255,255,255,0.8)" text-anchor="middle">DAO + Records</text>
+    <line x1="20" y1="60" x2="180" y2="60" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+    <text x="100" y="82" font-family="JetBrains Mono, monospace" font-size="10.5" fill="rgba(255,255,255,0.9)" text-anchor="middle">ProductoDAO.java</text>
+    <text x="100" y="99" font-family="JetBrains Mono, monospace" font-size="10.5" fill="rgba(255,255,255,0.73)" text-anchor="middle">record Producto()</text>
+  </g>
+  
+  <!-- Flecha Modelo → BD -->
+  <g>
+    <line x1="500" y1="465" x2="650" y2="465" stroke="#0284c7" stroke-width="2" stroke-dasharray="5,5"/>
+    <polygon points="650,465 640,460 640,470" fill="#0284c7"/>
+    <text x="575" y="452" font-family="Inter, sans-serif" font-size="11" fill="#6b7e78" text-anchor="middle">JDBC SQL Connection</text>
+  </g>
+  
+  <!-- Base de Datos (PostgreSQL) -->
+  <g transform="translate(660, 405)">
+    <ellipse cx="85" cy="22" rx="85" ry="22" fill="#336791" filter="url(#shadow)"/>
+    <rect x="0" y="22" width="170" height="70" fill="#336791"/>
+    <ellipse cx="85" cy="92" rx="85" ry="22" fill="#1d4e89"/>
+    <text x="85" y="60" font-family="Inter, sans-serif" font-size="16" font-weight="700" fill="white" text-anchor="middle">PostgreSQL</text>
+    <text x="85" y="130" font-family="Inter, sans-serif" font-size="12" fill="#6b7e78" text-anchor="middle">database: inventario_db</text>
+  </g>
+  
+  <!-- Flecha Controlador → Vista -->
+  <g>
+    <line x1="500" y1="265" x2="650" y2="265" stroke="#00664a" stroke-width="2" stroke-dasharray="5,5"/>
+    <polygon points="650,265 640,260 640,270" fill="#00664a"/>
+    <text x="575" y="250" font-family="Inter, sans-serif" font-size="11" fill="#6b7e78" text-anchor="middle">RequestDispatcher.forward()</text>
+  </g>
+  
+  <!-- Vista (JSP + JSTL) -->
+  <g transform="translate(660, 195)">
+    <rect x="0" y="0" width="200" height="140" rx="14" fill="url(#grad1)" filter="url(#shadow)"/>
+    <text x="100" y="32" font-family="Inter, sans-serif" font-size="18" font-weight="700" fill="white" text-anchor="middle">Vista</text>
+    <text x="100" y="52" font-family="Inter, sans-serif" font-size="12" fill="rgba(255,255,255,0.8)" text-anchor="middle">JSP + JSTL / HTML</text>
+    <line x1="20" y1="65" x2="180" y2="65" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+    <text x="100" y="86" font-family="JetBrains Mono, monospace" font-size="11" fill="rgba(255,255,255,0.9)" text-anchor="middle">&lt;c:forEach items="${prod}" ...&gt;</text>
+    <text x="100" y="103" font-family="JetBrains Mono, monospace" font-size="10" fill="rgba(255,255,255,0.73)" text-anchor="middle">${producto.nombre}</text>
+    <text x="100" y="120" font-family="JetBrains Mono, monospace" font-size="10" fill="rgba(255,255,255,0.73)" text-anchor="middle">&lt;/c:forEach&gt;</text>
+  </g>
+  
+  <!-- Flecha Vista → Usuario (Response) - Ruta rediseñada sin superposición -->
+  <g>
+    <path d="M 860 265 Q 920 265 920 170 Q 920 100 500 100 Q 105 100 105 170 Q 105 200 105 220" 
+          fill="none" stroke="#00664a" stroke-width="2" stroke-dasharray="5,5"/>
+    <polygon points="105,220 100,210 110,210" fill="#00664a"/>
+    <text x="500" y="85" font-family="Inter, sans-serif" font-size="12" font-weight="600" fill="#00664a" text-anchor="middle">HTTP Response (HTML / CSS / JS)</text>
+  </g>
+  
+  <!-- Leyenda -->
+  <g transform="translate(100, 550)">
+    <rect x="0" y="0" width="800" height="45" rx="10" fill="#f8faf9" stroke="#e0e8e4" stroke-width="1.2"/>
+    <circle cx="30" cy="22" r="7" fill="#00664a"/>
+    <text x="45" y="27" font-family="Inter, sans-serif" font-size="12" font-weight="500" fill="#1a2e28">Vista</text>
+    <circle cx="150" cy="22" r="7" fill="#4a2c8a"/>
+    <text x="165" y="27" font-family="Inter, sans-serif" font-size="12" font-weight="500" fill="#1a2e28">Controlador</text>
+    <circle cx="290" cy="22" r="7" fill="#0284c7"/>
+    <text x="305" y="27" font-family="Inter, sans-serif" font-size="12" font-weight="500" fill="#1a2e28">Modelo</text>
+    <circle cx="410" cy="22" r="7" fill="#336791"/>
+    <text x="425" y="27" font-family="Inter, sans-serif" font-size="12" font-weight="500" fill="#1a2e28">Base de Datos</text>
+    <line x1="570" y1="22" x2="610" y2="22" stroke="#00664a" stroke-width="2" stroke-dasharray="5,5"/>
+    <text x="620" y="27" font-family="Inter, sans-serif" font-size="12" font-weight="500" fill="#1a2e28">Flujo de datos (Petición/Respuesta)</text>
+  </g>
+</svg>

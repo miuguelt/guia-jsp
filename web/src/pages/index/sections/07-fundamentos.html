@@ -1,0 +1,409 @@
+            <section class="section section-alt" id="fundamentos">
+                <div class="container">
+                    <div class="breadcrumbs">
+                        <div class="breadcrumb-item"><a href="#inicio">Inicio</a>
+                        </div><i class="fas fa-chevron-right breadcrumb-separator"></i>
+                        <div class="breadcrumb-item breadcrumb-current">
+                            Fundamentos
+                        </div><span class="reading-time"><i class="fas fa-clock"></i>15 min</span>
+                    </div>
+                    <div class="section-header">
+                        <div class="section-number">
+                            04
+                        </div>
+                        <h2 class="section-title">
+                            3.2 Fundamentos Teóricos
+                        </h2>
+                        <p class="section-subtitle">
+                            Conceptos clave antes de programar
+                        </p>
+                    </div>
+                    <div class="tabs-container">
+                        <div class="tabs-header">
+                            <button class="tab-btn active" data-tab="mvc"><i class="fas fa-layer-group"></i>Patrón MVC
+                            </button>
+                            <button class="tab-btn" data-tab="jsp"><i class="fas fa-code"></i>JSP
+                            </button>
+                            <button class="tab-btn" data-tab="jakarta"><i class="fas fa-server"></i>Jakarta EE
+                            </button>
+                            <button class="tab-btn" data-tab="jdbc"><i class="fas fa-database"></i>JDBC
+                            </button>
+                            <button class="tab-btn" data-tab="records"><i class="fab fa-java"></i>Records JDK 21
+                            </button>
+                        </div>
+                        <div class="tabs-content">
+                            <div class="tab-panel active" id="tab-mvc">
+                                <h3>
+                                    El Patrón Modelo-Vista-Controlador
+                                </h3>
+                                <p>
+                                    MVC es un patrón de arquitectura de software que separa la aplicación en tres componentes interconectados:
+                                </p>
+                                <div class="concept-grid">
+                                    <div class="concept-card">
+                                        <div class="concept-icon model"><i class="fas fa-database"></i>
+                                        </div>
+                                        <h4>
+                                            Modelo
+                                        </h4>
+                                        <p>
+                                            Representa los datos y la lógica de negocio. Contiene las entidades (Records) y las clases DAO para acceso a datos.
+                                        </p>
+                                        <div class="concept-example"><code>Producto.java, ProductoDAO.java</code>
+                                        </div>
+                                    </div>
+                                    <div class="concept-card">
+                                        <div class="concept-icon view"><i class="fas fa-desktop"></i>
+                                        </div>
+                                        <h4>
+                                            Vista
+                                        </h4>
+                                        <p>
+                                            La interfaz de usuario. Muestra los datos al usuario y captura su entrada. Implementada con JSP + JSTL.
+                                        </p>
+                                        <div class="concept-example"><code>lista.jsp, formulario.jsp</code>
+                                        </div>
+                                    </div>
+                                    <div class="concept-card">
+                                        <div class="concept-icon controller"><i class="fas fa-microchip"></i>
+                                        </div>
+                                        <h4>
+                                            Controlador
+                                        </h4>
+                                        <p>
+                                            Recibe las peticiones del usuario, coordina el modelo y selecciona la vista apropiada. Implementado con Servlets.
+                                        </p>
+                                        <div class="concept-example"><code>ProductoServlet.java</code>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h4>
+                                    Flujo de una Petición MVC
+                                </h4>
+                                <div class="flow-diagram">
+                                    <div class="flow-step">
+                                        <div class="step-number">
+                                            1
+                                        </div>
+                                        <p>
+                                            Usuario hace clic en "Crear Producto"
+                                        </p>
+                                    </div>
+                                    <div class="flow-arrow"><i class="fas fa-arrow-right"></i>
+                                    </div>
+                                    <div class="flow-step">
+                                        <div class="step-number">
+                                            2
+                                        </div>
+                                        <p>
+                                            Controlador (Servlet) recibe la petición GET/POST
+                                        </p>
+                                    </div>
+                                    <div class="flow-arrow"><i class="fas fa-arrow-right"></i>
+                                    </div>
+                                    <div class="flow-step">
+                                        <div class="step-number">
+                                            3
+                                        </div>
+                                        <p>
+                                            Controlador invoca al Modelo (DAO) para procesar
+                                        </p>
+                                    </div>
+                                    <div class="flow-arrow"><i class="fas fa-arrow-right"></i>
+                                    </div>
+                                    <div class="flow-step">
+                                        <div class="step-number">
+                                            4
+                                        </div>
+                                        <p>
+                                            Modelo accede a la BD y retorna datos
+                                        </p>
+                                    </div>
+                                    <div class="flow-arrow"><i class="fas fa-arrow-right"></i>
+                                    </div>
+                                    <div class="flow-step">
+                                        <div class="step-number">
+                                            5
+                                        </div>
+                                        <p>
+                                            Controlador selecciona la Vista y envía datos
+                                        </p>
+                                    </div>
+                                    <div class="flow-arrow"><i class="fas fa-arrow-right"></i>
+                                    </div>
+                                    <div class="flow-step">
+                                        <div class="step-number">
+                                            6
+                                        </div>
+                                        <p>
+                                            Vista (JSP) renderiza HTML y lo muestra al usuario
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-panel" id="tab-jsp">
+                                <h3>
+                                    JavaServer Pages (JSP)
+                                </h3>
+                                <p>
+                                    JSP es una tecnología que permite crear páginas web dinámicas usando Java. Con Jakarta EE 10, JSP 3.1 ofrece:
+                                </p>
+                                <div class="feature-grid">
+                                    <div class="feature-item"><i class="fas fa-check-circle"></i>
+                                        <div>
+                                            <h4>
+                                                Expression Language (EL)
+                                            </h4>
+                                            <p>
+                                                Sintaxis<code>${producto.nombre}</code>para acceder a datos sin scriptlets
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="feature-item"><i class="fas fa-check-circle"></i>
+                                        <div>
+                                            <h4>
+                                                JSTL (JSP Standard Tag Library)
+                                            </h4>
+                                            <p>
+                                                Etiquetas como<code>&lt;c:forEach&gt;</code>,<code>&lt;c:if&gt;</code>para lógica sin Java
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="feature-item"><i class="fas fa-check-circle"></i>
+                                        <div>
+                                            <h4>
+                                                Directivas y Acciones
+                                            </h4>
+                                            <p><code>&lt;%@ page %&gt;</code>,<code>&lt;%@ taglib %&gt;</code>para configuración
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="feature-item"><i class="fas fa-check-circle"></i>
+                                        <div>
+                                            <h4>
+                                                Objetos Implícitos
+                                            </h4>
+                                            <p><code>request</code>,<code>response</code>,<code>session</code>,<code>application</code>disponibles
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h4>
+                                    Ejemplo: JSP con JSTL (Sin Scriptlets)
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-code"></i>productos/lista.jsp</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-jsp">&lt;%@ page contentType="text/html;charset=UTF-8" language="java" %&gt;
+&lt;%@ taglib prefix="c" uri="jakarta.tags.core" %&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+&lt;table&gt;
+    &lt;c:forEach var="producto" items="${productos}"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;&lt;c:out value="${producto.codigo}" /&gt;&lt;/td&gt;
+            &lt;td&gt;&lt;c:out value="${producto.nombre}" /&gt;&lt;/td&gt;
+            &lt;td&gt;$&lt;c:out value="${producto.precio}" /&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/c:forEach&gt;
+&lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-panel" id="tab-jakarta">
+                                <h3>
+                                    Jakarta EE 10 - El Estándar Empresarial
+                                </h3>
+                                <p>
+                                    Jakarta EE es la evolución de Java EE, mantenido por la Eclipse Foundation. La migración de Java EE a Jakarta EE implica:
+                                </p>
+                                <div class="comparison-table">
+                                    <div class="comparison-item old">
+                                        <h4><i class="fas fa-times-circle"></i>Java EE (Antiguo)
+                                        </h4>
+                                        <pre><code class="language-java">import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.jsp.jstl.*;</code></pre>
+                                    </div>
+                                    <div class="comparison-arrow"><i class="fas fa-arrow-right"></i>
+                                    </div>
+                                    <div class="comparison-item new">
+                                        <h4><i class="fas fa-check-circle"></i>Jakarta EE (Moderno)
+                                        </h4>
+                                        <pre><code class="language-java">import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import jakarta.servlet.jsp.jstl.*;</code></pre>
+                                    </div>
+                                </div>
+                                <h4>
+                                    Componentes Clave de Jakarta EE 10
+                                </h4>
+                                <div class="component-grid">
+                                    <div class="component-card">
+                                        <h4>
+                                            Servlet 6.0
+                                        </h4>
+                                        <p>
+                                            Manejo de peticiones HTTP con anotaciones<code>@WebServlet</code>
+                                        </p>
+                                    </div>
+                                    <div class="component-card">
+                                        <h4>
+                                            JSP 3.1
+                                        </h4>
+                                        <p>
+                                            Páginas dinámicas con Expression Language 5.0
+                                        </p>
+                                    </div>
+                                    <div class="component-card">
+                                        <h4>
+                                            JSTL 3.0
+                                        </h4>
+                                        <p>
+                                            Biblioteca de etiquetas estándar para JSP
+                                        </p>
+                                    </div>
+                                    <div class="component-card">
+                                        <h4>
+                                            WebSocket 2.1
+                                        </h4>
+                                        <p>
+                                            Comunicación bidireccional en tiempo real
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-panel" id="tab-jdbc">
+                                <h3>
+                                    JDBC - Java Database Connectivity
+                                </h3>
+                                <p>
+                                    JDBC es la API estándar de Java para conectarse a bases de datos relacionales. En esta guía usamos PostgreSQL con JDBC 42.7.
+                                </p>
+                                <h4>
+                                    Patrón DAO (Data Access Object)
+                                </h4>
+                                <p>
+                                    El patrón DAO separa la lógica de acceso a datos del resto de la aplicación:
+                                </p>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fab fa-java"></i>ProductoDAO.java — Insertar</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-java">public class ProductoDAO {
+    private static final String SQL_INSERT =         "INSERT INTO productos (codigo, nombre, precio, stock) VALUES (?, ?, ?, ?)";
+    public boolean insertar(Producto producto) {
+        // try-with-resources garantiza el cierre automático        try (Connection conn = ConexionDB.conectar();
+        PreparedStatement ps = conn.prepareStatement(SQL_INSERT)) {
+            ps.setString(1, producto.codigo());
+            ps.setString(2, producto.nombre());
+            ps.setBigDecimal(3, producto.precio());
+            ps.setInt(4, producto.stock());
+            int filasAfectadas = ps.executeUpdate();
+            return filasAfectadas &gt; 0;
+        }
+    catch (SQLException e) {
+        Logger.getLogger(getClass().getName())                  .log(Level.SEVERE, "Error al insertar", e);
+        return false;
+    }
+}
+}</code></pre>
+                                    </div>
+                                </div>
+                                <h4>
+                                    Prevención de Inyección SQL
+                                </h4>
+                                <div class="warning-box"><i class="fas fa-exclamation-triangle"></i>
+                                    <div>
+                                        <h4>
+                                            NUNCA uses concatenación de strings:
+                                        </h4>
+                                        <pre><code class="language-java">// ¡PELIGROSO! Vulnerable a SQL InjectionString sql = "SELECT * FROM productos WHERE id = " + id;
+Statement stmt = conn.createStatement();
+// SEGURO - Usa PreparedStatement con parámetrosString sql = "SELECT * FROM productos WHERE id = ?";
+PreparedStatement ps = conn.prepareStatement(sql);
+ps.setInt(1, id);</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-panel" id="tab-records">
+                                <h3>
+                                    Records de JDK 21
+                                </h3>
+                                <p>
+                                    Los records son una característica de JDK 14+ (estable desde JDK 16) que proporciona una sintaxis concisa para crear clases inmutables:
+                                </p>
+                                <div class="comparison-table">
+                                    <div class="comparison-item old">
+                                        <h4><i class="fas fa-times-circle"></i>Clase Tradicional (50+ líneas)
+                                        </h4>
+                                        <pre><code class="language-java">public final class Producto {
+    private final int id;
+    private final String codigo;
+    private final String nombre;
+    private final BigDecimal precio;
+    // Constructor    public Producto(int id, String codigo,                     String nombre, BigDecimal precio) {
+        this.id = id;
+        this.codigo = codigo;
+        this.nombre = nombre;
+        this.precio = precio;
+    }
+// Getters    public int id() {
+    return id;
+}
+publicString codigo() {
+    return codigo;
+}
+publicString nombre() {
+    return nombre;
+}
+publicBigDecimal precio() {
+    return precio;
+}
+// equals(), hashCode(), toString()
+// ... 30 líneas más
+}</code></pre>
+                                    </div>
+                                    <div class="comparison-arrow"><i class="fas fa-arrow-right"></i>
+                                    </div>
+                                    <div class="comparison-item new">
+                                        <h4><i class="fas fa-check-circle"></i>Record JDK 21 (1 línea)
+                                        </h4>
+                                        <pre><code class="language-java">public record Producto(    int id,    String codigo,    String nombre,    BigDecimal precio) {
+    // Constructor alternativo    public Producto(String codigo,                     String nombre,                     BigDecimal precio) {
+        this(0, codigo, nombre, precio);
+    }
+}// Genera automáticamente:// - Constructor// - Getters (id(), codigo(), etc.)// - equals() y hashCode()// - toString()</code></pre>
+                                    </div>
+                                </div>
+                                <h4>
+                                    Ventajas de los Records
+                                </h4>
+                                <div class="advantage-grid">
+                                    <div class="advantage-item"><i class="fas fa-check"></i><span><strong>Inmutabilidad:</strong>Los datos no pueden cambiar después de creados</span>
+                                    </div>
+                                    <div class="advantage-item"><i class="fas fa-check"></i><span><strong>Concisión:</strong>Menos código, menos errores</span>
+                                    </div>
+                                    <div class="advantage-item"><i class="fas fa-check"></i><span><strong>Seguridad:</strong>Thread-safe por diseño</span>
+                                    </div>
+                                    <div class="advantage-item"><i class="fas fa-check"></i><span><strong>Pattern Matching:</strong>Compatible con switch expressions</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Configuración PostgreSQL -->

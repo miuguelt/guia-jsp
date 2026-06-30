@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" font-family="Inter, sans-serif">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8faf9;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#f0f4f2;stop-opacity:1"/>
+    </linearGradient>
+    <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#00664a"/>
+      <stop offset="100%" style="stop-color:#00896a"/>
+    </linearGradient>
+    <linearGradient id="dartGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0175C2"/>
+      <stop offset="100%" style="stop-color:#00B4D8"/>
+    </linearGradient>
+    <linearGradient id="flutterGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#54C5F8"/>
+      <stop offset="100%" style="stop-color:#1389FD"/>
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+  <rect width="800" height="500" rx="12" fill="url(#bgGrad)" stroke="#e0e8e4" stroke-width="1"/>
+  <rect x="0" y="0" width="800" height="44" rx="12" fill="url(#headerGrad)"/>
+  <rect x="0" y="22" width="800" height="22" fill="url(#headerGrad)"/>
+  <text x="400" y="29" text-anchor="middle" fill="#fff" font-size="15" font-weight="700">Arquitectura de Flutter — Capas del Framework</text>
+
+  <!-- Framework Layer (top) -->
+  <rect x="40" y="60" width="720" height="80" rx="10" fill="#f0f7ff" stroke="#0175C2" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="400" y="85" text-anchor="middle" fill="#0175C2" font-size="13" font-weight="700">Flutter Framework (Dart)</text>
+  
+  <!-- Widgets sub-layer -->
+  <rect x="55" y="95" width="160" height="32" rx="6" fill="#e3f2fd" stroke="#90caf9" stroke-width="1"/>
+  <text x="135" y="115" text-anchor="middle" fill="#1565c0" font-size="11" font-weight="600">Widgets (Material / Cupertino)</text>
+  
+  <!-- Rendering sub-layer -->
+  <rect x="235" y="95" width="160" height="32" rx="6" fill="#e3f2fd" stroke="#90caf9" stroke-width="1"/>
+  <text x="315" y="115" text-anchor="middle" fill="#1565c0" font-size="11" font-weight="600">Rendering (RenderObjects)</text>
+  
+  <!-- Painting sub-layer -->
+  <rect x="415" y="95" width="160" height="32" rx="6" fill="#e3f2fd" stroke="#90caf9" stroke-width="1"/>
+  <text x="495" y="115" text-anchor="middle" fill="#1565c0" font-size="11" font-weight="600">Painting (Canvas)</text>
+  
+  <!-- Gesture sub-layer -->
+  <rect x="595" y="95" width="150" height="32" rx="6" fill="#e3f2fd" stroke="#90caf9" stroke-width="1"/>
+  <text x="670" y="115" text-anchor="middle" fill="#1565c0" font-size="11" font-weight="600">Gesture / Semantics</text>
+
+  <!-- Engine Layer -->
+  <rect x="40" y="160" width="345" height="80" rx="10" fill="#fff3e0" stroke="#f57c00" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="212" y="185" text-anchor="middle" fill="#e65100" font-size="13" font-weight="700">Flutter Engine (C/C++)</text>
+  <text x="212" y="205" text-anchor="middle" fill="#bf6f00" font-size="10">Skia / Impeller — Text — Dart VM — Platform Channels</text>
+  <text x="212" y="220" text-anchor="middle" fill="#bf6f00" font-size="10">I/O Thread — GPU Thread — Platform Thread</text>
+
+  <!-- Embedder Layer -->
+  <rect x="415" y="160" width="345" height="80" rx="10" fill="#fce4ec" stroke="#c62828" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="587" y="185" text-anchor="middle" fill="#b71c1c" font-size="13" font-weight="700">Flutter Embedder (Platform-specific)</text>
+  <text x="587" y="205" text-anchor="middle" fill="#b71c1c" font-size="10">Android (JNI) — iOS (UIKit) — Web — Windows</text>
+  <text x="587" y="220" text-anchor="middle" fill="#b71c1c" font-size="10">macOS — Linux — Custom Embedders</text>
+
+  <!-- Arrow connecting layers -->
+  <line x1="212" y1="155" x2="212" y2="148" stroke="#e65100" stroke-width="1.5" marker-end="url(#arrowOrange)"/>
+  <line x1="587" y1="155" x2="587" y2="148" stroke="#b71c1c" stroke-width="1.5" marker-end="url(#arrowRed)"/>
+
+  <!-- Your App Layer -->
+  <rect x="40" y="265" width="720" height="55" rx="10" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="400" y="288" text-anchor="middle" fill="#1b5e20" font-size="13" font-weight="700">Tu Aplicación Flutter (Dart)</text>
+  <text x="400" y="306" text-anchor="middle" fill="#2e7d32" font-size="10">Widget tree → Element tree → Render tree → Layer tree → Engine → Platform</text>
+
+  <!-- Architecture Diagram -->
+  <rect x="40" y="340" width="345" height="140" rx="10" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="212" y="363" text-anchor="middle" fill="#5b21b6" font-size="13" font-weight="700">Patrón Arquitectónico</text>
+  
+  <rect x="55" y="375" width="90" height="30" rx="6" fill="#ede9fe" stroke="#a78bfa" stroke-width="1"/>
+  <text x="100" y="394" text-anchor="middle" fill="#6d28d9" font-size="9" font-weight="600">UI / Widgets</text>
+  
+  <rect x="165" y="375" width="90" height="30" rx="6" fill="#ede9fe" stroke="#a78bfa" stroke-width="1"/>
+  <text x="210" y="394" text-anchor="middle" fill="#6d28d9" font-size="9" font-weight="600">State Mgmt</text>
+  
+  <rect x="275" y="375" width="95" height="30" rx="6" fill="#ede9fe" stroke="#a78bfa" stroke-width="1"/>
+  <text x="322" y="394" text-anchor="middle" fill="#6d28d9" font-size="9" font-weight="600">Service Layer</text>
+
+  <rect x="55" y="415" width="90" height="30" rx="6" fill="#ede9fe" stroke="#a78bfa" stroke-width="1"/>
+  <text x="100" y="434" text-anchor="middle" fill="#6d28d9" font-size="9" font-weight="600">Repository</text>
+  
+  <rect x="165" y="415" width="90" height="30" rx="6" fill="#ede9fe" stroke="#a78bfa" stroke-width="1"/>
+  <text x="210" y="434" text-anchor="middle" fill="#6d28d9" font-size="9" font-weight="600">Data Sources</text>
+  
+  <rect x="275" y="415" width="95" height="30" rx="6" fill="#ede9fe" stroke="#a78bfa" stroke-width="1"/>
+  <text x="322" y="434" text-anchor="middle" fill="#6d28d9" font-size="9" font-weight="600">OpenAPI Client</text>
+  
+  <line x1="145" y1="405" x2="165" y2="405" stroke="#a78bfa" stroke-width="1"/>
+  <line x1="255" y1="405" x2="275" y2="405" stroke="#a78bfa" stroke-width="1"/>
+  <line x1="145" y1="445" x2="165" y2="445" stroke="#a78bfa" stroke-width="1"/>
+  <line x1="255" y1="445" x2="275" y2="445" stroke="#a78bfa" stroke-width="1"/>
+
+  <!-- Dart VM Details -->
+  <rect x="415" y="340" width="345" height="140" rx="10" fill="#fffbeb" stroke="#d97706" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="587" y="363" text-anchor="middle" fill="#b45309" font-size="13" font-weight="700">Dart VM &amp; Compilación</text>
+  
+  <rect x="430" y="375" width="95" height="30" rx="6" fill="#fef3c7" stroke="#fbbf24" stroke-width="1"/>
+  <text x="477" y="394" text-anchor="middle" fill="#92400e" font-size="9" font-weight="600">JIT (Debug)</text>
+  
+  <rect x="540" y="375" width="95" height="30" rx="6" fill="#fef3c7" stroke="#fbbf24" stroke-width="1"/>
+  <text x="587" y="394" text-anchor="middle" fill="#92400e" font-size="9" font-weight="600">AOT (Release)</text>
+  
+  <rect x="650" y="375" width="95" height="30" rx="6" fill="#fef3c7" stroke="#fbbf24" stroke-width="1"/>
+  <text x="697" y="394" text-anchor="middle" fill="#92400e" font-size="9" font-weight="600">Hot Reload</text>
+
+  <text x="587" y="425" text-anchor="middle" fill="#92400e" font-size="10">JIT: compilación rápida para desarrollo</text>
+  <text x="587" y="440" text-anchor="middle" fill="#92400e" font-size="10">AOT: compilación nativa para producción</text>
+  <text x="587" y="455" text-anchor="middle" fill="#92400e" font-size="10">Hot Reload: inyecta cambios en &lt;1s sin reiniciar</text>
+</svg>

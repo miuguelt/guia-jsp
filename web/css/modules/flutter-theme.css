@@ -1,0 +1,14 @@
+/* Flutter Theme - auto-extracted from flutter-guide.html */
+        :root{--flutter-blue:#1389FD;--flutter-dark:#0175C2;--flutter-light:#54C5F8}
+        .flutter-hero{background:linear-gradient(135deg,#0175C2,#1389FD 50%,#54C5F8)!important}
+        .flutter-hero .hero-subtitle,.flutter-hero .hero-description{color:rgba(255,255,255,.9)!important}
+        .flutter-hero .hero-stats .stat-item{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.2)}
+        .flutter-hero .hero-stats .stat-value{color:#fff}
+        .flutter-hero .hero-stats .stat-label{color:rgba(255,255,255,.8)}
+        .tech-flutter .module-header{background:linear-gradient(135deg,#0175C2,#1389FD)}
+        .tech-dart .module-header{background:linear-gradient(135deg,#0175C2,#00B4D8)}
+        .tech-openapi .module-header{background:linear-gradient(135deg,#6DB33F,#8BC34A)}
+        .tech-micro .module-header{background:linear-gradient(135deg,#7c3aed,#a78bfa)}
+        .step-card-flutter{border-left:3px solid #1389FD}
+        .flutter-nav-icon{color:#1389FD}
+        [data-theme=dark] .flutter-nav-icon{color:#54C5F8}

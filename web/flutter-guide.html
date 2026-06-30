@@ -1,0 +1,134 @@
+<!-- MISSING: ../../../shared/_head.html -->
+<!-- MISSING: ../../../shared/_sidebar-button.html -->
+<aside class="main-sidebar" id="mainSidebar">
+    <div class="sidebar-header">
+        <div class="sidebar-logo">
+            <div class="sidebar-logo-icon flutter-nav-icon"><i class="fab fa-flutter"></i></div>
+            <div><h3 style="font-size:13px;margin:0;line-height:1.2;color:var(--text-primary)">SENA ADSO</h3><p style="font-size:10px;margin:0;color:var(--text-muted)">Flutter + OpenAPI</p></div>
+        </div>
+        <button class="sidebar-toggle" id="sidebarToggle"><i class="fas fa-chevron-left"></i></button>
+    </div>
+    <div class="sidebar-search">
+        <div class="search-container">
+            <i class="fas fa-search"></i>
+            <input type="text" id="sidebarSearch" placeholder="Buscar en la guia...">
+            <span class="search-shortcut">Ctrl+K</span>
+        </div>
+    </div>
+    <nav class="sidebar-navigation" id="sidebarNav">
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Introduccion</div>
+            <a href="#inicio" class="sidebar-link active" data-section="inicio">
+                <div class="sidebar-link-icon"><i class="fas fa-home"></i></div>
+                <div class="sidebar-link-content"><div class="sidebar-link-title">Inicio</div><div class="sidebar-link-subtitle">Pagina principal</div></div>
+                <div class="sidebar-link-check" data-check="inicio"></div>
+            </a>
+            <a href="#identificacion" class="sidebar-link" data-section="identificacion">
+                <div class="sidebar-link-icon"><i class="fas fa-id-card"></i></div>
+                <div class="sidebar-link-content"><div class="sidebar-link-title">Identificacion</div><div class="sidebar-link-subtitle">Informacion oficial SENA</div></div>
+                <div class="sidebar-link-check" data-check="identificacion"></div>
+            </a>
+            <a href="#presentacion" class="sidebar-link" data-section="presentacion">
+                <div class="sidebar-link-icon"><i class="fas fa-book-open"></i></div>
+                <div class="sidebar-link-content"><div class="sidebar-link-title">Presentacion</div><div class="sidebar-link-subtitle">Flutter, OpenAPI, Microservicios</div></div>
+                <div class="sidebar-link-check" data-check="presentacion"></div>
+            </a>
+        </div>
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Fundamentos</div>
+            <a href="#reflexion" class="sidebar-link" data-section="reflexion">
+                <div class="sidebar-link-icon"><i class="fas fa-lightbulb"></i></div>
+                <div class="sidebar-link-content"><div class="sidebar-link-title">Reflexion Inicial</div><div class="sidebar-link-subtitle">Por que Flutter?</div></div>
+                <div class="sidebar-link-check" data-check="reflexion"></div>
+            </a>
+            <a href="#stack" class="sidebar-link" data-section="stack">
+                <div class="sidebar-link-icon"><i class="fas fa-layer-group"></i></div>
+                <div class="sidebar-link-content"><div class="sidebar-link-title">Stack Tecnologico</div><div class="sidebar-link-subtitle">Flutter, Dart, OpenAPI, Riverpod</div></div>
+                <div class="sidebar-link-check" data-check="stack"></div>
+            </a>
+        </div>
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Apropiacion del Conocimiento</div>
+            <a href="#instalacion" class="sidebar-link" data-section="instalacion">
+                <div class="sidebar-link-icon"><i class="fas fa-download"></i></div>
+                <div class="sidebar-link-content"><div class="sidebar-link-title">1. Instalacion</div><div class="sidebar-link-subtitle">Flutter SDK, Android Studio, VS Code</div></div>
+                <div class="sidebar-link-check" data-check="instalacion"></div>
+            </a>
+            <a href="#dart" class="sidebar-link" data-section="dart">
+                <div class="sidebar-link-icon"><i class="fab fa-dart"></i></div>
+                <div class="sidebar-link-content"><div class="sidebar-link-title">2. Fundamentos de Dart</div><div class="sidebar-link-subtitle">Variables, tipos, funciones, async</div></div>
+                <div class="sidebar-link-check" data-check="dart"></div>
+            </a>
+            <a href="#widgets" class="sidebar-link" data-section="widgets">
+                <div class="sidebar-link-icon"><i class="fas fa-mobile-alt"></i></div>
+                <div class="sidebar-link-content"><div class="sidebar-link-title">3. Widgets y UI</div><div class="sidebar-link-subtitle">StatelessWidget, StatefulWidget, layouts</div></div>
+                <div class="sidebar-link-check" data-check="widgets"></div>
+            </a>
+            <a href="#navegacion" class="sidebar-link" data-section="navegacion">
+                <div class="sidebar-link-icon"><i class="fas fa-route"></i></div>
+                <div class="sidebar-link-content"><div class="sidebar-link-title">4. Navegacion</div><div class="sidebar-link-subtitle">GoRouter, rutas protegidas</div></div>
+                <div class="sidebar-link-check" data-check="navegacion"></div>
+            </a>
+            <a href="#api-rest" class="sidebar-link" data-section="api-rest">
+                <div class="sidebar-link-icon"><i class="fas fa-plug"></i></div>
+                <div class="sidebar-link-content"><div class="sidebar-link-title">5. Consumo de APIs REST</div><div class="sidebar-link-subtitle">Dio, JSON, manejo de errores</div></div>
+                <div class="sidebar-link-check" data-check="api-rest"></div>
+            </a>
+            <a href="#openapi" class="sidebar-link" data-section="openapi">
+                <div class="sidebar-link-icon"><i class="fas fa-file-code"></i></div>
+                <div class="sidebar-link-content"><div class="sidebar-link-title">6. OpenAPI Generator</div><div class="sidebar-link-subtitle">Cliente Dart desde OpenAPI Spec</div></div>
+                <div class="sidebar-link-check" data-check="openapi"></div>
+            </a>
+            <a href="#microservicios" class="sidebar-link" data-section="microservicios">
+                <div class="sidebar-link-icon"><i class="fas fa-cubes"></i></div>
+                <div class="sidebar-link-content"><div class="sidebar-link-title">7. Microservicios</div><div class="sidebar-link-subtitle">Arquitectura, patrones, despliegue</div></div>
+                <div class="sidebar-link-check" data-check="microservicios"></div>
+            </a>
+        </div>
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Practica</div>
+            <a href="#tutorial" class="sidebar-link" data-section="tutorial">
+                <div class="sidebar-link-icon"><i class="fas fa-code"></i></div>
+                <div class="sidebar-link-content"><div class="sidebar-link-title">8. Tutorial Practico</div><div class="sidebar-link-subtitle">App Inventario con OpenAPI</div></div>
+                <div class="sidebar-link-check" data-check="tutorial"></div>
+            </a>
+            <a href="#ejercicios" class="sidebar-link" data-section="ejercicios">
+                <div class="sidebar-link-icon"><i class="fas fa-dumbbell"></i></div>
+                <div class="sidebar-link-content"><div class="sidebar-link-title">Ejercicios</div><div class="sidebar-link-subtitle">3 niveles de dificultad</div></div>
+                <div class="sidebar-link-check" data-check="ejercicios"></div>
+            </a>
+            <a href="#evidencias" class="sidebar-link" data-section="evidencias">
+                <div class="sidebar-link-icon"><i class="fas fa-clipboard-check"></i></div>
+                <div class="sidebar-link-content"><div class="sidebar-link-title">Evidencias</div><div class="sidebar-link-subtitle">Rubrica de evaluacion</div></div>
+                <div class="sidebar-link-check" data-check="evidencias"></div>
+            </a>
+        </div>
+    </nav>
+    <div class="sidebar-footer">
+        <div class="sidebar-progress">
+            <div class="progress-label">
+                <span>Progreso</span>
+                <strong id="progressText">0%</strong>
+            </div>
+            <div class="progress-bar-track">
+                <div class="progress-bar-fill" id="progressBar"></div>
+            </div>
+        </div>
+        <div class="sidebar-actions" style="margin-top:8px;display:flex;gap:6px;">
+            <button class="sidebar-action-btn" id="themeToggle" title="Cambiar tema">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button class="sidebar-action-btn" id="resetProgress" title="Reiniciar progreso">
+                <i class="fas fa-undo"></i>
+            </button>
+        </div>
+    </div>
+</aside>
+
+<!-- MISSING: ../../../shared/_header.html -->
+<main class="main-content" id="mainContent">
+    <!-- Sections will be added here -->
+</main>
+<!-- MISSING: ../../../shared/_footer.html -->
+<!-- MISSING: ../../../shared/_scroll-top.html -->
+<!-- MISSING: ../../../shared/_scripts.html -->

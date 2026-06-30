@@ -1,0 +1,203 @@
+            <section class="section" id="postgresql-config">
+                <div class="container">
+                    <div class="breadcrumbs">
+                        <div class="breadcrumb-item"><a href="#inicio">Inicio</a>
+                        </div><i class="fas fa-chevron-right breadcrumb-separator"></i>
+                        <div class="breadcrumb-item breadcrumb-current">
+                            Configuración PostgreSQL
+                        </div><span class="reading-time"><i class="fas fa-clock"></i>8 min</span>
+                    </div>
+                    <div class="section-header">
+                        <div class="section-number">
+                            05
+                        </div>
+                        <h2 class="section-title">
+                            Configuración de PostgreSQL
+                        </h2>
+                        <p class="section-subtitle">
+                            Conecta tu aplicación a la base de datos existente
+                        </p>
+                    </div>
+                    <div class="info-banner"><i class="fas fa-info-circle"></i>
+                        <div>
+                            <h4>
+                                Requisito previo
+                            </h4>
+                            <p>
+                                Esta sección asume que ya tienes PostgreSQL instalado y la base de datos<code>inventario_db</code>creada. Si no es así, ejecuta primero el script SQL completo que viene con la guía.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="config-steps">
+                        <div class="config-step">
+                            <div class="step-number">
+                                1
+                            </div>
+                            <div class="step-content">
+                                <h3>
+                                    Verificar que la BD existe
+                                </h3>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-terminal"></i>psql — Terminal</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-bash"># Conectar a PostgreSQL
+psql -U postgres
+# Listar bases de datos
+\l
+# Deberías ver: inventario_db
+# Conectar a la BD
+\c inventario_db
+# Verificar tablas
+\dt
+# Deberías ver: roles, usuarios, productos</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="config-step">
+                            <div class="step-number">
+                                2
+                            </div>
+                            <div class="step-content">
+                                <h3>
+                                    Configurar credenciales en db.properties
+                                </h3>
+                                <p>
+                                    Edita el archivo<code>src/main/resources/db.properties</code>con tus credenciales reales:
+                                </p>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-file-code"></i>db.properties</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-properties"># Configuración de conexión a PostgreSQLdb.driver=org.postgresql.Driverdb.url=jdbc:postgresql://localhost:5432/inventario_dbdb.username=postgresdb.password=tu_password_aqui# Nota: Cambia 'tu_password_aqui' por tu contraseña real de PostgreSQL# Si PostgreSQL corre en otro puerto, cambia 5432 por el puerto correcto</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="config-step">
+                            <div class="step-number">
+                                3
+                            </div>
+                            <div class="step-content">
+                                <h3>
+                                    Entendiendo la URL JDBC
+                                </h3>
+                                <div class="url-explainer">
+                                    <div class="url-part"><code>jdbc:postgresql://</code><span>Protocolo JDBC para PostgreSQL</span>
+                                    </div>
+                                    <div class="url-part"><code>localhost:5432</code><span>Host y puerto (cambia si tu BD está en otro servidor)</span>
+                                    </div>
+                                    <div class="url-part"><code>/inventario_db</code><span>Nombre de la base de datos (debe existir)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="config-step">
+                            <div class="step-number">
+                                4
+                            </div>
+                            <div class="step-content">
+                                <h3>
+                                    Probar la conexión
+                                </h3>
+                                <p>
+                                    Crea una clase de prueba para verificar que todo funciona:
+                                </p>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fab fa-java"></i>TestConexion.java</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-java">package com.sena.inventario.dao;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+public class TestConexion {
+    public static void main(String[] args) {
+        try (Connection conn = ConexionDB.conectar();
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM productos")) {
+            if (rs.next()) {
+                System.out.println("✓ Conexión exitosa!");
+                System.out.println("Productos en BD: " + rs.getInt(1));
+            }
+    }
+catch (Exception e) {
+    System.err.println("✗ Error: " + e.getMessage());
+}
+}
+}</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="config-step">
+                            <div class="step-number">
+                                5
+                            </div>
+                            <div class="step-content">
+                                <h3>
+                                    Variables de entorno (Producción)
+                                </h3>
+                                <p>
+                                    Para producción, usa variables de entorno en lugar de hardcodear credenciales:
+                                </p>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-terminal"></i>PowerShell — Variables de entorno</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-bash"># Configurar variables de entorno$env:DB_HOST="localhost"$env:DB_PORT="5432"$env:DB_NAME="inventario_db"$env:DB_USER="postgres"$env:DB_PASSWORD="tu_password_seguro"# En Docker o Coolify, configura estas variables en el panel</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="troubleshooting">
+                        <h3><i class="fas fa-exclamation-triangle"></i>Solución de Problemas Comunes
+                        </h3>
+                        <div class="problem-list">
+                            <div class="problem-item">
+                                <h4><i class="fas fa-times-circle"></i>Error: "Connection refused"
+                                </h4>
+                                <p><strong>Causa:</strong>PostgreSQL no está corriendo o el puerto es incorrecto.
+                                </p>
+                                <p><strong>Solución:</strong>Verifica que PostgreSQL esté activo:<code>netstat -an | findstr 5432</code>
+                                </p>
+                            </div>
+                            <div class="problem-item">
+                                <h4><i class="fas fa-times-circle"></i>Error: "database \"inventario_db\" does not exist"
+                                </h4>
+                                <p><strong>Causa:</strong>La base de datos no existe.
+                                </p>
+                                <p><strong>Solución:</strong>Ejecuta<code>CREATE DATABASE inventario_db;</code>en psql
+                                </p>
+                            </div>
+                            <div class="problem-item">
+                                <h4><i class="fas fa-times-circle"></i>Error: "password authentication failed"
+                                </h4>
+                                <p><strong>Causa:</strong>Credenciales incorrectas en db.properties.
+                                </p>
+                                <p><strong>Solución:</strong>Verifica usuario y contraseña en el archivo de configuración
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- ORM: JPA/Hibernate -->

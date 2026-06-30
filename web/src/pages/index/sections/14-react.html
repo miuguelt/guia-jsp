@@ -1,0 +1,1198 @@
+            <section class="section" id="react">
+                <div class="container">
+                    <div class="breadcrumbs">
+                        <div class="breadcrumb-item"><a href="#inicio">Inicio</a>
+                        </div><i class="fas fa-chevron-right breadcrumb-separator"></i>
+                        <div class="breadcrumb-item breadcrumb-current">
+                            Frontend con React
+                        </div><span class="reading-time"><i class="fas fa-clock"></i>35 min</span>
+                    </div>
+                    <div class="section-header">
+                        <div class="section-number">
+                            11
+                        </div>
+                        <h2 class="section-title">
+                            Frontend con React 19 + Vite + Auth JWT
+                        </h2>
+                        <p class="section-subtitle">
+                            Consume la API de FastAPI con autenticación JWT, rutas protegidas y control de roles
+                        </p>
+                    </div>
+                    <div class="info-banner"><i class="fas fa-info-circle"></i>
+                        <div>
+                            <h4>
+                                Continuación directa de FastAPI
+                            </h4>
+                            <p>
+                                Esta guía asume que tienes la API de FastAPI corriendo en<code>http://localhost:8000</code>con los endpoints de auth JWT. React será nuestra nueva "Vista" (V de MVC), consumiendo los endpoints JSON protegidos. Así como JSP usaba<code>session.getAttribute("usuario")</code>para saber quién está logueado, React guarda el<strong>JWT en localStorage</strong>y lo envía en cada petición vía<strong>Axios Interceptor</strong>.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- 🧪 PRIMER EJEMPLO EJECUTABLE: Hola Mundo React -->
+                    <div class="step-card" id="react-hello">
+                        <div class="step-header">
+                            <div class="step-number">
+                                🧪
+                            </div>
+                            <div class="step-info">
+                                <h3>
+                                    Primer Ejemplo: Hola Mundo con React
+                                </h3>
+                                <p>
+                                    Tu primer componente React — ¡en 2 minutos!
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <div class="info-banner" style="background:var(--accent-light, #e8f5e9);border-left:4px solid #28a745;"><i class="fas fa-rocket" style="color:#28a745;"></i>
+                                <div>
+                                    <h4>
+                                        Objetivo: Ver "Hola Mundo" renderizado por React
+                                    </h4>
+                                    <p>
+                                        Crea tu primer componente React. Al final verás un mensaje<strong>"¡Hola Mundo desde React 19!"</strong>en http://localhost:5173.<strong>Nota:</strong>Así como JSP renderizaba HTML en el servidor, React renderiza componentes en el navegador.
+                                    </p>
+                                </div>
+                            </div>
+                            <h4>
+                                Paso 1: Crear proyecto con Vite
+                            </h4>
+                            <h5>
+                                🪟 Nativo Windows:
+                            </h5>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title"><i class="fas fa-terminal"></i>Terminal — Crear proyecto (Nativo)</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-bash"># Crear proyecto con Vite + Reactnpm create vite@latest hola-mundo-react -- --template react# Resultado:# ✔ Project name: hola-mundo-react# ✔ Template: react# Done.# Entrar e instalarcd hola-mundo-reactnpm install# Iniciar servidor de desarrollonpm run dev# Resultado esperado:# VITE v5.4.0  ready in 250ms# ➜  Local:   http://localhost:5173/# ➜  presiona h + enter para ayuda# Abre http://localhost:5173 — verás la página default de Vite + React</code></pre>
+                                </div>
+                            </div>
+                            <h5>
+                                🐳 Con Docker (producción):
+                            </h5>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title"><i class="fab fa-docker"></i>Terminal — Docker</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-bash"># Construir imagen de produccióndocker build -t hola-react .docker run -d -p 80:80 --name hola-react hola-react# Abrir: http://localhost# Detenerdocker stop hola-react && docker rm hola-react</code></pre>
+                                </div>
+                            </div>
+                            <h4>
+                                Paso 2: Reemplazar App.jsx con nuestro componente
+                            </h4>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title"><i class="fab fa-react"></i>src/App.jsx</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-jsx">// Equivalente a un archivo JSP, pero en JavaScript// En lugar de renderizar en el servidor (Tomcat),// renderiza en el navegador del clientefunction App() {
+    const nombre = "Miguel";
+    const fecha = new Date().toLocaleString("es-CO");
+    return (        &lt;div style={
+            {
+                fontFamily: "Arial, sans-serif",            textAlign: "center",            padding: "4rem 2rem",            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",            minHeight: "100vh",            color: "white"
+                }
+            }&gt;            &lt;h1 style={
+            {
+                fontSize: "3rem", marginBottom: "1rem"
+                }
+            }&gt;                ¡Hola Mundo desde React 19!            &lt;/h1&gt;            &lt;p style={
+            {
+                fontSize: "1.2rem", opacity: 0.9
+                }
+            }&gt;                Mi primer componente en React 🚀            &lt;/p&gt;            &lt;p style={
+            {
+                fontSize: "1rem", opacity: 0.7
+                }
+            }&gt;                Bienvenido, {
+            nombre
+            }            &lt;/p&gt;            &lt;div style={
+            {
+                marginTop: "2rem",                padding: "1rem",                background: "rgba(255,255,255,0.1)",                borderRadius: "12px",                display: "inline-block"
+                }
+            }&gt;                Fecha actual: {
+            fecha
+            }            &lt;/div&gt;            &lt;hr style={
+            {
+                margin: "2rem auto",                width: "60%",                border: "1px solid rgba(255,255,255,0.2)"
+                }
+            } /&gt;            &lt;h2&gt;Equivalencias con JSP&lt;/h2&gt;            &lt;ul style={
+            {
+                listStyle: "none", padding: 0
+                }
+            }&gt;                &lt;li&gt;✅ JSP → JSX (JavaScript XML)&lt;/li&gt;                &lt;li&gt;✅ ${
+            variable
+            } → {
+            variable
+            }&lt;/li&gt;                &lt;li&gt;✅ Servidor (Tomcat) → Navegador (Cliente)&lt;/li&gt;                &lt;li&gt;✅ HTML estático → Componentes dinámicos&lt;/li&gt;            &lt;/ul&gt;        &lt;/div&gt;    );
+    }export default App;</code></pre>
+                                </div>
+                            </div>
+                            <h4>
+                                Paso 3: Ver el resultado en el navegador
+                            </h4>
+                            <div class="result-box">
+                                <div class="result-header"><i class="fas fa-eye"></i><span>Resultado en http://localhost:5173</span>
+                                </div>
+                                <pre class="result-content"><code class="language-text">┌──────────────────────────────────────────────────────────────┐│                                                              ││           ¡Hola Mundo desde React 19!                       ││           Mi primer componente en React 🚀                   ││                                                              ││           Bienvenido, Miguel                                 ││                                                              ││           ┌────────────────────────────────────┐             ││           │ Fecha actual: 28/6/2026, 1:00 PM   │             ││           └────────────────────────────────────┘             ││           ─────────────────────────────                      ││           Equivalencias con JSP                              ││           ✅ JSP → JSX (JavaScript XML)                      ││           ✅ ${variable} → {variable}                        ││           ✅ Servidor (Tomcat) → Navegador (Cliente)         ││           ✅ HTML estático → Componentes dinámicos           ││                                                              │└──────────────────────────────────────────────────────────────┘</code></pre>
+                            </div>
+                            <h4>
+                                Paso 4: Consumir datos desde la API de FastAPI
+                            </h4>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title"><i class="fab fa-react"></i>src/App.jsx (con API)</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-jsx">import { useState, useEffect } from "react";function App() {    const [mensaje, setMensaje] = useState("Cargando...");    // useEffect = como doGet() del Servlet, pero del lado del cliente    useEffect(() =&gt; {        fetch("http://localhost:8000")            .then(res =&gt; res.json())            .then(data =&gt; setMensaje(data.mensaje))            .catch(err =&gt; setMensaje("Error: " + err.message));    }, []);
+return (        &lt;div style={{ textAlign: "center", padding: "4rem" }}&gt;            &lt;h1&gt;Conectado a FastAPI&lt;/h1&gt;            &lt;p&gt;Mensaje desde la API: &lt;strong&gt;{mensaje}&lt;/strong&gt;&lt;/p&gt;            &lt;p&gt;(FastAPI debe estar corriendo en :8000)&lt;/p&gt;        &lt;/div&gt;    );}export default App;// Resultado esperado:// ┌──────────────────────────────────────┐// │                                      │// │   Conectado a FastAPI                │// │                                      │// │   Mensaje desde la API:              │// │   Hola Mundo desde FastAPI!          │// │                                      │// │   (FastAPI debe estar corriendo      │// │    en :8000)                         │// │                                      │// └──────────────────────────────────────┘</code></pre>
+                                </div>
+                            </div>
+                            <div class="recommendation-box"><i class="fas fa-check-circle" style="color:#28a745;"></i>
+                                <div>
+                                    <h4>
+                                        ¡Has conectado React + FastAPI!
+                                    </h4>
+                                    <p>
+                                        Acabas de crear un componente React que consume datos de la API FastAPI. Este es el mismo patrón que usarás en el sistema de inventario completo: React muestra datos, FastAPI los sirve, PostgreSQL los almacena. Ahora construyamos la aplicación completa.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tutorial-steps">
+                        <div class="step-card" id="react-step-1">
+                            <div class="step-header">
+                                <div class="step-number">
+                                    1
+                                </div>
+                                <div class="step-info">
+                                    <h3>
+                                        Crear Proyecto React con Vite
+                                    </h3>
+                                    <p>
+                                        Configuración inicial y estructura
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <h4>
+                                    Crear proyecto
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-terminal"></i>Terminal — Crear proyecto Vite</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-bash"># Crear proyecto con Vite + React templatenpm create vite@latest frontend-inventario -- --template react# Resultado:# ✔ Project name: frontend-inventario# ✔ Template: react# Done. Now run:#   cd frontend-inventario#   npm install#   npm run dev# Instalar dependencias adicionalescd frontend-inventarionpm installnpm install axios react-router-dom# Iniciar en desarrollonpm run dev# Resultado esperado:#   VITE v5.4.0  ready in 250ms#   ➜  Local:   http://localhost:5173/#   ➜  Network: http://192.168.1.10:5173/#   ➜  press h + enter to show help</code></pre>
+                                    </div>
+                                </div>
+                                <h4>
+                                    Estructura del proyecto
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-folder-tree"></i>Estructura del proyecto React</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-text">frontend-inventario/├── .env / .env.example         # VITE_API_URL=http://localhost:8000/api├── src/│   ├── contexts/│   │   └── AuthContext.jsx       # Estado global de auth + JWT│   ├── services/│   │   └── api.js                # Axios + Interceptor JWT + env vars│   ├── components/│   │   ├── Navbar.jsx            # Barra con user/login/logout│   │   ├── ProtectedRoute.jsx    # Guard de rutas (roles)│   │   ├── ProductoCard.jsx      # Tarjeta de producto (como fragmento JSP)│   │   ├── ProductoLista.jsx     # Lista de productos (como lista.jsp)│   │   └── ProductoForm.jsx      # Formulario crear/editar│   ├── pages/│   │   ├── Login.jsx             # Login con JWT│   │   ├── Register.jsx          # Registro de usuarios│   │   └── AdminUsuarios.jsx     # Admin: CRUD usuarios│   ├── App.jsx                   # Raíz + AuthProvider + Rutas protegidas│   ├── App.css                   # Estilos globales│   └── main.jsx                  # Punto de entrada├── index.html├── vite.config.js└── package.json</code></pre>
+                                    </div>
+                                </div>
+                                <h4>
+                                    Variables de entorno
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-file-code"></i>.env — Configurar URL de la API</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-bash"># Las variables VITE_ son expuestas automáticamente por Vite# .env (copiar de .env.example)VITE_API_URL=http://localhost:8000/api# En el código:# const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api'</code></pre>
+                                    </div>
+                                </div>
+                                <div class="recommendation-box"><i class="fas fa-info-circle"></i>
+                                    <div>
+                                        <h4>
+                                            Dev vs Prod: cambio de URL automático
+                                        </h4>
+                                        <p>
+                                            En desarrollo:<code>.env</code>con<code>VITE_API_URL=http://localhost:8000/api</code>
+                                        </p>
+                                        <p>
+                                            En producción (Docker): el<code>nginx.conf</code>hace proxy reverso a la API, o se cambia la variable en el build.
+                                        </p>
+                                        <p>
+                                            En JSP: la URL era fija porque el frontend estaba en el mismo servidor. Con React + FastAPI, pueden estar en servidores diferentes.
+                                        </p>
+                                    </div>
+                                </div>
+                                <h4>
+                                    Flujo de autenticación
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-exchange-alt"></i>Login Flow</span>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-text">┌──────────┐    POST /api/auth/login    ┌──────────┐│  React   │ ──── {username, password} ──→│ FastAPI  ││  Login   │                              │  Auth    ││  Page    │ ←── {access_token, usuario}──│  Router  │└──────────┘                              └──────────┘     │                                         │     │  localStorage.setItem(                   │  jwt.encode(     │    "access_token", token)                │    {"sub": user, "rol": "Admin"}     │  localStorage.setItem(                   │  )     │    "usuario", JSON.stringify(user))      │     ▼                                         ▼┌──────────┐    GET /api/productos/       ┌──────────┐│  React   │ ──── Authorization: Bearer ──→│ FastAPI  ││  Axios   │        &lt;token&gt;               │  Router  ││  Interceptor│                            │  valida  ││  (automático)│ ←── JSON(productos) ──────│  JWT     │└──────────┘                              └──────────┘</code></pre>
+                                    </div>
+                                </div>
+                                <h4>
+                                    Limpieza inicial
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-terminal"></i>Terminal — Limpiar archivos base</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-bash"># Eliminar archivos de ejemplo que Vite crearm src/App.css src/index.css src/assets/react.svg# Crear directorios para nuestros componentesmkdir src/services src/components# Resultado final:# src/# ├── App.jsx
+# Vamos a editar# ├── main.jsx
+# Se mantiene igual# ├── services/# │   └── api.js
+# Servicio API# └── components/#
+├── Navbar.jsx#
+├── ProductoCard.jsx#
+├── ProductoLista.jsx#
+└── ProductoForm.jsx</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step-card" id="react-step-2">
+                            <div class="step-header">
+                                <div class="step-number">
+                                    2
+                                </div>
+                                <div class="step-info">
+                                    <h3>
+                                        Servicio API con Axios
+                                    </h3>
+                                    <p>
+                                        Equivalente a ProductoDAO.java pero en JavaScript
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <h4>
+                                    api.js — Capa de servicio
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fab fa-js"></i>src/services/api.js</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-javascript">import axios from 'axios';
+// URL base de nuestra API FastAPI// Equivalente a db.properties → URL de conexiónconst API_URL = 'http://localhost:8000/api';
+const api = axios.create({
+    baseURL: API_URL,    headers: {
+        'Content-Type': 'application/json'
+    },
+});
+// ===== CRUD Productos =====// Equivalente a ProductoDAO.java pero con promesasexport const listarProductos = async (categoria = null) =&gt; {
+    // GET /api/productos/?categoria=Tecnologia    // Equivalente a: ProductoDAO.listarTodos()
+    const params = categoria ? {
+        categoria
+    } : {
+    };
+    const response = await api.get('/productos/', {
+        params
+    });
+    return response.data;
+    // Retorna array de productos
+};
+export const obtenerProducto = async (id) =&gt; {
+    // GET /api/productos/5    // Equivalente a: ProductoDAO.buscarPorId(id)
+    const response = await api.get(`/productos/${
+        id
+    }`);
+    return response.data;
+};
+export const crearProducto = async (producto) =&gt; {
+    // POST /api/productos/ body: {
+        codigo, nombre, precio, ...
+    }
+    // Equivalente a: ProductoDAO.insertar(producto)
+    const response = await api.post('/productos/', producto);
+    return response.data;
+    // Retorna producto creado con ID
+};
+export const actualizarProducto = async (id, producto) =&gt; {
+    // PUT /api/productos/5 body: {
+        codigo, nombre, precio, ...
+    }
+    // Equivalente a: ProductoDAO.actualizar(producto)
+    const response = await api.put(`/productos/${
+        id
+    }`, producto);
+    return response.data;
+};
+export const eliminarProducto = async (id) =&gt; {
+    // DELETE /api/productos/5    // Equivalente a: ProductoDAO.eliminar(id)
+    await api.delete(`/productos/${
+        id
+    }`);
+};</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step-card" id="react-step-3">
+                            <div class="step-header">
+                                <div class="step-number">
+                                    3
+                                </div>
+                                <div class="step-info">
+                                    <h3>
+                                        Componente ProductoCard
+                                    </h3>
+                                    <p>
+                                        Renderiza cada producto — como un fragmento JSP con JSTL
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <h4>
+                                    ProductoCard.jsx
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fab fa-react"></i>src/components/ProductoCard.jsx</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-jsx">import './ProductoCard.css';
+export default function ProductoCard({
+        producto, onEliminar
+        }) {
+    // Formatear precio a moneda colombiana    const formatoPrecio = new Intl.NumberFormat('es-CO', {
+            style: 'currency',        currency: 'COP',        minimumFractionDigits: 0,
+            });
+    // Clase CSS condicional para stock bajo    const stockClase = producto.stock &lt; 10 ? 'stock-bajo' : 'stock-normal';
+    return (        &lt;div className="producto-card"&gt;            &lt;div className="producto-header"&gt;                &lt;span className="producto-codigo"&gt;{
+            producto.codigo
+            }&lt;/span&gt;                &lt;span className={
+            `producto-estado ${
+                producto.estado ? 'activo' : 'inactivo'
+                }`
+            }&gt;                    {
+            producto.estado ? 'Activo' : 'Inactivo'
+            }                &lt;/span&gt;            &lt;/div&gt;            &lt;h3 className="producto-nombre"&gt;{
+            producto.nombre
+            }&lt;/h3&gt;            {
+            producto.descripcion && (                &lt;p className="producto-descripcion"&gt;{
+                    producto.descripcion
+                    }&lt;/p&gt;            )
+            }            &lt;div className="producto-detalles"&gt;                &lt;div className="producto-precio"&gt;                    &lt;span className="label"&gt;Precio:&lt;/span&gt;                    &lt;span className="valor"&gt;{
+            formatoPrecio.format(producto.precio)
+            }&lt;/span&gt;                &lt;/div&gt;                &lt;div className="producto-stock"&gt;                    &lt;span className="label"&gt;Stock:&lt;/span&gt;                    &lt;span className={
+            `valor ${
+                stockClase
+                }`
+            }&gt;                        {
+            producto.stock
+            } unidades                    &lt;/span&gt;                &lt;/div&gt;                &lt;div className="producto-categoria"&gt;                    &lt;span className="label"&gt;Categoría:&lt;/span&gt;                    &lt;span className="valor"&gt;{
+            producto.categoria || 'Sin categoría'
+            }&lt;/span&gt;                &lt;/div&gt;            &lt;/div&gt;            &lt;div className="producto-acciones"&gt;                &lt;a href={
+            `/productos/${
+                producto.id
+                }/editar`
+            } className="btn-editar"&gt;                    &lt;i className="fas fa-edit"&gt;&lt;/i&gt; Editar                &lt;/a&gt;                &lt;button onClick={
+            () =&gt; onEliminar(producto.id)
+            } className="btn-eliminar"&gt;                    &lt;i className="fas fa-trash"&gt;&lt;/i&gt; Eliminar                &lt;/button&gt;            &lt;/div&gt;        &lt;/div&gt;    );
+    }// ===== ESTILOS (ProductoCard.css) =====/*.producto-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+    }.producto-card:hover {
+    transform: translateY(-2px);
+    }.producto-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    }.producto-codigo {
+    font-family: monospace;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    background: var(--bg-muted);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    }.producto-estado {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 10px;
+    }.producto-estado.activo {
+    background: #d4edda;
+    color: #155724;
+    }.producto-estado.inactivo {
+    background: #f8d7da;
+    color: #721c24;
+    }.producto-nombre {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.1rem;
+    }.producto-detalles {
+    display: grid;
+    gap: 0.4rem;
+    margin: 0.75rem 0;
+    }.producto-detalles .label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    }.producto-detalles .valor {
+    font-weight: 600;
+    }.stock-bajo {
+    color: #dc3545;
+    }.stock-normal {
+    color: #28a745;
+    }.producto-acciones {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    }.btn-editar, .btn-eliminar {
+    padding: 0.4rem 1rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    text-decoration: none;
+    }.btn-editar {
+    background: #007bff;
+    color: white;
+    border: none;
+    }.btn-eliminar {
+    background: #dc3545;
+    color: white;
+    border: none;
+    }*/</code></pre>
+                                    </div>
+                                </div>
+                                <h4>
+                                    Resultado visual del componente
+                                </h4>
+                                <div class="result-box">
+                                    <div class="result-header"><i class="fas fa-eye"></i><span>Vista renderizada en el navegador</span>
+                                    </div>
+                                    <pre class="result-content"><code class="language-text">┌──────────────────────────────────────────────┐│  PROD-001                          [ Activo ] ││                                              ││  Laptop HP Pavilion                          ││  Laptop 15.6" Intel Core i5 8GB RAM         ││                                              ││  Precio:     $ 2.500.000                     ││  Stock:      15 unidades  ✓                  ││  Categoría:  Tecnología                      ││                                              ││  ────────────────────────────────────────    ││  [✏ Editar]    [🗑 Eliminar]                  │└──────────────────────────────────────────────┘</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step-card" id="react-step-4">
+                            <div class="step-header">
+                                <div class="step-number">
+                                    4
+                                </div>
+                                <div class="step-info">
+                                    <h3>
+                                        Componente ProductoLista
+                                    </h3>
+                                    <p>
+                                        Lista todos los productos desde la API — como lista.jsp
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <h4>
+                                    ProductoLista.jsx — Consume GET /api/productos/
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fab fa-react"></i>src/components/ProductoLista.jsx</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-jsx">import {
+    useState, useEffect
+    } from 'react';
+import {
+    listarProductos, eliminarProducto
+    } from '../services/api';
+import ProductoCard from './ProductoCard';
+import Mensaje from './Mensaje';
+export default function ProductoLista() {
+    const [productos, setProductos] = useState([]);
+    const [cargando, setCargando] = useState(true);
+    const [error, setError] = useState(null);
+    const [filtro, setFiltro] = useState('');
+    const [mensaje, setMensaje] = useState(null);
+    // Cargar productos al montar el componente    // Equivalente a: doGet() → ProductoDAO.listarTodos() → forward a lista.jsp    useEffect(() =&gt; {
+            cargarProductos();
+            }, []);
+    async function cargarProductos() {
+        try {
+            setCargando(true);
+            const data = await listarProductos();
+            setProductos(data);
+            setError(null);
+            }
+        catch (err) {
+            setError('Error al cargar productos: ' + err.message);
+            } finally {
+            setCargando(false);
+            }
+        }
+    async function handleEliminar(id) {
+        if (!confirm('¿Eliminar este producto?')) return;
+        try {
+            await eliminarProducto(id);
+            setMensaje({
+                    tipo: 'exito', texto: 'Producto eliminado'
+                    });
+            cargarProductos();
+            // Recargar lista
+            }
+        catch (err) {
+            setMensaje({
+                    tipo: 'error', texto: 'Error al eliminar'
+                    });
+            }
+        }    // Filtro local (sin llamar a la API)
+    const productosFiltrados = filtro        ? productos.filter(p =&gt;            p.nombre.toLowerCase().includes(filtro.toLowerCase()) ||            p.codigo.toLowerCase().includes(filtro.toLowerCase()))        : productos;
+    // Estado: Cargando    if (cargando) {
+        return (            &lt;div className="estado-container"&gt;                &lt;div className="spinner"&gt;&lt;/div&gt;                &lt;p&gt;Cargando productos...&lt;/p&gt;            &lt;/div&gt;        );
+        }    // Estado: Error    if (error) {
+        return (            &lt;div className="estado-container error"&gt;                &lt;i className="fas fa-exclamation-triangle"&gt;&lt;/i&gt;                &lt;p&gt;{
+                error
+                }&lt;/p&gt;                &lt;button onClick={
+                cargarProductos
+                } className="btn-reintentar"&gt;                    Reintentar                &lt;/button&gt;            &lt;/div&gt;        );
+        }
+    return (        &lt;div className="producto-lista"&gt;            {
+            mensaje && (                &lt;Mensaje tipo={
+                    mensaje.tipo
+                    } texto={
+                    mensaje.texto
+                    }                    onCerrar={
+                    () =&gt; setMensaje(null)
+                    } /&gt;            )
+            }            &lt;div className="lista-header"&gt;                &lt;h2&gt;Productos ({
+                productosFiltrados.length
+                })&lt;/h2&gt;                &lt;div className="lista-acciones"&gt;                    &lt;input                        type="text"                        placeholder="Buscar producto..."                        value={
+            filtro
+            }                        onChange={
+            e =&gt; setFiltro(e.target.value)
+            }                        className="buscador"                    /&gt;                    &lt;a href="/productos/nuevo" className="btn-crear"&gt;                        + Nuevo Producto                    &lt;/a&gt;                &lt;/div&gt;            &lt;/div&gt;            {
+            productosFiltrados.length === 0 ? (                &lt;div className="vacio"&gt;                    &lt;i className="fas fa-box-open"&gt;&lt;/i&gt;                    &lt;p&gt;{
+                    filtro ? 'Sin resultados para "' + filtro + '"' : 'No hay productos'
+                    }&lt;/p&gt;                &lt;/div&gt;            ) : (                &lt;div className="productos-grid"&gt;                    {
+                    productosFiltrados.map(producto =&gt; (                        &lt;ProductoCard                            key={
+                                producto.id
+                                }                            producto={
+                                producto
+                                }                            onEliminar={
+                                handleEliminar
+                                }                        /&gt;                    ))
+                    }                &lt;/div&gt;            )
+            }        &lt;/div&gt;    );
+    }</code></pre>
+                                    </div>
+                                </div>
+                                <h4>
+                                    Resultado visual: Lista de Productos
+                                </h4>
+                                <div class="result-box">
+                                    <div class="result-header"><i class="fas fa-eye"></i><span>Vista renderizada: Lista de productos desde la API</span>
+                                    </div>
+                                    <pre class="result-content"><code class="language-text">┌──────────────────────────────────────────────────────────────┐│  Productos (3)              [🔍 Buscar producto...] [+ Nuevo] │├──────────────────────────────────────────────────────────────┤│  ┌────────────────────┐  ┌────────────────────┐              ││  │ PROD-001 [Activo]  │  │ PROD-002 [Activo]  │              ││  │ Laptop HP Pavilion │  │ Mouse Logitech     │              ││  │ $ 2.500.000        │  │ $ 45.000           │              ││  │ 15 unidades  ✓     │  │ 50 unidades  ✓     │              ││  │ [Editar] [Eliminar]│  │ [Editar] [Eliminar]│              ││  └────────────────────┘  └────────────────────┘              ││  ┌────────────────────┐                                      ││  │ PROD-003 [Activo]  │                                      ││  │ Teclado Mecánico   │                                      ││  │ $ 180.000          │                                      ││  │ 30 unidades  ✓     │                                      ││  │ [Editar] [Eliminar]│                                      ││  └────────────────────┘                                      │└──────────────────────────────────────────────────────────────┘</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step-card" id="react-step-5">
+                            <div class="step-header">
+                                <div class="step-number">
+                                    5
+                                </div>
+                                <div class="step-info">
+                                    <h3>
+                                        Componente ProductoForm
+                                    </h3>
+                                    <p>
+                                        Crear y editar productos — como formulario.jsp
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <h4>
+                                    ProductoForm.jsx — POST y PUT a FastAPI
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fab fa-react"></i>src/components/ProductoForm.jsx</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-jsx">import {
+    useState, useEffect
+    } from 'react';
+import {
+    useNavigate, useParams
+    } from 'react-router-dom';
+import {
+    crearProducto, actualizarProducto, obtenerProducto
+    } from '../services/api';
+export default function ProductoForm() {
+    const navigate = useNavigate();
+    const {
+        id
+        } = useParams();
+    // Si hay :id en la ruta, es edición    const esEdicion = Boolean(id);
+    const [form, setForm] = useState({
+            codigo: '',        nombre: '',        descripcion: '',        precio: '',        stock: '0',        categoria: '',
+            });
+    const [enviando, setEnviando] = useState(false);
+    const [error, setError] = useState(null);
+    // Si es edición, cargar datos del producto    useEffect(() =&gt; {
+            if (id) {
+                obtenerProducto(id)                .then(data =&gt; setForm({
+                            codigo: data.codigo,                    nombre: data.nombre,                    descripcion: data.descripcion || '',                    precio: data.precio.toString(),                    stock: data.stock.toString(),                    categoria: data.categoria || '',
+                            }))                .catch(err =&gt; setError('Error al cargar producto'));
+                }
+            }, [id]);
+    const handleChange = (e) =&gt; {
+        setForm({
+                ...form, [e.target.name]: e.target.value
+                });
+        };
+    const handleSubmit = async (e) =&gt; {
+        e.preventDefault();
+        setEnviando(true);
+        setError(null);
+        try {
+            const datos = {
+                ...form,                precio: parseFloat(form.precio),                stock: parseInt(form.stock),
+                };
+            if (esEdicion) {
+                await actualizarProducto(id, datos);
+                alert('Producto actualizado exitosamente');
+                } else {
+                await crearProducto(datos);
+                alert('Producto creado exitosamente');
+                }            navigate('/');
+            // Volver a la lista
+            }
+        catch (err) {
+            setError(err.response?.data?.detail || 'Error al guardar producto');
+            } finally {
+            setEnviando(false);
+            }
+        };
+    return (        &lt;div className="producto-form-container"&gt;            &lt;h2&gt;{
+            esEdicion ? 'Editar Producto' : 'Nuevo Producto'
+            }&lt;/h2&gt;            {
+            error && (                &lt;div className="error-banner"&gt;                    &lt;i className="fas fa-exclamation-circle"&gt;&lt;/i&gt; {
+                    error
+                    }                &lt;/div&gt;            )
+            }            &lt;form onSubmit={
+            handleSubmit
+            } className="producto-form"&gt;                &lt;div className="form-grid"&gt;                    &lt;div className="form-group"&gt;                        &lt;label&gt;Código *&lt;/label&gt;                        &lt;input name="codigo" value={
+            form.codigo
+            }                            onChange={
+            handleChange
+            } required minLength={
+            3
+            } /&gt;                    &lt;/div&gt;                    &lt;div className="form-group"&gt;                        &lt;label&gt;Nombre *&lt;/label&gt;                        &lt;input name="nombre" value={
+            form.nombre
+            }                            onChange={
+            handleChange
+            } required /&gt;                    &lt;/div&gt;                    &lt;div className="form-group full-width"&gt;                        &lt;label&gt;Descripción&lt;/label&gt;                        &lt;textarea name="descripcion" value={
+            form.descripcion
+            }                            onChange={
+            handleChange
+            } rows={
+            3
+            } /&gt;                    &lt;/div&gt;                    &lt;div className="form-group"&gt;                        &lt;label&gt;Precio *&lt;/label&gt;                        &lt;input name="precio" type="number" step="0.01"                            value={
+            form.precio
+            } onChange={
+            handleChange
+            } required /&gt;                    &lt;/div&gt;                    &lt;div className="form-group"&gt;                        &lt;label&gt;Stock *&lt;/label&gt;                        &lt;input name="stock" type="number"                            value={
+            form.stock
+            } onChange={
+            handleChange
+            } required /&gt;                    &lt;/div&gt;                    &lt;div className="form-group"&gt;                        &lt;label&gt;Categoría&lt;/label&gt;                        &lt;select name="categoria" value={
+            form.categoria
+            }                            onChange={
+            handleChange
+            }&gt;                            &lt;option value=""&gt;Seleccionar...&lt;/option&gt;                            &lt;option value="Tecnología"&gt;Tecnología&lt;/option&gt;                            &lt;option value="Accesorios"&gt;Accesorios&lt;/option&gt;                            &lt;option value="Audio"&gt;Audio&lt;/option&gt;                        &lt;/select&gt;                    &lt;/div&gt;                &lt;/div&gt;                &lt;div className="form-acciones"&gt;                    &lt;button type="button" onClick={
+            () =&gt; navigate('/')
+            }                        className="btn-cancelar"&gt;                        Cancelar                    &lt;/button&gt;                    &lt;button type="submit" disabled={
+            enviando
+            }                        className="btn-guardar"&gt;                        {
+            enviando ? 'Guardando...' : (esEdicion ? 'Actualizar' : 'Crear Producto')
+            }                    &lt;/button&gt;                &lt;/div&gt;            &lt;/form&gt;        &lt;/div&gt;    );
+    }</code></pre>
+                                    </div>
+                                </div>
+                                <h4>
+                                    Resultado visual: Formulario de Producto
+                                </h4>
+                                <div class="result-box">
+                                    <div class="result-header"><i class="fas fa-eye"></i><span>Vista renderizada: Nuevo Producto</span>
+                                    </div>
+                                    <pre class="result-content"><code class="language-text">┌──────────────────────────────────────────────────┐│  Nuevo Producto                                  │├──────────────────────────────────────────────────┤│  ┌──────────────┐  ┌──────────────────────┐      ││  │ Código *     │  │ Nombre *             │      ││  │ [PROD-006    ]  │ [Teclado Mecánico    ]      ││  └──────────────┘  └──────────────────────┘      ││  ┌──────────────────────────────────────┐        ││  │ Descripción                          │        ││  │ [Teclado mecánico RGB retroilumi... ]        ││  └──────────────────────────────────────┘        ││  ┌──────────┐  ┌──────────┐  ┌───────────┐     ││  │ Precio * │  │ Stock *  │  │ Categoría │     ││  │ [180000 ]  │ [30      ]  │ [Accesorios▼]     ││  └──────────┘  └──────────┘  └───────────┘     ││                                                  ││  [ Cancelar ]        [ Crear Producto ]          │└──────────────────────────────────────────────────┘</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step-card" id="react-step-6">
+                            <div class="step-header">
+                                <div class="step-number">
+                                    6
+                                </div>
+                                <div class="step-info">
+                                    <h3>
+                                        App.jsx — Rutas y Navegación
+                                    </h3>
+                                    <p>
+                                        Componente raíz con React Router — como index.jsp + web.xml
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <h4>
+                                    App.jsx — Enrutador principal
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fab fa-react"></i>src/App.jsx</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-jsx">import {
+    BrowserRouter, Routes, Route
+    } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import ProductoLista from './components/ProductoLista';
+import ProductoForm from './components/ProductoForm';
+function Inicio() {
+    return (        &lt;div className="inicio"&gt;            &lt;h1&gt;Sistema de Inventario&lt;/h1&gt;            &lt;p&gt;API REST con FastAPI + Frontend React&lt;/p&gt;            &lt;div className="inicio-stats"&gt;                &lt;div className="stat-card"&gt;                    &lt;i className="fas fa-boxes"&gt;&lt;/i&gt;                    &lt;h3&gt;Gestión de Productos&lt;/h3&gt;                    &lt;p&gt;CRUD completo desde React consumiendo FastAPI&lt;/p&gt;                &lt;/div&gt;                &lt;div className="stat-card"&gt;                    &lt;i className="fas fa-bolt"&gt;&lt;/i&gt;                    &lt;h3&gt;Rendimiento&lt;/h3&gt;                    &lt;p&gt;FastAPI + React: respuesta en milisegundos&lt;/p&gt;                &lt;/div&gt;            &lt;/div&gt;        &lt;/div&gt;    );
+    }export default function App() {
+    return (        &lt;BrowserRouter&gt;            &lt;Navbar /&gt;            &lt;main className="contenido"&gt;                &lt;Routes&gt;                    &lt;Route path="/" element={
+            &lt;Inicio /&gt;
+                } /&gt;                    &lt;Route path="/productos" element={
+                &lt;ProductoLista /&gt;
+                    } /&gt;                    &lt;Route path="/productos/nuevo" element={
+                    &lt;ProductoForm /&gt;
+                        } /&gt;                    &lt;Route path="/productos/:id/editar" element={
+                        &lt;ProductoForm /&gt;
+                            } /&gt;                &lt;/Routes&gt;            &lt;/main&gt;        &lt;/BrowserRouter&gt;    );
+                    }</code></pre>
+                                    </div>
+                                </div>
+                                <h4>
+                                    Navbar.jsx — Navegación
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fab fa-react"></i>src/components/Navbar.jsx</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-jsx">import {
+    Link
+    } from 'react-router-dom';
+import './Navbar.css';
+export default function Navbar() {
+    return (        &lt;nav className="navbar"&gt;            &lt;div className="navbar-brand"&gt;                &lt;i className="fas fa-boxes"&gt;&lt;/i&gt;                &lt;span&gt;Inventario SENA&lt;/span&gt;            &lt;/div&gt;            &lt;div className="navbar-links"&gt;                &lt;Link to="/"&gt;Inicio&lt;/Link&gt;                &lt;Link to="/productos"&gt;Productos&lt;/Link&gt;                &lt;Link to="/productos/nuevo" className="btn-nav-crear"&gt;                    + Nuevo                &lt;/Link&gt;            &lt;/div&gt;        &lt;/nav&gt;    );
+    }// ===== ESTILOS (Navbar.css) =====/*.navbar {
+    background: var(--primary);
+    color: white;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    }.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    }.navbar-links {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    }.navbar-links a {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    transition: background 0.2s;
+    }.navbar-links a:hover {
+    background: rgba(255,255,255,0.1);
+    }.btn-nav-crear {
+    background: rgba(255,255,255,0.2);
+    font-weight: 600;
+    }*/</code></pre>
+                                    </div>
+                                </div>
+                                <h4>
+                                    Resultado visual: App completa funcionando
+                                </h4>
+                                <div class="result-box">
+                                    <div class="result-header"><i class="fas fa-eye"></i><span>Aplicación completa: FastAPI + React</span>
+                                    </div>
+                                    <pre class="result-content"><code class="language-text">┌──────────────────────────────────────────────────────────────┐│  [■ Inventario SENA]     Inicio  Productos  [+ Nuevo]       │├──────────────────────────────────────────────────────────────┤│                                                              ││  Sistema de Inventario                                       ││  API REST con FastAPI + Frontend React                      ││                                                              ││  ┌──────────────────────┐  ┌──────────────────────┐         ││  │  📦 Gestión de       │  │  ⚡ Rendimiento      │         ││  │     Productos        │  │                      │         ││  │  CRUD completo desde │  │  FastAPI + React     │         ││  │  React consumiendo   │  │  respuesta en        │         ││  │  FastAPI             │  │  milisegundos        │         ││  └──────────────────────┘  └──────────────────────┘         ││                                                              ││  ──── FastAPI (backend) ────     ──── React (frontend) ──── ││  http://localhost:8000/docs      http://localhost:5173       ││  http://localhost:8000/api/      npm run dev                 ││  uvicorn main:app --reload                                  │└──────────────────────────────────────────────────────────────┘</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step-card" id="react-step-7">
+                            <div class="step-header">
+                                <div class="step-number">
+                                    7
+                                </div>
+                                <div class="step-info">
+                                    <h3>
+                                        Ejecutar Todo el Stack
+                                    </h3>
+                                    <p>
+                                        FastAPI + React trabajando juntos
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <h4>
+                                    Terminal 1: Iniciar FastAPI (Backend)
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-terminal"></i>Terminal 1 — Backend</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-bash"># En el directorio fastapi-inventario
+cd fastapi-inventario
+.\venv\Scripts\activate
+# Iniciar FastAPI (recarga automática)
+uvicorn main:app --reload --port 8000
+# Resultado:
+# INFO: Uvicorn running on http://127.0.0.1:8000
+# INFO: Swagger docs: http://localhost:8000/docs</code></pre>
+                                    </div>
+                                </div>
+                                <h4>
+                                    Terminal 2: Iniciar React (Frontend)
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-terminal"></i>Terminal 2 — Frontend</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-bash"># En el directorio frontend-inventario
+cd frontend-inventario
+npm run dev
+# Resultado:
+# VITE v5.4.0  ready in 250ms
+# ➜  Local:   http://localhost:5173/
+# Abrir http://localhost:5173 en el navegador
+# La app React consume http://localhost:8000/api/productos/</code></pre>
+                                    </div>
+                                </div>
+                                <h4>
+                                    Verificar conexión Frontend ↔ Backend
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-globe"></i>Navegador — http://localhost:5173</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-text">┌─────────────────────────────────────────────────────────────┐│  En la consola del navegador (F12 → Console):              ││                                                             ││  ✓ Productos cargados desde FastAPI: 3 productos            ││  ✓ GET /api/productos/ → 200 OK (320ms)                    ││  ✓ CORS configurado correctamente                           ││                                                             ││  Network tab:                                               ││  ┌──────────┬──────────┬────────┬──────────┐               ││  │ Method   │ Endpoint │ Status │ Time     │               ││  ├──────────┼──────────┼────────┼──────────┤               ││  │ GET      │ /api/pro │ 200    │ 320ms    │               ││  │          │ ductos/  │        │          │               ││  │ GET      │ /api/pro │ 200    │ 15ms     │               ││  │          │ ductos/1 │        │          │               ││  └──────────┴──────────┴────────┴──────────┘               │└─────────────────────────────────────────────────────────────┘</code></pre>
+                                    </div>
+                                </div>
+                                <h4>
+                                    🐳 vs 🪟 Ejecución del stack completo
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-terminal"></i>Terminal — Docker vs Nativo Windows</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-bash"># ===========================================================# 🐳 DOCKER (un solo comando, todo encapsulado)# ===========================================================docker compose -f docker-compose.fullstack.yml up -d# Prueba:  http://localhost# ===========================================================# 🪟 NATIVO WINDOWS (tres terminales, máximo control)# ===========================================================# Terminal 1: PostgreSQL (servicio Windows) + FastAPI# Terminal 2: React# ⚡ O usa el script automático:.\start-fullstack.ps1# Prueba:  http://localhost:5173</code></pre>
+                                    </div>
+                                </div>
+                                <!-- Ejercicios React -->
+                                <div class="exercise-section">
+                                    <h3><i class="fas fa-dumbbell"></i>Ejercicios de React
+                                    </h3>
+                                    <p>
+                                        Practica lo aprendido mejorando el frontend con nuevas funcionalidades.
+                                    </p>
+                                    <div class="exercise-grid" style="margin-top:1.5rem;">
+                                        <div class="exercise-card">
+                                            <div class="exercise-header">
+                                                <div class="exercise-number">
+                                                    1
+                                                </div>
+                                                <div class="exercise-difficulty"><span class="difficulty-badge medium">Fácil</span>
+                                                </div>
+                                            </div>
+                                            <h3>
+                                                Filtro por Categoría
+                                            </h3>
+                                            <p>
+                                                Agrega un<code>&lt;select&gt;</code>en ProductoLista para filtrar productos por categoría. Al seleccionar una categoría, llama a<code>GET /api/productos/?categoria=X</code>.
+                                            </p>
+                                            <div class="exercise-hint"><i class="fas fa-lightbulb"></i>
+                                                <p><strong>Pista:</strong>Agrega<code>useEffect</code>que se ejecute cuando cambie el filtro de categoría
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="exercise-card">
+                                            <div class="exercise-header">
+                                                <div class="exercise-number">
+                                                    2
+                                                </div>
+                                                <div class="exercise-difficulty"><span class="difficulty-badge hard">Intermedio</span>
+                                                </div>
+                                            </div>
+                                            <h3>
+                                                Paginación de Resultados
+                                            </h3>
+                                            <p>
+                                                Implementa paginación en ProductoLista. Muestra 6 productos por página con botones "Anterior / Siguiente".
+                                            </p>
+                                            <div class="exercise-hint"><i class="fas fa-lightbulb"></i>
+                                                <p><strong>Pista:</strong>Usa<code>useState</code>para<code>paginaActual</code>y slice el array:<code>productos.slice(inicio, fin)</code>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="exercise-card">
+                                            <div class="exercise-header">
+                                                <div class="exercise-number">
+                                                    3
+                                                </div>
+                                                <div class="exercise-difficulty"><span class="difficulty-badge expert">Reto</span>
+                                                </div>
+                                            </div>
+                                            <h3>
+                                                Modal de Confirmación
+                                            </h3>
+                                            <p>
+                                                Reemplaza el<code>confirm()</code>nativo por un modal personalizado con animación CSS y botones estilizados.
+                                            </p>
+                                            <div class="exercise-hint"><i class="fas fa-lightbulb"></i>
+                                                <p><strong>Pista:</strong>Crea un componente<code>ConfirmModal</code>con<code>createPortal</code>de ReactDOM
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- RESUMEN FINAL: Stack Completo + Microservicios -->
+                                <div class="final-summary">
+                                    <h2><i class="fas fa-trophy"></i>¡Resumen Final: De Monolito a Microservicios!
+                                    </h2>
+                                    <p>
+                                        Has recorrido el camino completo del desarrollo web: desde el<strong>monolito JSP</strong>(todo en un WAR, sesiones en servidor) hasta los<strong>microservicios FastAPI + React</strong>(servicios independientes, JWT stateless, SPA). Aquí tienes la evolución completa:
+                                    </p>
+                                    <div class="stack-overview">
+                                        <div class="stack-tier backend-java">
+                                            <div class="tier-icon"><i class="fab fa-java"></i>
+                                            </div>
+                                            <div class="tier-content">
+                                                <h3>
+                                                    🏢 FASE 1: Monolito JSP + MVC
+                                                </h3>
+                                                <div class="tier-details">
+                                                    <div class="tier-file"><code>ProductoServlet.java</code><span>@WebServlet → doGet/doPost</span>
+                                                    </div>
+                                                    <div class="tier-file"><code>ProductoDAO.java</code><span>JDBC + PreparedStatement</span>
+                                                    </div>
+                                                    <div class="tier-file"><code>lista.jsp</code><span>JSTL + Expression Language</span>
+                                                    </div>
+                                                    <div class="tier-file"><code>LoginServlet.java</code><span>HttpSession (stateful)</span>
+                                                    </div>
+                                                </div>
+                                                <div class="tier-url"><i class="fas fa-link"></i>http://localhost:8080/inventario-mvc-1.0/
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="stack-arrow"><i class="fas fa-long-arrow-alt-down"></i>🔗 Evolución a Microservicios
+                                        </div>
+                                        <div class="stack-tier backend-python">
+                                            <div class="tier-icon"><i class="fab fa-python"></i>
+                                            </div>
+                                            <div class="tier-content">
+                                                <h3>
+                                                    🔧 FASE 2: FastAPI Microservices
+                                                </h3>
+                                                <div class="tier-details">
+                                                    <div class="tier-file"><code>routers/auth.py</code><span>JWT + BCrypt + roles</span>
+                                                    </div>
+                                                    <div class="tier-file"><code>routers/producto.py</code><span>CRUD con JWT</span>
+                                                    </div>
+                                                    <div class="tier-file"><code>routers/usuario.py</code><span>CRUD solo Admin</span>
+                                                    </div>
+                                                    <div class="tier-file"><code>models/*.py</code><span>SQLAlchemy con FK</span>
+                                                    </div>
+                                                </div>
+                                                <div class="tier-url"><i class="fas fa-link"></i>http://localhost:8000/docs (Swagger + Auth)
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="stack-arrow"><i class="fas fa-long-arrow-alt-down"></i>Consume API con JWT
+                                        </div>
+                                        <div class="stack-tier frontend">
+                                            <div class="tier-icon"><i class="fab fa-react"></i>
+                                            </div>
+                                            <div class="tier-content">
+                                                <h3>
+                                                    🎨 FASE 3: React SPA + Auth
+                                                </h3>
+                                                <div class="tier-details">
+                                                    <div class="tier-file"><code>contexts/AuthContext.jsx</code><span>Estado global + JWT</span>
+                                                    </div>
+                                                    <div class="tier-file"><code>pages/Login.jsx</code><span>Login → JWT → localStorage</span>
+                                                    </div>
+                                                    <div class="tier-file"><code>components/ProtectedRoute.jsx</code><span>Guard por roles</span>
+                                                    </div>
+                                                    <div class="tier-file"><code>services/api.js</code><span>Axios + Interceptor JWT</span>
+                                                    </div>
+                                                </div>
+                                                <div class="tier-url"><i class="fas fa-link"></i>http://localhost:5173/ (SPA con auth)
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="architecture-evolution" style="margin-top:1.5rem;padding:1.2rem;background:var(--code-bg);border-radius:8px;">
+                                        <h4 style="margin-bottom:0.75rem;">
+                                            🗺️ Mapa de relaciones entre tablas (PK/FK)
+                                        </h4>
+                                        <pre style="font-size:0.8rem;color:#a0a0b0;line-height:1.6;font-family:monospace;"><code class="language-text">┌───────────┐       ┌──────────────┐       ┌──────────────┐
+│   roles   │       │   usuarios   │       │  productos   │
+├───────────┤       ├──────────────┤       ├──────────────┤
+│ PK: id    │←──────│ FK: rol_id   │       │ PK: id       │
+│ nombre    │  1:N  │ username     │       │ codigo       │
+│ descrip.  │       │ password(bc) │       │ nombre       │
+│ estado    │       │ email        │       │ precio       │
+└───────────┘       │ estado       │       │ stock        │
+                    │ fecha_creac. │       │ categoria    │
+                    └──────────────┘       │ fecha_reg.   │
+                       │ FK: usu_crea │←─┐  └──────────────┘
+                       │                 │     (opcional)
+                       │                 │     1 usuario crea
+                       │                 │     muchos productos
+                       │                 └────────────────────┘</code></pre>
+                                    </div>
+                                    <div class="execution-checklist">
+                                        <h3>
+                                            ✅ Para ejecutar tu proyecto completo:
+                                        </h3>
+                                        <div class="checklist-grid">
+                                            <div class="checklist-item">
+                                                <div class="check-num">
+                                                    1
+                                                </div>
+                                                <div class="check-text"><strong>PostgreSQL</strong>
+                                                    <p>
+                                                        Asegura que PostgreSQL esté corriendo con la BD<code>inventario_db</code>
+                                                    </p>
+                                                    <pre><code>psql -U postgres -c "CREATE DATABASE inventario_db;"</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="checklist-item">
+                                                <div class="check-num">
+                                                    2
+                                                </div>
+                                                <div class="check-text"><strong>FastAPI (Backend) — Nativo o Docker</strong>
+                                                    <p>
+                                                        🐳 Docker:<code>docker compose -f docker-compose.fullstack.yml up -d</code>
+                                                    </p>
+                                                    <p>
+                                                        🪟 Nativo: Terminal 1 inicia API en<code>:8000</code>
+                                                    </p>
+                                                    <pre><code>cd recursos/fastapi-inventariovenv\Scripts\activateuvicorn main:app --reload --port 8000</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="checklist-item">
+                                                <div class="check-num">
+                                                    3
+                                                </div>
+                                                <div class="check-text"><strong>React (Frontend) — Nativo o Docker</strong>
+                                                    <p>
+                                                        🐳 Docker: incluido en docker-compose (puerto 80)
+                                                    </p>
+                                                    <p>
+                                                        🪟 Nativo: Terminal 2 inicia frontend en<code>:5173</code>
+                                                    </p>
+                                                    <pre><code>cd recursos/frontend-inventarionpm installnpm run dev</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="checklist-item">
+                                                <div class="check-num">
+                                                    4
+                                                </div>
+                                                <div class="check-text"><strong>¡Abrir el navegador!</strong>
+                                                    <p>
+                                                        🐳 Docker:<code>http://localhost</code>
+                                                    </p>
+                                                    <p>
+                                                        🪟 Nativo:<code>http://localhost:5173</code>
+                                                    </p>
+                                                    <p>
+                                                        ⚡ Script automático:<code>.\start-fullstack.ps1</code>
+                                                    </p>
+                                                    <pre><code># Deberías ver el sistema de inventario# con datos provenientes de FastAPI → PostgreSQL</code></pre>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="final-quote"><i class="fas fa-quote-left"></i>
+                                        <p>
+                                            Has migrado del stack Java empresarial tradicional (JSP + MVC + Tomcat) al stack moderno Python + JavaScript (FastAPI + React + Vite). Los conceptos son los mismos:<strong>Modelo-Vista-Controlador</strong>,<strong>CRUD</strong>,<strong>validación de datos</strong>. Lo que cambia es la sintaxis y las herramientas. ¡Felicidades, ahora eres desarrollador Full Stack!
+                                        </p><i class="fas fa-quote-right"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Despliegue -->

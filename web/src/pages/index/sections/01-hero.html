@@ -1,0 +1,85 @@
+            <section class="hero-section" id="inicio">
+                <div class="hero-bg">
+                    <div class="hero-pattern">
+                    </div>
+                    <div class="hero-gradient">
+                    </div>
+                </div>
+                <div class="hero-content">
+                    <div class="hero-badge"><i class="fas fa-graduation-cap"></i><span>SENA - ADSO</span>
+                    </div>
+                    <h1 class="hero-title">
+                        Full Stack Web:<span class="gradient-text">JSP → FastAPI → React</span>
+                    </h1>
+                    <p class="hero-description">
+                        Guía completa de aprendizaje para construir aplicaciones web profesionales                     con<strong>Jakarta EE 10</strong>,<strong>JDK 21</strong>,<strong>PostgreSQL</strong>,<strong>FastAPI</strong>y<strong>React 19</strong>,                     aplicando el patrón de diseño<strong>Modelo-Vista-Controlador</strong>.
+                    </p>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <div class="stat-icon"><i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-info"><span class="stat-value">40h</span><span class="stat-label">Duración</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon"><i class="fas fa-code"></i>
+                            </div>
+                            <div class="stat-info"><span class="stat-value">23+</span><span class="stat-label">Archivos</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon"><i class="fas fa-database"></i>
+                            </div>
+                            <div class="stat-info"><span class="stat-value">3</span><span class="stat-label">Tablas BD</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon"><i class="fas fa-flask"></i>
+                            </div>
+                            <div class="stat-info"><span class="stat-value">5+</span><span class="stat-label">Simuladores</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon"><i class="fab fa-python"></i>
+                            </div>
+                            <div class="stat-info"><span class="stat-value">FastAPI</span><span class="stat-label">API REST</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon"><i class="fab fa-react"></i>
+                            </div>
+                            <div class="stat-info"><span class="stat-value">React</span><span class="stat-label">Frontend SPA</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hero-actions"><a href="#tutorial" class="btn btn-primary btn-lg"><i class="fas fa-play"></i>JSP + MVC</a><a href="#fastapi" class="btn btn-primary btn-lg"><i class="fab fa-python"></i>FastAPI</a><a href="#react" class="btn btn-outline btn-lg"><i class="fab fa-react"></i>React</a><a href="flutter-guide.html" class="btn btn-outline btn-lg" style="border-color:#1389FD;color:#1389FD;"><i class="fab fa-flutter"></i>Flutter</a>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="code-window">
+                        <div class="window-header">
+                            <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                            </div><span class="window-title">ProductoServlet.java</span>
+                        </div>
+                        <div class="window-body">
+                            <pre><code class="language-java">@WebServlet("/productos")
+public class ProductoServlet extends HttpServlet {
+    private final ProductoDAO dao = new ProductoDAO();
+    
+    @Override
+    protected void doGet(HttpServletRequest req, 
+                         HttpServletResponse resp) {
+        String accion = req.getParameter("accion");
+        switch (accion) {
+            case "nuevo" -&gt; mostrarFormulario(req, resp);
+            case "editar" -&gt; mostrarEditar(req, resp);
+            case "eliminar" -&gt; eliminar(req, resp);
+            default -&gt; listar(req, resp);
+        }
+    }
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Stack Tecnológico -->

@@ -1,0 +1,443 @@
+            <section class="section" id="despliegue">
+                <div class="container">
+                    <div class="breadcrumbs">
+                        <div class="breadcrumb-item"><a href="#inicio">Inicio</a>
+                        </div><i class="fas fa-chevron-right breadcrumb-separator"></i>
+                        <div class="breadcrumb-item breadcrumb-current">
+                            Despliegue Docker
+                        </div><span class="reading-time"><i class="fas fa-clock"></i>15 min</span>
+                    </div>
+                    <div class="section-header">
+                        <div class="section-number">
+                            12
+                        </div>
+                        <h2 class="section-title">
+                            4. Despliegue con Docker
+                        </h2>
+                        <p class="section-subtitle">
+                            Dockerización y despliegue en Coolify
+                        </p>
+                    </div>
+                    <div class="deploy-steps">
+                        <div class="deploy-step">
+                            <div class="step-icon"><i class="fas fa-box"></i>
+                            </div>
+                            <div class="step-content">
+                                <h3>
+                                    1. Generar archivo WAR
+                                </h3>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-terminal"></i>Terminal — Maven Build</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-bash">mvn clean package -DskipTests# Genera: target/inventario-mvc-1.0.war</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="deploy-step">
+                            <div class="step-icon"><i class="fab fa-docker"></i>
+                            </div>
+                            <div class="step-content">
+                                <h3>
+                                    2. Crear Dockerfile
+                                </h3>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-file-code"></i>Dockerfile</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-dockerfile">FROM tomcat:10.1-jdk21-temurin-jakartaLABEL maintainer="ADSO SENA"RUN rm -rf /usr/local/tomcat/webapps/*COPY target/inventario-mvc-1.0.war /usr/local/tomcat/webapps/ROOT.warEXPOSE 8080CMD ["catalina.sh", "run"]</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="deploy-step">
+                            <div class="step-icon"><i class="fas fa-hammer"></i>
+                            </div>
+                            <div class="step-content">
+                                <h3>
+                                    3. Construir Imagen Docker
+                                </h3>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-terminal"></i>Terminal — Docker Build</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-bash">docker build -t inventario-mvc:1.0 .# Verificar imagendocker images | findstr inventario-mvc</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="deploy-step">
+                            <div class="step-icon"><i class="fas fa-play"></i>
+                            </div>
+                            <div class="step-content">
+                                <h3>
+                                    4. Ejecutar Contenedor
+                                </h3>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-terminal"></i>Terminal — Docker Run</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-bash">docker run -d -p 8080:8080 \  -e DB_HOST=host.docker.internal \  -e DB_PORT=5432 \  -e DB_NAME=inventario_db \  -e DB_USER=postgres \  -e DB_PASSWORD=tu_password \  --name inventario-app \  inventario-mvc:1.0# Ver logsdocker logs -f inventario-app# Acceder: http://localhost:8080</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Docker Compose Microservicios -->
+                        <div class="deploy-step">
+                            <div class="step-icon"><i class="fas fa-project-diagram"></i>
+                            </div>
+                            <div class="step-content">
+                                <h3>
+                                    7. Docker Compose — Microservicios (3 APIs + React)
+                                </h3>
+                                <p>
+                                    Arquitectura completa de microservicios donde cada servicio es independiente:<strong>Auth</strong>(:8001),<strong>Productos</strong>(:8002),<strong>Usuarios</strong>(:8003) y<strong>React</strong>(:80).
+                                </p>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-file-code"></i>docker-compose.microservices.yml</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-bash"># Levantar 5 servicios (PostgreSQL + Auth + Products + Users + React)docker compose -f docker-compose.microservices.yml up -d# Verificar todos los serviciosdocker compose -f docker-compose.microservices.yml ps# Probar cada microservicio:# Auth Service:
+http://localhost:8001/docs# Products Service: http://localhost:8002/docs# Users Service:   http://localhost:8003/docs# React Frontend:  http://localhost# Detener tododocker compose -f docker-compose.microservices.yml down</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Ejecución Nativa en Windows (Parallel a Docker) -->
+                        <div class="deploy-step">
+                            <div class="step-icon"><i class="fab fa-windows"></i>
+                            </div>
+                            <div class="step-content">
+                                <h3>
+                                    5a. Task Runner con Makefile.ps1
+                                </h3>
+                                <p>
+                                    Antes de ejecutar, conoce el<strong>Makefile.ps1</strong>— un task runner con comandos comunes. Equivalente a scripts Maven pero para PowerShell.
+                                </p>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-terminal"></i>PowerShell — Comandos disponibles</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-powershell"># Instalar todas las dependencias (Python + Node).\Makefile.ps1 install# Iniciar FastAPI (desarrollo).\Makefile.ps1 api# Iniciar React (desarrollo).\Makefile.ps1 frontend# Ejecutar pruebas.\Makefile.ps1 test# Migraciones de base de datos.\Makefile.ps1 db-create    # Crear BD.\Makefile.ps1 db-migrate   # Aplicar migraciones.\Makefile.ps1 db-revision  # Crear nueva migración# Docker.\Makefile.ps1 docker-up    # docker compose up -d.\Makefile.ps1 docker-down  # docker compose down# Estado de servicios.\Makefile.ps1 status# Ayuda completa.\Makefile.ps1 help</code></pre>
+                                    </div>
+                                </div>
+                                <h3>
+                                    5b. Ejecución Nativa en Windows (sin Docker)
+                                </h3>
+                                <p>
+                                    Alternativa a Docker: ejecuta PostgreSQL, FastAPI y React directamente en Windows. Ideal para desarrollo y aprendizaje.
+                                </p>
+                                <div class="comparison-table">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th style="width:20%;">
+                                                    Componente
+                                                </th>
+                                                <th style="width:40%;">
+                                                    🐳 Docker (contenedores)
+                                                </th>
+                                                <th style="width:40%;">
+                                                    🪟 Windows Nativo
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>PostgreSQL</strong>
+                                                </td>
+                                                <td><code>docker compose up db</code>
+                                                </td>
+                                                <td>
+                                                    Servicio de Windows<code>postgresql-x64-16</code>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>FastAPI</strong>
+                                                </td>
+                                                <td><code>docker compose up api</code>
+                                                </td>
+                                                <td><code>uvicorn main:app --reload</code>(PowerShell)
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>React</strong>
+                                                </td>
+                                                <td><code>docker compose up frontend</code>
+                                                </td>
+                                                <td><code>npm run dev</code>(PowerShell)
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Comando único</strong>
+                                                </td>
+                                                <td><code>docker compose up -d</code>
+                                                </td>
+                                                <td><code>.\start-fullstack.ps1</code>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <h4 style="margin-top:1.5rem;">
+                                    🪓 Opción 1: Script automático (recomendado)
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-terminal"></i>PowerShell — Inicio rápido nativo</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-powershell"># ===== INICIO RÁPIDO NATIVO WINDOWS =====
+# Requisitos previos (una sola vez):
+#   1. PostgreSQL 16 instalado como servicio de Windows
+#   2. Python 3.10+ instalado y en PATH
+#   3. Node.js 18+ instalado
+# --- Iniciar todo con un solo comando ---
+.\start-fullstack.ps1
+# --- Resultado esperado ---
+# ✅ PostgreSQL is RUNNING (port 5432)
+# ✅ FastAPI running on http://localhost:8000
+# ✅ React running on http://localhost:5173
+# 🌐 Open in browser: http://localhost:5173
+# --- Detener todo ---
+.\start-fullstack.ps1 -Stop
+# --- Ver estado ---
+.\start-fullstack.ps1 -Status</code></pre>
+                                    </div>
+                                </div>
+                                <h4>
+                                    🖐️ Opción 2: Manual (tres terminales separadas)
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-terminal"></i>Terminal 1: PostgreSQL + FastAPI</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-powershell"># ===== TERMINAL 1: BACKEND =====
+# 1. Asegurar que PostgreSQL esté corriendo
+Get-Service postgresql* | Start-Service
+# 2. Verificar base de datos
+psql -U postgres -c "CREATE DATABASE inventario_db;" 2&gt;$null
+# 3. Activar entorno virtual e iniciar FastAPI
+cd recursos\fastapi-inventario
+python -m venv venv
+.\venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
+# ✅ FastAPI en: http://localhost:8000
+# 📘 Swagger:    http://localhost:8000/docs</code></pre>
+                                    </div>
+                                </div>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-terminal"></i>Terminal 2: React Frontend</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-powershell"># ===== TERMINAL 2: FRONTEND =====
+cd recursos\frontend-inventario
+npm install
+npm run dev
+# ✅ React en: http://localhost:5173
+# Nota: Abre automáticamente el navegador</code></pre>
+                                    </div>
+                                </div>
+                                <div class="recommendation-box" style="margin-top:1rem;"><i class="fas fa-info-circle"></i>
+                                    <div>
+                                        <h4>
+                                            🐳 vs 🪟: ¿Cuándo usar cada uno?
+                                        </h4>
+                                        <table style="width:100%;font-size:0.85rem;margin-top:0.5rem;">
+                                            <tr>
+                                                <td><strong>Usa Docker</strong>
+                                                </td>
+                                                <td>
+                                                    Producción, equipo, reproducibilidad, CI/CD, microservicios
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Usa Nativo</strong>
+                                                </td>
+                                                <td>
+                                                    Desarrollo local, aprendizaje, debugging rápido, sin Docker instalado
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Docker Compose para Full Stack: FastAPI + React -->
+                        <div class="deploy-step">
+                            <div class="step-icon"><i class="fab fa-python"></i>
+                            </div>
+                            <div class="step-content">
+                                <h3>
+                                    6. Docker Compose — Full Stack (FastAPI + React + PG)
+                                </h3>
+                                <p>
+                                    Levanta todo el stack moderno con un solo comando: PostgreSQL + FastAPI + React.
+                                </p>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-file-code"></i>docker-compose.fullstack.yml</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-yaml">version: '3.8'services:  # ===== Base de datos =====  db:
+image: postgres:16-alpine
+environment:
+POSTGRES_DB: inventario_db
+POSTGRES_USER: postgres
+POSTGRES_PASSWORD: sena_adso_2026
+ports:
+- "5432:5432"
+volumes:
+- pgdata:/var/lib/postgresql/data
+- ./recursos/sql/inventario_db.sql:/docker-entrypoint-initdb.d/init.sql
+healthcheck:
+test: ["CMD-SHELL", "pg_isready -U postgres"]
+interval: 5s
+timeout: 5s
+retries: 5
+networks:
+- fullstack-net  # ===== Backend FastAPI =====  api:
+build:
+context: ./recursos/fastapi-inventario
+dockerfile: Dockerfile
+ports:
+- "8000:8000"
+environment:
+DATABASE_URL: postgresql://postgres:sena_adso_2026@db:5432/inventario_db
+depends_on:
+db:
+condition: service_healthy
+networks:
+- fullstack-net  # ===== Frontend React (producción) =====  frontend:
+build:
+context: ./recursos/frontend-inventario
+dockerfile: Dockerfile
+ports:
+- "80:80"
+depends_on:
+- api
+networks:
+- fullstack-netvolumes:  pgdata:networks:  fullstack-net:
+driver: bridge</code></pre>
+                                    </div>
+                                </div>
+                                <h4>
+                                    Dockerfiles necesarios:
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-file-code"></i>recursos/fastapi-inventario/Dockerfile</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-dockerfile">FROM python:3.12-slimWORKDIR /appCOPY requirements.txt .RUN pip install --no-cache-dir -r requirements.txtCOPY . .EXPOSE 8000CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]</code></pre>
+                                    </div>
+                                </div>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-file-code"></i>recursos/frontend-inventario/Dockerfile</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-dockerfile">FROM node:20-alpine AS buildWORKDIR /appCOPY package*.json ./RUN npm ciCOPY . .RUN npm
+# NAME                                      STATUS      PORTS
+# fullstack-db-1                            healthy     5432/tcp
+# fullstack-api-1                           running     0.0.0.0:8000->8000/tcp
+# fullstack-frontend-1                      running     0.0.0.0:80->80/tcp
+
+# Probar endpoints:
+# FastAPI docs:   http://localhost:8000/docs
+# React frontend:  http://localhost
+# Health check:    curl http://localhost:8000/health
+
+# Detener todo
+docker compose -f docker-compose.fullstack.yml down
+# Detener y eliminar volúmenes (borra datos BD)
+docker compose -f docker-compose.fullstack.yml down -v</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="deploy-step">
+                            <div class="step-icon"><i class="fas fa-cloud"></i>
+                            </div>
+                            <div class="step-content">
+                                <h3>
+                                    8. Desplegar en Coolify
+                                </h3>
+                                <ol class="deploy-list">
+                                    <li>
+                                        Sube tu código a GitHub (incluye Dockerfile)
+                                    </li>
+                                    <li>
+                                        Instala Coolify en tu VPS (<a href="https://coolify.io" target="_blank">coolify.io</a>)
+                                    </li>
+                                    <li>
+                                        Crea una nueva "Application" en Coolify
+                                    </li>
+                                    <li>
+                                        Conecta tu repositorio de GitHub
+                                    </li>
+                                    <li>
+                                        Coolify detecta automáticamente el Dockerfile
+                                    </li>
+                                    <li>
+                                        Configura variables de entorno (DB_HOST, etc.)
+                                    </li>
+                                    <li>
+                                        Haz clic en "Deploy" y espera
+                                    </li>
+                                    <li>
+                                        Accede a tu aplicación en la URL proporcionada
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Evidencias -->

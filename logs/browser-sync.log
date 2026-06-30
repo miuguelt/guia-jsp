@@ -1,0 +1,9 @@
+[Browsersync] Access URLs:
+ ----------------------------
+ Local: http://localhost:8024
+ ----------------------------
+    UI: http://localhost:3001
+ ----------------------------
+[Browsersync] Serving files from: .
+[Browsersync] Watching files...
+[Browsersync] Reloading Browsers...
