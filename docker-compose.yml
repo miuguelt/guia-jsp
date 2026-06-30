@@ -3,10 +3,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: guia-jsp
     restart: unless-stopped
-    ports:
-      - "8080:80"
+    expose:
+      - 80
     networks:
       - coolify
 
