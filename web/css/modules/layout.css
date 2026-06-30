@@ -1,4 +1,21 @@
 
+/* ============================================
+   STACKING CONTEXT (z-index)
+   ============================================
+   100000+  → skip-link, elementos críticos de accesibilidad
+   99999    → toast-container
+   99998    → celebration-overlay
+   10002    → search-modal, shortcuts-modal
+   10001    → code-block.focus-mode
+   10000    → code-overlay, reading-mode-exit-btn
+   1003     → sidebar-link-preview (tooltips que salen del sidebar)
+   1002     → main-sidebar, quick-nav-tooltip
+   1001     → quick-nav-panel, sidebar-show-btn, header.scrolled
+   1000     → header, [data-tooltip]::after
+   999      → scroll-top-btn, reading-progress, toc-wrapper, mobile-page-nav
+   900      → section-nav, quick-nav-panel (legacy)
+   ============================================ */
+
 .header {
     position: fixed;
     top: 0;

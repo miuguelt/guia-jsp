@@ -1,0 +1,135 @@
+            <section class="section" id="microservicios">
+                <div class="container">
+                    <div class="breadcrumbs">
+                        <div class="breadcrumb-item"><a href="#inicio">Inicio</a>
+                        </div><i class="fas fa-chevron-right breadcrumb-separator"></i>
+                        <div class="breadcrumb-item breadcrumb-current">
+                            Microservicios
+                        </div><span class="reading-time"><i class="fas fa-clock"></i>20 min</span>
+                    </div>
+                    <div class="section-header">
+                        <div class="section-number">
+                            11
+                        </div>
+                        <h2 class="section-title">
+                            7. Microservicios
+                        </h2>
+                        <p class="section-subtitle">
+                            Arquitectura, patrones de comunicación y despliegue
+                        </p>
+                    </div>
+                    <div class="content-grid">
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fas fa-sitemap"></i>
+                            </div>
+                            <h3>
+                                Arquitectura de Microservicios
+                            </h3>
+                            <p>
+                                Cada microservicio es una unidad independiente con su propia base de datos y lógica de negocio.
+                            </p>
+                            <ul class="feature-list">
+                                <li><i class="fas fa-check"></i><strong>Servicio de Productos:</strong>CRUD de productos e inventario
+                                </li>
+                                <li><i class="fas fa-check"></i><strong>Servicio de Usuarios:</strong>Autenticación y perfiles
+                                </li>
+                                <li><i class="fas fa-check"></i><strong>Servicio de Pedidos:</strong>Órdenes y facturación
+                                </li>
+                                <li><i class="fas fa-check"></i><strong>API Gateway:</strong>Punto de entrada único
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fas fa-exchange-alt"></i>
+                            </div>
+                            <h3>
+                                Comunicación Síncrona (REST)
+                            </h3>
+                            <p>
+                                Los microservicios se comunican mediante HTTP/REST con documentación OpenAPI.
+                            </p>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title">servicio_productos.py</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-python">from fastapi import FastAPI
+from pydantic import BaseModel
+
+app = FastAPI(title="Productos Service")
+
+class Producto(BaseModel):
+    id: int
+    nombre: str
+    precio: float
+
+@app.get("/productos")
+async def listar():
+    return [Producto(id=1, nombre="Laptop", precio=999.99)]
+
+@app.get("/productos/{producto_id}")
+async def obtener(producto_id: int):
+    return Producto(id=producto_id, nombre="Laptop", precio=999.99)</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mvc-diagram">
+                        <h3 class="diagram-title">
+                            Flujo de Comunicación
+                        </h3>
+                        <div class="diagram-container">
+                            <div class="diagram-box model">
+                                <div class="box-icon"><i class="fab fa-flutter"></i>
+                                </div>
+                                <h4>
+                                    Flutter App
+                                </h4>
+                                <p>
+                                    Cliente multiplataforma
+                                </p>
+                            </div>
+                            <div class="diagram-arrow"><i class="fas fa-arrow-right"></i>
+                            </div>
+                            <div class="diagram-box controller">
+                                <div class="box-icon"><i class="fas fa-shield-alt"></i>
+                                </div>
+                                <h4>
+                                    API Gateway
+                                </h4>
+                                <p>
+                                    Enrutamiento + Auth
+                                </p>
+                            </div>
+                            <div class="diagram-arrow"><i class="fas fa-arrow-right"></i>
+                            </div>
+                            <div class="diagram-box view">
+                                <div class="box-icon"><i class="fab fa-python"></i>
+                                </div>
+                                <h4>
+                                    Microservicios
+                                </h4>
+                                <p>
+                                    Productos / Usuarios / Pedidos
+                                </p>
+                            </div>
+                        </div>
+                        <p style="text-align:center;margin-top:12px;color:var(--text-muted);font-size:0.85rem;">
+                            Cada microservicio tiene su propia DB PostgreSQL, su propio contrato OpenAPI y se despliega independientemente en Coolify.
+                        </p>
+                    </div>
+                    <div class="info-banner" style="background:var(--accent-light, #fff3e0);border-left:4px solid #ff9800;"><i class="fas fa-lightbulb" style="color:#ff9800;"></i>
+                        <div>
+                            <h4>
+                                Patrón API Gateway
+                            </h4>
+                            <p>
+                                El API Gateway es el punto de entrada único. Centraliza autenticación, rate limiting y enrutamiento. Flutter solo conoce la URL del gateway, no la de cada microservicio individual.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>

@@ -1,6 +1,7 @@
 import os
 import re
 import sys
+import json
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SRC_DIR = os.path.join(ROOT, 'src')
@@ -50,6 +51,15 @@ def build_page(page_name):
         return content
 
     result = re.sub(r'<!--#include\s+file="([^"]+)"\s*-->', include_replacer, template)
+
+    # Variable substitution from page.json
+    config_path = os.path.join(page_dir, 'page.json')
+    if os.path.exists(config_path):
+        with open(config_path, 'r', encoding='utf-8') as f:
+            config = json.load(f)
+        for key, value in config.items():
+            placeholder = '{{' + key.upper() + '}}'
+            result = result.replace(placeholder, str(value))
 
     # Determine output filename
     if page_name == 'index':

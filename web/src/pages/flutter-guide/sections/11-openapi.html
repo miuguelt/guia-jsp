@@ -1,0 +1,190 @@
+            <section class="section section-alt" id="openapi">
+                <div class="container">
+                    <div class="breadcrumbs">
+                        <div class="breadcrumb-item"><a href="#inicio">Inicio</a>
+                        </div><i class="fas fa-chevron-right breadcrumb-separator"></i>
+                        <div class="breadcrumb-item breadcrumb-current">
+                            OpenAPI Generator
+                        </div><span class="reading-time"><i class="fas fa-clock"></i>25 min</span>
+                    </div>
+                    <div class="section-header">
+                        <div class="section-number">
+                            10
+                        </div>
+                        <h2 class="section-title">
+                            6. OpenAPI Generator para Dart
+                        </h2>
+                        <p class="section-subtitle">
+                            Genera clientes tipados desde la especificación OpenAPI
+                        </p>
+                    </div>
+                    <div class="content-grid">
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fas fa-file-code"></i>
+                            </div>
+                            <h3>
+                                ¿Qué es OpenAPI Generator?
+                            </h3>
+                            <p>
+                                OpenAPI Generator toma un archivo de especificación (YAML/JSON) y genera automáticamente:
+                            </p>
+                            <ul class="feature-list">
+                                <li><i class="fas fa-check"></i>Modelos DTO (Data Transfer Objects)
+                                </li>
+                                <li><i class="fas fa-check"></i>Cliente API con métodos tipados
+                                </li>
+                                <li><i class="fas fa-check"></i>Configuración de autenticación
+                                </li>
+                                <li><i class="fas fa-check"></i>Manejo de errores consistente
+                                </li>
+                            </ul>
+                            <p>
+                                Esto elimina errores de tipeo, campos faltantes y URLs mal escritas.
+                            </p>
+                        </div>
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fas fa-file-export"></i>
+                            </div>
+                            <h3>
+                                Generar el Cliente Dart
+                            </h3>
+                            <p>
+                                Desde la terminal, ejecuta OpenAPI Generator con el template Dart.
+                            </p>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title"><i class="fas fa-terminal"></i>Terminal</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-bash"># Usando openapi-generator-cli (Java)
+openapi-generator generate \
+  -i openapi.yaml \
+  -g dart-dio \
+  -o lib/api \
+  --additional-properties=pubName=inventario_api
+
+# O usando la imagen Docker
+docker run --rm -v ${PWD}:/local openapitools/openapi-generator-cli \
+  generate -i /local/openapi.yaml \
+  -g dart-dio -o /local/lib/api</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-header">
+                            <div class="step-number">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <div class="step-info">
+                                <h3>
+                                    Ejemplo de openapi.yaml
+                                </h3>
+                                <p>
+                                    Especificación mínima para un CRUD de productos
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title">openapi.yaml</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-yaml">openapi: "3.0.3"
+info:
+  title: API de Inventario
+  version: "1.0.0"
+paths:
+  /productos:
+    get:
+      operationId: listarProductos
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Producto"
+    post:
+      operationId: crearProducto
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductoCreate"
+components:
+  schemas:
+    Producto:
+      type: object
+      properties:
+        id: {type: integer}
+        nombre: {type: string}
+        precio: {type: number}
+    ProductoCreate:
+      type: object
+      properties:
+        nombre: {type: string}
+        precio: {type: number}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-header">
+                            <div class="step-number">
+                                <i class="fas fa-plug"></i>
+                            </div>
+                            <div class="step-info">
+                                <h3>
+                                    Usar el Cliente Generado
+                                </h3>
+                                <p>
+                                    Código tipado, sin errores de runtime por campos mal escritos
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title">usar_api.dart</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-dart">import 'package:inventario_api/inventario_api.dart';
+
+// Provider del API generada
+final productoApiProvider = Provider&lt;ProductoApi&gt;((ref) {
+  final dio = ref.watch(apiClientProvider);
+  return ProductoApi(dio);
+});
+
+// Riverpod controller usando el API generada
+@riverpod
+class Productos extends _$Productos {
+  @override
+  Future&lt;List&lt;Producto&gt;&gt; build() async {
+    final api = ref.read(productoApiProvider);
+    return api.listarProductos();
+  }
+
+  Future&lt;void&gt; crear(ProductoCreate dto) async {
+    await ref.read(productoApiProvider).crearProducto(dto);
+    ref.invalidateSelf();
+  }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>

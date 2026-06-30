@@ -1,0 +1,82 @@
+            <section class="hero-section flutter-hero" id="inicio">
+                <div class="hero-bg">
+                    <div class="hero-pattern">
+                    </div>
+                    <div class="hero-gradient">
+                    </div>
+                </div>
+                <div class="hero-content">
+                    <div class="hero-badge"><i class="fab fa-flutter"></i><span>SENA - ADSO</span>
+                    </div>
+                    <h1 class="hero-title">
+                        Desarrollo Móvil:<span class="gradient-text">Flutter + OpenAPI</span>
+                    </h1>
+                    <p class="hero-description">
+                        Guía completa de aprendizaje para construir aplicaciones móviles profesionales con<strong>Flutter 3.x</strong>,<strong>Dart 3.x</strong>,<strong>OpenAPI Generator</strong>y<strong>Riverpod</strong>, consumiendo microservicios REST con documentación OpenAPI.
+                    </p>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <div class="stat-icon"><i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-info"><span class="stat-value">40h</span><span class="stat-label">Duración</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon"><i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <div class="stat-info"><span class="stat-value">Multiplataforma</span><span class="stat-label">Android + iOS + Web</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon"><i class="fas fa-plug"></i>
+                            </div>
+                            <div class="stat-info"><span class="stat-value">OpenAPI</span><span class="stat-label">API First</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon"><i class="fas fa-cubes"></i>
+                            </div>
+                            <div class="stat-info"><span class="stat-value">Microservicios</span><span class="stat-label">Arquitectura</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon"><i class="fab fa-dart"></i>
+                            </div>
+                            <div class="stat-info"><span class="stat-value">Dart 3</span><span class="stat-label">Lenguaje</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon"><i class="fas fa-database"></i>
+                            </div>
+                            <div class="stat-info"><span class="stat-value">PostgreSQL</span><span class="stat-label">Base de Datos</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hero-actions"><a href="#instalacion" class="btn btn-primary btn-lg"><i class="fas fa-download"></i>Comenzar</a><a href="#presentacion" class="btn btn-outline btn-lg"><i class="fas fa-book-open"></i>Presentación</a><a href="index.html" class="btn btn-outline btn-lg"><i class="fas fa-arrow-left"></i>Volver a JSP</a>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="code-window">
+                        <div class="window-header">
+                            <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                            </div><span class="window-title">inventario_app.dart</span>
+                        </div>
+                        <div class="window-body">
+                            <pre><code class="language-dart">@riverpod
+class ProductoController extends _$ProductoController {
+  @override
+  Future&lt;List&lt;Producto&gt;&gt; build() async {
+    final api = ref.read(productoApiProvider);
+    return api.listarProductos();
+  }
+
+  Future&lt;void&gt; crear(ProductoCreate dto) async {
+    final api = ref.read(productoApiProvider);
+    await api.crearProducto(dto);
+    await ref.invalidateSelf();
+  }
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>

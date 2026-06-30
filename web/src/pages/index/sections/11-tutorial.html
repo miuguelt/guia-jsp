@@ -72,25 +72,27 @@ mkdir hola-mundo-servlet\src\main\resources</code></pre>
                                     </button>
                                 </div>
                                 <div class="window-body">
-                                    <pre><code class="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;project xmlns="http://maven.apache.org/POM/4.0.0"&gt;
-&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
-&lt;groupId&gt;com.sena&lt;/groupId&gt;
-&lt;artifactId&gt;hola-mundo&lt;/artifactId&gt;
-&lt;version&gt;1.0&lt;/version&gt;
-&lt;packaging&gt;war&lt;/packaging&gt;
-&lt;properties&gt;
-&lt;maven.compiler.source&gt;21&lt;/maven.compiler.source&gt;
-&lt;maven.compiler.target&gt;21&lt;/maven.compiler.target&gt;
-&lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
-&lt;/properties&gt;
-&lt;dependencies&gt;
-&lt;dependency&gt;
-&lt;groupId&gt;jakarta.servlet&lt;/groupId&gt;
-&lt;artifactId&gt;jakarta.servlet-api&lt;/artifactId&gt;
-&lt;version&gt;6.0.0&lt;/version&gt;
-&lt;scope&gt;provided&lt;/scope&gt;
-&lt;/dependency&gt;
-&lt;/dependencies&gt;&lt;/project&gt;</code></pre>
+                                        <pre><code class="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;com.sena&lt;/groupId&gt;
+    &lt;artifactId&gt;hola-mundo&lt;/artifactId&gt;
+    &lt;version&gt;1.0&lt;/version&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+    &lt;properties&gt;
+        &lt;maven.compiler.source&gt;21&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;21&lt;/maven.compiler.target&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+    &lt;/properties&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;jakarta.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;jakarta.servlet-api&lt;/artifactId&gt;
+            &lt;version&gt;6.0.0&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;</code></pre>
                                 </div>
                             </div>
                             <h4>
@@ -158,13 +160,21 @@ mvn clean package
                                     </button>
                                 </div>
                                 <div class="window-body">
-                                    <pre><code class="language-bash"># 1. Copiar el WAR a Tomcatcopy target\hola-mundo-1.0.war C:\apache-tomcat-10.1.x\webapps\# 2. Iniciar Tomcat (si no está corriendo)C:\apache-tomcat-10.1.x\bin\startup.bat# 3. Abrir en el navegador:#
-http://localhost:8080/hola-mundo-1.0/hola-mundo# Resultado esperado en el navegador:# ┌──────────────────────────────────────────────┐# │
-│# │  ¡Hola Mundo desde Jakarta EE 10!
-│# │  Mi primer Servlet con JDK 21
-│# │  Fecha: Sun Jun 28 12:00:00 COT 2026
-│# │
-│# └──────────────────────────────────────────────┘</code></pre>
+                                        <pre><code class="language-bash"># 1. Copiar el WAR a Tomcat
+copy target\hola-mundo-1.0.war C:\apache-tomcat-10.1.x\webapps\
+
+# 2. Iniciar Tomcat (si no está corriendo)
+C:\apache-tomcat-10.1.x\bin\startup.bat
+
+# 3. Abrir en el navegador:
+#    http://localhost:8080/hola-mundo-1.0/hola-mundo
+#
+# Resultado esperado:
+# ┌──────────────────────────────────────────────┐
+# │  ¡Hola Mundo desde Jakarta EE 10!            │
+# │  Mi primer Servlet con JDK 21                │
+# │  Fecha: Sun Jun 28 12:00:00 COT 2026         │
+# └──────────────────────────────────────────────┘</code></pre>
                                 </div>
                             </div>
                             <div class="recommendation-box"><i class="fas fa-check-circle" style="color:#28a745;"></i>
@@ -190,6 +200,18 @@ String token = JwtUtil.generarToken("admin", "Administrador");
 // → React usa este token con: Authorization: Bearer &lt;token&gt;</pre>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <!-- Descargar proyecto JSP+MVC completo -->
+                    <div class="info-banner" style="margin-bottom:2rem;background:var(--accent-light, #e8f5e9);border-left:4px solid #00664a;">
+                        <i class="fas fa-download" style="color:#00664a;"></i>
+                        <div>
+                            <h4>Proyecto JSP+MVC listo para ejecutar</h4>
+                            <p>Descarga el proyecto Maven completo con el Sistema de Inventario. Ya incluye todos los archivos: <strong>Modelo</strong> (Records JDK 21), <strong>DAO</strong> (JDBC), <strong>Controladores</strong> (Servlets Jakarta EE 10) y <strong>Vistas</strong> (JSP con JSTL).</p>
+                            <p style="font-size:0.9rem;opacity:0.8;">Solo necesitas: <code>mvn clean package cargo:run</code> y ya tienes la app en <code>http://localhost:8080/inventario-mvc-1.0/</code></p>
+                            <a href="downloads/codigo-ejemplo.zip" class="btn btn-primary" download style="margin-top:0.5rem;display:inline-flex;align-items:center;gap:0.5rem;">
+                                <i class="fas fa-download"></i> Descargar proyecto JSP+MVC (32 KB)
+                            </a>
                         </div>
                     </div>
                     <div class="tutorial-steps">
@@ -285,7 +307,11 @@ String token = JwtUtil.generarToken("admin", "Administrador");
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-sql">-- Crear base de datosCREATE DATABASE inventario_db;-- Conectar a la base de datos\c inventario_db</code></pre>
+                                        <pre><code class="language-sql">-- Crear base de datos
+CREATE DATABASE inventario_db;
+
+-- Conectar a la base de datos
+\c inventario_db</code></pre>
                                     </div>
                                 </div>
                                 <h4>
@@ -348,44 +374,46 @@ CONSTRAINT fk_usuarios_roles FOREIGN KEY (rol_id)         REFERENCES roles(id));
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;project xmlns="http://maven.apache.org/POM/4.0.0"&gt;
-&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
-&lt;groupId&gt;com.sena.inventario&lt;/groupId&gt;
-&lt;artifactId&gt;inventario-mvc&lt;/artifactId&gt;
-&lt;version&gt;1.0&lt;/version&gt;
-&lt;packaging&gt;war&lt;/packaging&gt;
-&lt;properties&gt;
-&lt;maven.compiler.source&gt;21&lt;/maven.compiler.source&gt;
-&lt;maven.compiler.target&gt;21&lt;/maven.compiler.target&gt;
-&lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
-&lt;/properties&gt;
-&lt;dependencies&gt;
-&lt;!-- Jakarta Servlet API --&gt;
-&lt;dependency&gt;
-&lt;groupId&gt;jakarta.servlet&lt;/groupId&gt;
-&lt;artifactId&gt;jakarta.servlet-api&lt;/artifactId&gt;
-&lt;version&gt;6.0.0&lt;/version&gt;
-&lt;scope&gt;provided&lt;/scope&gt;
-&lt;/dependency&gt;
-&lt;!-- Jakarta JSTL --&gt;
-&lt;dependency&gt;
-&lt;groupId&gt;jakarta.servlet.jsp.jstl&lt;/groupId&gt;
-&lt;artifactId&gt;jakarta.servlet.jsp.jstl-api&lt;/artifactId&gt;
-&lt;version&gt;3.0.0&lt;/version&gt;
-&lt;/dependency&gt;
-&lt;!-- PostgreSQL JDBC Driver --&gt;
-&lt;dependency&gt;
-&lt;groupId&gt;org.postgresql&lt;/groupId&gt;
-&lt;artifactId&gt;postgresql&lt;/artifactId&gt;
-&lt;version&gt;42.7.1&lt;/version&gt;
-&lt;/dependency&gt;
-&lt;!-- BCrypt para contraseñas --&gt;
-&lt;dependency&gt;
-&lt;groupId&gt;at.favre.lib&lt;/groupId&gt;
-&lt;artifactId&gt;bcrypt&lt;/artifactId&gt;
-&lt;version&gt;0.10.2&lt;/version&gt;
-&lt;/dependency&gt;
-&lt;/dependencies&gt;&lt;/project&gt;</code></pre>
+                                        <pre><code class="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;com.sena.inventario&lt;/groupId&gt;
+    &lt;artifactId&gt;inventario-mvc&lt;/artifactId&gt;
+    &lt;version&gt;1.0&lt;/version&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+    &lt;properties&gt;
+        &lt;maven.compiler.source&gt;21&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;21&lt;/maven.compiler.target&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+    &lt;/properties&gt;
+    &lt;dependencies&gt;
+        &lt;!-- Jakarta Servlet API --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;jakarta.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;jakarta.servlet-api&lt;/artifactId&gt;
+            &lt;version&gt;6.0.0&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;!-- Jakarta JSTL --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;jakarta.servlet.jsp.jstl&lt;/groupId&gt;
+            &lt;artifactId&gt;jakarta.servlet.jsp.jstl-api&lt;/artifactId&gt;
+            &lt;version&gt;3.0.0&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!-- PostgreSQL JDBC Driver --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.postgresql&lt;/groupId&gt;
+            &lt;artifactId&gt;postgresql&lt;/artifactId&gt;
+            &lt;version&gt;42.7.1&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!-- BCrypt para contraseñas --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;at.favre.lib&lt;/groupId&gt;
+            &lt;artifactId&gt;bcrypt&lt;/artifactId&gt;
+            &lt;version&gt;0.10.2&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;</code></pre>
                                     </div>
                                 </div>
                             </div>
@@ -417,11 +445,28 @@ CONSTRAINT fk_usuarios_roles FOREIGN KEY (rol_id)         REFERENCES roles(id));
                                     </div>
                                     <div class="window-body">
                                         <pre><code class="language-java">package com.sena.inventario.modelo;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-public record Producto(    int id,    String codigo,    String nombre,    String descripcion,    BigDecimal precio,    int stock,    String categoria,    boolean estado,    LocalDateTime fechaRegistro,    LocalDateTime fechaActualizacion) {
-    public Producto(String codigo, String nombre, String descripcion,                     BigDecimal precio, int stock, String categoria) {
-        this(0, codigo, nombre, descripcion, precio, stock, categoria,              true, LocalDateTime.now(), LocalDateTime.now());
+
+public record Producto(
+    int id,
+    String codigo,
+    String nombre,
+    String descripcion,
+    BigDecimal precio,
+    int stock,
+    String categoria,
+    boolean estado,
+    LocalDateTime fechaRegistro,
+    LocalDateTime fechaActualizacion
+) {
+    public Producto(
+        String codigo, String nombre, String descripcion,
+        BigDecimal precio, int stock, String categoria
+    ) {
+        this(0, codigo, nombre, descripcion, precio, stock, categoria,
+             true, LocalDateTime.now(), LocalDateTime.now());
     }
 }</code></pre>
                                     </div>
@@ -455,20 +500,36 @@ public record Producto(    int id,    String codigo,    String nombre,    String
                                     </div>
                                     <div class="window-body">
                                         <pre><code class="language-java">package com.sena.inventario.dao;
+
 import com.sena.inventario.modelo.Producto;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
 public class ProductoDAO {
-    private static final String SQL_INSERT =         "INSERT INTO productos (codigo, nombre, descripcion, precio, stock, categoria) " +        "VALUES (?, ?, ?, ?, ?, ?)";
-    private static final String SQL_SELECT_ALL =         "SELECT * FROM productos ORDER BY id";
-    private static final String SQL_SELECT_BY_ID =         "SELECT * FROM productos WHERE id = ?";
-    private static final String SQL_UPDATE =         "UPDATE productos SET codigo=?, nombre=?, descripcion=?, precio=?, " +        "stock=?, categoria=?, estado=? WHERE id=?";
-    private static final String SQL_DELETE =         "DELETE FROM productos WHERE id = ?";
-    // CREATE    public boolean insertar(Producto producto) {
+
+    private static final String SQL_INSERT =
+        "INSERT INTO productos (codigo, nombre, descripcion, precio, stock, categoria) " +
+        "VALUES (?, ?, ?, ?, ?, ?)";
+
+    private static final String SQL_SELECT_ALL =
+        "SELECT * FROM productos ORDER BY id";
+
+    private static final String SQL_SELECT_BY_ID =
+        "SELECT * FROM productos WHERE id = ?";
+
+    private static final String SQL_UPDATE =
+        "UPDATE productos SET codigo=?, nombre=?, descripcion=?, precio=?, " +
+        "stock=?, categoria=?, estado=? WHERE id=?";
+
+    private static final String SQL_DELETE =
+        "DELETE FROM productos WHERE id = ?";
+
+    // ---------- CREATE ----------
+    public boolean insertar(Producto producto) {
         try (Connection conn = ConexionDB.conectar();
-        PreparedStatement ps = conn.prepareStatement(SQL_INSERT)) {
+             PreparedStatement ps = conn.prepareStatement(SQL_INSERT)) {
             ps.setString(1, producto.codigo());
             ps.setString(2, producto.nombre());
             ps.setString(3, producto.descripcion());
@@ -476,55 +537,68 @@ public class ProductoDAO {
             ps.setInt(5, producto.stock());
             ps.setString(6, producto.categoria());
             return ps.executeUpdate() &gt; 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
-    catch (SQLException e) {
-        e.printStackTrace();
-        return false;
     }
-}
-// READ    public List&lt;Producto&gt; listarTodos() {
-    List&lt;Producto&gt; productos = new ArrayList&lt;&gt;();
-    try (Connection conn = ConexionDB.conectar();
-    Statement stmt = conn.createStatement();
-    ResultSet rs = stmt.executeQuery(SQL_SELECT_ALL)) {
-        while (rs.next()) {
-            productos.add(new Producto(                    rs.getInt("id"),                    rs.getString("codigo"),                    rs.getString("nombre"),                    rs.getString("descripcion"),                    rs.getBigDecimal("precio"),                    rs.getInt("stock"),                    rs.getString("categoria"),                    rs.getBoolean("estado"),                    rs.getTimestamp("fecha_registro").toLocalDateTime(),                    rs.getTimestamp("fecha_actualizacion").toLocalDateTime()                ));
+
+    // ---------- READ / LIST ----------
+    public List&lt;Producto&gt; listarTodos() {
+        List&lt;Producto&gt; productos = new ArrayList&lt;&gt;();
+        try (Connection conn = ConexionDB.conectar();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(SQL_SELECT_ALL)) {
+            while (rs.next()) {
+                productos.add(new Producto(
+                    rs.getInt("id"),
+                    rs.getString("codigo"),
+                    rs.getString("nombre"),
+                    rs.getString("descripcion"),
+                    rs.getBigDecimal("precio"),
+                    rs.getInt("stock"),
+                    rs.getString("categoria"),
+                    rs.getBoolean("estado"),
+                    rs.getTimestamp("fecha_registro").toLocalDateTime(),
+                    rs.getTimestamp("fecha_actualizacion").toLocalDateTime()
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-}
-catch (SQLException e) {
-    e.printStackTrace();
-}
-return productos;
-}
-// UPDATE    public boolean actualizar(Producto producto) {
-    try (Connection conn = ConexionDB.conectar();
-    PreparedStatement ps = conn.prepareStatement(SQL_UPDATE)) {
-        ps.setString(1, producto.codigo());
-        ps.setString(2, producto.nombre());
-        ps.setString(3, producto.descripcion());
-        ps.setBigDecimal(4, producto.precio());
-        ps.setInt(5, producto.stock());
-        ps.setString(6, producto.categoria());
-        ps.setBoolean(7, producto.estado());
-        ps.setInt(8, producto.id());
-        return ps.executeUpdate() &gt; 0;
+        return productos;
     }
-catch (SQLException e) {
-    e.printStackTrace();
-    return false;
-}
-}
-// DELETE    public boolean eliminar(int id) {
-    try (Connection conn = ConexionDB.conectar();
-    PreparedStatement ps = conn.prepareStatement(SQL_DELETE)) {
-        ps.setInt(1, id);
-        return ps.executeUpdate() &gt; 0;
+
+    // ---------- UPDATE ----------
+    public boolean actualizar(Producto producto) {
+        try (Connection conn = ConexionDB.conectar();
+             PreparedStatement ps = conn.prepareStatement(SQL_UPDATE)) {
+            ps.setString(1, producto.codigo());
+            ps.setString(2, producto.nombre());
+            ps.setString(3, producto.descripcion());
+            ps.setBigDecimal(4, producto.precio());
+            ps.setInt(5, producto.stock());
+            ps.setString(6, producto.categoria());
+            ps.setBoolean(7, producto.estado());
+            ps.setInt(8, producto.id());
+            return ps.executeUpdate() &gt; 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
-catch (SQLException e) {
-    e.printStackTrace();
-    return false;
-}
-}
+
+    // ---------- DELETE ----------
+    public boolean eliminar(int id) {
+        try (Connection conn = ConexionDB.conectar();
+             PreparedStatement ps = conn.prepareStatement(SQL_DELETE)) {
+            ps.setInt(1, id);
+            return ps.executeUpdate() &gt; 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }</code></pre>
                                     </div>
                                 </div>
@@ -557,6 +631,7 @@ catch (SQLException e) {
                                     </div>
                                     <div class="window-body">
                                         <pre><code class="language-java">package com.sena.inventario.controlador;
+
 import com.sena.inventario.dao.ProductoDAO;
 import com.sena.inventario.modelo.Producto;
 import jakarta.servlet.ServletException;
@@ -567,54 +642,61 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
+
 @WebServlet("/productos")
 public class ProductoServlet extends HttpServlet {
+
     private final ProductoDAO productoDAO = new ProductoDAO();
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         String accion = request.getParameter("accion");
         if (accion == null) accion = "listar";
         switch (accion) {
-            case "nuevo" -&gt; mostrarFormularioNuevo(request, response);
-            case "editar" -&gt; mostrarFormularioEditar(request, response);
-            case "eliminar" -&gt; eliminarProducto(request, response);
-            default -&gt; listarProductos(request, response);
+            case "nuevo" -> mostrarFormularioNuevo(request, response);
+            case "editar" -> mostrarFormularioEditar(request, response);
+            case "eliminar" -> eliminarProducto(request, response);
+            default -> listarProductos(request, response);
         }
-}
-@Override
-protected void doPost(HttpServletRequest request, HttpServletResponse response)
-throws ServletException, IOException {
-    if ("guardar".equals(request.getParameter("accion"))) {
-        guardarProducto(request, response);
     }
-}
-private void listarProductos(HttpServletRequest req, HttpServletResponse resp)
-throws ServletException, IOException {
-    List&lt;Producto&gt; productos = productoDAO.listarTodos();
-    req.setAttribute("productos", productos);
-    req.getRequestDispatcher("/productos/lista.jsp").forward(req, resp);
-}
-private void guardarProducto(HttpServletRequest request, HttpServletResponse response)
-throws IOException {
-    String idStr = request.getParameter("id");
-    String codigo = request.getParameter("codigo");
-    String nombre = request.getParameter("nombre");
-    String descripcion = request.getParameter("descripcion");
-    BigDecimal precio = new BigDecimal(request.getParameter("precio"));
-    int stock = Integer.parseInt(request.getParameter("stock"));
-    String categoria = request.getParameter("categoria");
-    if (idStr == null || idStr.isEmpty()) {
-        Producto producto = new Producto(codigo, nombre, descripcion, precio, stock, categoria);
-        productoDAO.insertar(producto);
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        if ("guardar".equals(request.getParameter("accion"))) {
+            guardarProducto(request, response);
+        }
     }
-else {
-    intid = Integer.parseInt(idStr);
-    booleanestado = "on".equals(request.getParameter("estado"));
-    Producto producto = new Producto(id, codigo, nombre, descripcion, precio, stock, categoria, estado);
-    productoDAO.actualizar(producto);
-}        response.sendRedirect(request.getContextPath() + "/productos");
-}
+
+    private void listarProductos(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        List&lt;Producto&gt; productos = productoDAO.listarTodos();
+        req.setAttribute("productos", productos);
+        req.getRequestDispatcher("/productos/lista.jsp").forward(req, resp);
+    }
+
+    private void guardarProducto(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        String idStr = request.getParameter("id");
+        String codigo = request.getParameter("codigo");
+        String nombre = request.getParameter("nombre");
+        String descripcion = request.getParameter("descripcion");
+        BigDecimal precio = new BigDecimal(request.getParameter("precio"));
+        int stock = Integer.parseInt(request.getParameter("stock"));
+        String categoria = request.getParameter("categoria");
+
+        if (idStr == null || idStr.isEmpty()) {
+            Producto producto = new Producto(codigo, nombre, descripcion, precio, stock, categoria);
+            productoDAO.insertar(producto);
+        } else {
+            int id = Integer.parseInt(idStr);
+            boolean estado = "on".equals(request.getParameter("estado"));
+            Producto producto = new Producto(id, codigo, nombre, descripcion, precio, stock, categoria, estado);
+            productoDAO.actualizar(producto);
+        }
+        response.sendRedirect(request.getContextPath() + "/productos");
+    }
 }</code></pre>
                                     </div>
                                 </div>
@@ -646,34 +728,42 @@ else {
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-jsp">&lt;%@ page contentType="text/html;charset=UTF-8" language="java" %&gt;&lt;%@ taglib prefix="c" uri="jakarta.tags.core" %&gt;&lt;!DOCTYPE html&gt;&lt;html lang="es"&gt;&lt;head&gt;
-&lt;meta charset="UTF-8"&gt;
-&lt;title&gt;Lista de Productos&lt;/title&gt;&lt;/head&gt;&lt;body&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Código&lt;/th&gt;
-&lt;th&gt;Nombre&lt;/th&gt;
-&lt;th&gt;Precio&lt;/th&gt;
-&lt;th&gt;Stock&lt;/th&gt;
-&lt;th&gt;Acciones&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;c:forEach var="producto" items="${productos}"&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;c:out value="${producto.codigo}" /&gt;&lt;/td&gt;
-&lt;td&gt;&lt;c:out value="${producto.nombre}" /&gt;&lt;/td&gt;
-&lt;td&gt;$&lt;c:out value="${producto.precio}" /&gt;&lt;/td&gt;
-&lt;td&gt;&lt;c:out value="${producto.stock}" /&gt;&lt;/td&gt;
-&lt;td&gt;
-&lt;a href="productos?accion=editar&id=${producto.id}"&gt;Editar&lt;/a&gt;
-&lt;a href="productos?accion=eliminar&id=${producto.id}"&gt;Eliminar&lt;/a&gt;
-&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/c:forEach&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</code></pre>
+                                        <pre><code class="language-jsp">&lt;%@ page contentType="text/html;charset=UTF-8" language="java" %&gt;
+&lt;%@ taglib prefix="c" uri="jakarta.tags.core" %&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="es"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Lista de Productos&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;table&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th&gt;Código&lt;/th&gt;
+                &lt;th&gt;Nombre&lt;/th&gt;
+                &lt;th&gt;Precio&lt;/th&gt;
+                &lt;th&gt;Stock&lt;/th&gt;
+                &lt;th&gt;Acciones&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            &lt;c:forEach var="producto" items="${productos}"&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;&lt;c:out value="${producto.codigo}" /&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;c:out value="${producto.nombre}" /&gt;&lt;/td&gt;
+                    &lt;td&gt;$&lt;c:out value="${producto.precio}" /&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;c:out value="${producto.stock}" /&gt;&lt;/td&gt;
+                    &lt;td&gt;
+                        &lt;a href="productos?accion=editar&amp;id=${producto.id}"&gt;Editar&lt;/a&gt;
+                        &lt;a href="productos?accion=eliminar&amp;id=${producto.id}"&gt;Eliminar&lt;/a&gt;
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/c:forEach&gt;
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
                                     </div>
                                 </div>
                             </div>
@@ -749,7 +839,16 @@ mvn clean package cargo:run
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-bash"># 1. Compile y empaquete el archivo WARcd recursos/codigo-ejemplomvn clean package# 2. Copie el archivo generado a la carpeta webapps de su Tomcat manualcopy target\inventario-mvc-1.0.war C:\apache-tomcat-10.1.x\webapps\# 3. Reinicie el servidor TomcatC:\apache-tomcat-10.1.x\bin\shutdown.batC:\apache-tomcat-10.1.x\bin\startup.bat</code></pre>
+                                        <pre><code class="language-bash"># 1. Compile y empaquete el archivo WAR
+cd recursos/codigo-ejemplo
+mvn clean package
+
+# 2. Copie el archivo WAR a la carpeta webapps de Tomcat
+copy target\inventario-mvc-1.0.war C:\apache-tomcat-10.1.x\webapps\
+
+# 3. Reinicie el servidor Tomcat
+C:\apache-tomcat-10.1.x\bin\shutdown.bat
+C:\apache-tomcat-10.1.x\bin\startup.bat</code></pre>
                                     </div>
                                 </div>
                             </div>

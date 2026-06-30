@@ -237,6 +237,23 @@ body {
 /* --- module: layout.css --- */
 
 
+/* ============================================
+   STACKING CONTEXT (z-index)
+   ============================================
+   100000+  → skip-link, elementos críticos de accesibilidad
+   99999    → toast-container
+   99998    → celebration-overlay
+   10002    → search-modal, shortcuts-modal
+   10001    → code-block.focus-mode
+   10000    → code-overlay, reading-mode-exit-btn
+   1003     → sidebar-link-preview (tooltips que salen del sidebar)
+   1002     → main-sidebar, quick-nav-tooltip
+   1001     → quick-nav-panel, sidebar-show-btn, header.scrolled
+   1000     → header, [data-tooltip]::after
+   999      → scroll-top-btn, reading-progress, toc-wrapper, mobile-page-nav
+   900      → section-nav, quick-nav-panel (legacy)
+   ============================================ */
+
 .header {
     position: fixed;
     top: 0;
@@ -867,23 +884,15 @@ body {
 }
 
 .window-body {
-    padding: 20px;
-    overflow-x: auto;
+    padding: 0;
+    overflow: hidden;
 }
 
 .window-body pre {
     margin: 0;
 }
 
-.window-body code {
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    line-height: 1.6;
-    color: var(--code-text);
-    white-space: pre-wrap;
-    word-break: break-word;
-    overflow-wrap: break-word;
-}
+/* (trasladado a code-blocks.css - estandar global) */
 
 .tech-stack-section {
     padding: 80px 0;
@@ -2006,7 +2015,7 @@ body {
 
 .content-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
     gap: 24px;
     margin-bottom: 48px;
 }
@@ -2356,7 +2365,7 @@ body {
 /* Cuerpo del código — scroll horizontal controlado */
 .code-body,
 .code-block pre {
-    overflow-x: auto;
+    overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
     margin: 0;
     padding: 0.75rem 1rem;
@@ -2367,9 +2376,9 @@ body {
     font-size: 0.75rem;
     line-height: 1.5;
     color: var(--code-text);
-    white-space: pre;
-    word-break: normal;
-    word-wrap: normal;
+    white-space: pre-wrap;
+    word-break: break-word;
+    word-wrap: break-word;
 }
 
 /* ── Responsive: Tablet sm: (640px+) ────────────────────────────────────── */
@@ -3563,11 +3572,20 @@ body {
 
 /* --- module: code-blocks.css --- */
 
+/* ============================================
+   CODE-BLOCKS.css — Estándar de Presentación
+   Sintaxis global, overflow controlado, line numbers y wrap toggle
+   Paleta: One Dark Pro (Atom) adaptada
+   ============================================ */
+
+/* ── 1. CONTENEDOR PRINCIPAL ─────────────────────────────────────────────── */
 .code-window {
     box-shadow: var(--shadow-xl);
     transition: var(--transition);
     border: 1px solid rgba(255, 255, 255, 0.08);
     margin: 16px 0;
+    background: var(--code-bg);
+    border-radius: var(--radius-lg);
 }
 
 .code-window:hover {
@@ -3575,6 +3593,7 @@ body {
     box-shadow: 0 20px 60px rgba(0, 102, 74, 0.25);
 }
 
+/* ── 2. WINDOW HEADER (CHROME) ──────────────────────────────────────────── */
 .window-header {
     padding: 12px 16px;
     background: rgba(255, 255, 255, 0.05);
@@ -3588,6 +3607,10 @@ body {
 .window-header .window-title {
     flex: 1;
     text-align: left;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-family: var(--font-mono);
+    font-weight: 500;
 }
 
 .window-header .window-title i {
@@ -3619,14 +3642,371 @@ body {
 .dot.yellow { background: #ffbd2e; }
 .dot.green { background: #28ca42; }
 
-.window-title {
-    font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.6);
-    font-family: var(--font-mono);
-    font-weight: 500;
+.copy-btn {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    color: rgba(255, 255, 255, 0.5);
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: var(--font-sans);
 }
 
-/* Result box para mostrar output visual de código */
+.copy-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: white;
+}
+
+.copy-btn.copied {
+    background: rgba(40, 202, 66, 0.2);
+    color: #28ca42;
+    border-color: rgba(40, 202, 66, 0.3);
+}
+
+/* ── 3. LINE NUMBERS (CSS COUNTERS) ─────────────────────────────────────── */
+.code-window pre,
+.tech-module pre[class*="language-"],
+.code-block pre {
+    counter-reset: code-line;
+}
+
+.code-window pre code,
+.tech-module pre code,
+.code-block pre code {
+    display: block;
+    padding: 0;
+}
+
+.code-window pre code .line-number::before,
+.tech-module pre code .line-number::before,
+.code-block pre code .line-number::before {
+    counter-increment: code-line;
+    content: counter(code-line);
+    display: inline-block;
+    width: 3ch;
+    margin-right: 1.5ch;
+    text-align: right;
+    color: rgba(255, 255, 255, 0.25);
+    font-variant-numeric: tabular-nums;
+    user-select: none;
+}
+
+.code-window pre code .line-number,
+.tech-module pre code .line-number,
+.code-block pre code .line-number {
+    display: block;
+    padding: 0 1rem 0 0;
+}
+
+.code-window pre code .line-number:hover::before,
+.tech-module pre code .line-number:hover::before,
+.code-block pre code .line-number:hover::before {
+    color: var(--primary-light);
+    opacity: 0.9;
+}
+
+/* ── 4. OVERFLOW INTELIGENTE ────────────────────────────────────────────── */
+/* Default: pre-wrap para evitar scroll horizontal, el código se ajusta solo */
+.window-body pre,
+.tech-module pre[class*="language-"],
+.code-block pre {
+    margin: 0;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-word;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    line-height: 1.65;
+    color: var(--code-text);
+    background-color: transparent !important;
+}
+
+/* Wrap mode: toggle con clase .pre-wrap en el contenedor */
+.code-window.pre-wrap pre,
+.code-block.pre-wrap pre,
+.tech-module.pre-wrap pre[class*="language-"] {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-x: hidden;
+}
+
+/* ── 5. CODE BODY (padding del contenido) ────────────────────────────────── */
+.window-body {
+    padding: 0;
+    overflow: hidden;
+}
+
+.window-body pre {
+    padding: 20px;
+    border-radius: 0;
+}
+
+.window-body pre code {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    line-height: 1.65;
+    color: var(--code-text);
+    background-color: transparent !important;
+    padding: 0;
+    tab-size: 2;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+/* ── 5b. INDENT GUIDES — Líneas verticales que muestran la estructura ───── */
+/* Cada nivel de indentación (2 espacios) tiene una guía sutil */
+.window-body pre code,
+.code-block pre code,
+.tech-module pre code {
+    background-image: repeating-linear-gradient(
+        to right,
+        transparent 0px,
+        transparent calc(2ch - 0.5px),
+        rgba(255, 255, 255, 0.05) calc(2ch - 0.5px),
+        rgba(255, 255, 255, 0.05) 2ch
+    );
+    background-attachment: local;
+}
+
+[data-theme="dark"] .window-body pre code,
+[data-theme="dark"] .code-block pre code,
+[data-theme="dark"] .tech-module pre code {
+    background-image: repeating-linear-gradient(
+        to right,
+        transparent 0px,
+        transparent calc(2ch - 0.5px),
+        rgba(255, 255, 255, 0.07) calc(2ch - 0.5px),
+        rgba(255, 255, 255, 0.07) 2ch
+    );
+}
+
+/* ── 6. SINTASIS GLOBAL (Prism.js tokens — One Dark Pro palette) ────────── */
+/* Aplica a TODO bloque de código sin importar el contenedor */
+pre[class*="language-"] .token,
+code[class*="language-"] .token {
+    background: transparent !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    font-size: inherit !important;
+    font-weight: inherit !important;
+    box-shadow: none !important;
+    border: none !important;
+    display: inline !important;
+}
+
+.token.keyword,
+.token.control,
+.token.directive {
+    color: #c678dd;
+    font-weight: 600;
+}
+
+.token.string,
+.token.char,
+.token.doc-string {
+    color: #98c379;
+}
+
+.token.comment,
+.token.documentation,
+.token.shebang {
+    color: #5c6370;
+    font-style: italic;
+}
+
+.token.function,
+.token.macro {
+    color: #61afef;
+}
+
+.token.number,
+.token.unit {
+    color: #d19a66;
+}
+
+.token.operator,
+.token.arrow {
+    color: #56b6c2;
+}
+
+.token.class-name,
+.token.type {
+    color: #e5c07b;
+    font-weight: 600;
+}
+
+.token.punctuation,
+.token.delimiter {
+    color: #abb2bf;
+}
+
+.token.annotation,
+.token.decorator {
+    color: #e06c75;
+    font-weight: 600;
+}
+
+.token.boolean,
+.token.nil {
+    color: #d19a66;
+}
+
+.token.builtin,
+.token.global {
+    color: #56b6c2;
+}
+
+.token.regex,
+.token.embedding {
+    color: #98c379;
+}
+
+.token.variable,
+.token.parameter,
+.token.label {
+    color: #e06c75;
+}
+
+.token.property,
+.token.attribute {
+    color: #e06c75;
+}
+
+.token.tag,
+.token.element {
+    color: #e06c75;
+}
+
+.token.attr-name {
+    color: #d19a66;
+}
+
+.token.attr-value {
+    color: #98c379;
+}
+
+.token.entity {
+    color: #e06c75;
+}
+
+.token.namespace {
+    opacity: 0.7;
+}
+
+.token.important {
+    color: #c678dd;
+    font-weight: bold;
+}
+
+.token.url {
+    color: #61afef;
+    text-decoration: underline;
+}
+
+.token.prolog,
+.token.doctype,
+.token.cdata {
+    color: #5c6370;
+}
+
+.token.selector,
+.token.inserted {
+    color: #98c379;
+}
+
+.token.atrule,
+.token.changed {
+    color: #d19a66;
+}
+
+.token.deleted {
+    color: #e06c75;
+}
+
+/* ── 7. INLINE CODE ─────────────────────────────────────────────────────── */
+code:not(pre code):not([class*="language-"]) {
+    padding: 2px 6px;
+    background: var(--bg-tertiary);
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    color: var(--primary);
+    border: 1px solid var(--border-light);
+    white-space: normal;
+    word-break: break-all;
+    overflow-wrap: break-word;
+}
+
+/* ── 8. FOCUS MODE ──────────────────────────────────────────────────────── */
+.code-block.focus-mode {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    width: min(90vw, 1000px);
+    max-height: 80vh;
+    z-index: 10001;
+    box-shadow: 0 20px 80px rgba(0, 0, 0, 0.5);
+    border: 2px solid var(--primary);
+}
+
+.code-block.focus-mode pre {
+    max-height: 70vh;
+}
+
+.code-block.focus-mode .focus-toggle-btn {
+    background: var(--danger);
+    color: white;
+}
+
+.code-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 10000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.code-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.focus-toggle-btn {
+    padding: 4px 10px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.65rem;
+    cursor: pointer;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: var(--font-sans);
+}
+
+.focus-toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: white;
+}
+
+/* ── 9. RESULT BOX ──────────────────────────────────────────────────────── */
 .result-box {
     background: var(--card-bg);
     border: 2px solid var(--primary);
@@ -3655,10 +4035,11 @@ body {
 .result-content code {
     display: block;
     padding: 16px;
-    background: #1e1e2e;
-    color: #cdd6f4;
+    background: var(--code-bg);
+    color: var(--code-text);
     font-size: 0.85rem;
     line-height: 1.6;
+    font-family: var(--font-mono);
 }
 
 .result-content code.language-text {
@@ -3666,285 +4047,106 @@ body {
     white-space: pre;
 }
 
-/* Transition banners between guides */
-.transition-banner {
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-    padding: 3rem 0;
-    border-top: 3px solid var(--primary);
-    border-bottom: 3px solid var(--primary);
+/* ── 10. SCROLLBAR DELGADA PARA PRE BLOCKS ──────────────────────────────── */
+pre::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
 }
 
-.transition-content {
-    display: flex;
-    align-items: flex-start;
-    gap: 1.5rem;
+pre::-webkit-scrollbar-track {
+    background: transparent;
 }
 
-.transition-icon i {
-    font-size: 2.5rem;
-    color: var(--primary);
-    background: rgba(255,255,255,0.1);
-    padding: 1rem;
-    border-radius: 50%;
+pre::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 3px;
 }
 
-.transition-text h3 {
-    color: #e0e0e0;
-    font-size: 1.4rem;
-    margin-bottom: 0.75rem;
+pre::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.25);
 }
 
-.transition-text p {
-    color: #a0a0b0;
-    font-size: 0.95rem;
-    line-height: 1.6;
-    margin-bottom: 1.5rem;
-}
-
-.transition-comparison {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-}
-
-.transition-old, .transition-new {
-    flex: 1;
-    min-width: 200px;
-    padding: 1rem;
+/* ── 11. TECH-MODULE SPECIFIC OVERRIDES ─────────────────────────────────── */
+/* Estos co-existen con el estándar global arriba */
+.tech-module pre {
+    background: var(--code-bg) !important;
     border-radius: 8px;
-}
-
-.transition-old {
-    background: rgba(220, 53, 69, 0.15);
-    border: 1px solid rgba(220, 53, 69, 0.3);
-}
-
-.transition-new {
-    background: rgba(40, 167, 69, 0.15);
-    border: 1px solid rgba(40, 167, 69, 0.3);
-}
-
-.transition-old h5, .transition-new h5 {
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
-}
-
-.transition-old h5 { color: #f5a0a0; }
-.transition-new h5 { color: #a0e0a0; }
-
-.transition-old ul, .transition-new ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.transition-old li, .transition-new li {
-    font-size: 0.8rem;
-    color: #c0c0d0;
-    padding: 2px 0;
-}
-
-.transition-arrow i {
-    font-size: 2rem;
-    color: var(--primary);
-}
-
-@media (max-width: 768px) {
-    .transition-content {
-        flex-direction: column;
-    }
-    .transition-comparison {
-        flex-direction: column;
-    }
-    .transition-arrow {
-        transform: rotate(90deg);
-    }
-}
-
-/* Final summary section */
-.final-summary {
-    background: var(--card-bg);
-    border-radius: var(--radius-xl);
-    padding: 2.5rem;
-    margin-top: 2rem;
-    border: 2px solid var(--primary);
-}
-
-.final-summary h2 {
-    font-size: 1.8rem;
-    color: var(--primary);
-    margin-bottom: 1rem;
-    text-align: center;
-}
-
-.final-summary > p {
-    text-align: center;
-    color: var(--text-muted);
-    margin-bottom: 2rem;
-    font-size: 1rem;
-}
-
-.stack-overview {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-bottom: 2rem;
-}
-
-.stack-tier {
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-    padding: 1.5rem;
-    border-radius: var(--radius-lg);
-}
-
-.stack-tier.backend-java { background: rgba(0, 123, 255, 0.08); border-left: 4px solid #007bff; }
-.stack-tier.backend-python { background: rgba(0, 150, 136, 0.08); border-left: 4px solid #009688; }
-.stack-tier.frontend { background: rgba(97, 218, 251, 0.08); border-left: 4px solid #61DAFB; }
-
-.tier-icon i {
-    font-size: 2rem;
-}
-
-.stack-tier.backend-java .tier-icon i { color: #007bff; }
-.stack-tier.backend-python .tier-icon i { color: #009688; }
-.stack-tier.frontend .tier-icon i { color: #61DAFB; }
-
-.tier-content {
-    flex: 1;
-}
-
-.tier-content h3 {
-    font-size: 1.1rem;
-    margin-bottom: 0.75rem;
-}
-
-.tier-details {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.4rem;
-    margin-bottom: 0.5rem;
-}
-
-.tier-file code {
-    font-size: 0.8rem;
-    background: var(--code-bg);
-    padding: 0.15rem 0.4rem;
-    border-radius: 4px;
-}
-
-.tier-file span {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    display: block;
-}
-
-.tier-url {
-    font-size: 0.8rem;
-    color: var(--primary);
-    font-family: var(--font-mono);
-}
-
-.stack-arrow {
-    text-align: center;
-    color: var(--primary);
-    font-weight: 600;
+    padding: 0.75rem 1rem;
+    margin: 0.75rem 0;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    line-height: 1.65;
     font-size: 0.85rem;
-    padding: 0.25rem 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
 }
 
-.stack-arrow i {
-    font-size: 1.2rem;
+.tech-module code {
+    font-family: var(--font-mono);
+    color: var(--code-text);
+    background: transparent !important;
+    padding: 0;
+    tab-size: 4;
 }
 
-.execution-checklist {
-    margin: 2rem 0;
-    padding: 1.5rem;
-    background: var(--code-bg);
-    border-radius: var(--radius-lg);
+/* ── 12. RESPONSIVE ─────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .window-body pre {
+        padding: 14px;
+        font-size: 0.8rem;
+    }
+
+    .window-header {
+        padding: 10px 14px;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .window-header .window-title {
+        font-size: 0.75rem;
+    }
+
+    .code-block.focus-mode {
+        width: 95vw;
+    }
+
+    .copy-btn {
+        font-size: 0.7rem;
+        padding: 3px 8px;
+    }
 }
 
-.execution-checklist h3 {
-    font-size: 1.1rem;
-    margin-bottom: 1rem;
-    color: var(--primary);
+@media (max-width: 480px) {
+    .window-body pre {
+        padding: 10px;
+        font-size: 0.75rem;
+    }
+
+    .window-dots {
+        display: none;
+    }
 }
 
-.checklist-grid {
-    display: grid;
-    gap: 1rem;
-}
+/* ── 13. IMPRENTA ───────────────────────────────────────────────────────── */
+@media print {
+    .code-window {
+        break-inside: avoid;
+        box-shadow: none !important;
+        border: 1px solid #ccc !important;
+    }
 
-.checklist-item {
-    display: flex;
-    gap: 1rem;
-    align-items: flex-start;
-}
+    .code-window .window-header {
+        background: #f5f5f5 !important;
+    }
 
-.check-num {
-    width: 32px;
-    height: 32px;
-    background: var(--primary);
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 0.9rem;
-    flex-shrink: 0;
-}
+    .code-window pre,
+    .code-window code {
+        white-space: pre-wrap !important;
+        word-wrap: break-word !important;
+        font-size: 8pt !important;
+        line-height: 1.3 !important;
+    }
 
-.check-text strong {
-    display: block;
-    font-size: 0.95rem;
-    margin-bottom: 0.2rem;
-}
-
-.check-text p {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    margin-bottom: 0.3rem;
-}
-
-.check-text pre {
-    margin: 0;
-    font-size: 0.78rem;
-}
-
-.check-text pre code {
-    background: rgba(0,0,0,0.2);
-    padding: 0.3rem 0.6rem;
-    border-radius: 4px;
-    display: inline-block;
-}
-
-.final-quote {
-    text-align: center;
-    padding: 1.5rem;
-    position: relative;
-    border-top: 1px solid var(--border);
-    margin-top: 1rem;
-}
-
-.final-quote p {
-    font-style: italic;
-    color: var(--text-muted);
-    font-size: 0.95rem;
-    line-height: 1.7;
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.final-quote .fa-quote-left,
-.final-quote .fa-quote-right {
-    color: var(--primary);
+    .window-dots {
+        display: none;
+    }
 }
 
 
@@ -4143,22 +4345,17 @@ body {
 }
 
 /* ============================================
-   CODE BLOCK PRESENTATION — clean, readable, colorful
+   CODE BLOCK PRESENTATION — hereda de code-blocks.css
+   Solo overrides específicos para tech-module
    ============================================ */
 .tech-module pre {
     background: var(--code-bg) !important;
     border-radius: 8px;
     padding: 0.75rem 1rem;
     margin: 0.75rem 0;
-    overflow-x: auto;
-    overflow-y: visible;
     border: 1px solid rgba(255,255,255,0.08);
-    line-height: 1.5;
+    line-height: 1.65;
     font-size: 0.85rem;
-    white-space: pre-wrap !important;
-    word-wrap: break-word !important;
-    word-break: break-word !important;
-    max-width: 100%;
 }
 
 .tech-module code {
@@ -4167,10 +4364,6 @@ body {
     background: transparent !important;
     padding: 0;
     tab-size: 4;
-    white-space: pre-wrap !important;
-    word-wrap: break-word !important;
-    display: block;
-    max-width: 100%;
 }
 
 .tech-module pre[class*="language-"] {
@@ -4178,71 +4371,6 @@ body {
     margin: 0;
     border: none;
     border-radius: 0;
-    white-space: pre-wrap !important;
-    word-wrap: break-word !important;
-}
-
-/* Syntax highlighting colors for better learning */
-.tech-module pre code .keyword,
-.tech-module pre code[class*="language-"] .token.keyword {
-    color: #c678dd !important;
-    font-weight: 600;
-}
-
-.tech-module pre code .string,
-.tech-module pre code[class*="language-"] .token.string {
-    color: #98c379 !important;
-}
-
-.tech-module pre code .comment,
-.tech-module pre code[class*="language-"] .token.comment {
-    color: #5c6370 !important;
-    font-style: italic;
-}
-
-.tech-module pre code .function,
-.tech-module pre code[class*="language-"] .token.function {
-    color: #61afef !important;
-}
-
-.tech-module pre code .number,
-.tech-module pre code[class*="language-"] .token.number {
-    color: #d19a66 !important;
-}
-
-.tech-module pre code .operator,
-.tech-module pre code[class*="language-"] .token.operator {
-    color: #56b6c2 !important;
-}
-
-.tech-module pre code .class-name,
-.tech-module pre code[class*="language-"] .token.class-name {
-    color: #e5c07b !important;
-    font-weight: 600;
-}
-
-.tech-module pre code .punctuation,
-.tech-module pre code[class*="language-"] .token.punctuation {
-    color: #abb2bf !important;
-}
-
-.tech-module pre code .annotation,
-.tech-module pre code[class*="language-"] .token.annotation {
-    color: #e06c75 !important;
-    font-weight: 600;
-}
-
-/* Fix inline code (not in pre blocks) */
-code:not(pre code) {
-    padding: 2px 6px;
-    background: var(--bg-tertiary);
-    border-radius: 4px;
-    font-size: 0.85em;
-    color: var(--primary);
-    border: 1px solid var(--border-light);
-    white-space: normal;
-    word-break: break-all;
-    overflow-wrap: break-word;
 }
 
 .module-section {
@@ -5467,7 +5595,7 @@ code:not(pre code) {
     height: 100vh;
     background: var(--bg-primary);
     border-right: 1px solid var(--border-light);
-    z-index: 1000;
+    z-index: 1002;
     display: flex;
     flex-direction: column;
     transition: transform 0.3s ease;
@@ -6125,16 +6253,6 @@ body.sidebar-collapsed .reading-progress {
     animation: contentLoad 0.3s ease-out;
 }
 
-code:not([class*="language-"]) {
-    padding: 2px 6px;
-    background: var(--bg-tertiary);
-    border-radius: 4px;
-    font-family: var(--font-mono);
-    font-size: 0.85em;
-    color: var(--primary);
-    border: 1px solid var(--border-light);
-}
-
 .sidebar-link.active .sidebar-link-title {
     font-weight: 600;
 }
@@ -6460,7 +6578,7 @@ section[id]:target {
     right: 20px;
     top: 50%;
     transform: translateY(-50%);
-    z-index: 900;
+    z-index: 1001;
     display: flex;
     flex-direction: column;
     gap: 3px;
@@ -6530,6 +6648,7 @@ section[id]:target {
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.2s ease;
+    z-index: 1002;
 }
 
 .quick-nav-dot:hover .quick-nav-tooltip {
@@ -7014,7 +7133,7 @@ section[id] .exercise-card {
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.2s ease;
-    z-index: 100;
+    z-index: 1003;
 }
 
 .sidebar-link:hover .sidebar-link-preview {
@@ -7606,37 +7725,6 @@ section[id] {
     border-radius: var(--radius-md);
 }
 
-/* 4. CODE LINE NUMBERS vía CSS Counters */
-.code-block pre {
-    counter-reset: code-line;
-}
-.code-block pre code {
-    display: block;
-}
-.code-block pre code .line-number::before {
-    counter-increment: code-line;
-    content: counter(code-line);
-    display: inline-block;
-    width: 3ch;
-    margin-right: 1.5ch;
-    text-align: right;
-    color: var(--text-muted);
-    opacity: 0.5;
-    font-variant-numeric: tabular-nums;
-    user-select: none;
-}
-.code-block pre code .line-number {
-    display: block;
-    padding: 0 1rem;
-}
-.code-block pre code .line-number:hover {
-    background: rgba(255, 255, 255, 0.03);
-}
-.code-block pre code .line-number:hover::before {
-    opacity: 0.8;
-    color: var(--primary-light);
-}
-
 /* 5. TABLAS RESPONSIVE con scroll horizontal */
 .table-responsive {
     width: 100%;
@@ -7781,10 +7869,14 @@ body.reading-mode .section-nav {
     display: none !important;
 }
 body.reading-mode .main-content {
-    margin-left: 0 !important;
-    max-width: 800px;
+    max-width: 100%;
+    width: 100%;
     margin: 0 auto;
-    padding: 2rem 1.5rem;
+    padding: 2rem 3rem;
+}@media (min-width: 1200px) {
+    body.reading-mode .main-content {
+        padding: 2rem 6rem;
+    }
 }
 body.reading-mode .container {
     max-width: 100% !important;
@@ -7808,16 +7900,6 @@ body.reading-mode li {
     animation: searchHighlight 2s ease-out;
     border-radius: 2px;
     padding: 0 2px;
-}
-
-/* 13. CODE BLOCK WORD WRAP TOGGLE */
-.code-block pre {
-    white-space: pre;
-    overflow-x: auto;
-}
-.code-block.pre-wrap pre {
-    white-space: pre-wrap;
-    word-wrap: break-word;
 }
 
 /* 14. SECTION TRANSITION ON SCROLL */
@@ -8018,7 +8100,37 @@ section:target {
     100% { box-shadow: inset 0 0 0 0px transparent; }
 }
 
-/* 25. READING MODE TOGGLE BUTTON ACTIVE STATE */
+/* 25. READING MODE EXIT BUTTON */
+.reading-mode-exit-btn {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 10000;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    transition: all 0.2s;
+}
+body.reading-mode .reading-mode-exit-btn {
+    display: flex;
+}
+.reading-mode-exit-btn:hover {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+    transform: scale(1.1);
+}
+
+/* 26. READING MODE TOGGLE BUTTON ACTIVE STATE */
 #readingModeToggle.active {
     color: var(--primary-light);
     background: rgba(0, 102, 74, 0.1);
@@ -8103,3 +8215,21 @@ section:target {
         padding: 1rem;
     }
 }
+
+
+/* --- module: flutter-theme.css --- */
+
+/* Flutter Theme - auto-extracted from flutter-guide.html */
+        :root{--flutter-blue:#1389FD;--flutter-dark:#0175C2;--flutter-light:#54C5F8}
+        .flutter-hero{background:linear-gradient(135deg,#0175C2,#1389FD 50%,#54C5F8)!important}
+        .flutter-hero .hero-subtitle,.flutter-hero .hero-description{color:rgba(255,255,255,.9)!important}
+        .flutter-hero .hero-stats .stat-item{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.2)}
+        .flutter-hero .hero-stats .stat-value{color:#fff}
+        .flutter-hero .hero-stats .stat-label{color:rgba(255,255,255,.8)}
+        .tech-flutter .module-header{background:linear-gradient(135deg,#0175C2,#1389FD)}
+        .tech-dart .module-header{background:linear-gradient(135deg,#0175C2,#00B4D8)}
+        .tech-openapi .module-header{background:linear-gradient(135deg,#6DB33F,#8BC34A)}
+        .tech-micro .module-header{background:linear-gradient(135deg,#7c3aed,#a78bfa)}
+        .step-card-flutter{border-left:3px solid #1389FD}
+        .flutter-nav-icon{color:#1389FD}
+        [data-theme=dark] .flutter-nav-icon{color:#54C5F8}

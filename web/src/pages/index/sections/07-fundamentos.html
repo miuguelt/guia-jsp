@@ -381,11 +381,20 @@ publicBigDecimal precio() {
                                     <div class="comparison-item new">
                                         <h4><i class="fas fa-check-circle"></i>Record JDK 21 (1 línea)
                                         </h4>
-                                        <pre><code class="language-java">public record Producto(    int id,    String codigo,    String nombre,    BigDecimal precio) {
-    // Constructor alternativo    public Producto(String codigo,                     String nombre,                     BigDecimal precio) {
+                                        <pre><code class="language-java">public record Producto(
+    int id,
+    String codigo,
+    String nombre,
+    BigDecimal precio
+) {
+    public Producto(String codigo, String nombre, BigDecimal precio) {
         this(0, codigo, nombre, precio);
     }
-}// Genera automáticamente:// - Constructor// - Getters (id(), codigo(), etc.)// - equals() y hashCode()// - toString()</code></pre>
+}
+
+// Genera automáticamente:
+// - Constructor, Getters (id(), codigo(), etc.)
+// - equals(), hashCode(), toString()</code></pre>
                                     </div>
                                 </div>
                                 <h4>

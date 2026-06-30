@@ -266,16 +266,6 @@ body.sidebar-collapsed .reading-progress {
     animation: contentLoad 0.3s ease-out;
 }
 
-code:not([class*="language-"]) {
-    padding: 2px 6px;
-    background: var(--bg-tertiary);
-    border-radius: 4px;
-    font-family: var(--font-mono);
-    font-size: 0.85em;
-    color: var(--primary);
-    border: 1px solid var(--border-light);
-}
-
 .sidebar-link.active .sidebar-link-title {
     font-weight: 600;
 }
@@ -601,7 +591,7 @@ section[id]:target {
     right: 20px;
     top: 50%;
     transform: translateY(-50%);
-    z-index: 900;
+    z-index: 1001;
     display: flex;
     flex-direction: column;
     gap: 3px;
@@ -671,6 +661,7 @@ section[id]:target {
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.2s ease;
+    z-index: 1002;
 }
 
 .quick-nav-dot:hover .quick-nav-tooltip {
@@ -1155,7 +1146,7 @@ section[id] .exercise-card {
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.2s ease;
-    z-index: 100;
+    z-index: 1003;
 }
 
 .sidebar-link:hover .sidebar-link-preview {

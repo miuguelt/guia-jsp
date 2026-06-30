@@ -176,11 +176,19 @@
                                             <p>
                                                 Clases inmutables con sintaxis concisa
                                             </p>
-                                            <pre><code class="language-java">public record Producto(    int id,    String nombre,    BigDecimal precio) {
-    // Constructor alternativo    public Producto(String nombre, BigDecimal precio) {
+                                            <pre><code class="language-java">public record Producto(
+    int id,
+    String nombre,
+    BigDecimal precio
+) {
+    // Constructor alternativo
+    public Producto(String nombre, BigDecimal precio) {
         this(0, nombre, precio);
     }
-}// Uso:Producto p = new Producto("Laptop", new BigDecimal("2500000"));
+}
+
+// Uso:
+Producto p = new Producto("Laptop", new BigDecimal("2500000"));
 System.out.println(p.nombre());
 // "Laptop"</code></pre>
                                         </div>
@@ -257,7 +265,13 @@ default -&gt; "Otro día";
                                         <div class="install-step"><span class="step-num">2</span>
                                             <div><strong>Instalar y configurar JAVA_HOME</strong>
                                                 <div class="code-block">
-                                                    <pre><code class="language-bash"># Windows (PowerShell como administrador):[System.Environment]::SetEnvironmentVariable('JAVA_HOME', 'C:\Program Files\Eclipse Adoptium\jdk-21.0.0.0-hotspot', 'Machine')[System.Environment]::SetEnvironmentVariable('Path', $env:Path + ';C:\Program Files\Eclipse Adoptium\jdk-21.0.0.0-hotspot\bin', 'Machine')# Linux/Mac (en ~/.bashrc o ~/.zshrc):export JAVA_HOME=/usr/lib/jvm/java-21-openjdkexport PATH=$JAVA_HOME/bin:$PATH</code></pre>
+                                                    <pre><code class="language-bash"># Windows (PowerShell como administrador):
+[System.Environment]::SetEnvironmentVariable('JAVA_HOME', 'C:\Program Files\Eclipse Adoptium\jdk-21.0.0.0-hotspot', 'Machine')
+[System.Environment]::SetEnvironmentVariable('Path', $env:Path + ';C:\Program Files\Eclipse Adoptium\jdk-21.0.0.0-hotspot\bin', 'Machine')
+
+# Linux/Mac (en ~/.bashrc o ~/.zshrc):
+export JAVA_HOME=/usr/lib/jvm/java-21-openjdk
+export PATH=$JAVA_HOME/bin:$PATH</code></pre>
                                                 </div>
                                             </div>
                                         </div>
@@ -409,26 +423,28 @@ Agotado
                                     <h4><i class="fas fa-download"></i>Configuración en Maven
                                     </h4>
                                     <div class="code-block">
-                                        <pre><code class="language-xml">&lt;!-- pom.xml --&gt;&lt;dependencies&gt;
-&lt;!-- Jakarta Servlet API (proporcionado por Tomcat) --&gt;
-&lt;dependency&gt;
-&lt;groupId&gt;jakarta.servlet&lt;/groupId&gt;
-&lt;artifactId&gt;jakarta.servlet-api&lt;/artifactId&gt;
-&lt;version&gt;6.0.0&lt;/version&gt;
-&lt;scope&gt;provided&lt;/scope&gt;
-&lt;/dependency&gt;
-&lt;!-- Jakarta JSTL --&gt;
-&lt;dependency&gt;
-&lt;groupId&gt;jakarta.servlet.jsp.jstl&lt;/groupId&gt;
-&lt;artifactId&gt;jakarta.servlet.jsp.jstl-api&lt;/artifactId&gt;
-&lt;version&gt;3.0.0&lt;/version&gt;
-&lt;/dependency&gt;
-&lt;!-- Implementación JSTL --&gt;
-&lt;dependency&gt;
-&lt;groupId&gt;org.glassfish.web&lt;/groupId&gt;
-&lt;artifactId&gt;jakarta.servlet.jsp.jstl&lt;/artifactId&gt;
-&lt;version&gt;3.0.1&lt;/version&gt;
-&lt;/dependency&gt;&lt;/dependencies&gt;</code></pre>
+                                        <pre><code class="language-xml">&lt;!-- pom.xml --&gt;
+&lt;dependencies&gt;
+    &lt;!-- Jakarta Servlet API (proporcionado por Tomcat) --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;jakarta.servlet&lt;/groupId&gt;
+        &lt;artifactId&gt;jakarta.servlet-api&lt;/artifactId&gt;
+        &lt;version&gt;6.0.0&lt;/version&gt;
+        &lt;scope&gt;provided&lt;/scope&gt;
+    &lt;/dependency&gt;
+    &lt;!-- Jakarta JSTL --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;jakarta.servlet.jsp.jstl&lt;/groupId&gt;
+        &lt;artifactId&gt;jakarta.servlet.jsp.jstl-api&lt;/artifactId&gt;
+        &lt;version&gt;3.0.0&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;!-- Implementación JSTL --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.glassfish.web&lt;/groupId&gt;
+        &lt;artifactId&gt;jakarta.servlet.jsp.jstl&lt;/artifactId&gt;
+        &lt;version&gt;3.0.1&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre>
                                     </div>
                                 </div>
                                 <div class="module-section">
@@ -599,25 +615,69 @@ Agotado
                                             <h5>
                                                 Crear tabla con restricciones
                                             </h5>
-                                            <pre><code class="language-sql">CREATE TABLE productos (    id SERIAL PRIMARY KEY,    codigo VARCHAR(50) UNIQUE NOT NULL,    nombre VARCHAR(100) NOT NULL,    descripcion TEXT,    precio DECIMAL(10,2) CHECK (precio &gt;= 0),    stock INTEGER DEFAULT 0 CHECK (stock &gt;= 0),    categoria VARCHAR(50),    estado BOOLEAN DEFAULT TRUE,    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP);</code></pre>
+                                            <pre><code class="language-sql">CREATE TABLE productos (
+    id SERIAL PRIMARY KEY,
+    codigo VARCHAR(50) UNIQUE NOT NULL,
+    nombre VARCHAR(100) NOT NULL,
+    descripcion TEXT,
+    precio DECIMAL(10,2) CHECK (precio &gt;= 0),
+    stock INTEGER DEFAULT 0 CHECK (stock &gt;= 0),
+    categoria VARCHAR(50),
+    estado BOOLEAN DEFAULT TRUE,
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);</code></pre>
                                         </div>
                                         <div class="sql-example">
                                             <h5>
                                                 Insertar datos
                                             </h5>
-                                            <pre><code class="language-sql">INSERT INTO productos (codigo, nombre, precio, stock, categoria)VALUES     ('PROD-001', 'Laptop HP Pavilion', 2500000.00, 15, 'Tecnología'),    ('PROD-002', 'Mouse Logitech', 45000.00, 50, 'Accesorios');-- Insertar y retornar el ID generadoINSERT INTO productos (codigo, nombre, precio, stock)VALUES ('PROD-003', 'Teclado', 180000.00, 30)RETURNING id;</code></pre>
+                                            <pre><code class="language-sql">INSERT INTO productos (codigo, nombre, precio, stock, categoria)
+VALUES
+    ('PROD-001', 'Laptop HP Pavilion', 2500000.00, 15, 'Tecnología'),
+    ('PROD-002', 'Mouse Logitech', 45000.00, 50, 'Accesorios');
+
+-- Insertar y retornar el ID generado
+INSERT INTO productos (codigo, nombre, precio, stock)
+VALUES ('PROD-003', 'Teclado', 180000.00, 30)
+RETURNING id;</code></pre>
                                         </div>
                                         <div class="sql-example">
                                             <h5>
                                                 Consultas avanzadas
                                             </h5>
-                                            <pre><code class="language-sql">-- JOIN entre tablasSELECT u.username, r.nombre as rolFROM usuarios uINNER JOIN roles r ON u.rol_id = r.idWHERE u.estado = TRUE;-- Agrupación y agregaciónSELECT categoria,        COUNT(*) as total,       AVG(precio) as precio_promedio,       SUM(stock) as stock_totalFROM productosWHERE estado = TRUEGROUP BY categoriaHAVING COUNT(*) &gt; 5ORDER BY total DESC;-- SubconsultaSELECT * FROM productosWHERE precio &gt; (SELECT AVG(precio) FROM productos);</code></pre>
+                                            <pre><code class="language-sql">-- JOIN entre tablas
+SELECT u.username, r.nombre as rol
+FROM usuarios u
+INNER JOIN roles r ON u.rol_id = r.id
+WHERE u.estado = TRUE;
+
+-- Agrupación y agregación
+SELECT categoria,
+       COUNT(*) as total,
+       AVG(precio) as precio_promedio,
+       SUM(stock) as stock_total
+FROM productos
+WHERE estado = TRUE
+GROUP BY categoria
+HAVING COUNT(*) &gt; 5
+ORDER BY total DESC;
+
+-- Subconsulta
+SELECT * FROM productos
+WHERE precio &gt; (SELECT AVG(precio) FROM productos);</code></pre>
                                         </div>
                                         <div class="sql-example">
                                             <h5>
                                                 Índices para mejor rendimiento
                                             </h5>
-                                            <pre><code class="language-sql">-- Índice en columna frecuentemente consultadaCREATE INDEX idx_productos_categoria ON productos(categoria);-- Índice compuestoCREATE INDEX idx_productos_estado_categoria ON productos(estado, categoria);-- Índice únicoCREATE UNIQUE INDEX idx_productos_codigo ON productos(codigo);</code></pre>
+                                            <pre><code class="language-sql">-- Índice en columna frecuentemente consultada
+CREATE INDEX idx_productos_categoria ON productos(categoria);
+
+-- Índice compuesto
+CREATE INDEX idx_productos_estado_categoria ON productos(estado, categoria);
+
+-- Índice único
+CREATE UNIQUE INDEX idx_productos_codigo ON productos(codigo);</code></pre>
                                         </div>
                                     </div>
                                 </div>
@@ -779,19 +839,24 @@ logs\localhost.YYYY-MM-DD.log</code></pre>
                                     <h4><i class="fas fa-cog"></i>Configuración Importante
                                     </h4>
                                     <div class="code-block">
-                                        <pre><code class="language-xml">&lt;!-- conf/server.xml - Configuración de puerto --&gt;&lt;Connector port="8080"
-protocol="HTTP/1.1"
-connectionTimeout="20000"
-redirectPort="8443"
-maxThreads="200"
-minSpareThreads="10" /&gt;&lt;!-- Configuración de SSL/TLS (HTTPS) --&gt;&lt;Connector port="8443"
-protocol="org.apache.coyote.http11.Http11NioProtocol"
-maxThreads="150"
-SSLEnabled="true"&gt;
-&lt;SSLHostConfig&gt;
-&lt;Certificate certificateKeystoreFile="conf/keystore.jks"
-certificateKeystorePassword="changeit" /&gt;
-&lt;/SSLHostConfig&gt;&lt;/Connector&gt;</code></pre>
+                                        <pre><code class="language-xml">&lt;!-- conf/server.xml - Configuración de puerto --&gt;
+&lt;Connector port="8080"
+    protocol="HTTP/1.1"
+    connectionTimeout="20000"
+    redirectPort="8443"
+    maxThreads="200"
+    minSpareThreads="10" /&gt;
+
+&lt;!-- Configuración de SSL/TLS (HTTPS) --&gt;
+&lt;Connector port="8443"
+    protocol="org.apache.coyote.http11.Http11NioProtocol"
+    maxThreads="150"
+    SSLEnabled="true"&gt;
+    &lt;SSLHostConfig&gt;
+        &lt;Certificate certificateKeystoreFile="conf/keystore.jks"
+            certificateKeystorePassword="changeit" /&gt;
+    &lt;/SSLHostConfig&gt;
+&lt;/Connector&gt;</code></pre>
                                     </div>
                                 </div>
                                 <div class="module-section">
@@ -863,52 +928,60 @@ certificateKeystorePassword="changeit" /&gt;
                                     <h4><i class="fas fa-file-code"></i>Estructura pom.xml
                                     </h4>
                                     <div class="code-block">
-                                        <pre><code class="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;project xmlns="http://maven.apache.org/POM/4.0.0"&gt;
-&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
-&lt;!-- Coordenadas del proyecto --&gt;
-&lt;groupId&gt;com.sena.inventario&lt;/groupId&gt;
-&lt;artifactId&gt;inventario-mvc&lt;/artifactId&gt;
-&lt;version&gt;1.0&lt;/version&gt;
-&lt;packaging&gt;war&lt;/packaging&gt;
-&lt;!-- Propiedades --&gt;
-&lt;properties&gt;
-&lt;maven.compiler.source&gt;21&lt;/maven.compiler.source&gt;
-&lt;maven.compiler.target&gt;21&lt;/maven.compiler.target&gt;
-&lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
-&lt;/properties&gt;
-&lt;!-- Dependencias --&gt;
-&lt;dependencies&gt;
-&lt;!-- Jakarta Servlet API --&gt;
-&lt;dependency&gt;
-&lt;groupId&gt;jakarta.servlet&lt;/groupId&gt;
-&lt;artifactId&gt;jakarta.servlet-api&lt;/artifactId&gt;
-&lt;version&gt;6.0.0&lt;/version&gt;
-&lt;scope&gt;provided&lt;/scope&gt;
-&lt;/dependency&gt;
-&lt;!-- PostgreSQL Driver --&gt;
-&lt;dependency&gt;
-&lt;groupId&gt;org.postgresql&lt;/groupId&gt;
-&lt;artifactId&gt;postgresql&lt;/artifactId&gt;
-&lt;version&gt;42.7.1&lt;/version&gt;
-&lt;/dependency&gt;
-&lt;!-- BCrypt --&gt;
-&lt;dependency&gt;
-&lt;groupId&gt;at.favre.lib&lt;/groupId&gt;
-&lt;artifactId&gt;bcrypt&lt;/artifactId&gt;
-&lt;version&gt;0.10.2&lt;/version&gt;
-&lt;/dependency&gt;
-&lt;/dependencies&gt;
-&lt;!-- Plugins de build --&gt;
-&lt;build&gt;
-&lt;finalName&gt;${project.artifactId}-${project.version}&lt;/finalName&gt;
-&lt;plugins&gt;
-&lt;plugin&gt;
-&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
-&lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;
-&lt;version&gt;3.4.0&lt;/version&gt;
-&lt;/plugin&gt;
-&lt;/plugins&gt;
-&lt;/build&gt;&lt;/project&gt;</code></pre>
+                                        <pre><code class="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;!-- Coordenadas del proyecto --&gt;
+    &lt;groupId&gt;com.sena.inventario&lt;/groupId&gt;
+    &lt;artifactId&gt;inventario-mvc&lt;/artifactId&gt;
+    &lt;version&gt;1.0&lt;/version&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+
+    &lt;!-- Propiedades --&gt;
+    &lt;properties&gt;
+        &lt;maven.compiler.source&gt;21&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;21&lt;/maven.compiler.target&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+    &lt;/properties&gt;
+
+    &lt;!-- Dependencias --&gt;
+    &lt;dependencies&gt;
+        &lt;!-- Jakarta Servlet API --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;jakarta.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;jakarta.servlet-api&lt;/artifactId&gt;
+            &lt;version&gt;6.0.0&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- PostgreSQL Driver --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.postgresql&lt;/groupId&gt;
+            &lt;artifactId&gt;postgresql&lt;/artifactId&gt;
+            &lt;version&gt;42.7.1&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- BCrypt --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;at.favre.lib&lt;/groupId&gt;
+            &lt;artifactId&gt;bcrypt&lt;/artifactId&gt;
+            &lt;version&gt;0.10.2&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+    &lt;!-- Plugins de build --&gt;
+    &lt;build&gt;
+        &lt;finalName&gt;${project.artifactId}-${project.version}&lt;/finalName&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;
+                &lt;version&gt;3.4.0&lt;/version&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+&lt;/project&gt;</code></pre>
                                     </div>
                                 </div>
                                 <div class="module-section">
@@ -1049,7 +1122,28 @@ certificateKeystorePassword="changeit" /&gt;
                                     <h4><i class="fas fa-file-code"></i>Dockerfile para tu aplicación
                                     </h4>
                                     <div class="code-block">
-                                        <pre><code class="language-dockerfile"># Usa imagen base de Tomcat 10.1 con JDK 21FROM tomcat:10.1-jdk21-temurin-jakarta# MetadataLABEL maintainer="ADSO SENA"LABEL version="1.0"LABEL description="Sistema de Inventario JSP MVC"# Eliminar aplicaciones de ejemploRUN rm -rf /usr/local/tomcat/webapps/*# Configurar zona horariaENV TZ=America/BogotaRUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ &gt; /etc/timezone# Copiar tu WAR como aplicación ROOTCOPY target/inventario-mvc-1.0.war /usr/local/tomcat/webapps/ROOT.war# Exponer puerto 8080EXPOSE 8080# Variables de entorno para configuraciónENV DB_HOST=localhostENV DB_PORT=5432ENV DB_NAME=inventario_dbENV DB_USER=postgresENV DB_PASSWORD=postgres# Comando para iniciar TomcatCMD ["catalina.sh", "run"]</code></pre>
+                                        <pre><code class="language-dockerfile">FROM tomcat:10.1-jdk21-temurin-jakarta
+
+LABEL maintainer="ADSO SENA"
+LABEL version="1.0"
+LABEL description="Sistema de Inventario JSP MVC"
+
+RUN rm -rf /usr/local/tomcat/webapps/*
+
+ENV TZ=America/Bogota
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+COPY target/inventario-mvc-1.0.war /usr/local/tomcat/webapps/ROOT.war
+
+EXPOSE 8080
+
+ENV DB_HOST=localhost
+ENV DB_PORT=5432
+ENV DB_NAME=inventario_db
+ENV DB_USER=postgres
+ENV DB_PASSWORD=postgres
+
+CMD ["catalina.sh", "run"]</code></pre>
                                     </div>
                                 </div>
                                 <div class="module-section">
@@ -1098,36 +1192,63 @@ certificateKeystorePassword="changeit" /&gt;
                                     <h4><i class="fas fa-cubes"></i>Docker Compose (Multi-contenedor)
                                     </h4>
                                     <div class="code-block">
-                                        <pre><code class="language-yaml"># docker-compose.ymlversion: '3.8'services:  # Base de datos PostgreSQL  db:
-image: postgres:16-alpine
-environment:
-POSTGRES_DB: inventario_db
-POSTGRES_USER: postgres
-POSTGRES_PASSWORD: tu_password_seguro
-ports:
-- "5432:5432"
+                                        <pre><code class="language-yaml"># docker-compose.yml
+version: '3.8'
+
+services:
+  # Base de datos PostgreSQL
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: inventario_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: tu_password_seguro
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./recursos/sql/inventario_db.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - app-network
+
+  # Aplicación Java
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: inventario_db
+      DB_USER: postgres
+      DB_PASSWORD: tu_password_seguro
+    depends_on:
+      - db
+    networks:
+      - app-network
+
 volumes:
-- pgdata:/var/lib/postgresql/data
-- ./recursos/sql/inventario_db.sql:/docker-entrypoint-initdb.d/init.sql
+  pgdata:
+
 networks:
-- app-network  # Aplicación Java  app:
-build: .
-ports:
-- "8080:8080"
-environment:
-DB_HOST: db
-DB_PORT: 5432
-DB_NAME: inventario_db
-DB_USER: postgres
-DB_PASSWORD: tu_password_seguro
-depends_on:
-- db
-networks:
-- app-networkvolumes:  pgdata:networks:  app-network:
-driver: bridge</code></pre>
+  app-network:
+    driver: bridge</code></pre>
                                     </div>
                                     <div class="code-block">
-                                        <pre><code class="language-bash"># Levantar tododocker compose up -d# Ver estadodocker compose ps# Ver logs de todos los serviciosdocker compose logs -f# Parar tododocker compose down# Parar y eliminar volúmenesdocker compose down -v</code></pre>
+                                            <pre><code class="language-bash"># Levantar todo
+docker compose up -d
+
+# Ver estado
+docker compose ps
+
+# Ver logs de todos los servicios
+docker compose logs -f
+
+# Parar todo
+docker compose down
+
+# Parar y eliminar volúmenes
+docker compose down -v</code></pre>
                                     </div>
                                 </div>
                                 <div class="module-section">
@@ -1511,17 +1632,17 @@ function App() {
                                         <div class="comparison-item new">
                                             <h5><i class="fab fa-react"></i>React (Client-side)
                                             </h5>
-                                            <pre><code class="language-jsx">&lt;table&gt;    &lt;tbody&gt;        {
-    productos.map(p =&gt; (            &lt;tr key={
-                p.id
-                }&gt;                &lt;td&gt;{
-                p.codigo
-                }&lt;/td&gt;                &lt;td&gt;{
-                p.nombre
-                }&lt;/td&gt;                &lt;td&gt;${
-                Number(p.precio).toLocaleString()
-                }&lt;/td&gt;            &lt;/tr&gt;        ))
-    }    &lt;/tbody&gt;&lt;/table&gt;</code></pre>
+                                            <pre><code class="language-jsx">&lt;table&gt;
+    &lt;tbody&gt;
+        {productos.map(p =&gt; (
+            &lt;tr key={p.id}&gt;
+                &lt;td&gt;{p.codigo}&lt;/td&gt;
+                &lt;td&gt;{p.nombre}&lt;/td&gt;
+                &lt;td&gt;${Number(p.precio).toLocaleString()}&lt;/td&gt;
+            &lt;/tr&gt;
+        ))}
+    &lt;/tbody&gt;
+&lt;/table&gt;</code></pre>
                                         </div>
                                     </div>
                                 </div>

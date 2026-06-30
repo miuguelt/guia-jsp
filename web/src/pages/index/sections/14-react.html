@@ -68,7 +68,22 @@
                                     </button>
                                 </div>
                                 <div class="window-body">
-                                    <pre><code class="language-bash"># Crear proyecto con Vite + Reactnpm create vite@latest hola-mundo-react -- --template react# Resultado:# ✔ Project name: hola-mundo-react# ✔ Template: react# Done.# Entrar e instalarcd hola-mundo-reactnpm install# Iniciar servidor de desarrollonpm run dev# Resultado esperado:# VITE v5.4.0  ready in 250ms# ➜  Local:   http://localhost:5173/# ➜  presiona h + enter para ayuda# Abre http://localhost:5173 — verás la página default de Vite + React</code></pre>
+                                    <pre><code class="language-bash"># Crear proyecto con Vite + React
+npm create vite@latest hola-mundo-react -- --template react
+# Resultado:
+# ✔ Project name: hola-mundo-react
+# ✔ Template: react
+# Done.
+# Entrar e instalar
+cd hola-mundo-react
+npm install
+# Iniciar servidor de desarrollo
+npm run dev
+# Resultado esperado:
+# VITE v5.4.0  ready in 250ms
+# ➜  Local:   http://localhost:5173/
+# ➜  presiona h + enter para ayuda
+# Abre http://localhost:5173 — verás la página default de Vite + React</code></pre>
                                 </div>
                             </div>
                             <h5>
@@ -82,7 +97,12 @@
                                     </button>
                                 </div>
                                 <div class="window-body">
-                                    <pre><code class="language-bash"># Construir imagen de produccióndocker build -t hola-react .docker run -d -p 80:80 --name hola-react hola-react# Abrir: http://localhost# Detenerdocker stop hola-react && docker rm hola-react</code></pre>
+                                    <pre><code class="language-bash"># Construir imagen de producción
+docker build -t hola-react .
+docker run -d -p 80:80 --name hola-react hola-react
+# Abrir: http://localhost
+# Detener
+docker stop hola-react && docker rm hola-react</code></pre>
                                 </div>
                             </div>
                             <h4>
@@ -96,47 +116,55 @@
                                     </button>
                                 </div>
                                 <div class="window-body">
-                                    <pre><code class="language-jsx">// Equivalente a un archivo JSP, pero en JavaScript// En lugar de renderizar en el servidor (Tomcat),// renderiza en el navegador del clientefunction App() {
+                                    <pre><code class="language-jsx">// Equivalente a un archivo JSP, pero en JavaScript
+// En lugar de renderizar en el servidor (Tomcat),
+// renderiza en el navegador del cliente
+function App() {
     const nombre = "Miguel";
     const fecha = new Date().toLocaleString("es-CO");
-    return (        &lt;div style={
-            {
-                fontFamily: "Arial, sans-serif",            textAlign: "center",            padding: "4rem 2rem",            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",            minHeight: "100vh",            color: "white"
-                }
-            }&gt;            &lt;h1 style={
-            {
-                fontSize: "3rem", marginBottom: "1rem"
-                }
-            }&gt;                ¡Hola Mundo desde React 19!            &lt;/h1&gt;            &lt;p style={
-            {
-                fontSize: "1.2rem", opacity: 0.9
-                }
-            }&gt;                Mi primer componente en React 🚀            &lt;/p&gt;            &lt;p style={
-            {
-                fontSize: "1rem", opacity: 0.7
-                }
-            }&gt;                Bienvenido, {
-            nombre
-            }            &lt;/p&gt;            &lt;div style={
-            {
-                marginTop: "2rem",                padding: "1rem",                background: "rgba(255,255,255,0.1)",                borderRadius: "12px",                display: "inline-block"
-                }
-            }&gt;                Fecha actual: {
-            fecha
-            }            &lt;/div&gt;            &lt;hr style={
-            {
-                margin: "2rem auto",                width: "60%",                border: "1px solid rgba(255,255,255,0.2)"
-                }
-            } /&gt;            &lt;h2&gt;Equivalencias con JSP&lt;/h2&gt;            &lt;ul style={
-            {
-                listStyle: "none", padding: 0
-                }
-            }&gt;                &lt;li&gt;✅ JSP → JSX (JavaScript XML)&lt;/li&gt;                &lt;li&gt;✅ ${
-            variable
-            } → {
-            variable
-            }&lt;/li&gt;                &lt;li&gt;✅ Servidor (Tomcat) → Navegador (Cliente)&lt;/li&gt;                &lt;li&gt;✅ HTML estático → Componentes dinámicos&lt;/li&gt;            &lt;/ul&gt;        &lt;/div&gt;    );
-    }export default App;</code></pre>
+    return (
+        &lt;div style={{
+            fontFamily: "Arial, sans-serif",
+            textAlign: "center",
+            padding: "4rem 2rem",
+            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+            minHeight: "100vh",
+            color: "white"
+        }}&gt;
+            &lt;h1 style={{ fontSize: "3rem", marginBottom: "1rem" }}&gt;
+                ¡Hola Mundo desde React 19!
+            &lt;/h1&gt;
+            &lt;p style={{ fontSize: "1.2rem", opacity: 0.9 }}&gt;
+                Mi primer componente en React 🚀
+            &lt;/p&gt;
+            &lt;p style={{ fontSize: "1rem", opacity: 0.7 }}&gt;
+                Bienvenido, {nombre}
+            &lt;/p&gt;
+            &lt;div style={{
+                marginTop: "2rem",
+                padding: "1rem",
+                background: "rgba(255,255,255,0.1)",
+                borderRadius: "12px",
+                display: "inline-block"
+            }}&gt;
+                Fecha actual: {fecha}
+            &lt;/div&gt;
+            &lt;hr style={{
+                margin: "2rem auto",
+                width: "60%",
+                border: "1px solid rgba(255,255,255,0.2)"
+            }} /&gt;
+            &lt;h2&gt;Equivalencias con JSP&lt;/h2&gt;
+            &lt;ul style={{ listStyle: "none", padding: 0 }}&gt;
+                &lt;li&gt;✅ JSP → JSX (JavaScript XML)&lt;/li&gt;
+                &lt;li&gt;✅ ${variable} → {variable}&lt;/li&gt;
+                &lt;li&gt;✅ Servidor (Tomcat) → Navegador (Cliente)&lt;/li&gt;
+                &lt;li&gt;✅ HTML estático → Componentes dinámicos&lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    );
+}
+export default App;</code></pre>
                                 </div>
                             </div>
                             <h4>
@@ -158,8 +186,37 @@
                                     </button>
                                 </div>
                                 <div class="window-body">
-                                    <pre><code class="language-jsx">import { useState, useEffect } from "react";function App() {    const [mensaje, setMensaje] = useState("Cargando...");    // useEffect = como doGet() del Servlet, pero del lado del cliente    useEffect(() =&gt; {        fetch("http://localhost:8000")            .then(res =&gt; res.json())            .then(data =&gt; setMensaje(data.mensaje))            .catch(err =&gt; setMensaje("Error: " + err.message));    }, []);
-return (        &lt;div style={{ textAlign: "center", padding: "4rem" }}&gt;            &lt;h1&gt;Conectado a FastAPI&lt;/h1&gt;            &lt;p&gt;Mensaje desde la API: &lt;strong&gt;{mensaje}&lt;/strong&gt;&lt;/p&gt;            &lt;p&gt;(FastAPI debe estar corriendo en :8000)&lt;/p&gt;        &lt;/div&gt;    );}export default App;// Resultado esperado:// ┌──────────────────────────────────────┐// │                                      │// │   Conectado a FastAPI                │// │                                      │// │   Mensaje desde la API:              │// │   Hola Mundo desde FastAPI!          │// │                                      │// │   (FastAPI debe estar corriendo      │// │    en :8000)                         │// │                                      │// └──────────────────────────────────────┘</code></pre>
+                                    <pre><code class="language-jsx">import { useState, useEffect } from "react";
+function App() {
+    const [mensaje, setMensaje] = useState("Cargando...");
+    // useEffect = como doGet() del Servlet, pero del lado del cliente
+    useEffect(() =&gt; {
+        fetch("http://localhost:8000")
+            .then(res =&gt; res.json())
+            .then(data =&gt; setMensaje(data.mensaje))
+            .catch(err =&gt; setMensaje("Error: " + err.message));
+    }, []);
+    return (
+        &lt;div style={{ textAlign: "center", padding: "4rem" }}&gt;
+            &lt;h1&gt;Conectado a FastAPI&lt;/h1&gt;
+            &lt;p&gt;Mensaje desde la API: &lt;strong&gt;{mensaje}&lt;/strong&gt;&lt;/p&gt;
+            &lt;p&gt;(FastAPI debe estar corriendo en :8000)&lt;/p&gt;
+        &lt;/div&gt;
+    );
+}
+export default App;
+// Resultado esperado:
+// ┌──────────────────────────────────────┐
+// │                                      │
+// │   Conectado a FastAPI                │
+// │                                      │
+// │   Mensaje desde la API:              │
+// │   Hola Mundo desde FastAPI!          │
+// │                                      │
+// │   (FastAPI debe estar corriendo      │
+// │    en :8000)                         │
+// │                                      │
+// └──────────────────────────────────────┘</code></pre>
                                 </div>
                             </div>
                             <div class="recommendation-box"><i class="fas fa-check-circle" style="color:#28a745;"></i>
@@ -172,6 +229,18 @@ return (        &lt;div style={{ textAlign: "center", padding: "4rem" }}&gt;    
                                     </p>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <!-- Descargar proyecto React completo -->
+                    <div class="info-banner" style="margin-bottom:2rem;background:var(--accent-light, #e8f5e9);border-left:4px solid #61dafb;">
+                        <i class="fas fa-download" style="color:#61dafb;"></i>
+                        <div>
+                            <h4>Proyecto React 19 listo para ejecutar</h4>
+                            <p>Descarga el proyecto React completo con: <strong>Vite</strong> + <strong>Axios</strong> + <strong>React Router</strong>. Ya incluye <strong>AuthContext</strong> para JWT, <strong>ProtectedRoute</strong> y componentes CRUD listos para conectar a FastAPI.</p>
+                            <p style="font-size:0.9rem;opacity:0.8;">Solo necesitas: <code>npm install && npm run dev</code> y abre <code>http://localhost:5173</code></p>
+                            <a href="downloads/frontend-inventario.zip" class="btn btn-primary" download style="margin-top:0.5rem;display:inline-flex;align-items:center;gap:0.5rem;">
+                                <i class="fas fa-download"></i> Descargar proyecto React (32 KB)
+                            </a>
                         </div>
                     </div>
                     <div class="tutorial-steps">
@@ -201,7 +270,26 @@ return (        &lt;div style={{ textAlign: "center", padding: "4rem" }}&gt;    
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-bash"># Crear proyecto con Vite + React templatenpm create vite@latest frontend-inventario -- --template react# Resultado:# ✔ Project name: frontend-inventario# ✔ Template: react# Done. Now run:#   cd frontend-inventario#   npm install#   npm run dev# Instalar dependencias adicionalescd frontend-inventarionpm installnpm install axios react-router-dom# Iniciar en desarrollonpm run dev# Resultado esperado:#   VITE v5.4.0  ready in 250ms#   ➜  Local:   http://localhost:5173/#   ➜  Network: http://192.168.1.10:5173/#   ➜  press h + enter to show help</code></pre>
+                                        <pre><code class="language-bash"># Crear proyecto con Vite + React template
+npm create vite@latest frontend-inventario -- --template react
+# Resultado:
+# ✔ Project name: frontend-inventario
+# ✔ Template: react
+# Done. Now run:
+#   cd frontend-inventario
+#   npm install
+#   npm run dev
+# Instalar dependencias adicionales
+cd frontend-inventario
+npm install
+npm install axios react-router-dom
+# Iniciar en desarrollo
+npm run dev
+# Resultado esperado:
+#   VITE v5.4.0  ready in 250ms
+#   ➜  Local:   http://localhost:5173/
+#   ➜  Network: http://192.168.1.10:5173/
+#   ➜  press h + enter to show help</code></pre>
                                     </div>
                                 </div>
                                 <h4>
@@ -257,7 +345,23 @@ return (        &lt;div style={{ textAlign: "center", padding: "4rem" }}&gt;    
                                         </div><span class="window-title"><i class="fas fa-exchange-alt"></i>Login Flow</span>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-text">┌──────────┐    POST /api/auth/login    ┌──────────┐│  React   │ ──── {username, password} ──→│ FastAPI  ││  Login   │                              │  Auth    ││  Page    │ ←── {access_token, usuario}──│  Router  │└──────────┘                              └──────────┘     │                                         │     │  localStorage.setItem(                   │  jwt.encode(     │    "access_token", token)                │    {"sub": user, "rol": "Admin"}     │  localStorage.setItem(                   │  )     │    "usuario", JSON.stringify(user))      │     ▼                                         ▼┌──────────┐    GET /api/productos/       ┌──────────┐│  React   │ ──── Authorization: Bearer ──→│ FastAPI  ││  Axios   │        &lt;token&gt;               │  Router  ││  Interceptor│                            │  valida  ││  (automático)│ ←── JSON(productos) ──────│  JWT     │└──────────┘                              └──────────┘</code></pre>
+                                        <pre><code class="language-text">┌──────────┐    POST /api/auth/login    ┌──────────┐
+│  React   │ ──── {username, password} ──→│ FastAPI  │
+│  Login   │                              │  Auth    │
+│  Page    │ ←── {access_token, usuario}──│  Router  │
+└──────────┘                              └──────────┘
+     │                                         │
+     │  localStorage.setItem(                   │  jwt.encode(
+     │    "access_token", token)                │    {"sub": user, "rol": "Admin"}
+     │  localStorage.setItem(                   │  )
+     │    "usuario", JSON.stringify(user))      │
+     ▼                                         ▼
+┌──────────┐    GET /api/productos/       ┌──────────┐
+│  React   │ ──── Authorization: Bearer ──→│ FastAPI  │
+│  Axios   │        &lt;token&gt;               │  Router  │
+│  Interceptor│                            │  valida  │
+│  (automático)│ ←── JSON(productos) ──────│  JWT     │
+└──────────┘                              └──────────┘</code></pre>
                                     </div>
                                 </div>
                                 <h4>
@@ -271,14 +375,21 @@ return (        &lt;div style={{ textAlign: "center", padding: "4rem" }}&gt;    
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-bash"># Eliminar archivos de ejemplo que Vite crearm src/App.css src/index.css src/assets/react.svg# Crear directorios para nuestros componentesmkdir src/services src/components# Resultado final:# src/# ├── App.jsx
-# Vamos a editar# ├── main.jsx
-# Se mantiene igual# ├── services/# │   └── api.js
-# Servicio API# └── components/#
-├── Navbar.jsx#
-├── ProductoCard.jsx#
-├── ProductoLista.jsx#
-└── ProductoForm.jsx</code></pre>
+                                        <pre><code class="language-bash"># Eliminar archivos de ejemplo que Vite crea
+rm src/App.css src/index.css src/assets/react.svg
+# Crear directorios para nuestros componentes
+mkdir src/services src/components
+# Resultado final:
+# src/
+# ├── App.jsx        # Vamos a editar
+# ├── main.jsx       # Se mantiene igual
+# ├── services/
+# │   └── api.js     # Servicio API
+# └── components/
+#     ├── Navbar.jsx
+#     ├── ProductoCard.jsx
+#     ├── ProductoLista.jsx
+#     └── ProductoForm.jsx</code></pre>
                                     </div>
                                 </div>
                             </div>
@@ -941,7 +1052,23 @@ npm run dev
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-text">┌─────────────────────────────────────────────────────────────┐│  En la consola del navegador (F12 → Console):              ││                                                             ││  ✓ Productos cargados desde FastAPI: 3 productos            ││  ✓ GET /api/productos/ → 200 OK (320ms)                    ││  ✓ CORS configurado correctamente                           ││                                                             ││  Network tab:                                               ││  ┌──────────┬──────────┬────────┬──────────┐               ││  │ Method   │ Endpoint │ Status │ Time     │               ││  ├──────────┼──────────┼────────┼──────────┤               ││  │ GET      │ /api/pro │ 200    │ 320ms    │               ││  │          │ ductos/  │        │          │               ││  │ GET      │ /api/pro │ 200    │ 15ms     │               ││  │          │ ductos/1 │        │          │               ││  └──────────┴──────────┴────────┴──────────┘               │└─────────────────────────────────────────────────────────────┘</code></pre>
+                                        <pre><code class="language-text">┌─────────────────────────────────────────────────────────────┐
+│  En la consola del navegador (F12 → Console):              │
+│                                                             │
+│  ✓ Productos cargados desde FastAPI: 3 productos            │
+│  ✓ GET /api/productos/ → 200 OK (320ms)                    │
+│  ✓ CORS configurado correctamente                           │
+│                                                             │
+│  Network tab:                                               │
+│  ┌──────────┬──────────┬────────┬──────────┐               │
+│  │ Method   │ Endpoint │ Status │ Time     │               │
+│  ├──────────┼──────────┼────────┼──────────┤               │
+│  │ GET      │ /api/pro │ 200    │ 320ms    │               │
+│  │          │ ductos/  │        │          │               │
+│  │ GET      │ /api/pro │ 200    │ 15ms     │               │
+│  │          │ ductos/1 │        │          │               │
+│  └──────────┴──────────┴────────┴──────────┘               │
+└─────────────────────────────────────────────────────────────┘</code></pre>
                                     </div>
                                 </div>
                                 <h4>

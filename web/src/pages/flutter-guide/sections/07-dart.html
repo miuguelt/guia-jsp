@@ -1,0 +1,209 @@
+            <section class="section section-alt" id="dart">
+                <div class="container">
+                    <div class="breadcrumbs">
+                        <div class="breadcrumb-item"><a href="#inicio">Inicio</a>
+                        </div><i class="fas fa-chevron-right breadcrumb-separator"></i>
+                        <div class="breadcrumb-item breadcrumb-current">
+                            Fundamentos de Dart
+                        </div><span class="reading-time"><i class="fas fa-clock"></i>30 min</span>
+                    </div>
+                    <div class="section-header">
+                        <div class="section-number">
+                            06
+                        </div>
+                        <h2 class="section-title">
+                            2. Fundamentos de Dart
+                        </h2>
+                        <p class="section-subtitle">
+                            Variables, tipos, funciones y async — la base de todo en Flutter
+                        </p>
+                    </div>
+                    <div class="content-grid">
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fas fa-tag"></i>
+                            </div>
+                            <h3>
+                                Variables y Tipos
+                            </h3>
+                            <p>
+                                Dart 3 tiene null safety, inferencia de tipos y tipado fuerte.
+                            </p>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title">tipos.dart</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-dart">// --- Tipos básicos con null safety ---
+int edad = 21;
+double precio = 19.99;
+String nombre = 'Flutter';
+bool activo = true;
+
+// --- Nullable (?) vs non-nullable ---
+String? apodo;       // Puede ser null
+int cantidad = 0;    // Nunca será null
+
+// --- Type inference: var, final, const ---
+var mensaje = 'Hola Dart';       // String inferido
+final url = 'api.google.com';     // Inmutable en runtime
+const pi = 3.1416;                // Constante en compilación
+
+// --- Records (Dart 3+) ---
+(String, int) usuario = ('Ana', 25);
+({String nombre, int edad}) persona = (
+  nombre: 'Luis',
+  edad: 30,
+);</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fas fa-code-branch"></i>
+                            </div>
+                            <h3>
+                                Funciones
+                            </h3>
+                            <p>
+                                Dart soporta funciones de primera clase, parámetros opcionales y expresiones lambda.
+                            </p>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title">funciones.dart</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-dart">// --- Función con parámetros posicionales ---
+double sumar(double a, double b) => a + b;
+
+// --- Parámetros nombrados (required / opcional) ---
+void saludar({required String nombre, String? apellido}) {
+  print('Hola, $nombre ${apellido ?? ''}');
+}
+
+// --- Función como parámetro (callback) ---
+void procesar(List&lt;int&gt; items, void Function(int) cb) {
+  for (final item in items) cb(item);
+}
+
+// --- Lambda / closure ---
+final duplicar = (int x) => x * 2;
+
+// --- Pattern matching (Dart 3+) ---
+String describir(dynamic valor) => switch (valor) {
+  int v      => 'Entero: $v',
+  String s   => 'Texto: $s',
+  _          => 'Desconocido',
+};</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fas fa-cube"></i>
+                            </div>
+                            <h3>
+                                Clases y Objetos
+                            </h3>
+                            <p>
+                                Programación orientada a objetos con constructores, herencia y mixins.
+                            </p>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title">clases.dart</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-dart">// --- Clase con constructor posicional ---
+class Producto {
+  final int id;
+  final String nombre;
+  final double precio;
+
+  const Producto(this.id, this.nombre, this.precio);
+
+  // Factory constructor desde Map
+  factory Producto.fromJson(Map&lt;String, dynamic&gt; json) =>
+    Producto(json['id'], json['nombre'], json['precio']);
+}
+
+// --- Herencia con super parámetros ---
+class ProductoElectronicos extends Producto {
+  final int garantiaMeses;
+
+  ProductoElectronicos(
+    super.id, super.nombre, super.precio, this.garantiaMeses);
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fas fa-sync-alt"></i>
+                            </div>
+                            <h3>
+                                Async / Await
+                            </h3>
+                            <p>
+                                Programación asíncrona con Futures, Streams y async/await.
+                            </p>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title">async.dart</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-dart">// --- Future con async/await ---
+Future&lt;String&gt; obtenerToken() async {
+  await Future.delayed(Duration(seconds: 1));
+  return 'token_jwt_123';
+}
+
+// --- Llamada secuencial ---
+Future&lt;void&gt; cargarDatos() async {
+  final token = await obtenerToken();
+  final datos = await httpGet('/productos', token);
+  print(datos);
+}
+
+// --- Streams con async* / yield ---
+Stream&lt;int&gt; contador() async* {
+  for (int i = 0; i &lt; 5; i++) {
+    await Future.delayed(Duration(seconds: 1));
+    yield i;
+  }
+}
+
+// --- Manejo de errores con try / catch ---
+Future&lt;void&gt; obtenerProductos() async {
+  try {
+    final res = await api.listar();
+    print('Productos: $res');
+  } on DioException catch (e) {
+    print('Error HTTP: ${e.response?.statusCode}');
+  } catch (e) {
+    print('Error inesperado: $e');
+  }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info-banner" style="background:var(--accent-light, #e3f2fd);border-left:4px solid #1389FD;"><i class="fas fa-info-circle" style="color:#1389FD;"></i>
+                        <div>
+                            <h4>
+                                Ejercicio rápido
+                            </h4>
+                            <p>
+                                Crea una clase<code>Usuario</code>con<code>id</code>,<code>nombre</code>y<code>email</code>. Implementa un<code>factory fromJson</code>y un método<code>toJson</code>. Luego crea una función async que simule obtener un usuario desde una API y lo imprima.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>

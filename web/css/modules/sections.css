@@ -45,23 +45,15 @@
 }
 
 .window-body {
-    padding: 20px;
-    overflow-x: auto;
+    padding: 0;
+    overflow: hidden;
 }
 
 .window-body pre {
     margin: 0;
 }
 
-.window-body code {
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    line-height: 1.6;
-    color: var(--code-text);
-    white-space: pre-wrap;
-    word-break: break-word;
-    overflow-wrap: break-word;
-}
+/* (trasladado a code-blocks.css - estandar global) */
 
 .tech-stack-section {
     padding: 80px 0;

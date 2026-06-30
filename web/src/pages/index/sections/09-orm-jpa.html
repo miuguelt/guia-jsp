@@ -42,7 +42,12 @@
                                     Entidad (Record)
                                 </h4>
                                 <div class="code-block small">
-                                    <pre><code class="language-java">public record Producto(    int id,    String codigo,    String nombre,    BigDecimal precio) {</code></pre>
+                                    <pre><code class="language-java">public record Producto(
+    int id,
+    String codigo,
+    String nombre,
+    BigDecimal precio
+) {</code></pre>
                                 </div>
                                 <h4>
                                     DAO con SQL manual
@@ -182,7 +187,17 @@ public Producto buscar(int id) {
                                     Flask (Python)
                                 </div>
                                 <div class="code-block small">
-                                    <pre><code class="language-python"># Modelo SQLAlchemyclass Producto(db.Model):    id = db.Column(db.Integer, primary_key=True)    codigo = db.Column(db.String(50))    nombre = db.Column(db.String(100))    precio = db.Column(db.Numeric(10,2))# Guardarp = Producto(codigo="P1", nombre="Laptop")db.session.add(p)db.session.commit()</code></pre>
+                                    <pre><code class="language-python"># Modelo SQLAlchemy
+class Producto(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    codigo = db.Column(db.String(50))
+    nombre = db.Column(db.String(100))
+    precio = db.Column(db.Numeric(10,2))
+
+# Guardar
+p = Producto(codigo="P1", nombre="Laptop")
+db.session.add(p)
+db.session.commit()</code></pre>
                                 </div>
                             </div>
                             <div class="analogy-arrow"><i class="fas fa-arrow-right"></i><span>Equivalente en</span><i class="fas fa-arrow-right"></i>

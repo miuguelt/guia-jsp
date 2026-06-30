@@ -402,6 +402,22 @@ Este material es propiedad del SENA y está destinado para uso educativo en el p
 
 ---
 
+## 📦 Descargas — Proyectos Listos para Ejecutar
+
+Cada proyecto de esta guía está disponible como descarga directa. Solo extrae el ZIP y ejecuta:
+
+| Proyecto | Descripción | Comando para ejecutar | Descargar |
+|----------|-------------|----------------------|-----------|
+| **JSP+MVC** | Sistema de inventario con Jakarta EE 10, JDK 21, PostgreSQL | `mvn clean package cargo:run` | [codigo-ejemplo.zip](web/downloads/codigo-ejemplo.zip) (32 KB) |
+| **FastAPI** | API REST con SQLAlchemy, Pydantic, JWT, Alembic | `pip install -r requirements.txt && uvicorn main:app --reload` | [fastapi-inventario.zip](web/downloads/fastapi-inventario.zip) (39 KB) |
+| **React 19** | Frontend SPA con Vite, Axios, React Router, AuthContext | `npm install && npm run dev` | [frontend-inventario.zip](web/downloads/frontend-inventario.zip) (32 KB) |
+| **Flutter** | App móvil con Riverpod, GoRouter, Dio, OpenAPI | `flutter pub get && flutter run` | [flutter-inventario.zip](web/downloads/flutter-inventario.zip) (59 KB) |
+| **SQL** | Script de base de datos PostgreSQL (roles, usuarios, productos) | `psql -U postgres -d inventario_db -f inventario_db.sql` | [inventario-db-sql.zip](web/downloads/inventario-db-sql.zip) (2 KB) |
+
+> Todos los proyectos incluyen `.env` o `db.properties` con valores por defecto para desarrollo local. Ajusta las credenciales según tu configuración.
+
+---
+
 ## Navegacion entre Guias - Ruta de Aprendizaje ADSO
 
 | Orden | Guia | Puerto | Fase ADSO |

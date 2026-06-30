@@ -1,0 +1,240 @@
+            <section class="section" id="instalacion">
+                <div class="container">
+                    <div class="breadcrumbs">
+                        <div class="breadcrumb-item"><a href="#inicio">Inicio</a>
+                        </div><i class="fas fa-chevron-right breadcrumb-separator"></i>
+                        <div class="breadcrumb-item breadcrumb-current">
+                            Instalación
+                        </div><span class="reading-time"><i class="fas fa-clock"></i>15 min</span>
+                    </div>
+                    <div class="section-header">
+                        <div class="section-number">
+                            05
+                        </div>
+                        <h2 class="section-title">
+                            1. Instalación del Entorno Flutter
+                        </h2>
+                        <p class="section-subtitle">
+                            Prepara tu máquina para desarrollar con Flutter y Dart
+                        </p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-header">
+                            <div class="step-number">
+                                01
+                            </div>
+                            <div class="step-info">
+                                <h3>
+                                    Instalar Flutter SDK
+                                </h3>
+                                <p>
+                                    Descarga e instala Flutter SDK en tu sistema operativo
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <div class="info-banner" style="background:var(--accent-light, #e3f2fd);border-left:4px solid #1389FD;"><i class="fas fa-info-circle" style="color:#1389FD;"></i>
+                                <div>
+                                    <h4>
+                                        Requisitos mínimos
+                                    </h4>
+                                    <p>
+                                        Windows 10+, 8 GB RAM, 10 GB espacio libre, Git instalado.
+                                    </p>
+                                </div>
+                            </div>
+                            <h4>
+                                Opción 1: Instalador oficial
+                            </h4>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title"><i class="fas fa-globe"></i>Navegador</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-bash"># 1. Descarga Flutter desde https://flutter.dev
+# 2. Ejecuta el instalador para Windows
+# 3. Verifica la instalación:
+flutter doctor</code></pre>
+                                </div>
+                            </div>
+                            <h4>
+                                Opción 2: Chocolatey (recomendado)
+                            </h4>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title"><i class="fas fa-terminal"></i>Terminal</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-bash">choco install flutter
+flutter doctor</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-header">
+                            <div class="step-number">
+                                02
+                            </div>
+                            <div class="step-info">
+                                <h3>
+                                    Configurar Android Studio
+                                </h3>
+                                <p>
+                                    Instala el emulador de Android y las herramientas de desarrollo
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <h4>
+                                Pasos para Android Studio
+                            </h4>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title"><i class="fas fa-terminal"></i>Terminal</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-bash"># Aceptar licencias de Android
+flutter doctor --android-licenses
+
+# Verificar que Android SDK está detectado
+flutter doctor -v</code></pre>
+                                </div>
+                            </div>
+                            <h4>
+                                Variables de entorno recomendadas
+                            </h4>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title"><i class="fas fa-file-code"></i>~\.zshrc / System PATH</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-bash"># Agregar al PATH (Windows: variables de entorno del sistema)
+export ANDROID_HOME=$HOME/AppData/Local/Android/Sdk
+export PATH=$PATH:$ANDROID_HOME/platform-tools
+export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-header">
+                            <div class="step-number">
+                                03
+                            </div>
+                            <div class="step-info">
+                                <h3>
+                                    VS Code y Extensiones
+                                </h3>
+                                <p>
+                                    Configura tu editor para productividad máxima
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <h4>
+                                Extensiones esenciales
+                            </h4>
+                            <ul class="feature-list">
+                                <li><i class="fas fa-check"></i><strong>Flutter</strong> — Soporte oficial de Dart y Flutter
+                                </li>
+                                <li><i class="fas fa-check"></i><strong>Dart</strong> — Análisis de código, autocompletado
+                                </li>
+                                <li><i class="fas fa-check"></i><strong>Error Lens</strong> — Errores inline en el editor
+                                </li>
+                                <li><i class="fas fa-check"></i><strong>Pubspec Assist</strong> — Agregar paquetes fácilmente
+                                </li>
+                                <li><i class="fas fa-check"></i><strong>Awesome Flutter Snippets</strong> — Atajos de código
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-header">
+                            <div class="step-number">
+                                04
+                            </div>
+                            <div class="step-info">
+                                <h3>
+                                    Verificar con flutter doctor
+                                </h3>
+                                <p>
+                                    Comando mágico que verifica todo tu entorno
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title"><i class="fas fa-terminal"></i>Terminal</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-bash">flutter doctor
+# Deberías ver todas las casillas en verde ✓
+# ✔ Flutter SDK
+# ✔ Android Toolchain
+# ✔ Chrome (para web)
+# ✔ Android Studio
+# ✔ VS Code</code></pre>
+                                </div>
+                            </div>
+                            <div class="info-banner" style="background:var(--accent-light, #fff3e0);border-left:4px solid #ff9800;"><i class="fas fa-lightbulb" style="color:#ff9800;"></i>
+                                <div>
+                                    <h4>
+                                        Solución de problemas comunes
+                                    </h4>
+                                    <p>
+                                        Si ves cruces ✗, lee el mensaje: suele ser licencias de Android o falta de Chocolatey. Ejecuta<code>flutter doctor --android-licenses</code>o reinstala el SDK.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-header">
+                            <div class="step-number">
+                                05
+                            </div>
+                            <div class="step-info">
+                                <h3>
+                                    Crear primer proyecto
+                                </h3>
+                                <p>
+                                    ¡Tu primera app Flutter funcionando!
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title"><i class="fas fa-terminal"></i>Terminal</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-bash">flutter create mi_app
+cd mi_app
+flutter run</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>

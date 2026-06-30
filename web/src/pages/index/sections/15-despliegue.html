@@ -34,7 +34,8 @@
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-bash">mvn clean package -DskipTests# Genera: target/inventario-mvc-1.0.war</code></pre>
+                                        <pre><code class="language-bash">mvn clean package -DskipTests
+# Genera: target/inventario-mvc-1.0.war</code></pre>
                                     </div>
                                 </div>
                             </div>
@@ -54,7 +55,12 @@
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-dockerfile">FROM tomcat:10.1-jdk21-temurin-jakartaLABEL maintainer="ADSO SENA"RUN rm -rf /usr/local/tomcat/webapps/*COPY target/inventario-mvc-1.0.war /usr/local/tomcat/webapps/ROOT.warEXPOSE 8080CMD ["catalina.sh", "run"]</code></pre>
+                                        <pre><code class="language-dockerfile">FROM tomcat:10.1-jdk21-temurin-jakarta
+LABEL maintainer="ADSO SENA"
+RUN rm -rf /usr/local/tomcat/webapps/*
+COPY target/inventario-mvc-1.0.war /usr/local/tomcat/webapps/ROOT.war
+EXPOSE 8080
+CMD ["catalina.sh", "run"]</code></pre>
                                     </div>
                                 </div>
                             </div>
@@ -74,7 +80,9 @@
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-bash">docker build -t inventario-mvc:1.0 .# Verificar imagendocker images | findstr inventario-mvc</code></pre>
+                                        <pre><code class="language-bash">docker build -t inventario-mvc:1.0 .
+# Verificar imagen
+docker images | findstr inventario-mvc</code></pre>
                                     </div>
                                 </div>
                             </div>
@@ -94,7 +102,19 @@
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-bash">docker run -d -p 8080:8080 \  -e DB_HOST=host.docker.internal \  -e DB_PORT=5432 \  -e DB_NAME=inventario_db \  -e DB_USER=postgres \  -e DB_PASSWORD=tu_password \  --name inventario-app \  inventario-mvc:1.0# Ver logsdocker logs -f inventario-app# Acceder: http://localhost:8080</code></pre>
+                                        <pre><code class="language-bash">docker run -d -p 8080:8080 \
+  -e DB_HOST=host.docker.internal \
+  -e DB_PORT=5432 \
+  -e DB_NAME=inventario_db \
+  -e DB_USER=postgres \
+  -e DB_PASSWORD=tu_password \
+  --name inventario-app \
+  inventario-mvc:1.0
+
+# Ver logs
+docker logs -f inventario-app
+
+# Acceder: http://localhost:8080</code></pre>
                                     </div>
                                 </div>
                             </div>
@@ -118,8 +138,20 @@
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-bash"># Levantar 5 servicios (PostgreSQL + Auth + Products + Users + React)docker compose -f docker-compose.microservices.yml up -d# Verificar todos los serviciosdocker compose -f docker-compose.microservices.yml ps# Probar cada microservicio:# Auth Service:
-http://localhost:8001/docs# Products Service: http://localhost:8002/docs# Users Service:   http://localhost:8003/docs# React Frontend:  http://localhost# Detener tododocker compose -f docker-compose.microservices.yml down</code></pre>
+                                        <pre><code class="language-bash"># Levantar 5 servicios (PostgreSQL + Auth + Products + Users + React)
+docker compose -f docker-compose.microservices.yml up -d
+
+# Verificar todos los servicios
+docker compose -f docker-compose.microservices.yml ps
+
+# Probar cada microservicio:
+# Auth Service:     http://localhost:8001/docs
+# Products Service: http://localhost:8002/docs
+# Users Service:    http://localhost:8003/docs
+# React Frontend:   http://localhost
+
+# Detener todo
+docker compose -f docker-compose.microservices.yml down</code></pre>
                                     </div>
                                 </div>
                             </div>
@@ -143,7 +175,32 @@ http://localhost:8001/docs# Products Service: http://localhost:8002/docs# Users 
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-powershell"># Instalar todas las dependencias (Python + Node).\Makefile.ps1 install# Iniciar FastAPI (desarrollo).\Makefile.ps1 api# Iniciar React (desarrollo).\Makefile.ps1 frontend# Ejecutar pruebas.\Makefile.ps1 test# Migraciones de base de datos.\Makefile.ps1 db-create    # Crear BD.\Makefile.ps1 db-migrate   # Aplicar migraciones.\Makefile.ps1 db-revision  # Crear nueva migración# Docker.\Makefile.ps1 docker-up    # docker compose up -d.\Makefile.ps1 docker-down  # docker compose down# Estado de servicios.\Makefile.ps1 status# Ayuda completa.\Makefile.ps1 help</code></pre>
+                                        <pre><code class="language-powershell"># Instalar todas las dependencias (Python + Node)
+.\Makefile.ps1 install
+
+# Iniciar FastAPI (desarrollo)
+.\Makefile.ps1 api
+
+# Iniciar React (desarrollo)
+.\Makefile.ps1 frontend
+
+# Ejecutar pruebas
+.\Makefile.ps1 test
+
+# Migraciones de base de datos
+.\Makefile.ps1 db-create    # Crear BD
+.\Makefile.ps1 db-migrate   # Aplicar migraciones
+.\Makefile.ps1 db-revision  # Crear nueva migración
+
+# Docker
+.\Makefile.ps1 docker-up    # docker compose up -d
+.\Makefile.ps1 docker-down  # docker compose down
+
+# Estado de servicios
+.\Makefile.ps1 status
+
+# Ayuda completa
+.\Makefile.ps1 help</code></pre>
                                     </div>
                                 </div>
                                 <h3>
@@ -319,46 +376,62 @@ npm run dev
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-yaml">version: '3.8'services:  # ===== Base de datos =====  db:
-image: postgres:16-alpine
-environment:
-POSTGRES_DB: inventario_db
-POSTGRES_USER: postgres
-POSTGRES_PASSWORD: sena_adso_2026
-ports:
-- "5432:5432"
+                                        <pre><code class="language-yaml">version: '3.8'
+
+services:
+  # ===== Base de datos =====
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: inventario_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: sena_adso_2026
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./recursos/sql/inventario_db.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - fullstack-net
+
+  # ===== Backend FastAPI =====
+  api:
+    build:
+      context: ./recursos/fastapi-inventario
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://postgres:sena_adso_2026@db:5432/inventario_db
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - fullstack-net
+
+  # ===== Frontend React (producción) =====
+  frontend:
+    build:
+      context: ./recursos/frontend-inventario
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+    networks:
+      - fullstack-net
+
 volumes:
-- pgdata:/var/lib/postgresql/data
-- ./recursos/sql/inventario_db.sql:/docker-entrypoint-initdb.d/init.sql
-healthcheck:
-test: ["CMD-SHELL", "pg_isready -U postgres"]
-interval: 5s
-timeout: 5s
-retries: 5
+  pgdata:
+
 networks:
-- fullstack-net  # ===== Backend FastAPI =====  api:
-build:
-context: ./recursos/fastapi-inventario
-dockerfile: Dockerfile
-ports:
-- "8000:8000"
-environment:
-DATABASE_URL: postgresql://postgres:sena_adso_2026@db:5432/inventario_db
-depends_on:
-db:
-condition: service_healthy
-networks:
-- fullstack-net  # ===== Frontend React (producción) =====  frontend:
-build:
-context: ./recursos/frontend-inventario
-dockerfile: Dockerfile
-ports:
-- "80:80"
-depends_on:
-- api
-networks:
-- fullstack-netvolumes:  pgdata:networks:  fullstack-net:
-driver: bridge</code></pre>
+  fullstack-net:
+    driver: bridge</code></pre>
                                     </div>
                                 </div>
                                 <h4>
@@ -372,7 +445,13 @@ driver: bridge</code></pre>
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-dockerfile">FROM python:3.12-slimWORKDIR /appCOPY requirements.txt .RUN pip install --no-cache-dir -r requirements.txtCOPY . .EXPOSE 8000CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]</code></pre>
+                                        <pre><code class="language-dockerfile">FROM python:3.12-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY . .
+EXPOSE 8000
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]</code></pre>
                                     </div>
                                 </div>
                                 <div class="code-window">
@@ -383,19 +462,41 @@ driver: bridge</code></pre>
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-dockerfile">FROM node:20-alpine AS buildWORKDIR /appCOPY package*.json ./RUN npm ciCOPY . .RUN npm
-# NAME                                      STATUS      PORTS
+                                        <pre><code class="language-dockerfile">FROM node:20-alpine AS build
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+
+FROM nginx:alpine
+COPY --from=build /app/dist /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]</code></pre>
+                                    </div>
+                                </div>
+                                <h4>Verificar despliegue</h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-terminal"></i>Terminal — Estado de servicios</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-text"># NAME                                      STATUS      PORTS
 # fullstack-db-1                            healthy     5432/tcp
 # fullstack-api-1                           running     0.0.0.0:8000->8000/tcp
 # fullstack-frontend-1                      running     0.0.0.0:80->80/tcp
 
 # Probar endpoints:
 # FastAPI docs:   http://localhost:8000/docs
-# React frontend:  http://localhost
-# Health check:    curl http://localhost:8000/health
+# React frontend: http://localhost
+# Health check:   curl http://localhost:8000/health
 
 # Detener todo
 docker compose -f docker-compose.fullstack.yml down
+
 # Detener y eliminar volúmenes (borra datos BD)
 docker compose -f docker-compose.fullstack.yml down -v</code></pre>
                                     </div>

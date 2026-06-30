@@ -1,5 +1,31 @@
-<!-- MISSING: ../../../shared/_head.html -->
-<!-- MISSING: ../../../shared/_sidebar-button.html -->
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <script>    window.onerror = function(message, source, lineno, colno, error) {        var errDiv = document.getElementById('js-debug-error');        if (!errDiv) {            errDiv = document.createElement('div');            errDiv.id = 'js-debug-error';            errDiv.style.position = 'fixed';            errDiv.style.top = '0';            errDiv.style.left = '0';            errDiv.style.width = '100%';            errDiv.style.background = '#ffebee';            errDiv.style.color = '#c62828';            errDiv.style.borderBottom = '3px solid #d32f2f';            errDiv.style.padding = '14px 20px';            errDiv.style.zIndex = '999999';            errDiv.style.fontFamily = 'monospace';            errDiv.style.fontSize = '0.9rem';            errDiv.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';            errDiv.style.display = 'flex';            errDiv.style.justifyContent = 'space-between';            errDiv.style.alignItems = 'center';            errDiv.innerHTML = '<div style="flex:1;"><strong>⚠️ Error de JavaScript Detectado:</strong> <span id="js-err-msg"></span><br><small style="color:#757575;" id="js-err-loc"></small></div><button onclick="this.parentElement.remove()" style="background:#d32f2f;color:white;border:none;padding:6px 12px;border-radius:4px;cursor:pointer;font-weight:bold;">Cerrar</button>';            document.documentElement.appendChild(errDiv);        }        document.getElementById('js-err-msg').textContent = message;        document.getElementById('js-err-loc').textContent = 'Archivo: ' + source + ' | Línea: ' + lineno + ' | Columna: ' + colno;    };    </script>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Guía de Aprendizaje SENA - Desarrollo de aplicaciones móviles multiplataforma con Flutter, Dart, OpenAPI Generator, Riverpod y Microservicios REST">
+        <meta name="keywords" content="Flutter, Dart, OpenAPI, Riverpod, SENA, ADSO, Microservicios, Dio, GoRouter, API REST">
+        <meta name="author" content="SENA - ADSO">
+        <title>
+            Guía de Aprendizaje Flutter + OpenAPI | SENA ADSO
+        </title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+        <link rel="stylesheet" href="css/styles.css?v=3.3">
+        <link rel="icon" type="image/svg+xml" href="favicon-flutter.svg">
+    </head>
+    <body>
+        <a href="#mainContent" class="skip-link">Saltar al contenido principal</a>
+
+        <!-- Botón flotante para mostrar sidebar -->
+        <button class="sidebar-show-btn" id="sidebarShowBtn" aria-label="Mostrar menú"><i class="fas fa-bars"></i>
+        </button>
+        <!-- Sidebar Fijo Profesional -->
+
 <aside class="main-sidebar" id="mainSidebar">
     <div class="sidebar-header">
         <div class="sidebar-logo">
@@ -118,6 +144,9 @@
             <button class="sidebar-action-btn" id="themeToggle" title="Cambiar tema">
                 <i class="fas fa-moon"></i>
             </button>
+            <button class="sidebar-action-btn" id="searchToggle" title="Buscar (Ctrl+K)">
+                <i class="fas fa-search"></i>
+            </button>
             <button class="sidebar-action-btn" id="resetProgress" title="Reiniciar progreso">
                 <i class="fas fa-undo"></i>
             </button>
@@ -125,10 +154,2713 @@
     </div>
 </aside>
 
-<!-- MISSING: ../../../shared/_header.html -->
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="sena-logo">
+                        <div class="sena-badge"><i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="logo-text"><span class="logo-title">SENA</span><span class="logo-subtitle">ADSO</span>
+                        </div>
+                    </div>
+                    <div class="header-divider">
+                    </div>
+                    <div class="course-info">
+                        <h1 class="course-title">
+                            Flutter + OpenAPI
+                        </h1>
+                        <p class="course-subtitle">
+                            Guía de Aprendizaje
+                        </p>
+                    </div>
+                </div>
+                <div class="header-meta">
+                    <nav class="page-switcher"><a href="index.html" class="page-switcher-link "><i class="fab fa-java"></i>JSP</a><a href="flutter-guide.html" class="page-switcher-link active"><i class="fab fa-flutter"></i>Flutter</a><a href="simuladores.html" class="page-switcher-link "><i class="fas fa-flask"></i>Labs</a>
+                    </nav><span class="header-badge">v3.0</span>
+                    <button class="header-icon-btn" id="readingModeToggle" title="Modo lectura"><i class="fas fa-book-reader"></i>
+                    </button>
+                    <button class="header-icon-btn" id="searchToggle" title="Buscar (Ctrl+K)"><i class="fas fa-search"></i>
+                    </button>
+                    <button class="header-icon-btn" id="headerThemeToggle" title="Cambiar tema"><i class="fas fa-moon"></i><i class="fas fa-sun"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+        <!-- Contenido Principal -->
+
 <main class="main-content" id="mainContent">
-    <!-- Sections will be added here -->
+                <section class="hero-section flutter-hero" id="inicio">
+                <div class="hero-bg">
+                    <div class="hero-pattern">
+                    </div>
+                    <div class="hero-gradient">
+                    </div>
+                </div>
+                <div class="hero-content">
+                    <div class="hero-badge"><i class="fab fa-flutter"></i><span>SENA - ADSO</span>
+                    </div>
+                    <h1 class="hero-title">
+                        Desarrollo Móvil:<span class="gradient-text">Flutter + OpenAPI</span>
+                    </h1>
+                    <p class="hero-description">
+                        Guía completa de aprendizaje para construir aplicaciones móviles profesionales con<strong>Flutter 3.x</strong>,<strong>Dart 3.x</strong>,<strong>OpenAPI Generator</strong>y<strong>Riverpod</strong>, consumiendo microservicios REST con documentación OpenAPI.
+                    </p>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <div class="stat-icon"><i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-info"><span class="stat-value">40h</span><span class="stat-label">Duración</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon"><i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <div class="stat-info"><span class="stat-value">Multiplataforma</span><span class="stat-label">Android + iOS + Web</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon"><i class="fas fa-plug"></i>
+                            </div>
+                            <div class="stat-info"><span class="stat-value">OpenAPI</span><span class="stat-label">API First</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon"><i class="fas fa-cubes"></i>
+                            </div>
+                            <div class="stat-info"><span class="stat-value">Microservicios</span><span class="stat-label">Arquitectura</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon"><i class="fab fa-dart"></i>
+                            </div>
+                            <div class="stat-info"><span class="stat-value">Dart 3</span><span class="stat-label">Lenguaje</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon"><i class="fas fa-database"></i>
+                            </div>
+                            <div class="stat-info"><span class="stat-value">PostgreSQL</span><span class="stat-label">Base de Datos</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hero-actions"><a href="#instalacion" class="btn btn-primary btn-lg"><i class="fas fa-download"></i>Comenzar</a><a href="#presentacion" class="btn btn-outline btn-lg"><i class="fas fa-book-open"></i>Presentación</a><a href="index.html" class="btn btn-outline btn-lg"><i class="fas fa-arrow-left"></i>Volver a JSP</a>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="code-window">
+                        <div class="window-header">
+                            <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                            </div><span class="window-title">inventario_app.dart</span>
+                        </div>
+                        <div class="window-body">
+                            <pre><code class="language-dart">@riverpod
+class ProductoController extends _$ProductoController {
+  @override
+  Future&lt;List&lt;Producto&gt;&gt; build() async {
+    final api = ref.read(productoApiProvider);
+    return api.listarProductos();
+  }
+
+  Future&lt;void&gt; crear(ProductoCreate dto) async {
+    final api = ref.read(productoApiProvider);
+    await api.crearProducto(dto);
+    await ref.invalidateSelf();
+  }
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+                <section class="section" id="identificacion">
+                <div class="container">
+                    <div class="breadcrumbs">
+                        <div class="breadcrumb-item"><a href="#inicio">Inicio</a>
+                        </div><i class="fas fa-chevron-right breadcrumb-separator"></i>
+                        <div class="breadcrumb-item breadcrumb-current">
+                            Identificación
+                        </div><span class="reading-time"><i class="fas fa-clock"></i>2 min</span>
+                    </div>
+                    <div class="section-header">
+                        <div class="section-number">
+                            01
+                        </div>
+                        <h2 class="section-title">
+                            Identificación de la Guía
+                        </h2>
+                        <p class="section-subtitle">
+                            Información oficial del programa de formación
+                        </p>
+                    </div>
+                    <div class="info-card">
+                        <table class="info-table">
+                            <tbody>
+                                <tr>
+                                    <td class="info-label"><i class="fas fa-graduation-cap"></i>Programa
+                                    </td>
+                                    <td class="info-value">
+                                        Análisis y Desarrollo de Software (ADSO)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="info-label"><i class="fas fa-layer-group"></i>Nivel
+                                    </td>
+                                    <td class="info-value">
+                                        Técnico / Tecnólogo
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="info-label"><i class="fas fa-bullseye"></i>Competencia
+                                    </td>
+                                    <td class="info-value">
+                                        Desarrollar la solución de software de acuerdo con el diseño y metodologías de desarrollo establecidas
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="info-label"><i class="fas fa-check-circle"></i>Resultado
+                                    </td>
+                                    <td class="info-value">
+                                        Construir aplicaciones móviles multiplataforma conectadas a microservicios REST usando Flutter y OpenAPI
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="info-label"><i class="fas fa-clock"></i>Duración
+                                    </td>
+                                    <td class="info-value">
+                                        40 horas (20 teoría + 20 práctica)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="info-label"><i class="fas fa-tools"></i>Tecnologías
+                                    </td>
+                                    <td class="info-value"><span class="tech-badge">Flutter 3.x</span><span class="tech-badge">Dart 3.x</span><span class="tech-badge">OpenAPI</span><span class="tech-badge">Riverpod</span><span class="tech-badge">Dio</span><span class="tech-badge">GoRouter</span><span class="tech-badge">PostgreSQL</span><span class="tech-badge">Docker</span><span class="tech-badge">FastAPI</span><span class="tech-badge">Coolify</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="info-label"><i class="fas fa-sitemap"></i>Metodología
+                                    </td>
+                                    <td class="info-value">
+                                        Aprendizaje basado en proyectos - API First → Cliente OpenAPI → App Flutter
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="quiz-container" data-quiz="identificacion">
+                        <div class="quiz-header">
+                            <div class="quiz-icon"><i class="fas fa-question"></i>
+                            </div>
+                            <div class="quiz-title">
+                                <h3>
+                                    Quiz Rápido
+                                </h3>
+                                <p>
+                                    Verifica tu comprensión de la guía
+                                </p>
+                            </div>
+                            <div class="quiz-progress">
+                                Pregunta<span class="quiz-current">1</span>/5
+                            </div>
+                        </div>
+                        <div style="margin-bottom:12px;">
+                            <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--text-muted);margin-bottom:4px;"><span>⏱️ Tiempo:<span class="quiz-timer" id="quizTimer">00:00</span></span><span>✅<span class="quiz-score" id="quizScore">0</span>aciertos</span>
+                            </div>
+                            <div style="height:6px;background:var(--border);border-radius:3px;overflow:hidden;">
+                                <div class="quiz-progress-bar" id="quizProgressBar" style="height:100%;width:0%;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:3px;transition:width 0.4s ease;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="quiz-question" id="quiz-identificacion-q1">
+                            <div class="quiz-question-text">
+                                ¿Cuál es el resultado de aprendizaje esperado?
+                            </div>
+                            <div class="quiz-options">
+                                <button class="quiz-option" data-correct="false"><span class="quiz-option-letter">A</span><span>Crear páginas web con JSP y Servlets</span>
+                                </button>
+                                <button class="quiz-option" data-correct="true"><span class="quiz-option-letter">B</span><span>Construir aplicaciones móviles multiplataforma conectadas a microservicios REST con Flutter y OpenAPI</span>
+                                </button>
+                                <button class="quiz-option" data-correct="false"><span class="quiz-option-letter">C</span><span>Desarrollar videojuegos con Unity</span>
+                                </button>
+                                <button class="quiz-option" data-correct="false"><span class="quiz-option-letter">D</span><span>Aprender administración de servidores Linux</span>
+                                </button>
+                            </div>
+                            <div class="quiz-feedback">
+                            </div>
+                        </div>
+                        <div class="quiz-question" id="quiz-identificacion-q2" style="display:none;">
+                            <div class="quiz-question-text">
+                                ¿Qué lenguaje utiliza Flutter para programar?
+                            </div>
+                            <div class="quiz-options">
+                                <button class="quiz-option" data-correct="false"><span class="quiz-option-letter">A</span><span>JavaScript</span>
+                                </button>
+                                <button class="quiz-option" data-correct="false"><span class="quiz-option-letter">B</span><span>Kotlin</span>
+                                </button>
+                                <button class="quiz-option" data-correct="true"><span class="quiz-option-letter">C</span><span>Dart</span>
+                                </button>
+                                <button class="quiz-option" data-correct="false"><span class="quiz-option-letter">D</span><span>Swift</span>
+                                </button>
+                            </div>
+                            <div class="quiz-feedback">
+                            </div>
+                        </div>
+                        <div class="quiz-question" id="quiz-identificacion-q3" style="display:none;">
+                            <div class="quiz-question-text">
+                                ¿Qué es OpenAPI?
+                            </div>
+                            <div class="quiz-options">
+                                <button class="quiz-option" data-correct="false"><span class="quiz-option-letter">A</span><span>Un framework de Flutter</span>
+                                </button>
+                                <button class="quiz-option" data-correct="false"><span class="quiz-option-letter">B</span><span>Un sistema operativo</span>
+                                </button>
+                                <button class="quiz-option" data-correct="true"><span class="quiz-option-letter">C</span><span>Un estándar para documentar APIs REST</span>
+                                </button>
+                                <button class="quiz-option" data-correct="false"><span class="quiz-option-letter">D</span><span>Una base de datos</span>
+                                </button>
+                            </div>
+                            <div class="quiz-feedback">
+                            </div>
+                        </div>
+                        <div class="quiz-question" id="quiz-identificacion-q4" style="display:none;">
+                            <div class="quiz-question-text">
+                                ¿Qué hace OpenAPI Generator?
+                            </div>
+                            <div class="quiz-options">
+                                <button class="quiz-option" data-correct="false"><span class="quiz-option-letter">A</span><span>Genera gráficos estadísticos</span>
+                                </button>
+                                <button class="quiz-option" data-correct="true"><span class="quiz-option-letter">B</span><span>Genera clientes de API automáticamente desde la especificación OpenAPI</span>
+                                </button>
+                                <button class="quiz-option" data-correct="false"><span class="quiz-option-letter">C</span><span>Compila código Dart a nativo</span>
+                                </button>
+                                <button class="quiz-option" data-correct="false"><span class="quiz-option-letter">D</span><span>Genera documentación HTML</span>
+                                </button>
+                            </div>
+                            <div class="quiz-feedback">
+                            </div>
+                        </div>
+                        <div class="quiz-question" id="quiz-identificacion-q5" style="display:none;">
+                            <div class="quiz-question-text">
+                                ¿Cuántas horas de formación comprende esta guía?
+                            </div>
+                            <div class="quiz-options">
+                                <button class="quiz-option" data-correct="false"><span class="quiz-option-letter">A</span><span>20 horas</span>
+                                </button>
+                                <button class="quiz-option" data-correct="false"><span class="quiz-option-letter">B</span><span>80 horas</span>
+                                </button>
+                                <button class="quiz-option" data-correct="true"><span class="quiz-option-letter">C</span><span>40 horas</span>
+                                </button>
+                                <button class="quiz-option" data-correct="false"><span class="quiz-option-letter">D</span><span>10 horas</span>
+                                </button>
+                            </div>
+                            <div class="quiz-feedback">
+                            </div>
+                        </div>
+                        <div class="quiz-actions">
+                            <button class="quiz-btn quiz-btn-secondary quiz-btn-prev" style="display:none;"><i class="fas fa-arrow-left"></i>Anterior
+                            </button>
+                            <button class="quiz-btn quiz-btn-primary quiz-btn-next">
+                                Siguiente<i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                        <div class="quiz-result" style="display:none;">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+                <section class="section section-alt" id="presentacion">
+                <div class="container">
+                    <div class="breadcrumbs">
+                        <div class="breadcrumb-item"><a href="#inicio">Inicio</a>
+                        </div><i class="fas fa-chevron-right breadcrumb-separator"></i>
+                        <div class="breadcrumb-item breadcrumb-current">
+                            Presentación
+                        </div><span class="reading-time"><i class="fas fa-clock"></i>5 min</span>
+                    </div>
+                    <div class="section-header">
+                        <div class="section-number">
+                            02
+                        </div>
+                        <h2 class="section-title">
+                            Presentación
+                        </h2>
+                        <p class="section-subtitle">
+                            Introducción al desarrollo móvil multiplataforma con Flutter
+                        </p>
+                    </div>
+                    <div class="content-grid">
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fab fa-flutter"></i>
+                            </div>
+                            <h3>
+                                ¿Por qué Flutter?
+                            </h3>
+                            <p>
+                                Flutter es el framework de UI multiplataforma de Google que te permite construir aplicaciones nativas para Android, iOS, Web y escritorio desde un solo código base. Sus ventajas:
+                            </p>
+                            <ul class="feature-list">
+                                <li><i class="fas fa-check"></i><strong>Hot Reload:</strong>Cambios reflejados en milisegundos
+                                </li>
+                                <li><i class="fas fa-check"></i><strong>Rendimiento nativo:</strong>Compilado a código ARM nativo
+                                </li>
+                                <li><i class="fas fa-check"></i><strong>Widgets personalizados:</strong>UI completamente personalizable
+                                </li>
+                                <li><i class="fas fa-check"></i><strong>Una sola base de código:</strong>3 plataformas con el mismo código
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fas fa-file-code"></i>
+                            </div>
+                            <h3>
+                                ¿Por qué OpenAPI?
+                            </h3>
+                            <p>
+                                OpenAPI es el estándar industrial para documentar APIs REST. Al integrarlo con Flutter:
+                            </p>
+                            <ul class="feature-list">
+                                <li><i class="fas fa-star"></i><strong>API First:</strong>El contrato define la comunicación
+                                </li>
+                                <li><i class="fas fa-star"></i><strong>Generación automática:</strong>Cliente Dart generado desde la spec
+                                </li>
+                                <li><i class="fas fa-star"></i><strong>Tipado seguro:</strong>DTOs generados con tipos de Dart
+                                </li>
+                                <li><i class="fas fa-star"></i><strong>Documentación viva:</strong>Swagger UI interactivo
+                                </li>
+                            </ul>
+                            <p>
+                                El flujo API First consiste en: diseñar la API con OpenAPI → generar el cliente Dart → consumir desde Flutter.
+                            </p>
+                        </div>
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fas fa-cubes"></i>
+                            </div>
+                            <h3>
+                                ¿Por qué Microservicios?
+                            </h3>
+                            <p>
+                                La arquitectura de microservicios permite escalar el desarrollo de forma independiente:
+                            </p>
+                            <ul class="feature-list">
+                                <li><i class="fas fa-rocket"></i><strong>Desacoplamiento:</strong>Cada servicio es independiente
+                                </li>
+                                <li><i class="fas fa-rocket"></i><strong>Escalabilidad:</strong>Escalar solo lo necesario
+                                </li>
+                                <li><i class="fas fa-rocket"></i><strong>Tecnología heterogénea:</strong>Diferentes stacks por servicio
+                                </li>
+                                <li><i class="fas fa-rocket"></i><strong>Despliegue independiente:</strong>Cada servicio se despliega solo
+                                </li>
+                            </ul>
+                            <p>
+                                Flutter se convierte en el frontend universal que consume estos microservicios, proporcionando una experiencia unificada al usuario.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="mvc-diagram">
+                        <h3 class="diagram-title">
+                            Arquitectura de la Solución
+                        </h3>
+                        <div class="diagram-container">
+                            <div class="diagram-box model">
+                                <div class="box-icon"><i class="fab fa-flutter"></i>
+                                </div>
+                                <h4>
+                                    Flutter App
+                                </h4>
+                                <p>
+                                    Frontend multiplataforma
+                                </p><span class="box-tag">Riverpod + Dio</span>
+                            </div>
+                            <div class="diagram-arrow"><i class="fas fa-arrow-right"></i>
+                            </div>
+                            <div class="diagram-box controller">
+                                <div class="box-icon"><i class="fas fa-file-code"></i>
+                                </div>
+                                <h4>
+                                    OpenAPI Spec
+                                </h4>
+                                <p>
+                                    Contrato API REST
+                                </p><span class="box-tag">openapi.yaml</span>
+                            </div>
+                            <div class="diagram-arrow"><i class="fas fa-arrow-right"></i>
+                            </div>
+                            <div class="diagram-box view">
+                                <div class="box-icon"><i class="fab fa-python"></i>
+                                </div>
+                                <h4>
+                                    Microservicio
+                                </h4>
+                                <p>
+                                    Backend desacoplado
+                                </p><span class="box-tag">FastAPI + PostgreSQL</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="learning-objectives">
+                        <h3 class="objectives-title"><i class="fas fa-bullseye"></i>Objetivos de Aprendizaje
+                        </h3>
+                        <div class="objectives-grid">
+                            <div class="objective-item">
+                                <div class="objective-icon"><i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="objective-content">
+                                    <h4>
+                                        Dominar Flutter
+                                    </h4>
+                                    <p>
+                                        Construir interfaces nativas con widgets, navegación y estado
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="objective-item">
+                                <div class="objective-icon"><i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="objective-content">
+                                    <h4>
+                                        Consumir APIs REST
+                                    </h4>
+                                    <p>
+                                        Integrar servicios web con Dio y OpenAPI Generator
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="objective-item">
+                                <div class="objective-icon"><i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="objective-content">
+                                    <h4>
+                                        Implementar Riverpod
+                                    </h4>
+                                    <p>
+                                        Manejar estado global con Riverpod de forma reactiva
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="objective-item">
+                                <div class="objective-icon"><i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="objective-content">
+                                    <h4>
+                                        Desplegar con Docker
+                                    </h4>
+                                    <p>
+                                        Contenerizar y desplegar apps en entornos de producción
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+                <section class="section" id="reflexion">
+                <div class="container">
+                    <div class="breadcrumbs">
+                        <div class="breadcrumb-item"><a href="#inicio">Inicio</a>
+                        </div><i class="fas fa-chevron-right breadcrumb-separator"></i>
+                        <div class="breadcrumb-item breadcrumb-current">
+                            Reflexión Inicial
+                        </div><span class="reading-time"><i class="fas fa-clock"></i>5 min</span>
+                    </div>
+                    <div class="section-header">
+                        <div class="section-number">
+                            03
+                        </div>
+                        <h2 class="section-title">
+                            Reflexión Inicial
+                        </h2>
+                        <p class="section-subtitle">
+                            El problema del código espagueti en apps móviles y cómo Flutter lo soluciona
+                        </p>
+                    </div>
+                    <div class="case-study">
+                        <div class="case-header"><i class="fas fa-exclamation-triangle"></i>
+                            <h3>
+                                Caso de Estudio: Apps sin Arquitectura
+                            </h3>
+                        </div>
+                        <div class="case-content">
+                            <p>
+                                Imagina que heredas una app móvil hecha con WebViews, sin separación de capas, sin manejo de estado y con llamadas HTTP dispersas por toda la UI. Al abrir el código encuentras algo así:
+                            </p>
+                            <div class="code-window bad-code">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot red"></span><span class="dot red"></span>
+                                    </div><span class="window-title"><i class="fas fa-times-circle"></i>Código Problemático</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-dart">class ProductosScreen extends StatefulWidget {
+  @override
+  State&lt;ProductosScreen&gt; createState() => _ProductosScreenState();
+}
+
+class _ProductosScreenState extends State&lt;ProductosScreen&gt; {
+  List? productos;
+  String? error;
+  bool cargando = false;
+
+  @override
+  void initState() {
+    super.initState();
+    cargarProductos();
+  }
+
+  Future&lt;void&gt; cargarProductos() async {
+    setState(() => cargando = true);
+    try {
+      final http.Client client = http.Client();
+      final response = await client.get(
+        Uri.parse('https://api.ejemplo.com/productos'),
+      );
+      if (response.statusCode == 200) {
+        final List data = json.decode(response.body);
+        setState(() {
+          productos = data;
+          cargando = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        error = e.toString();
+        cargando = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (cargando) return CircularProgressIndicator();
+    if (error != null) return Text('Error: $error');
+    return ListView.builder(
+      itemCount: productos?.length ?? 0,
+      itemBuilder: (ctx, i) => ListTile(
+        title: Text(productos![i]['nombre'] ?? ''),
+      ),
+    );
+  }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="problems-grid">
+                        <div class="problem-card danger">
+                            <div class="problem-icon"><i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h4>
+                                Problemas de Calidad
+                            </h4>
+                            <ul>
+                                <li>
+                                    URLs hardcodeadas en la UI
+                                </li>
+                                <li>
+                                    Manejo de estado manual con setState
+                                </li>
+                                <li>
+                                    Tipado inseguro (List dinámica)
+                                </li>
+                                <li>
+                                    Sin manejo de errores consistente
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="problem-card warning">
+                            <div class="problem-icon"><i class="fas fa-code-branch"></i>
+                            </div>
+                            <h4>
+                                Problemas de Mantenibilidad
+                            </h4>
+                            <ul>
+                                <li>
+                                    Lógica de negocio mezclada con UI
+                                </li>
+                                <li>
+                                    Sin inyección de dependencias
+                                </li>
+                                <li>
+                                    Difícil de probar unitariamente
+                                </li>
+                                <li>
+                                    Código duplicado en cada pantalla
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="problem-card info">
+                            <div class="problem-icon"><i class="fas fa-users"></i>
+                            </div>
+                            <h4>
+                                Problemas de Escalabilidad
+                            </h4>
+                            <ul>
+                                <li>
+                                    Sin separación de capas (UI + datos + red)
+                                </li>
+                                <li>
+                                    Sin caché de respuestas
+                                </li>
+                                <li>
+                                    Sin interceptors para tokens
+                                </li>
+                                <li>
+                                    Sin tipado de respuestas API
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="reflection-questions">
+                        <h3><i class="fas fa-question-circle"></i>Preguntas de Reflexión
+                        </h3>
+                        <div class="questions-list">
+                            <div class="question-item"><span class="question-number">1</span>
+                                <p>
+                                    ¿Qué problemas ves en tener URLs de API hardcodeadas en los widgets?
+                                </p>
+                            </div>
+                            <div class="question-item"><span class="question-number">2</span>
+                                <p>
+                                    Si necesitas agregar autenticación a todas las llamadas HTTP, ¿cuántos archivos tendrías que modificar?
+                                </p>
+                            </div>
+                            <div class="question-item"><span class="question-number">3</span>
+                                <p>
+                                    ¿Cómo harías para probar la lógica de carga de productos sin hacer llamadas reales a la API?
+                                </p>
+                            </div>
+                            <div class="question-item"><span class="question-number">4</span>
+                                <p>
+                                    ¿Qué pasa si el backend cambia el nombre de un campo? ¿Cómo detectas el error?
+                                </p>
+                            </div>
+                            <div class="question-item"><span class="question-number">5</span>
+                                <p>
+                                    ¿Cómo soluciona Riverpod + OpenAPI Generator todos estos problemas?
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+                <section class="section section-alt" id="stack">
+                <div class="container">
+                    <div class="breadcrumbs">
+                        <div class="breadcrumb-item"><a href="#inicio">Inicio</a>
+                        </div><i class="fas fa-chevron-right breadcrumb-separator"></i>
+                        <div class="breadcrumb-item breadcrumb-current">
+                            Stack Tecnológico
+                        </div><span class="reading-time"><i class="fas fa-clock"></i>3 min</span>
+                    </div>
+                    <div class="section-header">
+                        <div class="section-number">
+                            04
+                        </div>
+                        <h2 class="section-title">
+                            Stack Tecnológico
+                        </h2>
+                        <p class="section-subtitle">
+                            Herramientas y frameworks que usarás en este módulo
+                        </p>
+                    </div>
+                    <div class="content-grid">
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fab fa-flutter"></i>
+                            </div>
+                            <h3>
+                                Flutter 3.x
+                            </h3>
+                            <p>
+                                Framework de UI multiplataforma de Google. Usa Dart como lenguaje y compila a código nativo ARM para Android e iOS, y a JavaScript/WebAssembly para la web.
+                            </p>
+                            <ul class="feature-list">
+                                <li><i class="fas fa-check"></i>Widgets Material Design y Cupertino
+                                </li>
+                                <li><i class="fas fa-check"></i>Hot Reload en tiempo real
+                                </li>
+                                <li><i class="fas fa-check"></i>Rendering propio (Skia/Impeller)
+                                </li>
+                                <li><i class="fas fa-check"></i>Renderización a 60/120 FPS
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fab fa-dart"></i>
+                            </div>
+                            <h3>
+                                Dart 3.x
+                            </h3>
+                            <p>
+                                Lenguaje moderno, tipado y compilado. Soporta programación orientada a objetos, funcional y reactiva.
+                            </p>
+                            <ul class="feature-list">
+                                <li><i class="fas fa-check"></i>Null safety incorporado
+                                </li>
+                                <li><i class="fas fa-check"></i>Records y pattern matching
+                                </li>
+                                <li><i class="fas fa-check"></i>Async/await nativo
+                                </li>
+                                <li><i class="fas fa-check"></i>Compilación AOT y JIT
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fas fa-file-code"></i>
+                            </div>
+                            <h3>
+                                OpenAPI Generator
+                            </h3>
+                            <p>
+                                Herramienta que genera automáticamente clientes API, modelos DTO y documentación a partir de un archivo de especificación OpenAPI (YAML/JSON).
+                            </p>
+                            <ul class="feature-list">
+                                <li><i class="fas fa-check"></i>Genera modelos tipados en Dart
+                                </li>
+                                <li><i class="fas fa-check"></i>Cliente HTTP con Dio
+                                </li>
+                                <li><i class="fas fa-check"></i>Soporte para tokens JWT
+                                </li>
+                                <li><i class="fas fa-check"></i>Integración con build_runner
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fas fa-atom"></i>
+                            </div>
+                            <h3>
+                                Riverpod
+                            </h3>
+                            <p>
+                                Manejo de estado reactivo para Flutter. Heredero de Provider, pero más seguro, testable y flexible.
+                            </p>
+                            <ul class="feature-list">
+                                <li><i class="fas fa-check"></i>Inyección de dependencias nativa
+                                </li>
+                                <li><i class="fas fa-check"></i>Providers auto-disposables
+                                </li>
+                                <li><i class="fas fa-check"></i>Facilita el testing con override
+                                </li>
+                                <li><i class="fas fa-check"></i>Sin dependencia de BuildContext
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fas fa-plug"></i>
+                            </div>
+                            <h3>
+                                Dio
+                            </h3>
+                            <p>
+                                Cliente HTTP para Dart con interceptors, timeouts, cancelación y Transformers.
+                            </p>
+                            <ul class="feature-list">
+                                <li><i class="fas fa-check"></i>Interceptors para tokens y logging
+                                </li>
+                                <li><i class="fas fa-check"></i>Timeouts configurables
+                                </li>
+                                <li><i class="fas fa-check"></i>Cancelación de peticiones
+                                </li>
+                                <li><i class="fas fa-check"></i>Parseo automático de JSON
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fas fa-route"></i>
+                            </div>
+                            <h3>
+                                GoRouter
+                            </h3>
+                            <p>
+                                Enrutador declarativo para Flutter con soporte para rutas protegidas, redirecciones y deep linking.
+                            </p>
+                            <ul class="feature-list">
+                                <li><i class="fas fa-check"></i>Rutas tipadas y anidadas
+                                </li>
+                                <li><i class="fas fa-check"></i>Redirect condicional (auth)
+                                </li>
+                                <li><i class="fas fa-check"></i>Deep links y parámetros URL
+                                </li>
+                                <li><i class="fas fa-check"></i>Animaciones entre rutas
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+                <section class="section" id="instalacion">
+                <div class="container">
+                    <div class="breadcrumbs">
+                        <div class="breadcrumb-item"><a href="#inicio">Inicio</a>
+                        </div><i class="fas fa-chevron-right breadcrumb-separator"></i>
+                        <div class="breadcrumb-item breadcrumb-current">
+                            Instalación
+                        </div><span class="reading-time"><i class="fas fa-clock"></i>15 min</span>
+                    </div>
+                    <div class="section-header">
+                        <div class="section-number">
+                            05
+                        </div>
+                        <h2 class="section-title">
+                            1. Instalación del Entorno Flutter
+                        </h2>
+                        <p class="section-subtitle">
+                            Prepara tu máquina para desarrollar con Flutter y Dart
+                        </p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-header">
+                            <div class="step-number">
+                                01
+                            </div>
+                            <div class="step-info">
+                                <h3>
+                                    Instalar Flutter SDK
+                                </h3>
+                                <p>
+                                    Descarga e instala Flutter SDK en tu sistema operativo
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <div class="info-banner" style="background:var(--accent-light, #e3f2fd);border-left:4px solid #1389FD;"><i class="fas fa-info-circle" style="color:#1389FD;"></i>
+                                <div>
+                                    <h4>
+                                        Requisitos mínimos
+                                    </h4>
+                                    <p>
+                                        Windows 10+, 8 GB RAM, 10 GB espacio libre, Git instalado.
+                                    </p>
+                                </div>
+                            </div>
+                            <h4>
+                                Opción 1: Instalador oficial
+                            </h4>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title"><i class="fas fa-globe"></i>Navegador</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-bash"># 1. Descarga Flutter desde https://flutter.dev
+# 2. Ejecuta el instalador para Windows
+# 3. Verifica la instalación:
+flutter doctor</code></pre>
+                                </div>
+                            </div>
+                            <h4>
+                                Opción 2: Chocolatey (recomendado)
+                            </h4>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title"><i class="fas fa-terminal"></i>Terminal</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-bash">choco install flutter
+flutter doctor</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-header">
+                            <div class="step-number">
+                                02
+                            </div>
+                            <div class="step-info">
+                                <h3>
+                                    Configurar Android Studio
+                                </h3>
+                                <p>
+                                    Instala el emulador de Android y las herramientas de desarrollo
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <h4>
+                                Pasos para Android Studio
+                            </h4>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title"><i class="fas fa-terminal"></i>Terminal</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-bash"># Aceptar licencias de Android
+flutter doctor --android-licenses
+
+# Verificar que Android SDK está detectado
+flutter doctor -v</code></pre>
+                                </div>
+                            </div>
+                            <h4>
+                                Variables de entorno recomendadas
+                            </h4>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title"><i class="fas fa-file-code"></i>~\.zshrc / System PATH</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-bash"># Agregar al PATH (Windows: variables de entorno del sistema)
+export ANDROID_HOME=$HOME/AppData/Local/Android/Sdk
+export PATH=$PATH:$ANDROID_HOME/platform-tools
+export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-header">
+                            <div class="step-number">
+                                03
+                            </div>
+                            <div class="step-info">
+                                <h3>
+                                    VS Code y Extensiones
+                                </h3>
+                                <p>
+                                    Configura tu editor para productividad máxima
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <h4>
+                                Extensiones esenciales
+                            </h4>
+                            <ul class="feature-list">
+                                <li><i class="fas fa-check"></i><strong>Flutter</strong> — Soporte oficial de Dart y Flutter
+                                </li>
+                                <li><i class="fas fa-check"></i><strong>Dart</strong> — Análisis de código, autocompletado
+                                </li>
+                                <li><i class="fas fa-check"></i><strong>Error Lens</strong> — Errores inline en el editor
+                                </li>
+                                <li><i class="fas fa-check"></i><strong>Pubspec Assist</strong> — Agregar paquetes fácilmente
+                                </li>
+                                <li><i class="fas fa-check"></i><strong>Awesome Flutter Snippets</strong> — Atajos de código
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-header">
+                            <div class="step-number">
+                                04
+                            </div>
+                            <div class="step-info">
+                                <h3>
+                                    Verificar con flutter doctor
+                                </h3>
+                                <p>
+                                    Comando mágico que verifica todo tu entorno
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title"><i class="fas fa-terminal"></i>Terminal</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-bash">flutter doctor
+# Deberías ver todas las casillas en verde ✓
+# ✔ Flutter SDK
+# ✔ Android Toolchain
+# ✔ Chrome (para web)
+# ✔ Android Studio
+# ✔ VS Code</code></pre>
+                                </div>
+                            </div>
+                            <div class="info-banner" style="background:var(--accent-light, #fff3e0);border-left:4px solid #ff9800;"><i class="fas fa-lightbulb" style="color:#ff9800;"></i>
+                                <div>
+                                    <h4>
+                                        Solución de problemas comunes
+                                    </h4>
+                                    <p>
+                                        Si ves cruces ✗, lee el mensaje: suele ser licencias de Android o falta de Chocolatey. Ejecuta<code>flutter doctor --android-licenses</code>o reinstala el SDK.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-header">
+                            <div class="step-number">
+                                05
+                            </div>
+                            <div class="step-info">
+                                <h3>
+                                    Crear primer proyecto
+                                </h3>
+                                <p>
+                                    ¡Tu primera app Flutter funcionando!
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title"><i class="fas fa-terminal"></i>Terminal</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-bash">flutter create mi_app
+cd mi_app
+flutter run</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+                <section class="section section-alt" id="dart">
+                <div class="container">
+                    <div class="breadcrumbs">
+                        <div class="breadcrumb-item"><a href="#inicio">Inicio</a>
+                        </div><i class="fas fa-chevron-right breadcrumb-separator"></i>
+                        <div class="breadcrumb-item breadcrumb-current">
+                            Fundamentos de Dart
+                        </div><span class="reading-time"><i class="fas fa-clock"></i>30 min</span>
+                    </div>
+                    <div class="section-header">
+                        <div class="section-number">
+                            06
+                        </div>
+                        <h2 class="section-title">
+                            2. Fundamentos de Dart
+                        </h2>
+                        <p class="section-subtitle">
+                            Variables, tipos, funciones y async — la base de todo en Flutter
+                        </p>
+                    </div>
+                    <div class="content-grid">
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fas fa-tag"></i>
+                            </div>
+                            <h3>
+                                Variables y Tipos
+                            </h3>
+                            <p>
+                                Dart 3 tiene null safety, inferencia de tipos y tipado fuerte.
+                            </p>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title">tipos.dart</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-dart">// --- Tipos básicos con null safety ---
+int edad = 21;
+double precio = 19.99;
+String nombre = 'Flutter';
+bool activo = true;
+
+// --- Nullable (?) vs non-nullable ---
+String? apodo;       // Puede ser null
+int cantidad = 0;    // Nunca será null
+
+// --- Type inference: var, final, const ---
+var mensaje = 'Hola Dart';       // String inferido
+final url = 'api.google.com';     // Inmutable en runtime
+const pi = 3.1416;                // Constante en compilación
+
+// --- Records (Dart 3+) ---
+(String, int) usuario = ('Ana', 25);
+({String nombre, int edad}) persona = (
+  nombre: 'Luis',
+  edad: 30,
+);</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fas fa-code-branch"></i>
+                            </div>
+                            <h3>
+                                Funciones
+                            </h3>
+                            <p>
+                                Dart soporta funciones de primera clase, parámetros opcionales y expresiones lambda.
+                            </p>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title">funciones.dart</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-dart">// --- Función con parámetros posicionales ---
+double sumar(double a, double b) => a + b;
+
+// --- Parámetros nombrados (required / opcional) ---
+void saludar({required String nombre, String? apellido}) {
+  print('Hola, $nombre ${apellido ?? ''}');
+}
+
+// --- Función como parámetro (callback) ---
+void procesar(List&lt;int&gt; items, void Function(int) cb) {
+  for (final item in items) cb(item);
+}
+
+// --- Lambda / closure ---
+final duplicar = (int x) => x * 2;
+
+// --- Pattern matching (Dart 3+) ---
+String describir(dynamic valor) => switch (valor) {
+  int v      => 'Entero: $v',
+  String s   => 'Texto: $s',
+  _          => 'Desconocido',
+};</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fas fa-cube"></i>
+                            </div>
+                            <h3>
+                                Clases y Objetos
+                            </h3>
+                            <p>
+                                Programación orientada a objetos con constructores, herencia y mixins.
+                            </p>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title">clases.dart</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-dart">// --- Clase con constructor posicional ---
+class Producto {
+  final int id;
+  final String nombre;
+  final double precio;
+
+  const Producto(this.id, this.nombre, this.precio);
+
+  // Factory constructor desde Map
+  factory Producto.fromJson(Map&lt;String, dynamic&gt; json) =>
+    Producto(json['id'], json['nombre'], json['precio']);
+}
+
+// --- Herencia con super parámetros ---
+class ProductoElectronicos extends Producto {
+  final int garantiaMeses;
+
+  ProductoElectronicos(
+    super.id, super.nombre, super.precio, this.garantiaMeses);
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fas fa-sync-alt"></i>
+                            </div>
+                            <h3>
+                                Async / Await
+                            </h3>
+                            <p>
+                                Programación asíncrona con Futures, Streams y async/await.
+                            </p>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title">async.dart</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-dart">// --- Future con async/await ---
+Future&lt;String&gt; obtenerToken() async {
+  await Future.delayed(Duration(seconds: 1));
+  return 'token_jwt_123';
+}
+
+// --- Llamada secuencial ---
+Future&lt;void&gt; cargarDatos() async {
+  final token = await obtenerToken();
+  final datos = await httpGet('/productos', token);
+  print(datos);
+}
+
+// --- Streams con async* / yield ---
+Stream&lt;int&gt; contador() async* {
+  for (int i = 0; i &lt; 5; i++) {
+    await Future.delayed(Duration(seconds: 1));
+    yield i;
+  }
+}
+
+// --- Manejo de errores con try / catch ---
+Future&lt;void&gt; obtenerProductos() async {
+  try {
+    final res = await api.listar();
+    print('Productos: $res');
+  } on DioException catch (e) {
+    print('Error HTTP: ${e.response?.statusCode}');
+  } catch (e) {
+    print('Error inesperado: $e');
+  }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info-banner" style="background:var(--accent-light, #e3f2fd);border-left:4px solid #1389FD;"><i class="fas fa-info-circle" style="color:#1389FD;"></i>
+                        <div>
+                            <h4>
+                                Ejercicio rápido
+                            </h4>
+                            <p>
+                                Crea una clase<code>Usuario</code>con<code>id</code>,<code>nombre</code>y<code>email</code>. Implementa un<code>factory fromJson</code>y un método<code>toJson</code>. Luego crea una función async que simule obtener un usuario desde una API y lo imprima.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+                <section class="section" id="widgets">
+                <div class="container">
+                    <div class="breadcrumbs">
+                        <div class="breadcrumb-item"><a href="#inicio">Inicio</a>
+                        </div><i class="fas fa-chevron-right breadcrumb-separator"></i>
+                        <div class="breadcrumb-item breadcrumb-current">
+                            Widgets y UI
+                        </div><span class="reading-time"><i class="fas fa-clock"></i>30 min</span>
+                    </div>
+                    <div class="section-header">
+                        <div class="section-number">
+                            07
+                        </div>
+                        <h2 class="section-title">
+                            3. Widgets y UI
+                        </h2>
+                        <p class="section-subtitle">
+                            StatelessWidget, StatefulWidget, layouts y temas
+                        </p>
+                    </div>
+                    <div class="content-grid">
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fas fa-cube"></i>
+                            </div>
+                            <h3>
+                                StatelessWidget
+                            </h3>
+                            <p>
+                                Widget inmutable: su configuración no cambia después de construirse. Ideal para UI pura.
+                            </p>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title">stateless.dart</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-dart">class TarjetaProducto extends StatelessWidget {
+  final Producto producto;
+
+  const TarjetaProducto({super.key, required this.producto});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: ListTile(
+        leading: Icon(Icons.inventory),
+        title: Text(producto.nombre),
+        subtitle: Text('\$${producto.precio}'),
+        trailing: Icon(Icons.arrow_forward_ios),
+      ),
+    );
+  }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fas fa-sync-alt"></i>
+                            </div>
+                            <h3>
+                                StatefulWidget
+                            </h3>
+                            <p>
+                                Widget mutable que puede cambiar su apariencia con setState.
+                            </p>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title">stateful.dart</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-dart">class ContadorWidget extends StatefulWidget {
+  const ContadorWidget({super.key});
+
+  @override
+  State&lt;ContadorWidget&gt; createState() => _ContadorWidgetState();
+}
+
+class _ContadorWidgetState extends State&lt;ContadorWidget&gt; {
+  int _contador = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text('Valor: $_contador'),
+        FilledButton(
+          onPressed: () {
+            setState(() => _contador++);
+          },
+          child: Text('Incrementar'),
+        ),
+      ],
+    );
+  }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h3 style="margin-top:24px;">Widgets de Layout Esenciales</h3>
+                    <div class="content-grid">
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fas fa-columns"></i>
+                            </div>
+                            <h3>
+                                Column y Row
+                            </h3>
+                            <p>
+                                Layouts verticales y horizontales. Los pilares de toda UI en Flutter.
+                            </p>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title">column_row.dart</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-dart">Column(
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: [
+    Text('Productos'),
+    SizedBox(height: 8),
+    Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text('Nombre'),
+        Text('Precio'),
+      ],
+    ),
+  ],
+)</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fas fa-th"></i>
+                            </div>
+                            <h3>
+                                GridView y ListView
+                            </h3>
+                            <p>
+                                Listas y cuadrículas para mostrar colecciones de datos.
+                            </p>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title">listas.dart</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-dart">// ListView básico
+ListView.builder(
+  itemCount: productos.length,
+  itemBuilder: (ctx, i) => ListTile(
+    title: Text(productos[i].nombre),
+  ),
+)
+
+// GridView
+GridView.builder(
+  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+    crossAxisCount: 2,
+  ),
+  itemBuilder: (ctx, i) => TarjetaProducto(productos[i]),
+)</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+                <section class="section section-alt" id="navegacion">
+                <div class="container">
+                    <div class="breadcrumbs">
+                        <div class="breadcrumb-item"><a href="#inicio">Inicio</a>
+                        </div><i class="fas fa-chevron-right breadcrumb-separator"></i>
+                        <div class="breadcrumb-item breadcrumb-current">
+                            Navegación
+                        </div><span class="reading-time"><i class="fas fa-clock"></i>20 min</span>
+                    </div>
+                    <div class="section-header">
+                        <div class="section-number">
+                            08
+                        </div>
+                        <h2 class="section-title">
+                            4. Navegación con GoRouter
+                        </h2>
+                        <p class="section-subtitle">
+                            Rutas declarativas, redirecciones y protección de rutas
+                        </p>
+                    </div>
+                    <div class="content-grid">
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fas fa-route"></i>
+                            </div>
+                            <h3>
+                                Configuración de GoRouter
+                            </h3>
+                            <p>
+                                GoRouter reemplaza al Navigator tradicional con un enfoque declarativo.
+                            </p>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title">router.dart</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-dart">import 'package:go_router/go_router.dart';
+
+final routerProvider = Provider&lt;GoRouter&gt;((ref) {
+  final authState = ref.watch(authProvider);
+
+  return GoRouter(
+    initialLocation: '/productos',
+    redirect: (context, state) {
+      final estaLogueado = authState.estaAutenticado;
+      final login = state.matchedLocation == '/login';
+
+      if (!estaLogueado && !login) return '/login';
+      if (estaLogueado && login) return '/productos';
+      return null;
+    },
+    routes: [
+      GoRoute(
+        path: '/login',
+        builder: (_, __) => LoginScreen(),
+      ),
+      GoRoute(
+        path: '/productos',
+        builder: (_, __) => ProductosScreen(),
+        routes: [
+          GoRoute(
+            path: ':id',
+            builder: (_, state) =>
+              ProductoDetalleScreen(
+                id: int.parse(state.pathParameters['id']!),
+              ),
+          ),
+        ],
+      ),
+    ],
+  );
+});</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h3>
+                                Rutas Protegidas
+                            </h3>
+                            <p>
+                                El redirect de GoRouter evalúa cada navegación y redirige según el estado de autenticación.
+                            </p>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title">auth_guard.dart</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-dart">// Provider de autenticación
+@riverpod
+class Auth extends _$Auth {
+  @override
+  AuthState build() => AuthState.noAutenticado();
+
+  Future&lt;void&gt; login(String user, String pass) async {
+    state = const AuthState.cargando();
+    try {
+      final token = await api.login(user, pass);
+      state = AuthState.autenticado(token);
+    } catch (e) {
+      state = AuthState.error(e.toString());
+    }
+  }
+
+  void logout() => state = AuthState.noAutenticado();
+}
+
+// Uso en widgets
+class LoginScreen extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Scaffold(
+      body: Center(
+        child: FilledButton(
+          onPressed: () => ref.read(authProvider.notifier).login(
+            'admin', '1234',
+          ),
+          child: Text('Iniciar sesión'),
+        ),
+      ),
+    );
+  }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info-banner" style="background:var(--accent-light, #e8f5e9);border-left:4px solid #28a745;"><i class="fas fa-rocket" style="color:#28a745;"></i>
+                        <div>
+                            <h4>
+                                Buenas prácticas
+                            </h4>
+                            <p>
+                                Usa<code>GoRouter.refresh()</code>cuando cambie el estado de auth para forzar la re-evaluación del redirect. El Provider de Riverpod lo hace automáticamente.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+                <section class="section" id="api-rest">
+                <div class="container">
+                    <div class="breadcrumbs">
+                        <div class="breadcrumb-item"><a href="#inicio">Inicio</a>
+                        </div><i class="fas fa-chevron-right breadcrumb-separator"></i>
+                        <div class="breadcrumb-item breadcrumb-current">
+                            Consumo de APIs REST
+                        </div><span class="reading-time"><i class="fas fa-clock"></i>30 min</span>
+                    </div>
+                    <div class="section-header">
+                        <div class="section-number">
+                            09
+                        </div>
+                        <h2 class="section-title">
+                            5. Consumo de APIs REST
+                        </h2>
+                        <p class="section-subtitle">
+                            Dio, JSON, manejo de errores e interceptors
+                        </p>
+                    </div>
+                    <div class="content-grid">
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fas fa-plug"></i>
+                            </div>
+                            <h3>
+                                Configuración de Dio
+                            </h3>
+                            <p>
+                                Dio es el cliente HTTP más popular en Flutter. Soporta interceptors, timeouts y cancelación.
+                            </p>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title">api_client.dart</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-dart">final apiClientProvider = Provider&lt;Dio&gt;((ref) {
+  final dio = Dio(BaseOptions(
+    baseUrl: 'http://localhost:8000/api',
+    connectTimeout: Duration(seconds: 10),
+    receiveTimeout: Duration(seconds: 10),
+    headers: {'Content-Type': 'application/json'},
+  ));
+
+  // Interceptor para token JWT
+  dio.interceptors.add(InterceptorsWrapper(
+    onRequest: (options, handler) {
+      final token = ref.read(authProvider).token;
+      if (token != null) {
+        options.headers['Authorization'] = 'Bearer $token';
+      }
+      handler.next(options);
+    },
+    onError: (error, handler) {
+      if (error.response?.statusCode == 401) {
+        ref.read(authProvider.notifier).logout();
+      }
+      handler.next(error);
+    },
+  ));
+
+  return dio;
+});</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fas fa-exchange-alt"></i>
+                            </div>
+                            <h3>
+                                Operaciones CRUD
+                            </h3>
+                            <p>
+                                Implementa las operaciones básicas con métodos HTTP estándar.
+                            </p>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title">producto_api.dart</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-dart">class ProductoApi {
+  final Dio _dio;
+
+  ProductoApi(this._dio);
+
+  Future&lt;List&lt;Producto&gt;&gt; listar() async {
+    final res = await _dio.get('/productos');
+    return (res.data as List)
+        .map((j) => Producto.fromJson(j))
+        .toList();
+  }
+
+  Future&lt;Producto&gt; obtener(int id) async {
+    final res = await _dio.get('/productos/$id');
+    return Producto.fromJson(res.data);
+  }
+
+  Future&lt;Producto&gt; crear(ProductoCreate dto) async {
+    final res = await _dio.post('/productos', data: dto.toJson());
+    return Producto.fromJson(res.data);
+  }
+
+  Future&lt;Producto&gt; actualizar(int id, ProductoUpdate dto) async {
+    final res = await _dio.put('/productos/$id', data: dto.toJson());
+    return Producto.fromJson(res.data);
+  }
+
+  Future&lt;void&gt; eliminar(int id) async {
+    await _dio.delete('/productos/$id');
+  }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h3 style="margin-top:24px;">Manejo de Errores</h3>
+                    <div class="code-window">
+                        <div class="window-header">
+                            <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                            </div><span class="window-title">manejo_errores.dart</span>
+                            <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                            </button>
+                        </div>
+                        <div class="window-body">
+                            <pre><code class="language-dart">// Clase genérica para respuestas
+sealed class ApiResult&lt;T&gt; {
+  const ApiResult();
+}
+
+class Success&lt;T&gt; extends ApiResult&lt;T&gt; {
+  final T data;
+  const Success(this.data);
+}
+
+class Failure&lt;T&gt; extends ApiResult&lt;T&gt; {
+  final String mensaje;
+  final int? statusCode;
+  const Failure(this.mensaje, [this.statusCode]);
+}
+
+// Uso con switch expression
+switch (resultado) {
+  case Success(data: var productos):
+    mostrarLista(productos);
+  case Failure(mensaje: var msg):
+    mostrarError(msg);
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+                <section class="section section-alt" id="openapi">
+                <div class="container">
+                    <div class="breadcrumbs">
+                        <div class="breadcrumb-item"><a href="#inicio">Inicio</a>
+                        </div><i class="fas fa-chevron-right breadcrumb-separator"></i>
+                        <div class="breadcrumb-item breadcrumb-current">
+                            OpenAPI Generator
+                        </div><span class="reading-time"><i class="fas fa-clock"></i>25 min</span>
+                    </div>
+                    <div class="section-header">
+                        <div class="section-number">
+                            10
+                        </div>
+                        <h2 class="section-title">
+                            6. OpenAPI Generator para Dart
+                        </h2>
+                        <p class="section-subtitle">
+                            Genera clientes tipados desde la especificación OpenAPI
+                        </p>
+                    </div>
+                    <div class="content-grid">
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fas fa-file-code"></i>
+                            </div>
+                            <h3>
+                                ¿Qué es OpenAPI Generator?
+                            </h3>
+                            <p>
+                                OpenAPI Generator toma un archivo de especificación (YAML/JSON) y genera automáticamente:
+                            </p>
+                            <ul class="feature-list">
+                                <li><i class="fas fa-check"></i>Modelos DTO (Data Transfer Objects)
+                                </li>
+                                <li><i class="fas fa-check"></i>Cliente API con métodos tipados
+                                </li>
+                                <li><i class="fas fa-check"></i>Configuración de autenticación
+                                </li>
+                                <li><i class="fas fa-check"></i>Manejo de errores consistente
+                                </li>
+                            </ul>
+                            <p>
+                                Esto elimina errores de tipeo, campos faltantes y URLs mal escritas.
+                            </p>
+                        </div>
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fas fa-file-export"></i>
+                            </div>
+                            <h3>
+                                Generar el Cliente Dart
+                            </h3>
+                            <p>
+                                Desde la terminal, ejecuta OpenAPI Generator con el template Dart.
+                            </p>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title"><i class="fas fa-terminal"></i>Terminal</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-bash"># Usando openapi-generator-cli (Java)
+openapi-generator generate \
+  -i openapi.yaml \
+  -g dart-dio \
+  -o lib/api \
+  --additional-properties=pubName=inventario_api
+
+# O usando la imagen Docker
+docker run --rm -v ${PWD}:/local openapitools/openapi-generator-cli \
+  generate -i /local/openapi.yaml \
+  -g dart-dio -o /local/lib/api</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-header">
+                            <div class="step-number">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <div class="step-info">
+                                <h3>
+                                    Ejemplo de openapi.yaml
+                                </h3>
+                                <p>
+                                    Especificación mínima para un CRUD de productos
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title">openapi.yaml</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-yaml">openapi: "3.0.3"
+info:
+  title: API de Inventario
+  version: "1.0.0"
+paths:
+  /productos:
+    get:
+      operationId: listarProductos
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Producto"
+    post:
+      operationId: crearProducto
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductoCreate"
+components:
+  schemas:
+    Producto:
+      type: object
+      properties:
+        id: {type: integer}
+        nombre: {type: string}
+        precio: {type: number}
+    ProductoCreate:
+      type: object
+      properties:
+        nombre: {type: string}
+        precio: {type: number}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-header">
+                            <div class="step-number">
+                                <i class="fas fa-plug"></i>
+                            </div>
+                            <div class="step-info">
+                                <h3>
+                                    Usar el Cliente Generado
+                                </h3>
+                                <p>
+                                    Código tipado, sin errores de runtime por campos mal escritos
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title">usar_api.dart</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-dart">import 'package:inventario_api/inventario_api.dart';
+
+// Provider del API generada
+final productoApiProvider = Provider&lt;ProductoApi&gt;((ref) {
+  final dio = ref.watch(apiClientProvider);
+  return ProductoApi(dio);
+});
+
+// Riverpod controller usando el API generada
+@riverpod
+class Productos extends _$Productos {
+  @override
+  Future&lt;List&lt;Producto&gt;&gt; build() async {
+    final api = ref.read(productoApiProvider);
+    return api.listarProductos();
+  }
+
+  Future&lt;void&gt; crear(ProductoCreate dto) async {
+    await ref.read(productoApiProvider).crearProducto(dto);
+    ref.invalidateSelf();
+  }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+                <section class="section" id="microservicios">
+                <div class="container">
+                    <div class="breadcrumbs">
+                        <div class="breadcrumb-item"><a href="#inicio">Inicio</a>
+                        </div><i class="fas fa-chevron-right breadcrumb-separator"></i>
+                        <div class="breadcrumb-item breadcrumb-current">
+                            Microservicios
+                        </div><span class="reading-time"><i class="fas fa-clock"></i>20 min</span>
+                    </div>
+                    <div class="section-header">
+                        <div class="section-number">
+                            11
+                        </div>
+                        <h2 class="section-title">
+                            7. Microservicios
+                        </h2>
+                        <p class="section-subtitle">
+                            Arquitectura, patrones de comunicación y despliegue
+                        </p>
+                    </div>
+                    <div class="content-grid">
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fas fa-sitemap"></i>
+                            </div>
+                            <h3>
+                                Arquitectura de Microservicios
+                            </h3>
+                            <p>
+                                Cada microservicio es una unidad independiente con su propia base de datos y lógica de negocio.
+                            </p>
+                            <ul class="feature-list">
+                                <li><i class="fas fa-check"></i><strong>Servicio de Productos:</strong>CRUD de productos e inventario
+                                </li>
+                                <li><i class="fas fa-check"></i><strong>Servicio de Usuarios:</strong>Autenticación y perfiles
+                                </li>
+                                <li><i class="fas fa-check"></i><strong>Servicio de Pedidos:</strong>Órdenes y facturación
+                                </li>
+                                <li><i class="fas fa-check"></i><strong>API Gateway:</strong>Punto de entrada único
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fas fa-exchange-alt"></i>
+                            </div>
+                            <h3>
+                                Comunicación Síncrona (REST)
+                            </h3>
+                            <p>
+                                Los microservicios se comunican mediante HTTP/REST con documentación OpenAPI.
+                            </p>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title">servicio_productos.py</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-python">from fastapi import FastAPI
+from pydantic import BaseModel
+
+app = FastAPI(title="Productos Service")
+
+class Producto(BaseModel):
+    id: int
+    nombre: str
+    precio: float
+
+@app.get("/productos")
+async def listar():
+    return [Producto(id=1, nombre="Laptop", precio=999.99)]
+
+@app.get("/productos/{producto_id}")
+async def obtener(producto_id: int):
+    return Producto(id=producto_id, nombre="Laptop", precio=999.99)</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mvc-diagram">
+                        <h3 class="diagram-title">
+                            Flujo de Comunicación
+                        </h3>
+                        <div class="diagram-container">
+                            <div class="diagram-box model">
+                                <div class="box-icon"><i class="fab fa-flutter"></i>
+                                </div>
+                                <h4>
+                                    Flutter App
+                                </h4>
+                                <p>
+                                    Cliente multiplataforma
+                                </p>
+                            </div>
+                            <div class="diagram-arrow"><i class="fas fa-arrow-right"></i>
+                            </div>
+                            <div class="diagram-box controller">
+                                <div class="box-icon"><i class="fas fa-shield-alt"></i>
+                                </div>
+                                <h4>
+                                    API Gateway
+                                </h4>
+                                <p>
+                                    Enrutamiento + Auth
+                                </p>
+                            </div>
+                            <div class="diagram-arrow"><i class="fas fa-arrow-right"></i>
+                            </div>
+                            <div class="diagram-box view">
+                                <div class="box-icon"><i class="fab fa-python"></i>
+                                </div>
+                                <h4>
+                                    Microservicios
+                                </h4>
+                                <p>
+                                    Productos / Usuarios / Pedidos
+                                </p>
+                            </div>
+                        </div>
+                        <p style="text-align:center;margin-top:12px;color:var(--text-muted);font-size:0.85rem;">
+                            Cada microservicio tiene su propia DB PostgreSQL, su propio contrato OpenAPI y se despliega independientemente en Coolify.
+                        </p>
+                    </div>
+                    <div class="info-banner" style="background:var(--accent-light, #fff3e0);border-left:4px solid #ff9800;"><i class="fas fa-lightbulb" style="color:#ff9800;"></i>
+                        <div>
+                            <h4>
+                                Patrón API Gateway
+                            </h4>
+                            <p>
+                                El API Gateway es el punto de entrada único. Centraliza autenticación, rate limiting y enrutamiento. Flutter solo conoce la URL del gateway, no la de cada microservicio individual.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+                <section class="section section-alt" id="tutorial">
+                <div class="container">
+                    <div class="breadcrumbs">
+                        <div class="breadcrumb-item"><a href="#inicio">Inicio</a>
+                        </div><i class="fas fa-chevron-right breadcrumb-separator"></i>
+                        <div class="breadcrumb-item breadcrumb-current">
+                            Tutorial Práctico
+                        </div><span class="reading-time"><i class="fas fa-clock"></i>45 min</span>
+                    </div>
+                    <div class="section-header">
+                        <div class="section-number">
+                            12
+                        </div>
+                        <h2 class="section-title">
+                            8. Tutorial Práctico: App Inventario con OpenAPI
+                        </h2>
+                        <p class="section-subtitle">
+                            Construye una app Flutter completa conectada a un microservicio FastAPI
+                        </p>
+                    </div>
+                    <!-- Descargar proyecto Flutter completo -->
+                    <div class="info-banner" style="margin-bottom:2rem;background:var(--accent-light, #e8f5e9);border-left:4px solid #1389FD;">
+                        <i class="fas fa-download" style="color:#1389FD;"></i>
+                        <div>
+                            <h4>Proyecto Flutter listo para ejecutar</h4>
+                            <p>Descarga el proyecto Flutter completo con: <strong>Riverpod</strong> (estado reactivo), <strong>GoRouter</strong> (navegación), <strong>Dio</strong> (cliente HTTP con interceptors JWT), <strong>OpenAPI spec</strong> y <strong>pantallas CRUD</strong> listas para conectar al microservicio FastAPI.</p>
+                            <p style="font-size:0.9rem;opacity:0.8;">Solo necesitas: <code>flutter pub get && flutter run</code></p>
+                            <a href="downloads/flutter-inventario.zip" class="btn btn-primary" download style="margin-top:0.5rem;display:inline-flex;align-items:center;gap:0.5rem;">
+                                <i class="fas fa-download"></i> Descargar proyecto Flutter (59 KB)
+                            </a>
+                        </div>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-header">
+                            <div class="step-number">
+                                01
+                            </div>
+                            <div class="step-info">
+                                <h3>
+                                    Crear el proyecto Flutter
+                                </h3>
+                                <p>
+                                    Inicializa el proyecto con las dependencias necesarias
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title"><i class="fas fa-terminal"></i>Terminal</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-bash">flutter create inventario_app
+cd inventario_app
+code .</code></pre>
+                                </div>
+                            </div>
+                            <h4>
+                                Agregar dependencias en pubspec.yaml
+                            </h4>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title">pubspec.yaml</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-yaml">dependencies:
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ^2.5.0
+  riverpod_annotation: ^2.3.0
+  go_router: ^14.0.0
+  dio: ^5.4.0
+  json_annotation: ^4.9.0
+
+dev_dependencies:
+  build_runner: ^2.4.0
+  riverpod_generator: ^2.4.0
+  json_serializable: ^6.8.0</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-header">
+                            <div class="step-number">
+                                02
+                            </div>
+                            <div class="step-info">
+                                <h3>
+                                    Configurar la API con OpenAPI Generator
+                                </h3>
+                                <p>
+                                    Genera el cliente Dart desde la especificación OpenAPI
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <div class="info-banner" style="background:var(--accent-light, #e8f5e9);border-left:4px solid #28a745;"><i class="fas fa-rocket" style="color:#28a745;"></i>
+                                <div>
+                                    <h4>
+                                        Ya tienes la API funcionando
+                                    </h4>
+                                    <p>
+                                        Si completaste el módulo de FastAPI, ya tienes el microservicio de inventario funcionando en<code>http://localhost:8000</code>. La spec OpenAPI está disponible en<code>http://localhost:8000/openapi.json</code>.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title"><i class="fas fa-terminal"></i>Terminal</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-bash"># Descargar la spec OpenAPI del microservicio
+curl http://localhost:8000/openapi.json > openapi.json
+
+# Generar el cliente Dart
+openapi-generator generate \
+  -i openapi.json \
+  -g dart-dio \
+  -o lib/api \
+  --additional-properties=pubName=inventario_api
+
+# Agregar al pubspec.yaml
+dependencies:
+  inventario_api:
+    path: lib/api</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-header">
+                            <div class="step-number">
+                                03
+                            </div>
+                            <div class="step-info">
+                                <h3>
+                                    Crear la pantalla de listado
+                                </h3>
+                                <p>
+                                    Muestra los productos usando Riverpod + el API generado
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title">productos_screen.dart</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-dart">import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:inventario_api/inventario_api.dart';
+
+final productoApiProvider = Provider((ref) {
+  final dio = Dio(BaseOptions(baseUrl: 'http://localhost:8000'));
+  return ProductoApi(dio);
+});
+
+@riverpod
+class ProductosController extends _$ProductosController {
+  @override
+  Future&lt;List&lt;Producto&gt;&gt; build() async {
+    final api = ref.read(productoApiProvider);
+    return api.listarProductos();
+  }
+}
+
+class ProductosScreen extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final productos = ref.watch(productosControllerProvider);
+    return Scaffold(
+      appBar: AppBar(title: Text('Inventario')),
+      body: productos.when(
+        data: (items) => ListView.builder(
+          itemCount: items.length,
+          itemBuilder: (_, i) => ListTile(
+            title: Text(items[i].nombre ?? ''),
+            subtitle: Text('\$${items[i].precio}'),
+          ),
+        ),
+        error: (e, _) => Center(child: Text('Error: $e')),
+        loading: () => Center(child: CircularProgressIndicator()),
+      ),
+    );
+  }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-header">
+                            <div class="step-number">
+                                04
+                            </div>
+                            <div class="step-info">
+                                <h3>
+                                    Probar la app
+                                </h3>
+                                <p>
+                                    Ejecuta en emulador o dispositivo físico
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title"><i class="fas fa-terminal"></i>Terminal</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-bash"># Listar dispositivos disponibles
+flutter devices
+
+# Ejecutar en el emulador
+flutter run
+
+# Hot reload automático con 'r' en la terminal</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+                <section class="section" id="ejercicios">
+                <div class="container">
+                    <div class="breadcrumbs">
+                        <div class="breadcrumb-item"><a href="#inicio">Inicio</a>
+                        </div><i class="fas fa-chevron-right breadcrumb-separator"></i>
+                        <div class="breadcrumb-item breadcrumb-current">
+                            Ejercicios
+                        </div><span class="reading-time"><i class="fas fa-clock"></i>2 horas</span>
+                    </div>
+                    <div class="section-header">
+                        <div class="section-number">
+                            13
+                        </div>
+                        <h2 class="section-title">
+                            Ejercicios de Transferencia
+                        </h2>
+                        <p class="section-subtitle">
+                            Ejercicios retadores para demostrar tu dominio de Flutter + OpenAPI
+                        </p>
+                    </div>
+                    <div class="exercise-grid">
+                        <div class="exercise-card">
+                            <div class="exercise-header">
+                                <div class="exercise-number">
+                                    1
+                                </div>
+                                <div class="exercise-difficulty"><span class="difficulty-badge medium">Intermedio</span>
+                                </div>
+                            </div>
+                            <h3>
+                                Búsqueda en Tiempo Real
+                            </h3>
+                            <p>
+                                Agrega un buscador que filtre productos mientras el usuario escribe, consumiendo el endpoint de búsqueda del microservicio.
+                            </p>
+                            <h4>
+                                Requisitos:
+                            </h4>
+                            <ul class="requirement-list">
+                                <li><i class="fas fa-check"></i>Campo de texto con debounce de 300ms
+                                </li>
+                                <li><i class="fas fa-check"></i>Llamada al endpoint<code>GET /productos?q=term</code>
+                                </li>
+                                <li><i class="fas fa-check"></i>Mostrar resultados en un ListView
+                                </li>
+                                <li><i class="fas fa-check"></i>Indicador de carga durante la búsqueda
+                                </li>
+                                <li><i class="fas fa-check"></i>Manejar errores de red
+                                </li>
+                                <li><i class="fas fa-star"></i><strong>Bonus:</strong>Filtros por categoría y rango de precios
+                                </li>
+                            </ul>
+                            <div class="exercise-hint"><i class="fas fa-lightbulb"></i>
+                                <p><strong>Pista:</strong>Usa<code>Timer? _debounce</code>para implementar el debounce. Cancela el timer anterior en cada<code>onChanged</code>.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="exercise-card">
+                            <div class="exercise-header">
+                                <div class="exercise-number">
+                                    2
+                                </div>
+                                <div class="exercise-difficulty"><span class="difficulty-badge hard">Avanzado</span>
+                                </div>
+                            </div>
+                            <h3>
+                                Autenticación JWT
+                            </h3>
+                            <p>
+                                Implementa login con JWT, almacenamiento seguro del token y renovación automática.
+                            </p>
+                            <h4>
+                                Requisitos:
+                            </h4>
+                            <ul class="requirement-list">
+                                <li><i class="fas fa-check"></i>Pantalla de login con usuario y contraseña
+                                </li>
+                                <li><i class="fas fa-check"></i>Llamada a<code>POST /auth/login</code>
+                                </li>
+                                <li><i class="fas fa-check"></i>Almacenar token con<code>flutter_secure_storage</code>
+                                </li>
+                                <li><i class="fas fa-check"></i>Interceptor de Dio que agregue el token
+                                </li>
+                                <li><i class="fas fa-check"></i>Redirección automática al login si 401
+                                </li>
+                                <li><i class="fas fa-star"></i><strong>Bonus:</strong>Refresh token automático
+                                </li>
+                            </ul>
+                            <div class="exercise-hint"><i class="fas fa-lightbulb"></i>
+                                <p><strong>Pista:</strong>Usa<code>dio.interceptors.add(QueuedInterceptorsWrapper)</code>y maneja el 401 en<code>onError</code>.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="exercise-card">
+                            <div class="exercise-header">
+                                <div class="exercise-number">
+                                    3
+                                </div>
+                                <div class="exercise-difficulty"><span class="difficulty-badge hard">Avanzado</span>
+                                </div>
+                            </div>
+                            <h3>
+                                App Multi-servicio
+                            </h3>
+                            <p>
+                                Conecta tu app Flutter a dos microservicios diferentes (Productos y Pedidos) usando un API Gateway.
+                            </p>
+                            <h4>
+                                Requisitos:
+                            </h4>
+                            <ul class="requirement-list">
+                                <li><i class="fas fa-check"></i>Configurar dos APIs generadas con OpenAPI
+                                </li>
+                                <li><i class="fas fa-check"></i>Pantalla de productos con opción "Agregar al carrito"
+                                </li>
+                                <li><i class="fas fa-check"></i>Pantalla de carrito que consuma el servicio de pedidos
+                                </li>
+                                <li><i class="fas fa-check"></i>Estado global con Riverpod para el carrito
+                                </li>
+                                <li><i class="fas fa-check"></i>Confirmación de pedido con número de orden
+                                </li>
+                                <li><i class="fas fa-star"></i><strong>Bonus:</strong>Historial de pedidos con scroll infinito
+                                </li>
+                            </ul>
+                            <div class="exercise-hint"><i class="fas fa-lightbulb"></i>
+                                <p><strong>Pista:</strong>Usa<code>Gateway /api/productos</code>y<code>Gateway /api/pedidos</code>. Configura el baseUrl del Dio al gateway.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+                <section class="section section-alt" id="evidencias">
+                <div class="container">
+                    <div class="breadcrumbs">
+                        <div class="breadcrumb-item"><a href="#inicio">Inicio</a>
+                        </div><i class="fas fa-chevron-right breadcrumb-separator"></i>
+                        <div class="breadcrumb-item breadcrumb-current">
+                            Evidencias
+                        </div><span class="reading-time"><i class="fas fa-clock"></i>10 min</span>
+                    </div>
+                    <div class="section-header">
+                        <div class="section-number">
+                            14
+                        </div>
+                        <h2 class="section-title">
+                            Evidencias de Aprendizaje
+                        </h2>
+                        <p class="section-subtitle">
+                            Demuestra que has alcanzado los resultados de aprendizaje
+                        </p>
+                    </div>
+                    <div class="evidence-grid">
+                        <div class="evidence-card">
+                            <div class="evidence-icon"><i class="fas fa-file-alt"></i>
+                            </div>
+                            <h3>
+                                Evidencia de Conocimiento
+                            </h3>
+                            <p>
+                                Cuestionario escrito individual
+                            </p>
+                            <ul>
+                                <li>
+                                    Explicar la arquitectura de widgets en Flutter
+                                </li>
+                                <li>
+                                    Diferencia entre StatelessWidget y StatefulWidget
+                                </li>
+                                <li>
+                                    Manejo de estado con Riverpod
+                                </li>
+                                <li>
+                                    Rol de OpenAPI Generator en el flujo API First
+                                </li>
+                                <li>
+                                    Ventajas de usar Dio vs http.Client
+                                </li>
+                                <li>
+                                    Flujo completo: Widget → Provider → API → Microservicio
+                                </li>
+                                <li>
+                                    GoRouter y rutas protegidas
+                                </li>
+                                <li>
+                                    Arquitectura de microservicios vs monolito
+                                </li>
+                            </ul>
+                            <div class="evidence-weight">
+                                <span class="weight-badge">Peso: 30%</span>
+                            </div>
+                        </div>
+                        <div class="evidence-card">
+                            <div class="evidence-icon"><i class="fas fa-code"></i>
+                            </div>
+                            <h3>
+                                Evidencia de Desempeño
+                            </h3>
+                            <p>
+                                Proyecto práctico individual
+                            </p>
+                            <ul>
+                                <li>
+                                    App Flutter funcional conectada a un microservicio
+                                </li>
+                                <li>
+                                    Cliente generado con OpenAPI Generator
+                                </li>
+                                <li>
+                                    Mínimo 3 pantallas con GoRouter
+                                </li>
+                                <li>
+                                    Manejo de estado con Riverpod
+                                </li>
+                                <li>
+                                    Autenticación JWT implementada
+                                </li>
+                                <li>
+                                    Operaciones CRUD completas
+                                </li>
+                                <li>
+                                    Manejo de errores y carga
+                                </li>
+                            </ul>
+                            <div class="evidence-weight">
+                                <span class="weight-badge">Peso: 50%</span>
+                            </div>
+                        </div>
+                        <div class="evidence-card">
+                            <div class="evidence-icon"><i class="fas fa-users"></i>
+                            </div>
+                            <h3>
+                                Evidencia de Producto
+                            </h3>
+                            <p>
+                                Proyecto colaborativo grupal
+                            </p>
+                            <ul>
+                                <li>
+                                    Repositorio GitHub con README y documentación
+                                </li>
+                                <li>
+                                    Mínimo 2 microservicios desplegados en Coolify
+                                </li>
+                                <li>
+                                    API Gateway configurado
+                                </li>
+                                <li>
+                                    OpenAPI spec publicada y versionada
+                                </li>
+                                <li>
+                                    App Flutter publicada en TestFlight/APK
+                                </li>
+                                <li>
+                                    Demo funcional con datos reales
+                                </li>
+                                <li>
+                                    Presentación técnica del proyecto
+                                </li>
+                            </ul>
+                            <div class="evidence-weight">
+                                <span class="weight-badge">Peso: 20%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info-banner" style="background:var(--accent-light, #e3f2fd);border-left:4px solid #1389FD;"><i class="fas fa-info-circle" style="color:#1389FD;"></i>
+                        <div>
+                            <h4>
+                                Criterios de Evaluación
+                            </h4>
+                            <p>
+                                Cada evidencia se evalúa con:<strong>Bajo (1.0-2.9)</strong>,<strong>Básico (3.0-3.9)</strong>,<strong>Alto (4.0-4.5)</strong>y<strong>Superior (4.6-5.0)</strong>. La nota final es el promedio ponderado. Para aprobar necesitas mínimo 3.0 en cada evidencia.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
 </main>
-<!-- MISSING: ../../../shared/_footer.html -->
-<!-- MISSING: ../../../shared/_scroll-top.html -->
-<!-- MISSING: ../../../shared/_scripts.html -->
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-section">
+                        <h4>
+                            SENA - ADSO
+                        </h4>
+                        <p>
+                            Servicio Nacional de Aprendizaje
+                        </p>
+                        <p>
+                            Tecnólogo en Análisis y Desarrollo de Software
+                        </p>
+                    </div>
+                    <div class="footer-section">
+                        <h4>
+                            Recursos
+                        </h4>
+                        <ul>
+                            <li><a href="https://jakarta.ee/" target="_blank">Jakarta EE</a>
+                            </li>
+                            <li><a href="https://docs.oracle.com/en/java/" target="_blank">Documentación JDK 21</a>
+                            </li>
+                            <li><a href="https://www.postgresql.org/docs/" target="_blank">PostgreSQL Docs</a>
+                            </li>
+                            <li><a href="https://tomcat.apache.org/" target="_blank">Apache Tomcat</a>
+                            </li>
+                            <li><a href="https://fastapi.tiangolo.com/" target="_blank">FastAPI Docs</a>
+                            </li>
+                            <li><a href="https://react.dev/" target="_blank">React 19 Docs</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h4>
+                            Ejemplos y Ejercicios
+                        </h4>
+                        <ul>
+                            <li><a href="../recursos/fastapi-inventario/" target="_blank"><i class="fab fa-python"></i>API FastAPI (Backend)</a>
+                            </li>
+                            <li><a href="../recursos/frontend-inventario/" target="_blank"><i class="fab fa-react"></i>Frontend React (SPA)</a>
+                            </li>
+                            <li><a href="../recursos/flutter-inventario/" target="_blank"><i class="fab fa-flutter"></i>App Flutter (Móvil)</a>
+                            </li>
+                            <li><a href="simuladores.html"><i class="fas fa-flask"></i>Simuladores Interactivos</a>
+                            </li>
+                            <li><a href="../recursos/sql/inventario_db.sql" target="_blank"><i class="fas fa-database"></i>Script BD (SQL)</a>
+                            </li>
+                            <li><a href="../recursos/docker/" target="_blank"><i class="fab fa-docker"></i>Configuración Docker</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h4>
+                            Contacto
+                        </h4>
+                        <p><i class="fas fa-envelope"></i>adso@sena.edu.co
+                        </p>
+                        <p><i class="fas fa-globe"></i>www.sena.edu.co
+                        </p>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>
+                        &copy; 2026 SENA - ADSO. Guía de Aprendizaje Flutter + OpenAPI.
+                    </p>
+                    <p>
+                        Versión 3.0 | Junio 2026
+                    </p>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Botón scroll to top -->
+        <button class="scroll-top-btn" id="scrollTopBtn" aria-label="Volver arriba"><i class="fas fa-arrow-up"></i>
+        </button>
+        <!-- Botón salir modo lectura -->
+        <button class="reading-mode-exit-btn" id="readingModeExitBtn" title="Salir del modo lectura"><i class="fas fa-times"></i>
+        </button>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-clike.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-dart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script>!function(){if("undefined"!=typeof Prism&&Prism.languages.markup){Prism.languages.jsp=Prism.languages.extend("markup",{});Prism.languages.insertBefore("jsp","prolog",{"jsp-comment":{pattern:/<%--[\s\S]*?--%>/,greedy:!0,alias:"comment"}}),Prism.languages.insertBefore("jsp","doctype",{"jsp-directive":{pattern:/<%@[\s\S]*?%>/,greedy:!0,inside:{"jsp-tag":{pattern:/<%@|%>/,alias:"punctuation"},keyword:/\b(?:page|include|taglib|attribute|variable)\b/i,string:/(["'])(?:\\.|(?!\1)[^\\\r\n])*\1/,"rest":Prism.languages.java}}}),Prism.languages.insertBefore("jsp","tag",{"jsp-scriptlet":{pattern:/<%!?[\s\S]*?%>/,greedy:!0,inside:{"jsp-tag":{pattern:/<%!?|%>/,alias:"punctuation"},"rest":Prism.languages.java}},"jsp-expression":{pattern:/\$\{[\s\S]*?\}/,greedy:!0,inside:{"el-punctuation":{pattern:/^\$\{|\}$/,alias:"punctuation"},"rest":Prism.languages.java}},"jsp-el-expression":{pattern:/#\{[\s\S]*?\}/,greedy:!0,inside:{"el-punctuation":{pattern:/^#\{|\}$/,alias:"punctuation"},"rest":Prism.languages.java}}})}}();</script>
+    <script src="js/main.js?v=2.5"></script>
+    </body>
+</html>

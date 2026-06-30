@@ -1,0 +1,190 @@
+            <section class="section" id="reflexion">
+                <div class="container">
+                    <div class="breadcrumbs">
+                        <div class="breadcrumb-item"><a href="#inicio">Inicio</a>
+                        </div><i class="fas fa-chevron-right breadcrumb-separator"></i>
+                        <div class="breadcrumb-item breadcrumb-current">
+                            Reflexión Inicial
+                        </div><span class="reading-time"><i class="fas fa-clock"></i>5 min</span>
+                    </div>
+                    <div class="section-header">
+                        <div class="section-number">
+                            03
+                        </div>
+                        <h2 class="section-title">
+                            Reflexión Inicial
+                        </h2>
+                        <p class="section-subtitle">
+                            El problema del código espagueti en apps móviles y cómo Flutter lo soluciona
+                        </p>
+                    </div>
+                    <div class="case-study">
+                        <div class="case-header"><i class="fas fa-exclamation-triangle"></i>
+                            <h3>
+                                Caso de Estudio: Apps sin Arquitectura
+                            </h3>
+                        </div>
+                        <div class="case-content">
+                            <p>
+                                Imagina que heredas una app móvil hecha con WebViews, sin separación de capas, sin manejo de estado y con llamadas HTTP dispersas por toda la UI. Al abrir el código encuentras algo así:
+                            </p>
+                            <div class="code-window bad-code">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot red"></span><span class="dot red"></span>
+                                    </div><span class="window-title"><i class="fas fa-times-circle"></i>Código Problemático</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-dart">class ProductosScreen extends StatefulWidget {
+  @override
+  State&lt;ProductosScreen&gt; createState() => _ProductosScreenState();
+}
+
+class _ProductosScreenState extends State&lt;ProductosScreen&gt; {
+  List? productos;
+  String? error;
+  bool cargando = false;
+
+  @override
+  void initState() {
+    super.initState();
+    cargarProductos();
+  }
+
+  Future&lt;void&gt; cargarProductos() async {
+    setState(() => cargando = true);
+    try {
+      final http.Client client = http.Client();
+      final response = await client.get(
+        Uri.parse('https://api.ejemplo.com/productos'),
+      );
+      if (response.statusCode == 200) {
+        final List data = json.decode(response.body);
+        setState(() {
+          productos = data;
+          cargando = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        error = e.toString();
+        cargando = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (cargando) return CircularProgressIndicator();
+    if (error != null) return Text('Error: $error');
+    return ListView.builder(
+      itemCount: productos?.length ?? 0,
+      itemBuilder: (ctx, i) => ListTile(
+        title: Text(productos![i]['nombre'] ?? ''),
+      ),
+    );
+  }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="problems-grid">
+                        <div class="problem-card danger">
+                            <div class="problem-icon"><i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h4>
+                                Problemas de Calidad
+                            </h4>
+                            <ul>
+                                <li>
+                                    URLs hardcodeadas en la UI
+                                </li>
+                                <li>
+                                    Manejo de estado manual con setState
+                                </li>
+                                <li>
+                                    Tipado inseguro (List dinámica)
+                                </li>
+                                <li>
+                                    Sin manejo de errores consistente
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="problem-card warning">
+                            <div class="problem-icon"><i class="fas fa-code-branch"></i>
+                            </div>
+                            <h4>
+                                Problemas de Mantenibilidad
+                            </h4>
+                            <ul>
+                                <li>
+                                    Lógica de negocio mezclada con UI
+                                </li>
+                                <li>
+                                    Sin inyección de dependencias
+                                </li>
+                                <li>
+                                    Difícil de probar unitariamente
+                                </li>
+                                <li>
+                                    Código duplicado en cada pantalla
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="problem-card info">
+                            <div class="problem-icon"><i class="fas fa-users"></i>
+                            </div>
+                            <h4>
+                                Problemas de Escalabilidad
+                            </h4>
+                            <ul>
+                                <li>
+                                    Sin separación de capas (UI + datos + red)
+                                </li>
+                                <li>
+                                    Sin caché de respuestas
+                                </li>
+                                <li>
+                                    Sin interceptors para tokens
+                                </li>
+                                <li>
+                                    Sin tipado de respuestas API
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="reflection-questions">
+                        <h3><i class="fas fa-question-circle"></i>Preguntas de Reflexión
+                        </h3>
+                        <div class="questions-list">
+                            <div class="question-item"><span class="question-number">1</span>
+                                <p>
+                                    ¿Qué problemas ves en tener URLs de API hardcodeadas en los widgets?
+                                </p>
+                            </div>
+                            <div class="question-item"><span class="question-number">2</span>
+                                <p>
+                                    Si necesitas agregar autenticación a todas las llamadas HTTP, ¿cuántos archivos tendrías que modificar?
+                                </p>
+                            </div>
+                            <div class="question-item"><span class="question-number">3</span>
+                                <p>
+                                    ¿Cómo harías para probar la lógica de carga de productos sin hacer llamadas reales a la API?
+                                </p>
+                            </div>
+                            <div class="question-item"><span class="question-number">4</span>
+                                <p>
+                                    ¿Qué pasa si el backend cambia el nombre de un campo? ¿Cómo detectas el error?
+                                </p>
+                            </div>
+                            <div class="question-item"><span class="question-number">5</span>
+                                <p>
+                                    ¿Cómo soluciona Riverpod + OpenAPI Generator todos estos problemas?
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>

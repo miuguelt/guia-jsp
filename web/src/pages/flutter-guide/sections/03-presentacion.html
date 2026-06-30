@@ -1,0 +1,185 @@
+            <section class="section section-alt" id="presentacion">
+                <div class="container">
+                    <div class="breadcrumbs">
+                        <div class="breadcrumb-item"><a href="#inicio">Inicio</a>
+                        </div><i class="fas fa-chevron-right breadcrumb-separator"></i>
+                        <div class="breadcrumb-item breadcrumb-current">
+                            Presentación
+                        </div><span class="reading-time"><i class="fas fa-clock"></i>5 min</span>
+                    </div>
+                    <div class="section-header">
+                        <div class="section-number">
+                            02
+                        </div>
+                        <h2 class="section-title">
+                            Presentación
+                        </h2>
+                        <p class="section-subtitle">
+                            Introducción al desarrollo móvil multiplataforma con Flutter
+                        </p>
+                    </div>
+                    <div class="content-grid">
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fab fa-flutter"></i>
+                            </div>
+                            <h3>
+                                ¿Por qué Flutter?
+                            </h3>
+                            <p>
+                                Flutter es el framework de UI multiplataforma de Google que te permite construir aplicaciones nativas para Android, iOS, Web y escritorio desde un solo código base. Sus ventajas:
+                            </p>
+                            <ul class="feature-list">
+                                <li><i class="fas fa-check"></i><strong>Hot Reload:</strong>Cambios reflejados en milisegundos
+                                </li>
+                                <li><i class="fas fa-check"></i><strong>Rendimiento nativo:</strong>Compilado a código ARM nativo
+                                </li>
+                                <li><i class="fas fa-check"></i><strong>Widgets personalizados:</strong>UI completamente personalizable
+                                </li>
+                                <li><i class="fas fa-check"></i><strong>Una sola base de código:</strong>3 plataformas con el mismo código
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fas fa-file-code"></i>
+                            </div>
+                            <h3>
+                                ¿Por qué OpenAPI?
+                            </h3>
+                            <p>
+                                OpenAPI es el estándar industrial para documentar APIs REST. Al integrarlo con Flutter:
+                            </p>
+                            <ul class="feature-list">
+                                <li><i class="fas fa-star"></i><strong>API First:</strong>El contrato define la comunicación
+                                </li>
+                                <li><i class="fas fa-star"></i><strong>Generación automática:</strong>Cliente Dart generado desde la spec
+                                </li>
+                                <li><i class="fas fa-star"></i><strong>Tipado seguro:</strong>DTOs generados con tipos de Dart
+                                </li>
+                                <li><i class="fas fa-star"></i><strong>Documentación viva:</strong>Swagger UI interactivo
+                                </li>
+                            </ul>
+                            <p>
+                                El flujo API First consiste en: diseñar la API con OpenAPI → generar el cliente Dart → consumir desde Flutter.
+                            </p>
+                        </div>
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fas fa-cubes"></i>
+                            </div>
+                            <h3>
+                                ¿Por qué Microservicios?
+                            </h3>
+                            <p>
+                                La arquitectura de microservicios permite escalar el desarrollo de forma independiente:
+                            </p>
+                            <ul class="feature-list">
+                                <li><i class="fas fa-rocket"></i><strong>Desacoplamiento:</strong>Cada servicio es independiente
+                                </li>
+                                <li><i class="fas fa-rocket"></i><strong>Escalabilidad:</strong>Escalar solo lo necesario
+                                </li>
+                                <li><i class="fas fa-rocket"></i><strong>Tecnología heterogénea:</strong>Diferentes stacks por servicio
+                                </li>
+                                <li><i class="fas fa-rocket"></i><strong>Despliegue independiente:</strong>Cada servicio se despliega solo
+                                </li>
+                            </ul>
+                            <p>
+                                Flutter se convierte en el frontend universal que consume estos microservicios, proporcionando una experiencia unificada al usuario.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="mvc-diagram">
+                        <h3 class="diagram-title">
+                            Arquitectura de la Solución
+                        </h3>
+                        <div class="diagram-container">
+                            <div class="diagram-box model">
+                                <div class="box-icon"><i class="fab fa-flutter"></i>
+                                </div>
+                                <h4>
+                                    Flutter App
+                                </h4>
+                                <p>
+                                    Frontend multiplataforma
+                                </p><span class="box-tag">Riverpod + Dio</span>
+                            </div>
+                            <div class="diagram-arrow"><i class="fas fa-arrow-right"></i>
+                            </div>
+                            <div class="diagram-box controller">
+                                <div class="box-icon"><i class="fas fa-file-code"></i>
+                                </div>
+                                <h4>
+                                    OpenAPI Spec
+                                </h4>
+                                <p>
+                                    Contrato API REST
+                                </p><span class="box-tag">openapi.yaml</span>
+                            </div>
+                            <div class="diagram-arrow"><i class="fas fa-arrow-right"></i>
+                            </div>
+                            <div class="diagram-box view">
+                                <div class="box-icon"><i class="fab fa-python"></i>
+                                </div>
+                                <h4>
+                                    Microservicio
+                                </h4>
+                                <p>
+                                    Backend desacoplado
+                                </p><span class="box-tag">FastAPI + PostgreSQL</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="learning-objectives">
+                        <h3 class="objectives-title"><i class="fas fa-bullseye"></i>Objetivos de Aprendizaje
+                        </h3>
+                        <div class="objectives-grid">
+                            <div class="objective-item">
+                                <div class="objective-icon"><i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="objective-content">
+                                    <h4>
+                                        Dominar Flutter
+                                    </h4>
+                                    <p>
+                                        Construir interfaces nativas con widgets, navegación y estado
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="objective-item">
+                                <div class="objective-icon"><i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="objective-content">
+                                    <h4>
+                                        Consumir APIs REST
+                                    </h4>
+                                    <p>
+                                        Integrar servicios web con Dio y OpenAPI Generator
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="objective-item">
+                                <div class="objective-icon"><i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="objective-content">
+                                    <h4>
+                                        Implementar Riverpod
+                                    </h4>
+                                    <p>
+                                        Manejar estado global con Riverpod de forma reactiva
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="objective-item">
+                                <div class="objective-icon"><i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="objective-content">
+                                    <h4>
+                                        Desplegar con Docker
+                                    </h4>
+                                    <p>
+                                        Contenerizar y desplegar apps en entornos de producción
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>

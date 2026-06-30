@@ -1,0 +1,156 @@
+            <section class="section" id="api-rest">
+                <div class="container">
+                    <div class="breadcrumbs">
+                        <div class="breadcrumb-item"><a href="#inicio">Inicio</a>
+                        </div><i class="fas fa-chevron-right breadcrumb-separator"></i>
+                        <div class="breadcrumb-item breadcrumb-current">
+                            Consumo de APIs REST
+                        </div><span class="reading-time"><i class="fas fa-clock"></i>30 min</span>
+                    </div>
+                    <div class="section-header">
+                        <div class="section-number">
+                            09
+                        </div>
+                        <h2 class="section-title">
+                            5. Consumo de APIs REST
+                        </h2>
+                        <p class="section-subtitle">
+                            Dio, JSON, manejo de errores e interceptors
+                        </p>
+                    </div>
+                    <div class="content-grid">
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fas fa-plug"></i>
+                            </div>
+                            <h3>
+                                Configuración de Dio
+                            </h3>
+                            <p>
+                                Dio es el cliente HTTP más popular en Flutter. Soporta interceptors, timeouts y cancelación.
+                            </p>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title">api_client.dart</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-dart">final apiClientProvider = Provider&lt;Dio&gt;((ref) {
+  final dio = Dio(BaseOptions(
+    baseUrl: 'http://localhost:8000/api',
+    connectTimeout: Duration(seconds: 10),
+    receiveTimeout: Duration(seconds: 10),
+    headers: {'Content-Type': 'application/json'},
+  ));
+
+  // Interceptor para token JWT
+  dio.interceptors.add(InterceptorsWrapper(
+    onRequest: (options, handler) {
+      final token = ref.read(authProvider).token;
+      if (token != null) {
+        options.headers['Authorization'] = 'Bearer $token';
+      }
+      handler.next(options);
+    },
+    onError: (error, handler) {
+      if (error.response?.statusCode == 401) {
+        ref.read(authProvider.notifier).logout();
+      }
+      handler.next(error);
+    },
+  ));
+
+  return dio;
+});</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fas fa-exchange-alt"></i>
+                            </div>
+                            <h3>
+                                Operaciones CRUD
+                            </h3>
+                            <p>
+                                Implementa las operaciones básicas con métodos HTTP estándar.
+                            </p>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title">producto_api.dart</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-dart">class ProductoApi {
+  final Dio _dio;
+
+  ProductoApi(this._dio);
+
+  Future&lt;List&lt;Producto&gt;&gt; listar() async {
+    final res = await _dio.get('/productos');
+    return (res.data as List)
+        .map((j) => Producto.fromJson(j))
+        .toList();
+  }
+
+  Future&lt;Producto&gt; obtener(int id) async {
+    final res = await _dio.get('/productos/$id');
+    return Producto.fromJson(res.data);
+  }
+
+  Future&lt;Producto&gt; crear(ProductoCreate dto) async {
+    final res = await _dio.post('/productos', data: dto.toJson());
+    return Producto.fromJson(res.data);
+  }
+
+  Future&lt;Producto&gt; actualizar(int id, ProductoUpdate dto) async {
+    final res = await _dio.put('/productos/$id', data: dto.toJson());
+    return Producto.fromJson(res.data);
+  }
+
+  Future&lt;void&gt; eliminar(int id) async {
+    await _dio.delete('/productos/$id');
+  }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h3 style="margin-top:24px;">Manejo de Errores</h3>
+                    <div class="code-window">
+                        <div class="window-header">
+                            <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                            </div><span class="window-title">manejo_errores.dart</span>
+                            <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                            </button>
+                        </div>
+                        <div class="window-body">
+                            <pre><code class="language-dart">// Clase genérica para respuestas
+sealed class ApiResult&lt;T&gt; {
+  const ApiResult();
+}
+
+class Success&lt;T&gt; extends ApiResult&lt;T&gt; {
+  final T data;
+  const Success(this.data);
+}
+
+class Failure&lt;T&gt; extends ApiResult&lt;T&gt; {
+  final String mensaje;
+  final int? statusCode;
+  const Failure(this.mensaje, [this.statusCode]);
+}
+
+// Uso con switch expression
+switch (resultado) {
+  case Success(data: var productos):
+    mostrarLista(productos);
+  case Failure(mensaje: var msg):
+    mostrarError(msg);
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>

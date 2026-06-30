@@ -1,0 +1,132 @@
+            <section class="section" id="ejercicios">
+                <div class="container">
+                    <div class="breadcrumbs">
+                        <div class="breadcrumb-item"><a href="#inicio">Inicio</a>
+                        </div><i class="fas fa-chevron-right breadcrumb-separator"></i>
+                        <div class="breadcrumb-item breadcrumb-current">
+                            Ejercicios
+                        </div><span class="reading-time"><i class="fas fa-clock"></i>2 horas</span>
+                    </div>
+                    <div class="section-header">
+                        <div class="section-number">
+                            13
+                        </div>
+                        <h2 class="section-title">
+                            Ejercicios de Transferencia
+                        </h2>
+                        <p class="section-subtitle">
+                            Ejercicios retadores para demostrar tu dominio de Flutter + OpenAPI
+                        </p>
+                    </div>
+                    <div class="exercise-grid">
+                        <div class="exercise-card">
+                            <div class="exercise-header">
+                                <div class="exercise-number">
+                                    1
+                                </div>
+                                <div class="exercise-difficulty"><span class="difficulty-badge medium">Intermedio</span>
+                                </div>
+                            </div>
+                            <h3>
+                                Búsqueda en Tiempo Real
+                            </h3>
+                            <p>
+                                Agrega un buscador que filtre productos mientras el usuario escribe, consumiendo el endpoint de búsqueda del microservicio.
+                            </p>
+                            <h4>
+                                Requisitos:
+                            </h4>
+                            <ul class="requirement-list">
+                                <li><i class="fas fa-check"></i>Campo de texto con debounce de 300ms
+                                </li>
+                                <li><i class="fas fa-check"></i>Llamada al endpoint<code>GET /productos?q=term</code>
+                                </li>
+                                <li><i class="fas fa-check"></i>Mostrar resultados en un ListView
+                                </li>
+                                <li><i class="fas fa-check"></i>Indicador de carga durante la búsqueda
+                                </li>
+                                <li><i class="fas fa-check"></i>Manejar errores de red
+                                </li>
+                                <li><i class="fas fa-star"></i><strong>Bonus:</strong>Filtros por categoría y rango de precios
+                                </li>
+                            </ul>
+                            <div class="exercise-hint"><i class="fas fa-lightbulb"></i>
+                                <p><strong>Pista:</strong>Usa<code>Timer? _debounce</code>para implementar el debounce. Cancela el timer anterior en cada<code>onChanged</code>.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="exercise-card">
+                            <div class="exercise-header">
+                                <div class="exercise-number">
+                                    2
+                                </div>
+                                <div class="exercise-difficulty"><span class="difficulty-badge hard">Avanzado</span>
+                                </div>
+                            </div>
+                            <h3>
+                                Autenticación JWT
+                            </h3>
+                            <p>
+                                Implementa login con JWT, almacenamiento seguro del token y renovación automática.
+                            </p>
+                            <h4>
+                                Requisitos:
+                            </h4>
+                            <ul class="requirement-list">
+                                <li><i class="fas fa-check"></i>Pantalla de login con usuario y contraseña
+                                </li>
+                                <li><i class="fas fa-check"></i>Llamada a<code>POST /auth/login</code>
+                                </li>
+                                <li><i class="fas fa-check"></i>Almacenar token con<code>flutter_secure_storage</code>
+                                </li>
+                                <li><i class="fas fa-check"></i>Interceptor de Dio que agregue el token
+                                </li>
+                                <li><i class="fas fa-check"></i>Redirección automática al login si 401
+                                </li>
+                                <li><i class="fas fa-star"></i><strong>Bonus:</strong>Refresh token automático
+                                </li>
+                            </ul>
+                            <div class="exercise-hint"><i class="fas fa-lightbulb"></i>
+                                <p><strong>Pista:</strong>Usa<code>dio.interceptors.add(QueuedInterceptorsWrapper)</code>y maneja el 401 en<code>onError</code>.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="exercise-card">
+                            <div class="exercise-header">
+                                <div class="exercise-number">
+                                    3
+                                </div>
+                                <div class="exercise-difficulty"><span class="difficulty-badge hard">Avanzado</span>
+                                </div>
+                            </div>
+                            <h3>
+                                App Multi-servicio
+                            </h3>
+                            <p>
+                                Conecta tu app Flutter a dos microservicios diferentes (Productos y Pedidos) usando un API Gateway.
+                            </p>
+                            <h4>
+                                Requisitos:
+                            </h4>
+                            <ul class="requirement-list">
+                                <li><i class="fas fa-check"></i>Configurar dos APIs generadas con OpenAPI
+                                </li>
+                                <li><i class="fas fa-check"></i>Pantalla de productos con opción "Agregar al carrito"
+                                </li>
+                                <li><i class="fas fa-check"></i>Pantalla de carrito que consuma el servicio de pedidos
+                                </li>
+                                <li><i class="fas fa-check"></i>Estado global con Riverpod para el carrito
+                                </li>
+                                <li><i class="fas fa-check"></i>Confirmación de pedido con número de orden
+                                </li>
+                                <li><i class="fas fa-star"></i><strong>Bonus:</strong>Historial de pedidos con scroll infinito
+                                </li>
+                            </ul>
+                            <div class="exercise-hint"><i class="fas fa-lightbulb"></i>
+                                <p><strong>Pista:</strong>Usa<code>Gateway /api/productos</code>y<code>Gateway /api/pedidos</code>. Configura el baseUrl del Dio al gateway.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>

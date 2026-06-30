@@ -1,0 +1,178 @@
+            <section class="section" id="widgets">
+                <div class="container">
+                    <div class="breadcrumbs">
+                        <div class="breadcrumb-item"><a href="#inicio">Inicio</a>
+                        </div><i class="fas fa-chevron-right breadcrumb-separator"></i>
+                        <div class="breadcrumb-item breadcrumb-current">
+                            Widgets y UI
+                        </div><span class="reading-time"><i class="fas fa-clock"></i>30 min</span>
+                    </div>
+                    <div class="section-header">
+                        <div class="section-number">
+                            07
+                        </div>
+                        <h2 class="section-title">
+                            3. Widgets y UI
+                        </h2>
+                        <p class="section-subtitle">
+                            StatelessWidget, StatefulWidget, layouts y temas
+                        </p>
+                    </div>
+                    <div class="content-grid">
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fas fa-cube"></i>
+                            </div>
+                            <h3>
+                                StatelessWidget
+                            </h3>
+                            <p>
+                                Widget inmutable: su configuración no cambia después de construirse. Ideal para UI pura.
+                            </p>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title">stateless.dart</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-dart">class TarjetaProducto extends StatelessWidget {
+  final Producto producto;
+
+  const TarjetaProducto({super.key, required this.producto});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: ListTile(
+        leading: Icon(Icons.inventory),
+        title: Text(producto.nombre),
+        subtitle: Text('\$${producto.precio}'),
+        trailing: Icon(Icons.arrow_forward_ios),
+      ),
+    );
+  }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fas fa-sync-alt"></i>
+                            </div>
+                            <h3>
+                                StatefulWidget
+                            </h3>
+                            <p>
+                                Widget mutable que puede cambiar su apariencia con setState.
+                            </p>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title">stateful.dart</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-dart">class ContadorWidget extends StatefulWidget {
+  const ContadorWidget({super.key});
+
+  @override
+  State&lt;ContadorWidget&gt; createState() => _ContadorWidgetState();
+}
+
+class _ContadorWidgetState extends State&lt;ContadorWidget&gt; {
+  int _contador = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text('Valor: $_contador'),
+        FilledButton(
+          onPressed: () {
+            setState(() => _contador++);
+          },
+          child: Text('Incrementar'),
+        ),
+      ],
+    );
+  }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h3 style="margin-top:24px;">Widgets de Layout Esenciales</h3>
+                    <div class="content-grid">
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fas fa-columns"></i>
+                            </div>
+                            <h3>
+                                Column y Row
+                            </h3>
+                            <p>
+                                Layouts verticales y horizontales. Los pilares de toda UI en Flutter.
+                            </p>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title">column_row.dart</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-dart">Column(
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: [
+    Text('Productos'),
+    SizedBox(height: 8),
+    Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text('Nombre'),
+        Text('Precio'),
+      ],
+    ),
+  ],
+)</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fas fa-th"></i>
+                            </div>
+                            <h3>
+                                GridView y ListView
+                            </h3>
+                            <p>
+                                Listas y cuadrículas para mostrar colecciones de datos.
+                            </p>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title">listas.dart</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-dart">// ListView básico
+ListView.builder(
+  itemCount: productos.length,
+  itemBuilder: (ctx, i) => ListTile(
+    title: Text(productos[i].nombre),
+  ),
+)
+
+// GridView
+GridView.builder(
+  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+    crossAxisCount: 2,
+  ),
+  itemBuilder: (ctx, i) => TarjetaProducto(productos[i]),
+)</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>

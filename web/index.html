@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="Guía de Aprendizaje SENA - Desarrollo de Aplicaciones Web con JSP, Patrón MVC, Jakarta EE 10 y JDK 21">
-        <meta name="keywords" content="JSP, MVC, Jakarta EE, JDK 21, SENA, ADSO, Java, PostgreSQL">
+        <meta name="keywords" content="JSP, MVC, Jakarta EE, JDK 21, SENA, ADSO, Java, PostgreSQL, FastAPI, React">
         <meta name="author" content="SENA - ADSO">
         <title>
             Guía de Aprendizaje JSP + MVC | SENA ADSO
@@ -15,7 +15,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
-        <link rel="stylesheet" href="css/styles.css?v=3.2">
+        <link rel="stylesheet" href="css/styles.css?v=3.3">
         <link rel="icon" type="image/svg+xml" href="favicon.svg">
     </head>
     <body>
@@ -317,7 +317,7 @@
                     </div>
                 </div>
                 <div class="header-meta">
-                    <nav class="page-switcher"><a href="index.html" class="page-switcher-link active"><i class="fab fa-java"></i>JSP</a><a href="flutter-guide.html" class="page-switcher-link"><i class="fab fa-flutter"></i>Flutter</a><a href="simuladores.html" class="page-switcher-link"><i class="fas fa-flask"></i>Labs</a>
+                    <nav class="page-switcher"><a href="index.html" class="page-switcher-link active"><i class="fab fa-java"></i>JSP</a><a href="flutter-guide.html" class="page-switcher-link "><i class="fab fa-flutter"></i>Flutter</a><a href="simuladores.html" class="page-switcher-link "><i class="fas fa-flask"></i>Labs</a>
                     </nav><span class="header-badge">v3.0</span>
                     <button class="header-icon-btn" id="readingModeToggle" title="Modo lectura"><i class="fas fa-book-reader"></i>
                     </button>
@@ -596,11 +596,19 @@ public class ProductoServlet extends HttpServlet {
                                             <p>
                                                 Clases inmutables con sintaxis concisa
                                             </p>
-                                            <pre><code class="language-java">public record Producto(    int id,    String nombre,    BigDecimal precio) {
-    // Constructor alternativo    public Producto(String nombre, BigDecimal precio) {
+                                            <pre><code class="language-java">public record Producto(
+    int id,
+    String nombre,
+    BigDecimal precio
+) {
+    // Constructor alternativo
+    public Producto(String nombre, BigDecimal precio) {
         this(0, nombre, precio);
     }
-}// Uso:Producto p = new Producto("Laptop", new BigDecimal("2500000"));
+}
+
+// Uso:
+Producto p = new Producto("Laptop", new BigDecimal("2500000"));
 System.out.println(p.nombre());
 // "Laptop"</code></pre>
                                         </div>
@@ -677,7 +685,13 @@ default -&gt; "Otro día";
                                         <div class="install-step"><span class="step-num">2</span>
                                             <div><strong>Instalar y configurar JAVA_HOME</strong>
                                                 <div class="code-block">
-                                                    <pre><code class="language-bash"># Windows (PowerShell como administrador):[System.Environment]::SetEnvironmentVariable('JAVA_HOME', 'C:\Program Files\Eclipse Adoptium\jdk-21.0.0.0-hotspot', 'Machine')[System.Environment]::SetEnvironmentVariable('Path', $env:Path + ';C:\Program Files\Eclipse Adoptium\jdk-21.0.0.0-hotspot\bin', 'Machine')# Linux/Mac (en ~/.bashrc o ~/.zshrc):export JAVA_HOME=/usr/lib/jvm/java-21-openjdkexport PATH=$JAVA_HOME/bin:$PATH</code></pre>
+                                                    <pre><code class="language-bash"># Windows (PowerShell como administrador):
+[System.Environment]::SetEnvironmentVariable('JAVA_HOME', 'C:\Program Files\Eclipse Adoptium\jdk-21.0.0.0-hotspot', 'Machine')
+[System.Environment]::SetEnvironmentVariable('Path', $env:Path + ';C:\Program Files\Eclipse Adoptium\jdk-21.0.0.0-hotspot\bin', 'Machine')
+
+# Linux/Mac (en ~/.bashrc o ~/.zshrc):
+export JAVA_HOME=/usr/lib/jvm/java-21-openjdk
+export PATH=$JAVA_HOME/bin:$PATH</code></pre>
                                                 </div>
                                             </div>
                                         </div>
@@ -829,26 +843,28 @@ Agotado
                                     <h4><i class="fas fa-download"></i>Configuración en Maven
                                     </h4>
                                     <div class="code-block">
-                                        <pre><code class="language-xml">&lt;!-- pom.xml --&gt;&lt;dependencies&gt;
-&lt;!-- Jakarta Servlet API (proporcionado por Tomcat) --&gt;
-&lt;dependency&gt;
-&lt;groupId&gt;jakarta.servlet&lt;/groupId&gt;
-&lt;artifactId&gt;jakarta.servlet-api&lt;/artifactId&gt;
-&lt;version&gt;6.0.0&lt;/version&gt;
-&lt;scope&gt;provided&lt;/scope&gt;
-&lt;/dependency&gt;
-&lt;!-- Jakarta JSTL --&gt;
-&lt;dependency&gt;
-&lt;groupId&gt;jakarta.servlet.jsp.jstl&lt;/groupId&gt;
-&lt;artifactId&gt;jakarta.servlet.jsp.jstl-api&lt;/artifactId&gt;
-&lt;version&gt;3.0.0&lt;/version&gt;
-&lt;/dependency&gt;
-&lt;!-- Implementación JSTL --&gt;
-&lt;dependency&gt;
-&lt;groupId&gt;org.glassfish.web&lt;/groupId&gt;
-&lt;artifactId&gt;jakarta.servlet.jsp.jstl&lt;/artifactId&gt;
-&lt;version&gt;3.0.1&lt;/version&gt;
-&lt;/dependency&gt;&lt;/dependencies&gt;</code></pre>
+                                        <pre><code class="language-xml">&lt;!-- pom.xml --&gt;
+&lt;dependencies&gt;
+    &lt;!-- Jakarta Servlet API (proporcionado por Tomcat) --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;jakarta.servlet&lt;/groupId&gt;
+        &lt;artifactId&gt;jakarta.servlet-api&lt;/artifactId&gt;
+        &lt;version&gt;6.0.0&lt;/version&gt;
+        &lt;scope&gt;provided&lt;/scope&gt;
+    &lt;/dependency&gt;
+    &lt;!-- Jakarta JSTL --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;jakarta.servlet.jsp.jstl&lt;/groupId&gt;
+        &lt;artifactId&gt;jakarta.servlet.jsp.jstl-api&lt;/artifactId&gt;
+        &lt;version&gt;3.0.0&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;!-- Implementación JSTL --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.glassfish.web&lt;/groupId&gt;
+        &lt;artifactId&gt;jakarta.servlet.jsp.jstl&lt;/artifactId&gt;
+        &lt;version&gt;3.0.1&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre>
                                     </div>
                                 </div>
                                 <div class="module-section">
@@ -1019,25 +1035,69 @@ Agotado
                                             <h5>
                                                 Crear tabla con restricciones
                                             </h5>
-                                            <pre><code class="language-sql">CREATE TABLE productos (    id SERIAL PRIMARY KEY,    codigo VARCHAR(50) UNIQUE NOT NULL,    nombre VARCHAR(100) NOT NULL,    descripcion TEXT,    precio DECIMAL(10,2) CHECK (precio &gt;= 0),    stock INTEGER DEFAULT 0 CHECK (stock &gt;= 0),    categoria VARCHAR(50),    estado BOOLEAN DEFAULT TRUE,    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP);</code></pre>
+                                            <pre><code class="language-sql">CREATE TABLE productos (
+    id SERIAL PRIMARY KEY,
+    codigo VARCHAR(50) UNIQUE NOT NULL,
+    nombre VARCHAR(100) NOT NULL,
+    descripcion TEXT,
+    precio DECIMAL(10,2) CHECK (precio &gt;= 0),
+    stock INTEGER DEFAULT 0 CHECK (stock &gt;= 0),
+    categoria VARCHAR(50),
+    estado BOOLEAN DEFAULT TRUE,
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);</code></pre>
                                         </div>
                                         <div class="sql-example">
                                             <h5>
                                                 Insertar datos
                                             </h5>
-                                            <pre><code class="language-sql">INSERT INTO productos (codigo, nombre, precio, stock, categoria)VALUES     ('PROD-001', 'Laptop HP Pavilion', 2500000.00, 15, 'Tecnología'),    ('PROD-002', 'Mouse Logitech', 45000.00, 50, 'Accesorios');-- Insertar y retornar el ID generadoINSERT INTO productos (codigo, nombre, precio, stock)VALUES ('PROD-003', 'Teclado', 180000.00, 30)RETURNING id;</code></pre>
+                                            <pre><code class="language-sql">INSERT INTO productos (codigo, nombre, precio, stock, categoria)
+VALUES
+    ('PROD-001', 'Laptop HP Pavilion', 2500000.00, 15, 'Tecnología'),
+    ('PROD-002', 'Mouse Logitech', 45000.00, 50, 'Accesorios');
+
+-- Insertar y retornar el ID generado
+INSERT INTO productos (codigo, nombre, precio, stock)
+VALUES ('PROD-003', 'Teclado', 180000.00, 30)
+RETURNING id;</code></pre>
                                         </div>
                                         <div class="sql-example">
                                             <h5>
                                                 Consultas avanzadas
                                             </h5>
-                                            <pre><code class="language-sql">-- JOIN entre tablasSELECT u.username, r.nombre as rolFROM usuarios uINNER JOIN roles r ON u.rol_id = r.idWHERE u.estado = TRUE;-- Agrupación y agregaciónSELECT categoria,        COUNT(*) as total,       AVG(precio) as precio_promedio,       SUM(stock) as stock_totalFROM productosWHERE estado = TRUEGROUP BY categoriaHAVING COUNT(*) &gt; 5ORDER BY total DESC;-- SubconsultaSELECT * FROM productosWHERE precio &gt; (SELECT AVG(precio) FROM productos);</code></pre>
+                                            <pre><code class="language-sql">-- JOIN entre tablas
+SELECT u.username, r.nombre as rol
+FROM usuarios u
+INNER JOIN roles r ON u.rol_id = r.id
+WHERE u.estado = TRUE;
+
+-- Agrupación y agregación
+SELECT categoria,
+       COUNT(*) as total,
+       AVG(precio) as precio_promedio,
+       SUM(stock) as stock_total
+FROM productos
+WHERE estado = TRUE
+GROUP BY categoria
+HAVING COUNT(*) &gt; 5
+ORDER BY total DESC;
+
+-- Subconsulta
+SELECT * FROM productos
+WHERE precio &gt; (SELECT AVG(precio) FROM productos);</code></pre>
                                         </div>
                                         <div class="sql-example">
                                             <h5>
                                                 Índices para mejor rendimiento
                                             </h5>
-                                            <pre><code class="language-sql">-- Índice en columna frecuentemente consultadaCREATE INDEX idx_productos_categoria ON productos(categoria);-- Índice compuestoCREATE INDEX idx_productos_estado_categoria ON productos(estado, categoria);-- Índice únicoCREATE UNIQUE INDEX idx_productos_codigo ON productos(codigo);</code></pre>
+                                            <pre><code class="language-sql">-- Índice en columna frecuentemente consultada
+CREATE INDEX idx_productos_categoria ON productos(categoria);
+
+-- Índice compuesto
+CREATE INDEX idx_productos_estado_categoria ON productos(estado, categoria);
+
+-- Índice único
+CREATE UNIQUE INDEX idx_productos_codigo ON productos(codigo);</code></pre>
                                         </div>
                                     </div>
                                 </div>
@@ -1199,19 +1259,24 @@ logs\localhost.YYYY-MM-DD.log</code></pre>
                                     <h4><i class="fas fa-cog"></i>Configuración Importante
                                     </h4>
                                     <div class="code-block">
-                                        <pre><code class="language-xml">&lt;!-- conf/server.xml - Configuración de puerto --&gt;&lt;Connector port="8080"
-protocol="HTTP/1.1"
-connectionTimeout="20000"
-redirectPort="8443"
-maxThreads="200"
-minSpareThreads="10" /&gt;&lt;!-- Configuración de SSL/TLS (HTTPS) --&gt;&lt;Connector port="8443"
-protocol="org.apache.coyote.http11.Http11NioProtocol"
-maxThreads="150"
-SSLEnabled="true"&gt;
-&lt;SSLHostConfig&gt;
-&lt;Certificate certificateKeystoreFile="conf/keystore.jks"
-certificateKeystorePassword="changeit" /&gt;
-&lt;/SSLHostConfig&gt;&lt;/Connector&gt;</code></pre>
+                                        <pre><code class="language-xml">&lt;!-- conf/server.xml - Configuración de puerto --&gt;
+&lt;Connector port="8080"
+    protocol="HTTP/1.1"
+    connectionTimeout="20000"
+    redirectPort="8443"
+    maxThreads="200"
+    minSpareThreads="10" /&gt;
+
+&lt;!-- Configuración de SSL/TLS (HTTPS) --&gt;
+&lt;Connector port="8443"
+    protocol="org.apache.coyote.http11.Http11NioProtocol"
+    maxThreads="150"
+    SSLEnabled="true"&gt;
+    &lt;SSLHostConfig&gt;
+        &lt;Certificate certificateKeystoreFile="conf/keystore.jks"
+            certificateKeystorePassword="changeit" /&gt;
+    &lt;/SSLHostConfig&gt;
+&lt;/Connector&gt;</code></pre>
                                     </div>
                                 </div>
                                 <div class="module-section">
@@ -1283,52 +1348,60 @@ certificateKeystorePassword="changeit" /&gt;
                                     <h4><i class="fas fa-file-code"></i>Estructura pom.xml
                                     </h4>
                                     <div class="code-block">
-                                        <pre><code class="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;project xmlns="http://maven.apache.org/POM/4.0.0"&gt;
-&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
-&lt;!-- Coordenadas del proyecto --&gt;
-&lt;groupId&gt;com.sena.inventario&lt;/groupId&gt;
-&lt;artifactId&gt;inventario-mvc&lt;/artifactId&gt;
-&lt;version&gt;1.0&lt;/version&gt;
-&lt;packaging&gt;war&lt;/packaging&gt;
-&lt;!-- Propiedades --&gt;
-&lt;properties&gt;
-&lt;maven.compiler.source&gt;21&lt;/maven.compiler.source&gt;
-&lt;maven.compiler.target&gt;21&lt;/maven.compiler.target&gt;
-&lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
-&lt;/properties&gt;
-&lt;!-- Dependencias --&gt;
-&lt;dependencies&gt;
-&lt;!-- Jakarta Servlet API --&gt;
-&lt;dependency&gt;
-&lt;groupId&gt;jakarta.servlet&lt;/groupId&gt;
-&lt;artifactId&gt;jakarta.servlet-api&lt;/artifactId&gt;
-&lt;version&gt;6.0.0&lt;/version&gt;
-&lt;scope&gt;provided&lt;/scope&gt;
-&lt;/dependency&gt;
-&lt;!-- PostgreSQL Driver --&gt;
-&lt;dependency&gt;
-&lt;groupId&gt;org.postgresql&lt;/groupId&gt;
-&lt;artifactId&gt;postgresql&lt;/artifactId&gt;
-&lt;version&gt;42.7.1&lt;/version&gt;
-&lt;/dependency&gt;
-&lt;!-- BCrypt --&gt;
-&lt;dependency&gt;
-&lt;groupId&gt;at.favre.lib&lt;/groupId&gt;
-&lt;artifactId&gt;bcrypt&lt;/artifactId&gt;
-&lt;version&gt;0.10.2&lt;/version&gt;
-&lt;/dependency&gt;
-&lt;/dependencies&gt;
-&lt;!-- Plugins de build --&gt;
-&lt;build&gt;
-&lt;finalName&gt;${project.artifactId}-${project.version}&lt;/finalName&gt;
-&lt;plugins&gt;
-&lt;plugin&gt;
-&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
-&lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;
-&lt;version&gt;3.4.0&lt;/version&gt;
-&lt;/plugin&gt;
-&lt;/plugins&gt;
-&lt;/build&gt;&lt;/project&gt;</code></pre>
+                                        <pre><code class="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;!-- Coordenadas del proyecto --&gt;
+    &lt;groupId&gt;com.sena.inventario&lt;/groupId&gt;
+    &lt;artifactId&gt;inventario-mvc&lt;/artifactId&gt;
+    &lt;version&gt;1.0&lt;/version&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+
+    &lt;!-- Propiedades --&gt;
+    &lt;properties&gt;
+        &lt;maven.compiler.source&gt;21&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;21&lt;/maven.compiler.target&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+    &lt;/properties&gt;
+
+    &lt;!-- Dependencias --&gt;
+    &lt;dependencies&gt;
+        &lt;!-- Jakarta Servlet API --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;jakarta.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;jakarta.servlet-api&lt;/artifactId&gt;
+            &lt;version&gt;6.0.0&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- PostgreSQL Driver --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.postgresql&lt;/groupId&gt;
+            &lt;artifactId&gt;postgresql&lt;/artifactId&gt;
+            &lt;version&gt;42.7.1&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- BCrypt --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;at.favre.lib&lt;/groupId&gt;
+            &lt;artifactId&gt;bcrypt&lt;/artifactId&gt;
+            &lt;version&gt;0.10.2&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+    &lt;!-- Plugins de build --&gt;
+    &lt;build&gt;
+        &lt;finalName&gt;${project.artifactId}-${project.version}&lt;/finalName&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;
+                &lt;version&gt;3.4.0&lt;/version&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+&lt;/project&gt;</code></pre>
                                     </div>
                                 </div>
                                 <div class="module-section">
@@ -1469,7 +1542,28 @@ certificateKeystorePassword="changeit" /&gt;
                                     <h4><i class="fas fa-file-code"></i>Dockerfile para tu aplicación
                                     </h4>
                                     <div class="code-block">
-                                        <pre><code class="language-dockerfile"># Usa imagen base de Tomcat 10.1 con JDK 21FROM tomcat:10.1-jdk21-temurin-jakarta# MetadataLABEL maintainer="ADSO SENA"LABEL version="1.0"LABEL description="Sistema de Inventario JSP MVC"# Eliminar aplicaciones de ejemploRUN rm -rf /usr/local/tomcat/webapps/*# Configurar zona horariaENV TZ=America/BogotaRUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ &gt; /etc/timezone# Copiar tu WAR como aplicación ROOTCOPY target/inventario-mvc-1.0.war /usr/local/tomcat/webapps/ROOT.war# Exponer puerto 8080EXPOSE 8080# Variables de entorno para configuraciónENV DB_HOST=localhostENV DB_PORT=5432ENV DB_NAME=inventario_dbENV DB_USER=postgresENV DB_PASSWORD=postgres# Comando para iniciar TomcatCMD ["catalina.sh", "run"]</code></pre>
+                                        <pre><code class="language-dockerfile">FROM tomcat:10.1-jdk21-temurin-jakarta
+
+LABEL maintainer="ADSO SENA"
+LABEL version="1.0"
+LABEL description="Sistema de Inventario JSP MVC"
+
+RUN rm -rf /usr/local/tomcat/webapps/*
+
+ENV TZ=America/Bogota
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+COPY target/inventario-mvc-1.0.war /usr/local/tomcat/webapps/ROOT.war
+
+EXPOSE 8080
+
+ENV DB_HOST=localhost
+ENV DB_PORT=5432
+ENV DB_NAME=inventario_db
+ENV DB_USER=postgres
+ENV DB_PASSWORD=postgres
+
+CMD ["catalina.sh", "run"]</code></pre>
                                     </div>
                                 </div>
                                 <div class="module-section">
@@ -1518,36 +1612,63 @@ certificateKeystorePassword="changeit" /&gt;
                                     <h4><i class="fas fa-cubes"></i>Docker Compose (Multi-contenedor)
                                     </h4>
                                     <div class="code-block">
-                                        <pre><code class="language-yaml"># docker-compose.ymlversion: '3.8'services:  # Base de datos PostgreSQL  db:
-image: postgres:16-alpine
-environment:
-POSTGRES_DB: inventario_db
-POSTGRES_USER: postgres
-POSTGRES_PASSWORD: tu_password_seguro
-ports:
-- "5432:5432"
+                                        <pre><code class="language-yaml"># docker-compose.yml
+version: '3.8'
+
+services:
+  # Base de datos PostgreSQL
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: inventario_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: tu_password_seguro
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./recursos/sql/inventario_db.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - app-network
+
+  # Aplicación Java
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: inventario_db
+      DB_USER: postgres
+      DB_PASSWORD: tu_password_seguro
+    depends_on:
+      - db
+    networks:
+      - app-network
+
 volumes:
-- pgdata:/var/lib/postgresql/data
-- ./recursos/sql/inventario_db.sql:/docker-entrypoint-initdb.d/init.sql
+  pgdata:
+
 networks:
-- app-network  # Aplicación Java  app:
-build: .
-ports:
-- "8080:8080"
-environment:
-DB_HOST: db
-DB_PORT: 5432
-DB_NAME: inventario_db
-DB_USER: postgres
-DB_PASSWORD: tu_password_seguro
-depends_on:
-- db
-networks:
-- app-networkvolumes:  pgdata:networks:  app-network:
-driver: bridge</code></pre>
+  app-network:
+    driver: bridge</code></pre>
                                     </div>
                                     <div class="code-block">
-                                        <pre><code class="language-bash"># Levantar tododocker compose up -d# Ver estadodocker compose ps# Ver logs de todos los serviciosdocker compose logs -f# Parar tododocker compose down# Parar y eliminar volúmenesdocker compose down -v</code></pre>
+                                            <pre><code class="language-bash"># Levantar todo
+docker compose up -d
+
+# Ver estado
+docker compose ps
+
+# Ver logs de todos los servicios
+docker compose logs -f
+
+# Parar todo
+docker compose down
+
+# Parar y eliminar volúmenes
+docker compose down -v</code></pre>
                                     </div>
                                 </div>
                                 <div class="module-section">
@@ -1931,17 +2052,17 @@ function App() {
                                         <div class="comparison-item new">
                                             <h5><i class="fab fa-react"></i>React (Client-side)
                                             </h5>
-                                            <pre><code class="language-jsx">&lt;table&gt;    &lt;tbody&gt;        {
-    productos.map(p =&gt; (            &lt;tr key={
-                p.id
-                }&gt;                &lt;td&gt;{
-                p.codigo
-                }&lt;/td&gt;                &lt;td&gt;{
-                p.nombre
-                }&lt;/td&gt;                &lt;td&gt;${
-                Number(p.precio).toLocaleString()
-                }&lt;/td&gt;            &lt;/tr&gt;        ))
-    }    &lt;/tbody&gt;&lt;/table&gt;</code></pre>
+                                            <pre><code class="language-jsx">&lt;table&gt;
+    &lt;tbody&gt;
+        {productos.map(p =&gt; (
+            &lt;tr key={p.id}&gt;
+                &lt;td&gt;{p.codigo}&lt;/td&gt;
+                &lt;td&gt;{p.nombre}&lt;/td&gt;
+                &lt;td&gt;${Number(p.precio).toLocaleString()}&lt;/td&gt;
+            &lt;/tr&gt;
+        ))}
+    &lt;/tbody&gt;
+&lt;/table&gt;</code></pre>
                                         </div>
                                     </div>
                                 </div>
@@ -3087,11 +3208,20 @@ publicBigDecimal precio() {
                                     <div class="comparison-item new">
                                         <h4><i class="fas fa-check-circle"></i>Record JDK 21 (1 línea)
                                         </h4>
-                                        <pre><code class="language-java">public record Producto(    int id,    String codigo,    String nombre,    BigDecimal precio) {
-    // Constructor alternativo    public Producto(String codigo,                     String nombre,                     BigDecimal precio) {
+                                        <pre><code class="language-java">public record Producto(
+    int id,
+    String codigo,
+    String nombre,
+    BigDecimal precio
+) {
+    public Producto(String codigo, String nombre, BigDecimal precio) {
         this(0, codigo, nombre, precio);
     }
-}// Genera automáticamente:// - Constructor// - Getters (id(), codigo(), etc.)// - equals() y hashCode()// - toString()</code></pre>
+}
+
+// Genera automáticamente:
+// - Constructor, Getters (id(), codigo(), etc.)
+// - equals(), hashCode(), toString()</code></pre>
                                     </div>
                                 </div>
                                 <h4>
@@ -3194,7 +3324,14 @@ psql -U postgres
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-properties"># Configuración de conexión a PostgreSQLdb.driver=org.postgresql.Driverdb.url=jdbc:postgresql://localhost:5432/inventario_dbdb.username=postgresdb.password=tu_password_aqui# Nota: Cambia 'tu_password_aqui' por tu contraseña real de PostgreSQL# Si PostgreSQL corre en otro puerto, cambia 5432 por el puerto correcto</code></pre>
+                                        <pre><code class="language-properties"># Configuración de conexión a PostgreSQL
+db.driver=org.postgresql.Driver
+db.url=jdbc:postgresql://localhost:5432/inventario_db
+db.username=postgres
+db.password=tu_password_aqui
+
+# Nota: Cambia 'tu_password_aqui' por tu contraseña real de PostgreSQL
+# Si PostgreSQL corre en otro puerto, cambia 5432 por el puerto correcto</code></pre>
                                     </div>
                                 </div>
                             </div>
@@ -3278,10 +3415,28 @@ catch (Exception e) {
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-bash"># Configurar variables de entorno$env:DB_HOST="localhost"$env:DB_PORT="5432"$env:DB_NAME="inventario_db"$env:DB_USER="postgres"$env:DB_PASSWORD="tu_password_seguro"# En Docker o Coolify, configura estas variables en el panel</code></pre>
+                                        <pre><code class="language-bash"># Configurar variables de entorno
+$env:DB_HOST="localhost"
+$env:DB_PORT="5432"
+$env:DB_NAME="inventario_db"
+$env:DB_USER="postgres"
+$env:DB_PASSWORD="tu_password_seguro"
+
+# En Docker o Coolify, configura estas variables en el panel</code></pre>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <!-- Descargar script SQL -->
+                    <div class="info-banner" style="margin-top:2rem;background:var(--accent-light, #e8f5e9);border-left:4px solid #28a745;">
+                        <i class="fas fa-download" style="color:#28a745;"></i>
+                        <div>
+                            <h4>Script SQL de la base de datos</h4>
+                            <p>Descarga el script completo con las tablas <code>roles</code>, <code>usuarios</code> y <code>productos</code>, incluyendo datos de prueba. Ejecútalo en PostgreSQL para tener la base de datos lista.</p>
+                            <a href="downloads/inventario-db-sql.zip" class="btn btn-primary" download style="margin-top:0.5rem;display:inline-flex;align-items:center;gap:0.5rem;">
+                                <i class="fas fa-download"></i> Descargar inventario_db.sql (2 KB)
+                            </a>
                         </div>
                     </div>
                     <div class="troubleshooting">
@@ -3362,7 +3517,12 @@ catch (Exception e) {
                                     Entidad (Record)
                                 </h4>
                                 <div class="code-block small">
-                                    <pre><code class="language-java">public record Producto(    int id,    String codigo,    String nombre,    BigDecimal precio) {</code></pre>
+                                    <pre><code class="language-java">public record Producto(
+    int id,
+    String codigo,
+    String nombre,
+    BigDecimal precio
+) {</code></pre>
                                 </div>
                                 <h4>
                                     DAO con SQL manual
@@ -3502,7 +3662,17 @@ public Producto buscar(int id) {
                                     Flask (Python)
                                 </div>
                                 <div class="code-block small">
-                                    <pre><code class="language-python"># Modelo SQLAlchemyclass Producto(db.Model):    id = db.Column(db.Integer, primary_key=True)    codigo = db.Column(db.String(50))    nombre = db.Column(db.String(100))    precio = db.Column(db.Numeric(10,2))# Guardarp = Producto(codigo="P1", nombre="Laptop")db.session.add(p)db.session.commit()</code></pre>
+                                    <pre><code class="language-python"># Modelo SQLAlchemy
+class Producto(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    codigo = db.Column(db.String(50))
+    nombre = db.Column(db.String(100))
+    precio = db.Column(db.Numeric(10,2))
+
+# Guardar
+p = Producto(codigo="P1", nombre="Laptop")
+db.session.add(p)
+db.session.commit()</code></pre>
                                 </div>
                             </div>
                             <div class="analogy-arrow"><i class="fas fa-arrow-right"></i><span>Equivalente en</span><i class="fas fa-arrow-right"></i>
@@ -3720,25 +3890,27 @@ mkdir hola-mundo-servlet\src\main\resources</code></pre>
                                     </button>
                                 </div>
                                 <div class="window-body">
-                                    <pre><code class="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;project xmlns="http://maven.apache.org/POM/4.0.0"&gt;
-&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
-&lt;groupId&gt;com.sena&lt;/groupId&gt;
-&lt;artifactId&gt;hola-mundo&lt;/artifactId&gt;
-&lt;version&gt;1.0&lt;/version&gt;
-&lt;packaging&gt;war&lt;/packaging&gt;
-&lt;properties&gt;
-&lt;maven.compiler.source&gt;21&lt;/maven.compiler.source&gt;
-&lt;maven.compiler.target&gt;21&lt;/maven.compiler.target&gt;
-&lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
-&lt;/properties&gt;
-&lt;dependencies&gt;
-&lt;dependency&gt;
-&lt;groupId&gt;jakarta.servlet&lt;/groupId&gt;
-&lt;artifactId&gt;jakarta.servlet-api&lt;/artifactId&gt;
-&lt;version&gt;6.0.0&lt;/version&gt;
-&lt;scope&gt;provided&lt;/scope&gt;
-&lt;/dependency&gt;
-&lt;/dependencies&gt;&lt;/project&gt;</code></pre>
+                                        <pre><code class="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;com.sena&lt;/groupId&gt;
+    &lt;artifactId&gt;hola-mundo&lt;/artifactId&gt;
+    &lt;version&gt;1.0&lt;/version&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+    &lt;properties&gt;
+        &lt;maven.compiler.source&gt;21&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;21&lt;/maven.compiler.target&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+    &lt;/properties&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;jakarta.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;jakarta.servlet-api&lt;/artifactId&gt;
+            &lt;version&gt;6.0.0&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;</code></pre>
                                 </div>
                             </div>
                             <h4>
@@ -3806,13 +3978,21 @@ mvn clean package
                                     </button>
                                 </div>
                                 <div class="window-body">
-                                    <pre><code class="language-bash"># 1. Copiar el WAR a Tomcatcopy target\hola-mundo-1.0.war C:\apache-tomcat-10.1.x\webapps\# 2. Iniciar Tomcat (si no está corriendo)C:\apache-tomcat-10.1.x\bin\startup.bat# 3. Abrir en el navegador:#
-http://localhost:8080/hola-mundo-1.0/hola-mundo# Resultado esperado en el navegador:# ┌──────────────────────────────────────────────┐# │
-│# │  ¡Hola Mundo desde Jakarta EE 10!
-│# │  Mi primer Servlet con JDK 21
-│# │  Fecha: Sun Jun 28 12:00:00 COT 2026
-│# │
-│# └──────────────────────────────────────────────┘</code></pre>
+                                        <pre><code class="language-bash"># 1. Copiar el WAR a Tomcat
+copy target\hola-mundo-1.0.war C:\apache-tomcat-10.1.x\webapps\
+
+# 2. Iniciar Tomcat (si no está corriendo)
+C:\apache-tomcat-10.1.x\bin\startup.bat
+
+# 3. Abrir en el navegador:
+#    http://localhost:8080/hola-mundo-1.0/hola-mundo
+#
+# Resultado esperado:
+# ┌──────────────────────────────────────────────┐
+# │  ¡Hola Mundo desde Jakarta EE 10!            │
+# │  Mi primer Servlet con JDK 21                │
+# │  Fecha: Sun Jun 28 12:00:00 COT 2026         │
+# └──────────────────────────────────────────────┘</code></pre>
                                 </div>
                             </div>
                             <div class="recommendation-box"><i class="fas fa-check-circle" style="color:#28a745;"></i>
@@ -3838,6 +4018,18 @@ String token = JwtUtil.generarToken("admin", "Administrador");
 // → React usa este token con: Authorization: Bearer &lt;token&gt;</pre>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <!-- Descargar proyecto JSP+MVC completo -->
+                    <div class="info-banner" style="margin-bottom:2rem;background:var(--accent-light, #e8f5e9);border-left:4px solid #00664a;">
+                        <i class="fas fa-download" style="color:#00664a;"></i>
+                        <div>
+                            <h4>Proyecto JSP+MVC listo para ejecutar</h4>
+                            <p>Descarga el proyecto Maven completo con el Sistema de Inventario. Ya incluye todos los archivos: <strong>Modelo</strong> (Records JDK 21), <strong>DAO</strong> (JDBC), <strong>Controladores</strong> (Servlets Jakarta EE 10) y <strong>Vistas</strong> (JSP con JSTL).</p>
+                            <p style="font-size:0.9rem;opacity:0.8;">Solo necesitas: <code>mvn clean package cargo:run</code> y ya tienes la app en <code>http://localhost:8080/inventario-mvc-1.0/</code></p>
+                            <a href="downloads/codigo-ejemplo.zip" class="btn btn-primary" download style="margin-top:0.5rem;display:inline-flex;align-items:center;gap:0.5rem;">
+                                <i class="fas fa-download"></i> Descargar proyecto JSP+MVC (32 KB)
+                            </a>
                         </div>
                     </div>
                     <div class="tutorial-steps">
@@ -3933,7 +4125,11 @@ String token = JwtUtil.generarToken("admin", "Administrador");
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-sql">-- Crear base de datosCREATE DATABASE inventario_db;-- Conectar a la base de datos\c inventario_db</code></pre>
+                                        <pre><code class="language-sql">-- Crear base de datos
+CREATE DATABASE inventario_db;
+
+-- Conectar a la base de datos
+\c inventario_db</code></pre>
                                     </div>
                                 </div>
                                 <h4>
@@ -3996,44 +4192,46 @@ CONSTRAINT fk_usuarios_roles FOREIGN KEY (rol_id)         REFERENCES roles(id));
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;project xmlns="http://maven.apache.org/POM/4.0.0"&gt;
-&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
-&lt;groupId&gt;com.sena.inventario&lt;/groupId&gt;
-&lt;artifactId&gt;inventario-mvc&lt;/artifactId&gt;
-&lt;version&gt;1.0&lt;/version&gt;
-&lt;packaging&gt;war&lt;/packaging&gt;
-&lt;properties&gt;
-&lt;maven.compiler.source&gt;21&lt;/maven.compiler.source&gt;
-&lt;maven.compiler.target&gt;21&lt;/maven.compiler.target&gt;
-&lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
-&lt;/properties&gt;
-&lt;dependencies&gt;
-&lt;!-- Jakarta Servlet API --&gt;
-&lt;dependency&gt;
-&lt;groupId&gt;jakarta.servlet&lt;/groupId&gt;
-&lt;artifactId&gt;jakarta.servlet-api&lt;/artifactId&gt;
-&lt;version&gt;6.0.0&lt;/version&gt;
-&lt;scope&gt;provided&lt;/scope&gt;
-&lt;/dependency&gt;
-&lt;!-- Jakarta JSTL --&gt;
-&lt;dependency&gt;
-&lt;groupId&gt;jakarta.servlet.jsp.jstl&lt;/groupId&gt;
-&lt;artifactId&gt;jakarta.servlet.jsp.jstl-api&lt;/artifactId&gt;
-&lt;version&gt;3.0.0&lt;/version&gt;
-&lt;/dependency&gt;
-&lt;!-- PostgreSQL JDBC Driver --&gt;
-&lt;dependency&gt;
-&lt;groupId&gt;org.postgresql&lt;/groupId&gt;
-&lt;artifactId&gt;postgresql&lt;/artifactId&gt;
-&lt;version&gt;42.7.1&lt;/version&gt;
-&lt;/dependency&gt;
-&lt;!-- BCrypt para contraseñas --&gt;
-&lt;dependency&gt;
-&lt;groupId&gt;at.favre.lib&lt;/groupId&gt;
-&lt;artifactId&gt;bcrypt&lt;/artifactId&gt;
-&lt;version&gt;0.10.2&lt;/version&gt;
-&lt;/dependency&gt;
-&lt;/dependencies&gt;&lt;/project&gt;</code></pre>
+                                        <pre><code class="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;com.sena.inventario&lt;/groupId&gt;
+    &lt;artifactId&gt;inventario-mvc&lt;/artifactId&gt;
+    &lt;version&gt;1.0&lt;/version&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+    &lt;properties&gt;
+        &lt;maven.compiler.source&gt;21&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;21&lt;/maven.compiler.target&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+    &lt;/properties&gt;
+    &lt;dependencies&gt;
+        &lt;!-- Jakarta Servlet API --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;jakarta.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;jakarta.servlet-api&lt;/artifactId&gt;
+            &lt;version&gt;6.0.0&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;!-- Jakarta JSTL --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;jakarta.servlet.jsp.jstl&lt;/groupId&gt;
+            &lt;artifactId&gt;jakarta.servlet.jsp.jstl-api&lt;/artifactId&gt;
+            &lt;version&gt;3.0.0&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!-- PostgreSQL JDBC Driver --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.postgresql&lt;/groupId&gt;
+            &lt;artifactId&gt;postgresql&lt;/artifactId&gt;
+            &lt;version&gt;42.7.1&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!-- BCrypt para contraseñas --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;at.favre.lib&lt;/groupId&gt;
+            &lt;artifactId&gt;bcrypt&lt;/artifactId&gt;
+            &lt;version&gt;0.10.2&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;</code></pre>
                                     </div>
                                 </div>
                             </div>
@@ -4065,11 +4263,28 @@ CONSTRAINT fk_usuarios_roles FOREIGN KEY (rol_id)         REFERENCES roles(id));
                                     </div>
                                     <div class="window-body">
                                         <pre><code class="language-java">package com.sena.inventario.modelo;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-public record Producto(    int id,    String codigo,    String nombre,    String descripcion,    BigDecimal precio,    int stock,    String categoria,    boolean estado,    LocalDateTime fechaRegistro,    LocalDateTime fechaActualizacion) {
-    public Producto(String codigo, String nombre, String descripcion,                     BigDecimal precio, int stock, String categoria) {
-        this(0, codigo, nombre, descripcion, precio, stock, categoria,              true, LocalDateTime.now(), LocalDateTime.now());
+
+public record Producto(
+    int id,
+    String codigo,
+    String nombre,
+    String descripcion,
+    BigDecimal precio,
+    int stock,
+    String categoria,
+    boolean estado,
+    LocalDateTime fechaRegistro,
+    LocalDateTime fechaActualizacion
+) {
+    public Producto(
+        String codigo, String nombre, String descripcion,
+        BigDecimal precio, int stock, String categoria
+    ) {
+        this(0, codigo, nombre, descripcion, precio, stock, categoria,
+             true, LocalDateTime.now(), LocalDateTime.now());
     }
 }</code></pre>
                                     </div>
@@ -4103,20 +4318,36 @@ public record Producto(    int id,    String codigo,    String nombre,    String
                                     </div>
                                     <div class="window-body">
                                         <pre><code class="language-java">package com.sena.inventario.dao;
+
 import com.sena.inventario.modelo.Producto;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
 public class ProductoDAO {
-    private static final String SQL_INSERT =         "INSERT INTO productos (codigo, nombre, descripcion, precio, stock, categoria) " +        "VALUES (?, ?, ?, ?, ?, ?)";
-    private static final String SQL_SELECT_ALL =         "SELECT * FROM productos ORDER BY id";
-    private static final String SQL_SELECT_BY_ID =         "SELECT * FROM productos WHERE id = ?";
-    private static final String SQL_UPDATE =         "UPDATE productos SET codigo=?, nombre=?, descripcion=?, precio=?, " +        "stock=?, categoria=?, estado=? WHERE id=?";
-    private static final String SQL_DELETE =         "DELETE FROM productos WHERE id = ?";
-    // CREATE    public boolean insertar(Producto producto) {
+
+    private static final String SQL_INSERT =
+        "INSERT INTO productos (codigo, nombre, descripcion, precio, stock, categoria) " +
+        "VALUES (?, ?, ?, ?, ?, ?)";
+
+    private static final String SQL_SELECT_ALL =
+        "SELECT * FROM productos ORDER BY id";
+
+    private static final String SQL_SELECT_BY_ID =
+        "SELECT * FROM productos WHERE id = ?";
+
+    private static final String SQL_UPDATE =
+        "UPDATE productos SET codigo=?, nombre=?, descripcion=?, precio=?, " +
+        "stock=?, categoria=?, estado=? WHERE id=?";
+
+    private static final String SQL_DELETE =
+        "DELETE FROM productos WHERE id = ?";
+
+    // ---------- CREATE ----------
+    public boolean insertar(Producto producto) {
         try (Connection conn = ConexionDB.conectar();
-        PreparedStatement ps = conn.prepareStatement(SQL_INSERT)) {
+             PreparedStatement ps = conn.prepareStatement(SQL_INSERT)) {
             ps.setString(1, producto.codigo());
             ps.setString(2, producto.nombre());
             ps.setString(3, producto.descripcion());
@@ -4124,55 +4355,68 @@ public class ProductoDAO {
             ps.setInt(5, producto.stock());
             ps.setString(6, producto.categoria());
             return ps.executeUpdate() &gt; 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
-    catch (SQLException e) {
-        e.printStackTrace();
-        return false;
     }
-}
-// READ    public List&lt;Producto&gt; listarTodos() {
-    List&lt;Producto&gt; productos = new ArrayList&lt;&gt;();
-    try (Connection conn = ConexionDB.conectar();
-    Statement stmt = conn.createStatement();
-    ResultSet rs = stmt.executeQuery(SQL_SELECT_ALL)) {
-        while (rs.next()) {
-            productos.add(new Producto(                    rs.getInt("id"),                    rs.getString("codigo"),                    rs.getString("nombre"),                    rs.getString("descripcion"),                    rs.getBigDecimal("precio"),                    rs.getInt("stock"),                    rs.getString("categoria"),                    rs.getBoolean("estado"),                    rs.getTimestamp("fecha_registro").toLocalDateTime(),                    rs.getTimestamp("fecha_actualizacion").toLocalDateTime()                ));
+
+    // ---------- READ / LIST ----------
+    public List&lt;Producto&gt; listarTodos() {
+        List&lt;Producto&gt; productos = new ArrayList&lt;&gt;();
+        try (Connection conn = ConexionDB.conectar();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(SQL_SELECT_ALL)) {
+            while (rs.next()) {
+                productos.add(new Producto(
+                    rs.getInt("id"),
+                    rs.getString("codigo"),
+                    rs.getString("nombre"),
+                    rs.getString("descripcion"),
+                    rs.getBigDecimal("precio"),
+                    rs.getInt("stock"),
+                    rs.getString("categoria"),
+                    rs.getBoolean("estado"),
+                    rs.getTimestamp("fecha_registro").toLocalDateTime(),
+                    rs.getTimestamp("fecha_actualizacion").toLocalDateTime()
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-}
-catch (SQLException e) {
-    e.printStackTrace();
-}
-return productos;
-}
-// UPDATE    public boolean actualizar(Producto producto) {
-    try (Connection conn = ConexionDB.conectar();
-    PreparedStatement ps = conn.prepareStatement(SQL_UPDATE)) {
-        ps.setString(1, producto.codigo());
-        ps.setString(2, producto.nombre());
-        ps.setString(3, producto.descripcion());
-        ps.setBigDecimal(4, producto.precio());
-        ps.setInt(5, producto.stock());
-        ps.setString(6, producto.categoria());
-        ps.setBoolean(7, producto.estado());
-        ps.setInt(8, producto.id());
-        return ps.executeUpdate() &gt; 0;
+        return productos;
     }
-catch (SQLException e) {
-    e.printStackTrace();
-    return false;
-}
-}
-// DELETE    public boolean eliminar(int id) {
-    try (Connection conn = ConexionDB.conectar();
-    PreparedStatement ps = conn.prepareStatement(SQL_DELETE)) {
-        ps.setInt(1, id);
-        return ps.executeUpdate() &gt; 0;
+
+    // ---------- UPDATE ----------
+    public boolean actualizar(Producto producto) {
+        try (Connection conn = ConexionDB.conectar();
+             PreparedStatement ps = conn.prepareStatement(SQL_UPDATE)) {
+            ps.setString(1, producto.codigo());
+            ps.setString(2, producto.nombre());
+            ps.setString(3, producto.descripcion());
+            ps.setBigDecimal(4, producto.precio());
+            ps.setInt(5, producto.stock());
+            ps.setString(6, producto.categoria());
+            ps.setBoolean(7, producto.estado());
+            ps.setInt(8, producto.id());
+            return ps.executeUpdate() &gt; 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
-catch (SQLException e) {
-    e.printStackTrace();
-    return false;
-}
-}
+
+    // ---------- DELETE ----------
+    public boolean eliminar(int id) {
+        try (Connection conn = ConexionDB.conectar();
+             PreparedStatement ps = conn.prepareStatement(SQL_DELETE)) {
+            ps.setInt(1, id);
+            return ps.executeUpdate() &gt; 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }</code></pre>
                                     </div>
                                 </div>
@@ -4205,6 +4449,7 @@ catch (SQLException e) {
                                     </div>
                                     <div class="window-body">
                                         <pre><code class="language-java">package com.sena.inventario.controlador;
+
 import com.sena.inventario.dao.ProductoDAO;
 import com.sena.inventario.modelo.Producto;
 import jakarta.servlet.ServletException;
@@ -4215,54 +4460,61 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
+
 @WebServlet("/productos")
 public class ProductoServlet extends HttpServlet {
+
     private final ProductoDAO productoDAO = new ProductoDAO();
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         String accion = request.getParameter("accion");
         if (accion == null) accion = "listar";
         switch (accion) {
-            case "nuevo" -&gt; mostrarFormularioNuevo(request, response);
-            case "editar" -&gt; mostrarFormularioEditar(request, response);
-            case "eliminar" -&gt; eliminarProducto(request, response);
-            default -&gt; listarProductos(request, response);
+            case "nuevo" -> mostrarFormularioNuevo(request, response);
+            case "editar" -> mostrarFormularioEditar(request, response);
+            case "eliminar" -> eliminarProducto(request, response);
+            default -> listarProductos(request, response);
         }
-}
-@Override
-protected void doPost(HttpServletRequest request, HttpServletResponse response)
-throws ServletException, IOException {
-    if ("guardar".equals(request.getParameter("accion"))) {
-        guardarProducto(request, response);
     }
-}
-private void listarProductos(HttpServletRequest req, HttpServletResponse resp)
-throws ServletException, IOException {
-    List&lt;Producto&gt; productos = productoDAO.listarTodos();
-    req.setAttribute("productos", productos);
-    req.getRequestDispatcher("/productos/lista.jsp").forward(req, resp);
-}
-private void guardarProducto(HttpServletRequest request, HttpServletResponse response)
-throws IOException {
-    String idStr = request.getParameter("id");
-    String codigo = request.getParameter("codigo");
-    String nombre = request.getParameter("nombre");
-    String descripcion = request.getParameter("descripcion");
-    BigDecimal precio = new BigDecimal(request.getParameter("precio"));
-    int stock = Integer.parseInt(request.getParameter("stock"));
-    String categoria = request.getParameter("categoria");
-    if (idStr == null || idStr.isEmpty()) {
-        Producto producto = new Producto(codigo, nombre, descripcion, precio, stock, categoria);
-        productoDAO.insertar(producto);
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        if ("guardar".equals(request.getParameter("accion"))) {
+            guardarProducto(request, response);
+        }
     }
-else {
-    intid = Integer.parseInt(idStr);
-    booleanestado = "on".equals(request.getParameter("estado"));
-    Producto producto = new Producto(id, codigo, nombre, descripcion, precio, stock, categoria, estado);
-    productoDAO.actualizar(producto);
-}        response.sendRedirect(request.getContextPath() + "/productos");
-}
+
+    private void listarProductos(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        List&lt;Producto&gt; productos = productoDAO.listarTodos();
+        req.setAttribute("productos", productos);
+        req.getRequestDispatcher("/productos/lista.jsp").forward(req, resp);
+    }
+
+    private void guardarProducto(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        String idStr = request.getParameter("id");
+        String codigo = request.getParameter("codigo");
+        String nombre = request.getParameter("nombre");
+        String descripcion = request.getParameter("descripcion");
+        BigDecimal precio = new BigDecimal(request.getParameter("precio"));
+        int stock = Integer.parseInt(request.getParameter("stock"));
+        String categoria = request.getParameter("categoria");
+
+        if (idStr == null || idStr.isEmpty()) {
+            Producto producto = new Producto(codigo, nombre, descripcion, precio, stock, categoria);
+            productoDAO.insertar(producto);
+        } else {
+            int id = Integer.parseInt(idStr);
+            boolean estado = "on".equals(request.getParameter("estado"));
+            Producto producto = new Producto(id, codigo, nombre, descripcion, precio, stock, categoria, estado);
+            productoDAO.actualizar(producto);
+        }
+        response.sendRedirect(request.getContextPath() + "/productos");
+    }
 }</code></pre>
                                     </div>
                                 </div>
@@ -4294,34 +4546,42 @@ else {
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-jsp">&lt;%@ page contentType="text/html;charset=UTF-8" language="java" %&gt;&lt;%@ taglib prefix="c" uri="jakarta.tags.core" %&gt;&lt;!DOCTYPE html&gt;&lt;html lang="es"&gt;&lt;head&gt;
-&lt;meta charset="UTF-8"&gt;
-&lt;title&gt;Lista de Productos&lt;/title&gt;&lt;/head&gt;&lt;body&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Código&lt;/th&gt;
-&lt;th&gt;Nombre&lt;/th&gt;
-&lt;th&gt;Precio&lt;/th&gt;
-&lt;th&gt;Stock&lt;/th&gt;
-&lt;th&gt;Acciones&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;c:forEach var="producto" items="${productos}"&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;c:out value="${producto.codigo}" /&gt;&lt;/td&gt;
-&lt;td&gt;&lt;c:out value="${producto.nombre}" /&gt;&lt;/td&gt;
-&lt;td&gt;$&lt;c:out value="${producto.precio}" /&gt;&lt;/td&gt;
-&lt;td&gt;&lt;c:out value="${producto.stock}" /&gt;&lt;/td&gt;
-&lt;td&gt;
-&lt;a href="productos?accion=editar&id=${producto.id}"&gt;Editar&lt;/a&gt;
-&lt;a href="productos?accion=eliminar&id=${producto.id}"&gt;Eliminar&lt;/a&gt;
-&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/c:forEach&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</code></pre>
+                                        <pre><code class="language-jsp">&lt;%@ page contentType="text/html;charset=UTF-8" language="java" %&gt;
+&lt;%@ taglib prefix="c" uri="jakarta.tags.core" %&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="es"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Lista de Productos&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;table&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th&gt;Código&lt;/th&gt;
+                &lt;th&gt;Nombre&lt;/th&gt;
+                &lt;th&gt;Precio&lt;/th&gt;
+                &lt;th&gt;Stock&lt;/th&gt;
+                &lt;th&gt;Acciones&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            &lt;c:forEach var="producto" items="${productos}"&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;&lt;c:out value="${producto.codigo}" /&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;c:out value="${producto.nombre}" /&gt;&lt;/td&gt;
+                    &lt;td&gt;$&lt;c:out value="${producto.precio}" /&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;c:out value="${producto.stock}" /&gt;&lt;/td&gt;
+                    &lt;td&gt;
+                        &lt;a href="productos?accion=editar&amp;id=${producto.id}"&gt;Editar&lt;/a&gt;
+                        &lt;a href="productos?accion=eliminar&amp;id=${producto.id}"&gt;Eliminar&lt;/a&gt;
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/c:forEach&gt;
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
                                     </div>
                                 </div>
                             </div>
@@ -4397,7 +4657,16 @@ mvn clean package cargo:run
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-bash"># 1. Compile y empaquete el archivo WARcd recursos/codigo-ejemplomvn clean package# 2. Copie el archivo generado a la carpeta webapps de su Tomcat manualcopy target\inventario-mvc-1.0.war C:\apache-tomcat-10.1.x\webapps\# 3. Reinicie el servidor TomcatC:\apache-tomcat-10.1.x\bin\shutdown.batC:\apache-tomcat-10.1.x\bin\startup.bat</code></pre>
+                                        <pre><code class="language-bash"># 1. Compile y empaquete el archivo WAR
+cd recursos/codigo-ejemplo
+mvn clean package
+
+# 2. Copie el archivo WAR a la carpeta webapps de Tomcat
+copy target\inventario-mvc-1.0.war C:\apache-tomcat-10.1.x\webapps\
+
+# 3. Reinicie el servidor Tomcat
+C:\apache-tomcat-10.1.x\bin\shutdown.bat
+C:\apache-tomcat-10.1.x\bin\startup.bat</code></pre>
                                     </div>
                                 </div>
                             </div>
@@ -4708,8 +4977,18 @@ mvn clean package cargo:run
                                     </button>
                                 </div>
                                 <div class="window-body">
-                                    <pre><code class="language-bash"># 1. Crear carpeta del proyectomkdir hola-mundo-fastapicd hola-mundo-fastapi# 2. Crear y activar entorno virtualpython -m venv venvvenv\Scripts\activate
-# Windows# source venv/bin/activate  # Linux/Mac# 3. Instalar FastAPI + servidorpip install fastapi uvicorn# Resultado:# Successfully installed fastapi-0.115.0 uvicorn-0.31.0</code></pre>
+                                    <pre><code class="language-bash"># 1. Crear carpeta del proyecto
+mkdir hola-mundo-fastapi
+cd hola-mundo-fastapi
+# 2. Crear y activar entorno virtual
+python -m venv venv
+venv\Scripts\activate
+# Windows
+# source venv/bin/activate  # Linux/Mac
+# 3. Instalar FastAPI + servidor
+pip install fastapi uvicorn
+# Resultado:
+# Successfully installed fastapi-0.115.0 uvicorn-0.31.0</code></pre>
                                 </div>
                             </div>
                             <h4>
@@ -4723,13 +5002,36 @@ mvn clean package cargo:run
                                     </button>
                                 </div>
                                 <div class="window-body">
-                                    <pre><code class="language-python">from fastapi
-import FastAPI# Creamos la aplicación (como
-@WebServlet)app = FastAPI(title="Mi Primera API", version="1.0.0")@app.get("/")async
-def root():    """GET / → Retorna JSON (como doGet pero sin HTML)"""    return {        "mensaje": "Hola Mundo desde FastAPI!",        "framework": "FastAPI + Python",        "equivalente": "Servlet Hola Mundo en Jakarta EE"    }@app.get("/health")async
-def health():    """GET /health → Verificar que funciona"""    return {"status": "ok", "version": "1.0.0"}@app.get("/sumar")async
-def sumar(a: int = 5, b: int = 3):    """GET /sumar?a=10&b=20 → JSON con resultado"""    resultado = a + b
-return {        "operacion": f"{a} + {b}",        "resultado": resultado    }</code></pre>
+<pre><code class="language-python">from fastapi import FastAPI
+
+# Creamos la aplicación (como @WebServlet)
+app = FastAPI(title="Mi Primera API", version="1.0.0")
+
+
+@app.get("/")
+async def root():
+    """GET / → Retorna JSON (como doGet pero sin HTML)"""
+    return {
+        "mensaje": "Hola Mundo desde FastAPI!",
+        "framework": "FastAPI + Python",
+        "equivalente": "Servlet Hola Mundo en Jakarta EE"
+    }
+
+
+@app.get("/health")
+async def health():
+    """GET / → Verificar que funciona"""
+    return {"status": "ok", "version": "1.0.0"}
+
+
+@app.get("/sumar")
+async def sumar(a: int = 5, b: int = 3):
+    """GET /sumar?a=10&b=20 → JSON con resultado"""
+    resultado = a + b
+    return {
+        "operacion": f"{a} + {b}",
+        "resultado": resultado
+    }</code></pre>
                                 </div>
                             </div>
                             <h4>
@@ -4746,7 +5048,15 @@ return {        "operacion": f"{a} + {b}",        "resultado": resultado    }</c
                                     </button>
                                 </div>
                                 <div class="window-body">
-                                    <pre><code class="language-bash"># Construir y ejecutar con Dockerdocker build -t hola-fastapi .docker run -d -p 8000:8000 --name hola-fastapi hola-fastapi# Ver logsdocker logs hola-fastapi# Probarcurl http://localhost:8000# Detenerdocker stop hola-fastapi && docker rm hola-fastapi</code></pre>
+                                    <pre><code class="language-bash"># Construir y ejecutar con Docker
+docker build -t hola-fastapi .
+docker run -d -p 8000:8000 --name hola-fastapi hola-fastapi
+# Ver logs
+docker logs hola-fastapi
+# Probar
+curl http://localhost:8000
+# Detener
+docker stop hola-fastapi && docker rm hola-fastapi</code></pre>
                                 </div>
                             </div>
                             <h5>
@@ -4760,9 +5070,13 @@ return {        "operacion": f"{a} + {b}",        "resultado": resultado    }</c
                                     </button>
                                 </div>
                                 <div class="window-body">
-                                    <pre><code class="language-bash"># Activar entorno virtual (si no lo está)venv\Scripts\activate# Iniciar FastAPI (recarga automática con --reload)uvicorn main:app --reload --port 8000# Resultado esperado:# INFO:
-Uvicorn running on http://127.0.0.1:8000# INFO:
-Application startup complete.</code></pre>
+                                    <pre><code class="language-bash"># Activar entorno virtual (si no lo está)
+venv\Scripts\activate
+# Iniciar FastAPI (recarga automática con --reload)
+uvicorn main:app --reload --port 8000
+# Resultado esperado:
+# INFO: Uvicorn running on http://127.0.0.1:8000
+# INFO: Application startup complete.</code></pre>
                                 </div>
                             </div>
                             <h4>
@@ -4776,14 +5090,30 @@ Application startup complete.</code></pre>
                                     </button>
                                 </div>
                                 <div class="window-body">
-                                    <pre><code class="language-bash"># Abrir en el navegador o usar curl:# 1. Endpoint raízcurl http://localhost:8000# Resultado: {"mensaje":"Hola Mundo desde FastAPI!","framework":"FastAPI + Python","equivalente":"Servlet Hola Mundo en Jakarta EE"}# 2. Health checkcurl http://localhost:8000/health# Resultado: {"status":"ok","version":"1.0.0"}# 3. Sumar con parámetroscurl "http://localhost:8000/sumar?a=10&b=20"# Resultado: {"operacion":"10 + 20","resultado":30}# 4. Documentación Swagger automática# Abrir en el navegador: http://localhost:8000/docs# Verás una UI interactiva donde puedes probar los endpoints# ┌────────────────────────────────────────────┐# │ Swagger UI
-│# │ ──────────────────────────
-│# │ GET /
-Root
-│# │ GET /health  Health Check
-│# │ GET /sumar   Sumar dos números
-│# │
-│# │ [Try it out] → Ejecuta desde el navegador  │# └────────────────────────────────────────────┘# 5. Documentación ReDoc alternativa# Abrir: http://localhost:8000/redoc</code></pre>
+                                    <pre><code class="language-bash"># Abrir en el navegador o usar curl:
+# 1. Endpoint raíz
+curl http://localhost:8000
+# Resultado: {"mensaje":"Hola Mundo desde FastAPI!","framework":"FastAPI + Python","equivalente":"Servlet Hola Mundo en Jakarta EE"}
+# 2. Health check
+curl http://localhost:8000/health
+# Resultado: {"status":"ok","version":"1.0.0"}
+# 3. Sumar con parámetros
+curl "http://localhost:8000/sumar?a=10&b=20"
+# Resultado: {"operacion":"10 + 20","resultado":30}
+# 4. Documentación Swagger automática
+# Abrir en el navegador: http://localhost:8000/docs
+# Verás una UI interactiva donde puedes probar los endpoints
+# ┌────────────────────────────────────────────┐
+# │ Swagger UI                                 │
+# │ ──────────────────────────                 │
+# │ GET /          Root                        │
+# │ GET /health    Health Check                │
+# │ GET /sumar     Sumar dos números           │
+# │                                            │
+# │ [Try it out] → Ejecuta desde el navegador  │
+# └────────────────────────────────────────────┘
+# 5. Documentación ReDoc alternativa
+# Abrir: http://localhost:8000/redoc</code></pre>
                                 </div>
                             </div>
                             <div class="recommendation-box"><i class="fas fa-check-circle" style="color:#28a745;"></i>
@@ -4796,6 +5126,18 @@ Root
                                     </p>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <!-- Descargar proyecto FastAPI completo -->
+                    <div class="info-banner" style="margin-bottom:2rem;background:var(--accent-light, #e8f5e9);border-left:4px solid #f7df1e;">
+                        <i class="fas fa-download" style="color:#f7df1e;"></i>
+                        <div>
+                            <h4>Proyecto FastAPI listo para ejecutar</h4>
+                            <p>Descarga el proyecto FastAPI completo con: <strong>Modelos SQLAlchemy</strong>, <strong>Schemas Pydantic</strong>, <strong>Routers</strong> (CRUD + Auth JWT) y <strong>Migraciones Alembic</strong>. Ya incluye <code>requirements.txt</code> y <code>.env</code>.</p>
+                            <p style="font-size:0.9rem;opacity:0.8;">Solo necesitas: <code>pip install -r requirements.txt && uvicorn main:app --reload --port 8000</code></p>
+                            <a href="downloads/fastapi-inventario.zip" class="btn btn-primary" download style="margin-top:0.5rem;display:inline-flex;align-items:center;gap:0.5rem;">
+                                <i class="fas fa-download"></i> Descargar proyecto FastAPI (39 KB)
+                            </a>
                         </div>
                     </div>
                     <div class="tutorial-steps">
@@ -4863,7 +5205,15 @@ Root
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-bash"># ===== .env (copiar de .env.example) =====# PostgreSQLDATABASE_URL=postgresql://postgres:postgres@localhost:5432/inventario_db# JWTSECRET_KEY=mi-clave-secreta-segura-2026ALGORITHM=HS256ACCESS_TOKEN_EXPIRE_MINUTES=60# CORSCORS_ORIGINS=http://localhost:5173,http://localhost:3000</code></pre>
+                                        <pre><code class="language-bash"># ===== .env (copiar de .env.example) =====
+# PostgreSQL
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/inventario_db
+# JWT
+SECRET_KEY=mi-clave-secreta-segura-2026
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=60
+# CORS
+CORS_ORIGINS=http://localhost:5173,http://localhost:3000</code></pre>
                                     </div>
                                 </div>
                                 <div class="recommendation-box"><i class="fas fa-shield-alt"></i>
@@ -4969,7 +5319,11 @@ Root
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-text">fastapi==0.115.0uvicorn==0.31.0sqlalchemy==2.0.35psycopg2-binary==2.9.9pydantic==2.9.0</code></pre>
+                                        <pre><code class="language-text">fastapi==0.115.0
+uvicorn==0.31.0
+sqlalchemy==2.0.35
+psycopg2-binary==2.9.9
+pydantic==2.9.0</code></pre>
                                     </div>
                                 </div>
                                 <div class="code-window">
@@ -4980,8 +5334,16 @@ Root
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-bash"># Crear y activar entorno virtualpython -m venv venvvenv\Scripts\activate
-# Windows# source venv/bin/activate  # Linux/Mac# Instalar dependenciaspip install -r requirements.txt# Resultado:# Successfully installed fastapi-0.115.0 uvicorn-0.31.0# sqlalchemy-2.0.35 psycopg2-binary-2.9.9 pydantic-2.9.0</code></pre>
+                                        <pre><code class="language-bash"># Crear y activar entorno virtual
+python -m venv venv
+venv\Scripts\activate
+# Windows
+# source venv/bin/activate  # Linux/Mac
+# Instalar dependencias
+pip install -r requirements.txt
+# Resultado:
+# Successfully installed fastapi-0.115.0 uvicorn-0.31.0
+# sqlalchemy-2.0.35 psycopg2-binary-2.9.9 pydantic-2.9.0</code></pre>
                                     </div>
                                 </div>
                             </div>
@@ -5012,9 +5374,24 @@ Root
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-python">from sqlalchemy
-import Column, Integer, String, Numeric, Boolean, DateTime, textfrom database
-import Baseclass ProductoDB(Base):    """Modelo SQLAlchemy — mapea la tabla 'productos' de PostgreSQL.       Equivalente al Record Producto.java en JSP MVC."""    __tablename__ = "productos"    id = Column(Integer, primary_key=True, index=True)    codigo = Column(String(50), unique=True, nullable=False)    nombre = Column(String(100), nullable=False)    descripcion = Column(String(500), nullable=True)    precio = Column(Numeric(10, 2), nullable=False)    stock = Column(Integer, default=0)    categoria = Column(String(50), nullable=True)    estado = Column(Boolean, default=True)    fecha_registro = Column(DateTime, server_default=text("CURRENT_TIMESTAMP"))</code></pre>
+                                        <pre><code class="language-python">from sqlalchemy import Column, Integer, String, Numeric, Boolean, DateTime, text
+from database import Base
+
+
+class ProductoDB(Base):
+    """Modelo SQLAlchemy — mapea la tabla 'productos' de PostgreSQL.
+    Equivalente al Record Producto.java en JSP MVC."""
+    __tablename__ = "productos"
+
+    id = Column(Integer, primary_key=True, index=True)
+    codigo = Column(String(50), unique=True, nullable=False)
+    nombre = Column(String(100), nullable=False)
+    descripcion = Column(String(500), nullable=True)
+    precio = Column(Numeric(10, 2), nullable=False)
+    stock = Column(Integer, default=0)
+    categoria = Column(String(50), nullable=True)
+    estado = Column(Boolean, default=True)
+    fecha_registro = Column(DateTime, server_default=text("CURRENT_TIMESTAMP"))</code></pre>
                                     </div>
                                 </div>
                                 <h4>
@@ -5028,12 +5405,36 @@ import Baseclass ProductoDB(Base):    """Modelo SQLAlchemy — mapea la tabla 'p
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-python">from pydantic
-import BaseModel, Fieldfrom decimal
-import Decimalfrom datetime
-import datetimefrom typing
-import Optionalclass ProductoBase(BaseModel):    """Esquema base — validación de tipos automática.       Equivalente a los parámetros del Servlet."""    codigo: str = Field(..., min_length=3, max_length=50)    nombre: str = Field(..., min_length=2, max_length=100)    descripcion: Optional[str] = None    precio: Decimal = Field(..., gt=0, decimal_places=2)    stock: int = Field(default=0, ge=0)    categoria: Optional[str] = Noneclass ProductoCreate(ProductoBase):    """Para crear: hereda de ProductoBase (sin id)"""    passclass Producto(ProductoBase):    """Para responder: incluye id y metadatos"""    id: int    estado: bool = True    fecha_registro: Optional[datetime] = None
-class Config:        from_attributes = True  # Permite crear desde SQLAlchemy</code></pre>
+                                        <pre><code class="language-python">from pydantic import BaseModel, Field
+from decimal import Decimal
+from datetime import datetime
+from typing import Optional
+
+
+class ProductoBase(BaseModel):
+    """Esquema base — validación de tipos automática.
+    Equivalente a los parámetros del Servlet."""
+    codigo: str = Field(..., min_length=3, max_length=50)
+    nombre: str = Field(..., min_length=2, max_length=100)
+    descripcion: Optional[str] = None
+    precio: Decimal = Field(..., gt=0, decimal_places=2)
+    stock: int = Field(default=0, ge=0)
+    categoria: Optional[str] = None
+
+
+class ProductoCreate(ProductoBase):
+    """Para crear: hereda de ProductoBase (sin id)"""
+    pass
+
+
+class Producto(ProductoBase):
+    """Para responder: incluye id y metadatos"""
+    id: int
+    estado: bool = True
+    fecha_registro: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True  # Permite crear desde SQLAlchemy</code></pre>
                                     </div>
                                 </div>
                                 <h4>
@@ -5047,10 +5448,30 @@ class Config:        from_attributes = True  # Permite crear desde SQLAlchemy</c
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-python">from sqlalchemy
-import create_enginefrom sqlalchemy.orm
-import sessionmaker, DeclarativeBase# URL de conexión — como db.properties en JSP# Formato: postgresql://usuario:password@host:puerto/bdDATABASE_URL = "postgresql://postgres:postgres@localhost:5432/inventario_db"engine = create_engine(DATABASE_URL, echo=False)SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)class Base(DeclarativeBase):    """Clase base para modelos SQLAlchemy"""    passdef get_db():    """Dependencia que provee una sesión de BD por petición.       Como ConexionDB.conectar() pero automático."""    db = SessionLocal()    try:
-yield db    finally:        db.close()</code></pre>
+                                        <pre><code class="language-python">from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, DeclarativeBase
+
+# URL de conexión — como db.properties en JSP
+# Formato: postgresql://usuario:password@host:puerto/bd
+DATABASE_URL = "postgresql://postgres:postgres@localhost:5432/inventario_db"
+
+engine = create_engine(DATABASE_URL, echo=False)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+
+class Base(DeclarativeBase):
+    """Clase base para modelos SQLAlchemy"""
+    pass
+
+
+def get_db():
+    """Dependencia que provee una sesión de BD por petición.
+    Como ConexionDB.conectar() pero automático."""
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()</code></pre>
                                     </div>
                                 </div>
                             </div>
@@ -5081,36 +5502,80 @@ yield db    finally:        db.close()</code></pre>
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-python">from fastapi
-import APIRouter, Depends, HTTPException, statusfrom sqlalchemy.orm
-import Sessionfrom typing
-import Listfrom database
-import get_dbfrom models.producto
-import ProductoDBfrom schemas.producto
-import Producto, ProductoCreate# Prefijo /api/productos — como
-@WebServlet("/productos")router = APIRouter(prefix="/api/productos", tags=["Productos"])@router.get("/", response_model=List[Producto])async
-def listar_productos(    categoria: str | None = None,    db: Session = Depends(get_db)):    """GET /api/productos — Listar todos (con filtro opcional).       Equivalente a ProductoDAO.listarTodos()"""    query = db.query(ProductoDB)
-    if categoria:        query = query.filter(ProductoDB.categoria == categoria)    productos = query.all()
-return productos
-    # SQLAlchemy → Pydantic automático@router.get("/{producto_id}", response_model=Producto)async
-    def obtener_producto(producto_id: int, db: Session = Depends(get_db)):    """GET /api/productos/5 — Obtener por ID.       Equivalente a ProductoDAO.buscarPorId()"""    producto = db.query(ProductoDB).filter(ProductoDB.id == producto_id).first()
-    if
-    not producto:
-    raise HTTPException(status_code=404, detail="Producto no encontrado")
-    return producto@router.post("/", response_model=Producto, status_code=status.HTTP_201_CREATED)async
-        def crear_producto(producto: ProductoCreate, db: Session = Depends(get_db)):    """POST /api/productos — Crear producto.       Equivalente a doPost en ProductoServlet"""    db_producto = ProductoDB(**producto.model_dump())    db.add(db_producto)    db.commit()    db.refresh(db_producto)
-return db_producto@router.put("/{producto_id}", response_model=Producto)async
-    def actualizar_producto(producto_id: int, producto: ProductoCreate,                               db: Session = Depends(get_db)):    """PUT /api/productos/5 — Actualizar producto.       Equivalente a ProductoDAO.actualizar()"""    db_producto = db.query(ProductoDB).filter(ProductoDB.id == producto_id).first()
-    if
-    not db_producto:
-    raise HTTPException(status_code=404, detail="Producto no encontrado")
-        for key, value
-        in producto.model_dump().items():        setattr(db_producto, key, value)    db.commit()    db.refresh(db_producto)
-    return db_producto@router.delete("/{producto_id}", status_code=status.HTTP_204_NO_CONTENT)async
-        def eliminar_producto(producto_id: int, db: Session = Depends(get_db)):    """DELETE /api/productos/5 — Eliminar producto.       Equivalente a ProductoDAO.eliminar()"""    db_producto = db.query(ProductoDB).filter(ProductoDB.id == producto_id).first()
-    if
-    not db_producto:
-    raise HTTPException(status_code=404, detail="Producto no encontrado")    db.delete(db_producto)    db.commit()
+                                        <pre><code class="language-python">from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.orm import Session
+from typing import List
+from database import get_db
+from models.producto import ProductoDB
+from schemas.producto import Producto, ProductoCreate
+
+# Prefijo /api/productos — como @WebServlet("/productos")
+router = APIRouter(prefix="/api/productos", tags=["Productos"])
+
+
+@router.get("/", response_model=List[Producto])
+async def listar_productos(
+    categoria: str | None = None,
+    db: Session = Depends(get_db)
+):
+    """GET /api/productos — Listar todos (con filtro opcional).
+    Equivalente a ProductoDAO.listarTodos()"""
+    query = db.query(ProductoDB)
+    if categoria:
+        query = query.filter(ProductoDB.categoria == categoria)
+    productos = query.all()
+    return productos
+    # SQLAlchemy → Pydantic automático
+
+
+@router.get("/{producto_id}", response_model=Producto)
+async def obtener_producto(producto_id: int, db: Session = Depends(get_db)):
+    """GET /api/productos/5 — Obtener por ID.
+    Equivalente a ProductoDAO.buscarPorId()"""
+    producto = db.query(ProductoDB).filter(ProductoDB.id == producto_id).first()
+    if not producto:
+        raise HTTPException(status_code=404, detail="Producto no encontrado")
+    return producto
+
+
+@router.post("/", response_model=Producto, status_code=status.HTTP_201_CREATED)
+async def crear_producto(producto: ProductoCreate, db: Session = Depends(get_db)):
+    """POST /api/productos — Crear producto.
+    Equivalente a doPost en ProductoServlet"""
+    db_producto = ProductoDB(**producto.model_dump())
+    db.add(db_producto)
+    db.commit()
+    db.refresh(db_producto)
+    return db_producto
+
+
+@router.put("/{producto_id}", response_model=Producto)
+async def actualizar_producto(
+    producto_id: int,
+    producto: ProductoCreate,
+    db: Session = Depends(get_db)
+):
+    """PUT /api/productos/5 — Actualizar producto.
+    Equivalente a ProductoDAO.actualizar()"""
+    db_producto = db.query(ProductoDB).filter(ProductoDB.id == producto_id).first()
+    if not db_producto:
+        raise HTTPException(status_code=404, detail="Producto no encontrado")
+    for key, value in producto.model_dump().items():
+        setattr(db_producto, key, value)
+    db.commit()
+    db.refresh(db_producto)
+    return db_producto
+
+
+@router.delete("/{producto_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def eliminar_producto(producto_id: int, db: Session = Depends(get_db)):
+    """DELETE /api/productos/5 — Eliminar producto.
+    Equivalente a ProductoDAO.eliminar()"""
+    db_producto = db.query(ProductoDB).filter(ProductoDB.id == producto_id).first()
+    if not db_producto:
+        raise HTTPException(status_code=404, detail="Producto no encontrado")
+    db.delete(db_producto)
+    db.commit()
     return None</code></pre>
                                     </div>
                                 </div>
@@ -5125,14 +5590,48 @@ return db_producto@router.put("/{producto_id}", response_model=Producto)async
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-python">from fastapi
-import FastAPIfrom fastapi.middleware.cors
-import CORSMiddlewarefrom database
-import engine, Basefrom routers
-import producto as producto_router# Crear tablas en BD si no existen (como ejecutar inventario_db.sql)Base.metadata.create_all(bind=engine)app = FastAPI(    title="API Inventario - SENA ADSO",    description="API REST del sistema de inventario. Continuación de la guía JSP + MVC",    version="1.0.0",    docs_url="/docs",     # Swagger UI interactivo    redoc_url="/redoc",   # Documentación alternativa)# CORS: permite que React (http://localhost:5173) consuma la APIapp.add_middleware(    CORSMiddleware,    allow_origins=["http://localhost:5173", "http://localhost:3000"],    allow_methods=["*"],    allow_headers=["*"],)# Registrar rutas (como
-@WebServlet, pero automático)app.include_router(producto_router.router)@app.get("/")async
-def root():    """Endpoint de bienvenida"""    return {"mensaje": "API Inventario - SENA ADSO",            "docs": "/docs",            "version": "1.0.0"}@app.get("/health")async
-def health_check():    """Verificar que la API funciona"""    return {"status": "ok", "database": "conectada"}</code></pre>
+                                        <pre><code class="language-python">from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from database import engine, Base
+from routers import producto as producto_router
+
+# Crear tablas en BD si no existen (como ejecutar inventario_db.sql)
+Base.metadata.create_all(bind=engine)
+
+app = FastAPI(
+    title="API Inventario - SENA ADSO",
+    description="API REST del sistema de inventario. Continuación de la guía JSP + MVC",
+    version="1.0.0",
+    docs_url="/docs",     # Swagger UI interactivo
+    redoc_url="/redoc",   # Documentación alternativa
+)
+
+# CORS: permite que React (http://localhost:5173) consuma la API
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173", "http://localhost:3000"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Registrar rutas (como @WebServlet, pero automático)
+app.include_router(producto_router.router)
+
+
+@app.get("/")
+async def root():
+    """Endpoint de bienvenida"""
+    return {
+        "mensaje": "API Inventario - SENA ADSO",
+        "docs": "/docs",
+        "version": "1.0.0"
+    }
+
+
+@app.get("/health")
+async def health_check():
+    """Verificar que la API funciona"""
+    return {"status": "ok", "database": "conectada"}</code></pre>
                                     </div>
                                 </div>
                             </div>
@@ -5163,10 +5662,14 @@ def health_check():    """Verificar que la API funciona"""    return {"status": 
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-bash"># Activar entorno virtualvenv\Scripts\activate# Iniciar servidor (recarga automática con --reload)uvicorn main:app --reload --host 0.0.0.0 --port 8000# Resultado esperado:# INFO:
-Uvicorn running on http://0.0.0.0:8000# INFO:
-Application startup complete.# INFO:
-Swagger UI disponible en http://localhost:8000/docs</code></pre>
+                                        <pre><code class="language-bash"># Activar entorno virtual
+venv\Scripts\activate
+# Iniciar servidor (recarga automática con --reload)
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
+# Resultado esperado:
+# INFO: Uvicorn running on http://0.0.0.0:8000
+# INFO: Application startup complete.
+# INFO: Swagger UI disponible en http://localhost:8000/docs</code></pre>
                                     </div>
                                 </div>
                                 <h4>
@@ -5194,7 +5697,46 @@ Swagger UI disponible en http://localhost:8000/docs</code></pre>
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-bash"># 1. Health checkcurl http://localhost:8000/health# Salida:# {"status":"ok","database":"conectada"}# 2. Listar productos (GET)curl http://localhost:8000/api/productos/# Salida (vacío inicialmente):# []# 3. Crear un producto (POST)curl -X POST http://localhost:8000/api/productos/ \  -H "Content-Type: application/json" \  -d "{\"codigo\":\"PROD-001\",\"nombre\":\"Laptop HP\",\"precio\":2500000.00,\"stock\":15,\"categoria\":\"Tecnologia\"}"# Salida:# {"id":1,"codigo":"PROD-001","nombre":"Laptop HP","descripcion":null,#  "precio":2500000.00,"stock":15,"categoria":"Tecnologia",#  "estado":true,"fecha_registro":"2026-06-28T10:30:00"}# 4. Listar productos (ahora con datos)curl http://localhost:8000/api/productos/# Salida:# [{"id":1,"codigo":"PROD-001","nombre":"Laptop HP","precio":2500000.00,"stock":15,...}]# 5. Obtener producto por IDcurl http://localhost:8000/api/productos/1# Salida:# {"id":1,"codigo":"PROD-001","nombre":"Laptop HP","precio":2500000.00,"stock":15,...}# 6. Actualizar producto (PUT)curl -X PUT http://localhost:8000/api/productos/1 \  -H "Content-Type: application/json" \  -d "{\"codigo\":\"PROD-001\",\"nombre\":\"Laptop HP Pavilion\",\"precio\":2600000.00,\"stock\":12,\"categoria\":\"Tecnologia\"}"# Salida:# {"id":1,"codigo":"PROD-001","nombre":"Laptop HP Pavilion","precio":2600000.00,"stock":12,...}# 7. Eliminar producto (DELETE)curl -X DELETE http://localhost:8000/api/productos/1# Salida: (vacío - código 204)# (No Content)</code></pre>
+                                        <pre><code class="language-bash"># 1. Health check
+curl http://localhost:8000/health
+# Salida:
+# {"status":"ok","database":"conectada"}
+
+# 2. Listar productos (GET)
+curl http://localhost:8000/api/productos/
+# Salida (vacío inicialmente):
+# []
+
+# 3. Crear un producto (POST)
+curl -X POST http://localhost:8000/api/productos/ \
+  -H "Content-Type: application/json" \
+  -d "{\"codigo\":\"PROD-001\",\"nombre\":\"Laptop HP\",\"precio\":2500000.00,\"stock\":15,\"categoria\":\"Tecnologia\"}"
+# Salida:
+# {"id":1,"codigo":"PROD-001","nombre":"Laptop HP","descripcion":null,
+#  "precio":2500000.00,"stock":15,"categoria":"Tecnologia",
+#  "estado":true,"fecha_registro":"2026-06-28T10:30:00"}
+
+# 4. Listar productos (ahora con datos)
+curl http://localhost:8000/api/productos/
+# Salida:
+# [{"id":1,"codigo":"PROD-001","nombre":"Laptop HP","precio":2500000.00,"stock":15,...}]
+
+# 5. Obtener producto por ID
+curl http://localhost:8000/api/productos/1
+# Salida:
+# {"id":1,"codigo":"PROD-001","nombre":"Laptop HP","precio":2500000.00,"stock":15,...}
+
+# 6. Actualizar producto (PUT)
+curl -X PUT http://localhost:8000/api/productos/1 \
+  -H "Content-Type: application/json" \
+  -d "{\"codigo\":\"PROD-001\",\"nombre\":\"Laptop HP Pavilion\",\"precio\":2600000.00,\"stock\":12,\"categoria\":\"Tecnologia\"}"
+# Salida:
+# {"id":1,"codigo":"PROD-001","nombre":"Laptop HP Pavilion","precio":2600000.00,"stock":12,...}
+
+# 7. Eliminar producto (DELETE)
+curl -X DELETE http://localhost:8000/api/productos/1
+# Salida: (vacío - código 204)
+# (No Content)</code></pre>
                                     </div>
                                 </div>
                                 <h4>
@@ -5208,21 +5750,37 @@ Swagger UI disponible en http://localhost:8000/docs</code></pre>
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-bash"># ─────────────────────────────────────────────# 🐳 OPCIÓN A: DOCKER (reproducible, producción)# ─────────────────────────────────────────────docker compose -f docker-compose.fullstack.yml up -d# Resultado: PostgreSQL + FastAPI + React en 30s# ─────────────────────────────────────────────# 🪟 OPCIÓN B: NATIVO WINDOWS (desarrollo, debugging)# ─────────────────────────────────────────────# Terminal 1: FastAPIcd recursos\fastapi-inventariovenv\Scripts\activateuvicorn main:app --reload --port 8000# Terminal 2: React (opcional, solo frontend)cd recursos\frontend-inventarionpm run dev# ⚡ Script automático (inicia todo):.\start-fullstack.ps1# ─────────────────────────────────────────────# 📊 COMPARACIÓN:# ─────────────────────────────────────────────# Característica
-Docker
-Nativo# ────────────
-──────
-─────# Instalación previa   Docker   PG + Python + Node# Puerto PostgreSQL
-5432
-5432 (servicio Win)# Puerto FastAPI
-8000
-8000# Puerto React
-80
-5173# Recarga automática   rebuild  --reload / npm dev# Tiempo inicio
-30s
-10s# Aislamiento
-✅
-❌</code></pre>
+                                        <pre><code class="language-bash"># ─────────────────────────────────────────────
+# 🐳 OPCIÓN A: DOCKER (reproducible, producción)
+# ─────────────────────────────────────────────
+docker compose -f docker-compose.fullstack.yml up -d
+# Resultado: PostgreSQL + FastAPI + React en 30s
+
+# ─────────────────────────────────────────────
+# 🪟 OPCIÓN B: NATIVO WINDOWS (desarrollo, debugging)
+# ─────────────────────────────────────────────
+# Terminal 1: FastAPI
+cd recursos\fastapi-inventario
+venv\Scripts\activate
+uvicorn main:app --reload --port 8000
+# Terminal 2: React (opcional, solo frontend)
+cd recursos\frontend-inventario
+npm run dev
+# ⚡ Script automático (inicia todo):
+.\start-fullstack.ps1
+
+# ─────────────────────────────────────────────
+# 📊 COMPARACIÓN:
+# ─────────────────────────────────────────────
+# Característica      Docker          Nativo
+# ────────────        ──────          ─────
+# Instalación previa  Docker          PG + Python + Node
+# Puerto PostgreSQL   5432            5432 (servicio Win)
+# Puerto FastAPI      8000            8000
+# Puerto React        80              5173
+# Recarga automática  rebuild         --reload / npm dev
+# Tiempo inicio       30s             10s
+# Aislamiento         ✅              ❌</code></pre>
                                     </div>
                                 </div>
                                 <h4>
@@ -5383,7 +5941,21 @@ Nativo# ────────────
                                                 </button>
                                             </div>
                                             <div class="window-body">
-                                                <pre><code class="language-bash"># Instalar pytestpip install pytest httpx# Ejecutar todas las pruebaspytest tests/ -v# Resultado esperado:# tests/test_api.py::test_health_check PASSED# tests/test_api.py::test_login_credenciales_invalidas PASSED# tests/test_api.py::test_register_datos_invalidos PASSED# tests/test_api.py::test_listar_productos PASSED# tests/test_api.py::test_listar_productos_con_paginacion PASSED# tests/test_api.py::test_obtener_producto_no_existe PASSED# tests/test_api.py::test_ruta_no_existe PASSED# tests/test_api.py::test_docs_disponible PASSED# ───────────────────────────────────────────────# 8 passed in 2.34s</code></pre>
+                                                <pre><code class="language-bash"># Instalar pytest
+pip install pytest httpx
+# Ejecutar todas las pruebas
+pytest tests/ -v
+# Resultado esperado:
+# tests/test_api.py::test_health_check PASSED
+# tests/test_api.py::test_login_credenciales_invalidas PASSED
+# tests/test_api.py::test_register_datos_invalidos PASSED
+# tests/test_api.py::test_listar_productos PASSED
+# tests/test_api.py::test_listar_productos_con_paginacion PASSED
+# tests/test_api.py::test_obtener_producto_no_existe PASSED
+# tests/test_api.py::test_ruta_no_existe PASSED
+# tests/test_api.py::test_docs_disponible PASSED
+# ───────────────────────────────────────────────
+# 8 passed in 2.34s</code></pre>
                                             </div>
                                         </div>
                                         <h4 style="margin-top:1.5rem;">
@@ -5398,7 +5970,10 @@ Nativo# ────────────
                                                 </div><span class="window-title"><i class="fas fa-terminal"></i>api.log — Logs en tiempo real</span>
                                             </div>
                                             <div class="window-body">
-                                                <pre><code class="language-text">2026-06-28 12:00:01 [INFO] api: GET /api/productos/ → 200 (0.032s)2026-06-28 12:00:02 [INFO] api.productos: Producto creado ID=10 por usuario=admin2026-06-28 12:00:03 [INFO] api: POST /api/productos/ → 201 (0.045s)2026-06-28 12:00:04 [WARNING] api: ValueError: ... → /api/productos/abc</code></pre>
+                                                <pre><code class="language-text">2026-06-28 12:00:01 [INFO] api: GET /api/productos/ → 200 (0.032s)
+2026-06-28 12:00:02 [INFO] api.productos: Producto creado ID=10 por usuario=admin
+2026-06-28 12:00:03 [INFO] api: POST /api/productos/ → 201 (0.045s)
+2026-06-28 12:00:04 [WARNING] api: ValueError: ... → /api/productos/abc</code></pre>
                                             </div>
                                         </div>
                                         <div class="comparison-box" style="margin-top:1rem;">
@@ -5412,9 +5987,15 @@ Nativo# ────────────
                                             <div class="comparison-item new">
                                                 <h5><i class="fas fa-check-circle"></i>FastAPI (middleware global)
                                                 </h5>
-                                                <pre><code class="language-python"># Un solo middleware logea TODAS las rutas@app.middleware("http")async
-def log_requests(request, call_next):    start = datetime.now()    response = await call_next(request)    elapsed = (datetime.now() - start).total_seconds()    logger.info(f"{request.method} {request.url.path} → "                f"{response.status_code} ({elapsed:.3f}s)")
-return response</code></pre>
+                                                <pre><code class="language-python"># Un solo middleware logea TODAS las rutas
+@app.middleware("http")
+async def log_requests(request, call_next):
+    start = datetime.now()
+    response = await call_next(request)
+    elapsed = (datetime.now() - start).total_seconds()
+    logger.info(f"{request.method} {request.url.path} → "
+                f"{response.status_code} ({elapsed:.3f}s)")
+    return response</code></pre>
                                             </div>
                                         </div>
                                         <h4 style="margin-top:1.5rem;">
@@ -5431,7 +6012,21 @@ return response</code></pre>
                                                 </button>
                                             </div>
                                             <div class="window-body">
-                                                <pre><code class="language-bash"># Página 1, 5 items por páginacurl "http://localhost:8000/api/productos/?pagina=1&tamano=5"# Resultado:# {#   "items": [...],#   "total": 25,#   "pagina": 1,#   "tamano": 5,#   "total_paginas": 5# }# Página 2curl "http://localhost:8000/api/productos/?pagina=2&tamano=5"# Equivalente en JSP:# SELECT * FROM productos LIMIT 5 OFFSET 5# En FastAPI: query.offset(5).limit(5).all()</code></pre>
+                                                <pre><code class="language-bash"># Página 1, 5 items por página
+curl "http://localhost:8000/api/productos/?pagina=1&tamano=5"
+# Resultado:
+# {
+#   "items": [...],
+#   "total": 25,
+#   "pagina": 1,
+#   "tamano": 5,
+#   "total_paginas": 5
+# }
+# Página 2
+curl "http://localhost:8000/api/productos/?pagina=2&tamano=5"
+# Equivalente en JSP:
+# SELECT * FROM productos LIMIT 5 OFFSET 5
+# En FastAPI: query.offset(5).limit(5).all()</code></pre>
                                             </div>
                                         </div>
                                         <div class="info-banner" style="margin-top:1rem;background:#e8f5e9;border-left:4px solid #28a745;"><i class="fas fa-check-circle" style="color:#28a745;"></i>
@@ -5661,7 +6256,22 @@ return response</code></pre>
                                     </button>
                                 </div>
                                 <div class="window-body">
-                                    <pre><code class="language-bash"># Crear proyecto con Vite + Reactnpm create vite@latest hola-mundo-react -- --template react# Resultado:# ✔ Project name: hola-mundo-react# ✔ Template: react# Done.# Entrar e instalarcd hola-mundo-reactnpm install# Iniciar servidor de desarrollonpm run dev# Resultado esperado:# VITE v5.4.0  ready in 250ms# ➜  Local:   http://localhost:5173/# ➜  presiona h + enter para ayuda# Abre http://localhost:5173 — verás la página default de Vite + React</code></pre>
+                                    <pre><code class="language-bash"># Crear proyecto con Vite + React
+npm create vite@latest hola-mundo-react -- --template react
+# Resultado:
+# ✔ Project name: hola-mundo-react
+# ✔ Template: react
+# Done.
+# Entrar e instalar
+cd hola-mundo-react
+npm install
+# Iniciar servidor de desarrollo
+npm run dev
+# Resultado esperado:
+# VITE v5.4.0  ready in 250ms
+# ➜  Local:   http://localhost:5173/
+# ➜  presiona h + enter para ayuda
+# Abre http://localhost:5173 — verás la página default de Vite + React</code></pre>
                                 </div>
                             </div>
                             <h5>
@@ -5675,7 +6285,12 @@ return response</code></pre>
                                     </button>
                                 </div>
                                 <div class="window-body">
-                                    <pre><code class="language-bash"># Construir imagen de produccióndocker build -t hola-react .docker run -d -p 80:80 --name hola-react hola-react# Abrir: http://localhost# Detenerdocker stop hola-react && docker rm hola-react</code></pre>
+                                    <pre><code class="language-bash"># Construir imagen de producción
+docker build -t hola-react .
+docker run -d -p 80:80 --name hola-react hola-react
+# Abrir: http://localhost
+# Detener
+docker stop hola-react && docker rm hola-react</code></pre>
                                 </div>
                             </div>
                             <h4>
@@ -5689,47 +6304,55 @@ return response</code></pre>
                                     </button>
                                 </div>
                                 <div class="window-body">
-                                    <pre><code class="language-jsx">// Equivalente a un archivo JSP, pero en JavaScript// En lugar de renderizar en el servidor (Tomcat),// renderiza en el navegador del clientefunction App() {
+                                    <pre><code class="language-jsx">// Equivalente a un archivo JSP, pero en JavaScript
+// En lugar de renderizar en el servidor (Tomcat),
+// renderiza en el navegador del cliente
+function App() {
     const nombre = "Miguel";
     const fecha = new Date().toLocaleString("es-CO");
-    return (        &lt;div style={
-            {
-                fontFamily: "Arial, sans-serif",            textAlign: "center",            padding: "4rem 2rem",            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",            minHeight: "100vh",            color: "white"
-                }
-            }&gt;            &lt;h1 style={
-            {
-                fontSize: "3rem", marginBottom: "1rem"
-                }
-            }&gt;                ¡Hola Mundo desde React 19!            &lt;/h1&gt;            &lt;p style={
-            {
-                fontSize: "1.2rem", opacity: 0.9
-                }
-            }&gt;                Mi primer componente en React 🚀            &lt;/p&gt;            &lt;p style={
-            {
-                fontSize: "1rem", opacity: 0.7
-                }
-            }&gt;                Bienvenido, {
-            nombre
-            }            &lt;/p&gt;            &lt;div style={
-            {
-                marginTop: "2rem",                padding: "1rem",                background: "rgba(255,255,255,0.1)",                borderRadius: "12px",                display: "inline-block"
-                }
-            }&gt;                Fecha actual: {
-            fecha
-            }            &lt;/div&gt;            &lt;hr style={
-            {
-                margin: "2rem auto",                width: "60%",                border: "1px solid rgba(255,255,255,0.2)"
-                }
-            } /&gt;            &lt;h2&gt;Equivalencias con JSP&lt;/h2&gt;            &lt;ul style={
-            {
-                listStyle: "none", padding: 0
-                }
-            }&gt;                &lt;li&gt;✅ JSP → JSX (JavaScript XML)&lt;/li&gt;                &lt;li&gt;✅ ${
-            variable
-            } → {
-            variable
-            }&lt;/li&gt;                &lt;li&gt;✅ Servidor (Tomcat) → Navegador (Cliente)&lt;/li&gt;                &lt;li&gt;✅ HTML estático → Componentes dinámicos&lt;/li&gt;            &lt;/ul&gt;        &lt;/div&gt;    );
-    }export default App;</code></pre>
+    return (
+        &lt;div style={{
+            fontFamily: "Arial, sans-serif",
+            textAlign: "center",
+            padding: "4rem 2rem",
+            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+            minHeight: "100vh",
+            color: "white"
+        }}&gt;
+            &lt;h1 style={{ fontSize: "3rem", marginBottom: "1rem" }}&gt;
+                ¡Hola Mundo desde React 19!
+            &lt;/h1&gt;
+            &lt;p style={{ fontSize: "1.2rem", opacity: 0.9 }}&gt;
+                Mi primer componente en React 🚀
+            &lt;/p&gt;
+            &lt;p style={{ fontSize: "1rem", opacity: 0.7 }}&gt;
+                Bienvenido, {nombre}
+            &lt;/p&gt;
+            &lt;div style={{
+                marginTop: "2rem",
+                padding: "1rem",
+                background: "rgba(255,255,255,0.1)",
+                borderRadius: "12px",
+                display: "inline-block"
+            }}&gt;
+                Fecha actual: {fecha}
+            &lt;/div&gt;
+            &lt;hr style={{
+                margin: "2rem auto",
+                width: "60%",
+                border: "1px solid rgba(255,255,255,0.2)"
+            }} /&gt;
+            &lt;h2&gt;Equivalencias con JSP&lt;/h2&gt;
+            &lt;ul style={{ listStyle: "none", padding: 0 }}&gt;
+                &lt;li&gt;✅ JSP → JSX (JavaScript XML)&lt;/li&gt;
+                &lt;li&gt;✅ ${variable} → {variable}&lt;/li&gt;
+                &lt;li&gt;✅ Servidor (Tomcat) → Navegador (Cliente)&lt;/li&gt;
+                &lt;li&gt;✅ HTML estático → Componentes dinámicos&lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    );
+}
+export default App;</code></pre>
                                 </div>
                             </div>
                             <h4>
@@ -5751,8 +6374,37 @@ return response</code></pre>
                                     </button>
                                 </div>
                                 <div class="window-body">
-                                    <pre><code class="language-jsx">import { useState, useEffect } from "react";function App() {    const [mensaje, setMensaje] = useState("Cargando...");    // useEffect = como doGet() del Servlet, pero del lado del cliente    useEffect(() =&gt; {        fetch("http://localhost:8000")            .then(res =&gt; res.json())            .then(data =&gt; setMensaje(data.mensaje))            .catch(err =&gt; setMensaje("Error: " + err.message));    }, []);
-return (        &lt;div style={{ textAlign: "center", padding: "4rem" }}&gt;            &lt;h1&gt;Conectado a FastAPI&lt;/h1&gt;            &lt;p&gt;Mensaje desde la API: &lt;strong&gt;{mensaje}&lt;/strong&gt;&lt;/p&gt;            &lt;p&gt;(FastAPI debe estar corriendo en :8000)&lt;/p&gt;        &lt;/div&gt;    );}export default App;// Resultado esperado:// ┌──────────────────────────────────────┐// │                                      │// │   Conectado a FastAPI                │// │                                      │// │   Mensaje desde la API:              │// │   Hola Mundo desde FastAPI!          │// │                                      │// │   (FastAPI debe estar corriendo      │// │    en :8000)                         │// │                                      │// └──────────────────────────────────────┘</code></pre>
+                                    <pre><code class="language-jsx">import { useState, useEffect } from "react";
+function App() {
+    const [mensaje, setMensaje] = useState("Cargando...");
+    // useEffect = como doGet() del Servlet, pero del lado del cliente
+    useEffect(() =&gt; {
+        fetch("http://localhost:8000")
+            .then(res =&gt; res.json())
+            .then(data =&gt; setMensaje(data.mensaje))
+            .catch(err =&gt; setMensaje("Error: " + err.message));
+    }, []);
+    return (
+        &lt;div style={{ textAlign: "center", padding: "4rem" }}&gt;
+            &lt;h1&gt;Conectado a FastAPI&lt;/h1&gt;
+            &lt;p&gt;Mensaje desde la API: &lt;strong&gt;{mensaje}&lt;/strong&gt;&lt;/p&gt;
+            &lt;p&gt;(FastAPI debe estar corriendo en :8000)&lt;/p&gt;
+        &lt;/div&gt;
+    );
+}
+export default App;
+// Resultado esperado:
+// ┌──────────────────────────────────────┐
+// │                                      │
+// │   Conectado a FastAPI                │
+// │                                      │
+// │   Mensaje desde la API:              │
+// │   Hola Mundo desde FastAPI!          │
+// │                                      │
+// │   (FastAPI debe estar corriendo      │
+// │    en :8000)                         │
+// │                                      │
+// └──────────────────────────────────────┘</code></pre>
                                 </div>
                             </div>
                             <div class="recommendation-box"><i class="fas fa-check-circle" style="color:#28a745;"></i>
@@ -5765,6 +6417,18 @@ return (        &lt;div style={{ textAlign: "center", padding: "4rem" }}&gt;    
                                     </p>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <!-- Descargar proyecto React completo -->
+                    <div class="info-banner" style="margin-bottom:2rem;background:var(--accent-light, #e8f5e9);border-left:4px solid #61dafb;">
+                        <i class="fas fa-download" style="color:#61dafb;"></i>
+                        <div>
+                            <h4>Proyecto React 19 listo para ejecutar</h4>
+                            <p>Descarga el proyecto React completo con: <strong>Vite</strong> + <strong>Axios</strong> + <strong>React Router</strong>. Ya incluye <strong>AuthContext</strong> para JWT, <strong>ProtectedRoute</strong> y componentes CRUD listos para conectar a FastAPI.</p>
+                            <p style="font-size:0.9rem;opacity:0.8;">Solo necesitas: <code>npm install && npm run dev</code> y abre <code>http://localhost:5173</code></p>
+                            <a href="downloads/frontend-inventario.zip" class="btn btn-primary" download style="margin-top:0.5rem;display:inline-flex;align-items:center;gap:0.5rem;">
+                                <i class="fas fa-download"></i> Descargar proyecto React (32 KB)
+                            </a>
                         </div>
                     </div>
                     <div class="tutorial-steps">
@@ -5794,7 +6458,26 @@ return (        &lt;div style={{ textAlign: "center", padding: "4rem" }}&gt;    
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-bash"># Crear proyecto con Vite + React templatenpm create vite@latest frontend-inventario -- --template react# Resultado:# ✔ Project name: frontend-inventario# ✔ Template: react# Done. Now run:#   cd frontend-inventario#   npm install#   npm run dev# Instalar dependencias adicionalescd frontend-inventarionpm installnpm install axios react-router-dom# Iniciar en desarrollonpm run dev# Resultado esperado:#   VITE v5.4.0  ready in 250ms#   ➜  Local:   http://localhost:5173/#   ➜  Network: http://192.168.1.10:5173/#   ➜  press h + enter to show help</code></pre>
+                                        <pre><code class="language-bash"># Crear proyecto con Vite + React template
+npm create vite@latest frontend-inventario -- --template react
+# Resultado:
+# ✔ Project name: frontend-inventario
+# ✔ Template: react
+# Done. Now run:
+#   cd frontend-inventario
+#   npm install
+#   npm run dev
+# Instalar dependencias adicionales
+cd frontend-inventario
+npm install
+npm install axios react-router-dom
+# Iniciar en desarrollo
+npm run dev
+# Resultado esperado:
+#   VITE v5.4.0  ready in 250ms
+#   ➜  Local:   http://localhost:5173/
+#   ➜  Network: http://192.168.1.10:5173/
+#   ➜  press h + enter to show help</code></pre>
                                     </div>
                                 </div>
                                 <h4>
@@ -5850,7 +6533,23 @@ return (        &lt;div style={{ textAlign: "center", padding: "4rem" }}&gt;    
                                         </div><span class="window-title"><i class="fas fa-exchange-alt"></i>Login Flow</span>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-text">┌──────────┐    POST /api/auth/login    ┌──────────┐│  React   │ ──── {username, password} ──→│ FastAPI  ││  Login   │                              │  Auth    ││  Page    │ ←── {access_token, usuario}──│  Router  │└──────────┘                              └──────────┘     │                                         │     │  localStorage.setItem(                   │  jwt.encode(     │    "access_token", token)                │    {"sub": user, "rol": "Admin"}     │  localStorage.setItem(                   │  )     │    "usuario", JSON.stringify(user))      │     ▼                                         ▼┌──────────┐    GET /api/productos/       ┌──────────┐│  React   │ ──── Authorization: Bearer ──→│ FastAPI  ││  Axios   │        &lt;token&gt;               │  Router  ││  Interceptor│                            │  valida  ││  (automático)│ ←── JSON(productos) ──────│  JWT     │└──────────┘                              └──────────┘</code></pre>
+                                        <pre><code class="language-text">┌──────────┐    POST /api/auth/login    ┌──────────┐
+│  React   │ ──── {username, password} ──→│ FastAPI  │
+│  Login   │                              │  Auth    │
+│  Page    │ ←── {access_token, usuario}──│  Router  │
+└──────────┘                              └──────────┘
+     │                                         │
+     │  localStorage.setItem(                   │  jwt.encode(
+     │    "access_token", token)                │    {"sub": user, "rol": "Admin"}
+     │  localStorage.setItem(                   │  )
+     │    "usuario", JSON.stringify(user))      │
+     ▼                                         ▼
+┌──────────┐    GET /api/productos/       ┌──────────┐
+│  React   │ ──── Authorization: Bearer ──→│ FastAPI  │
+│  Axios   │        &lt;token&gt;               │  Router  │
+│  Interceptor│                            │  valida  │
+│  (automático)│ ←── JSON(productos) ──────│  JWT     │
+└──────────┘                              └──────────┘</code></pre>
                                     </div>
                                 </div>
                                 <h4>
@@ -5864,14 +6563,21 @@ return (        &lt;div style={{ textAlign: "center", padding: "4rem" }}&gt;    
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-bash"># Eliminar archivos de ejemplo que Vite crearm src/App.css src/index.css src/assets/react.svg# Crear directorios para nuestros componentesmkdir src/services src/components# Resultado final:# src/# ├── App.jsx
-# Vamos a editar# ├── main.jsx
-# Se mantiene igual# ├── services/# │   └── api.js
-# Servicio API# └── components/#
-├── Navbar.jsx#
-├── ProductoCard.jsx#
-├── ProductoLista.jsx#
-└── ProductoForm.jsx</code></pre>
+                                        <pre><code class="language-bash"># Eliminar archivos de ejemplo que Vite crea
+rm src/App.css src/index.css src/assets/react.svg
+# Crear directorios para nuestros componentes
+mkdir src/services src/components
+# Resultado final:
+# src/
+# ├── App.jsx        # Vamos a editar
+# ├── main.jsx       # Se mantiene igual
+# ├── services/
+# │   └── api.js     # Servicio API
+# └── components/
+#     ├── Navbar.jsx
+#     ├── ProductoCard.jsx
+#     ├── ProductoLista.jsx
+#     └── ProductoForm.jsx</code></pre>
                                     </div>
                                 </div>
                             </div>
@@ -6534,7 +7240,23 @@ npm run dev
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-text">┌─────────────────────────────────────────────────────────────┐│  En la consola del navegador (F12 → Console):              ││                                                             ││  ✓ Productos cargados desde FastAPI: 3 productos            ││  ✓ GET /api/productos/ → 200 OK (320ms)                    ││  ✓ CORS configurado correctamente                           ││                                                             ││  Network tab:                                               ││  ┌──────────┬──────────┬────────┬──────────┐               ││  │ Method   │ Endpoint │ Status │ Time     │               ││  ├──────────┼──────────┼────────┼──────────┤               ││  │ GET      │ /api/pro │ 200    │ 320ms    │               ││  │          │ ductos/  │        │          │               ││  │ GET      │ /api/pro │ 200    │ 15ms     │               ││  │          │ ductos/1 │        │          │               ││  └──────────┴──────────┴────────┴──────────┘               │└─────────────────────────────────────────────────────────────┘</code></pre>
+                                        <pre><code class="language-text">┌─────────────────────────────────────────────────────────────┐
+│  En la consola del navegador (F12 → Console):              │
+│                                                             │
+│  ✓ Productos cargados desde FastAPI: 3 productos            │
+│  ✓ GET /api/productos/ → 200 OK (320ms)                    │
+│  ✓ CORS configurado correctamente                           │
+│                                                             │
+│  Network tab:                                               │
+│  ┌──────────┬──────────┬────────┬──────────┐               │
+│  │ Method   │ Endpoint │ Status │ Time     │               │
+│  ├──────────┼──────────┼────────┼──────────┤               │
+│  │ GET      │ /api/pro │ 200    │ 320ms    │               │
+│  │          │ ductos/  │        │          │               │
+│  │ GET      │ /api/pro │ 200    │ 15ms     │               │
+│  │          │ ductos/1 │        │          │               │
+│  └──────────┴──────────┴────────┴──────────┘               │
+└─────────────────────────────────────────────────────────────┘</code></pre>
                                     </div>
                                 </div>
                                 <h4>
@@ -6826,7 +7548,8 @@ npm run dev
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-bash">mvn clean package -DskipTests# Genera: target/inventario-mvc-1.0.war</code></pre>
+                                        <pre><code class="language-bash">mvn clean package -DskipTests
+# Genera: target/inventario-mvc-1.0.war</code></pre>
                                     </div>
                                 </div>
                             </div>
@@ -6846,7 +7569,12 @@ npm run dev
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-dockerfile">FROM tomcat:10.1-jdk21-temurin-jakartaLABEL maintainer="ADSO SENA"RUN rm -rf /usr/local/tomcat/webapps/*COPY target/inventario-mvc-1.0.war /usr/local/tomcat/webapps/ROOT.warEXPOSE 8080CMD ["catalina.sh", "run"]</code></pre>
+                                        <pre><code class="language-dockerfile">FROM tomcat:10.1-jdk21-temurin-jakarta
+LABEL maintainer="ADSO SENA"
+RUN rm -rf /usr/local/tomcat/webapps/*
+COPY target/inventario-mvc-1.0.war /usr/local/tomcat/webapps/ROOT.war
+EXPOSE 8080
+CMD ["catalina.sh", "run"]</code></pre>
                                     </div>
                                 </div>
                             </div>
@@ -6866,7 +7594,9 @@ npm run dev
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-bash">docker build -t inventario-mvc:1.0 .# Verificar imagendocker images | findstr inventario-mvc</code></pre>
+                                        <pre><code class="language-bash">docker build -t inventario-mvc:1.0 .
+# Verificar imagen
+docker images | findstr inventario-mvc</code></pre>
                                     </div>
                                 </div>
                             </div>
@@ -6886,7 +7616,19 @@ npm run dev
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-bash">docker run -d -p 8080:8080 \  -e DB_HOST=host.docker.internal \  -e DB_PORT=5432 \  -e DB_NAME=inventario_db \  -e DB_USER=postgres \  -e DB_PASSWORD=tu_password \  --name inventario-app \  inventario-mvc:1.0# Ver logsdocker logs -f inventario-app# Acceder: http://localhost:8080</code></pre>
+                                        <pre><code class="language-bash">docker run -d -p 8080:8080 \
+  -e DB_HOST=host.docker.internal \
+  -e DB_PORT=5432 \
+  -e DB_NAME=inventario_db \
+  -e DB_USER=postgres \
+  -e DB_PASSWORD=tu_password \
+  --name inventario-app \
+  inventario-mvc:1.0
+
+# Ver logs
+docker logs -f inventario-app
+
+# Acceder: http://localhost:8080</code></pre>
                                     </div>
                                 </div>
                             </div>
@@ -6910,8 +7652,20 @@ npm run dev
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-bash"># Levantar 5 servicios (PostgreSQL + Auth + Products + Users + React)docker compose -f docker-compose.microservices.yml up -d# Verificar todos los serviciosdocker compose -f docker-compose.microservices.yml ps# Probar cada microservicio:# Auth Service:
-http://localhost:8001/docs# Products Service: http://localhost:8002/docs# Users Service:   http://localhost:8003/docs# React Frontend:  http://localhost# Detener tododocker compose -f docker-compose.microservices.yml down</code></pre>
+                                        <pre><code class="language-bash"># Levantar 5 servicios (PostgreSQL + Auth + Products + Users + React)
+docker compose -f docker-compose.microservices.yml up -d
+
+# Verificar todos los servicios
+docker compose -f docker-compose.microservices.yml ps
+
+# Probar cada microservicio:
+# Auth Service:     http://localhost:8001/docs
+# Products Service: http://localhost:8002/docs
+# Users Service:    http://localhost:8003/docs
+# React Frontend:   http://localhost
+
+# Detener todo
+docker compose -f docker-compose.microservices.yml down</code></pre>
                                     </div>
                                 </div>
                             </div>
@@ -6935,7 +7689,32 @@ http://localhost:8001/docs# Products Service: http://localhost:8002/docs# Users 
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-powershell"># Instalar todas las dependencias (Python + Node).\Makefile.ps1 install# Iniciar FastAPI (desarrollo).\Makefile.ps1 api# Iniciar React (desarrollo).\Makefile.ps1 frontend# Ejecutar pruebas.\Makefile.ps1 test# Migraciones de base de datos.\Makefile.ps1 db-create    # Crear BD.\Makefile.ps1 db-migrate   # Aplicar migraciones.\Makefile.ps1 db-revision  # Crear nueva migración# Docker.\Makefile.ps1 docker-up    # docker compose up -d.\Makefile.ps1 docker-down  # docker compose down# Estado de servicios.\Makefile.ps1 status# Ayuda completa.\Makefile.ps1 help</code></pre>
+                                        <pre><code class="language-powershell"># Instalar todas las dependencias (Python + Node)
+.\Makefile.ps1 install
+
+# Iniciar FastAPI (desarrollo)
+.\Makefile.ps1 api
+
+# Iniciar React (desarrollo)
+.\Makefile.ps1 frontend
+
+# Ejecutar pruebas
+.\Makefile.ps1 test
+
+# Migraciones de base de datos
+.\Makefile.ps1 db-create    # Crear BD
+.\Makefile.ps1 db-migrate   # Aplicar migraciones
+.\Makefile.ps1 db-revision  # Crear nueva migración
+
+# Docker
+.\Makefile.ps1 docker-up    # docker compose up -d
+.\Makefile.ps1 docker-down  # docker compose down
+
+# Estado de servicios
+.\Makefile.ps1 status
+
+# Ayuda completa
+.\Makefile.ps1 help</code></pre>
                                     </div>
                                 </div>
                                 <h3>
@@ -7111,46 +7890,62 @@ npm run dev
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-yaml">version: '3.8'services:  # ===== Base de datos =====  db:
-image: postgres:16-alpine
-environment:
-POSTGRES_DB: inventario_db
-POSTGRES_USER: postgres
-POSTGRES_PASSWORD: sena_adso_2026
-ports:
-- "5432:5432"
+                                        <pre><code class="language-yaml">version: '3.8'
+
+services:
+  # ===== Base de datos =====
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: inventario_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: sena_adso_2026
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./recursos/sql/inventario_db.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - fullstack-net
+
+  # ===== Backend FastAPI =====
+  api:
+    build:
+      context: ./recursos/fastapi-inventario
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://postgres:sena_adso_2026@db:5432/inventario_db
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - fullstack-net
+
+  # ===== Frontend React (producción) =====
+  frontend:
+    build:
+      context: ./recursos/frontend-inventario
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+    networks:
+      - fullstack-net
+
 volumes:
-- pgdata:/var/lib/postgresql/data
-- ./recursos/sql/inventario_db.sql:/docker-entrypoint-initdb.d/init.sql
-healthcheck:
-test: ["CMD-SHELL", "pg_isready -U postgres"]
-interval: 5s
-timeout: 5s
-retries: 5
+  pgdata:
+
 networks:
-- fullstack-net  # ===== Backend FastAPI =====  api:
-build:
-context: ./recursos/fastapi-inventario
-dockerfile: Dockerfile
-ports:
-- "8000:8000"
-environment:
-DATABASE_URL: postgresql://postgres:sena_adso_2026@db:5432/inventario_db
-depends_on:
-db:
-condition: service_healthy
-networks:
-- fullstack-net  # ===== Frontend React (producción) =====  frontend:
-build:
-context: ./recursos/frontend-inventario
-dockerfile: Dockerfile
-ports:
-- "80:80"
-depends_on:
-- api
-networks:
-- fullstack-netvolumes:  pgdata:networks:  fullstack-net:
-driver: bridge</code></pre>
+  fullstack-net:
+    driver: bridge</code></pre>
                                     </div>
                                 </div>
                                 <h4>
@@ -7164,7 +7959,13 @@ driver: bridge</code></pre>
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-dockerfile">FROM python:3.12-slimWORKDIR /appCOPY requirements.txt .RUN pip install --no-cache-dir -r requirements.txtCOPY . .EXPOSE 8000CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]</code></pre>
+                                        <pre><code class="language-dockerfile">FROM python:3.12-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY . .
+EXPOSE 8000
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]</code></pre>
                                     </div>
                                 </div>
                                 <div class="code-window">
@@ -7175,19 +7976,41 @@ driver: bridge</code></pre>
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-dockerfile">FROM node:20-alpine AS buildWORKDIR /appCOPY package*.json ./RUN npm ciCOPY . .RUN npm
-# NAME                                      STATUS      PORTS
+                                        <pre><code class="language-dockerfile">FROM node:20-alpine AS build
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+
+FROM nginx:alpine
+COPY --from=build /app/dist /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]</code></pre>
+                                    </div>
+                                </div>
+                                <h4>Verificar despliegue</h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fas fa-terminal"></i>Terminal — Estado de servicios</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-text"># NAME                                      STATUS      PORTS
 # fullstack-db-1                            healthy     5432/tcp
 # fullstack-api-1                           running     0.0.0.0:8000->8000/tcp
 # fullstack-frontend-1                      running     0.0.0.0:80->80/tcp
 
 # Probar endpoints:
 # FastAPI docs:   http://localhost:8000/docs
-# React frontend:  http://localhost
-# Health check:    curl http://localhost:8000/health
+# React frontend: http://localhost
+# Health check:   curl http://localhost:8000/health
 
 # Detener todo
 docker compose -f docker-compose.fullstack.yml down
+
 # Detener y eliminar volúmenes (borra datos BD)
 docker compose -f docker-compose.fullstack.yml down -v</code></pre>
                                     </div>
@@ -7576,7 +8399,7 @@ docker compose -f docker-compose.fullstack.yml down -v</code></pre>
                         &copy; 2026 SENA - ADSO. Guía de Aprendizaje JSP + MVC.
                     </p>
                     <p>
-                        Versión 2.0 | Junio 2026
+                        Versión 3.0 | Junio 2026
                     </p>
                 </div>
             </div>
@@ -7585,6 +8408,9 @@ docker compose -f docker-compose.fullstack.yml down -v</code></pre>
         <!-- Botón scroll to top -->
         <button class="scroll-top-btn" id="scrollTopBtn" aria-label="Volver arriba"><i class="fas fa-arrow-up"></i>
         </button>
+        <!-- Botón salir modo lectura -->
+        <button class="reading-mode-exit-btn" id="readingModeExitBtn" title="Salir del modo lectura"><i class="fas fa-times"></i>
+        </button>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-clike.min.js"></script>
@@ -7592,9 +8418,10 @@ docker compose -f docker-compose.fullstack.yml down -v</code></pre>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-dart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
-    <script>!function(){if("undefined"!=typeof Prism&&Prism.languages.markup){var e=Prism.languages.extend("markup",{});Prism.languages.insertBefore("jsp","prolog",{"jsp-comment":{pattern:/<%--[\s\S]*?--%>/,greedy:!0,alias:"comment"}}),Prism.languages.insertBefore("jsp","doctype",{"jsp-directive":{pattern:/<%@[\s\S]*?%>/,greedy:!0,inside:{"jsp-tag":{pattern:/<%@|%>/,alias:"punctuation"},keyword:/\b(?:page|include|taglib|attribute|variable)\b/i,string:/(["'])(?:\\.|(?!\1)[^\\\r\n])*\1/,"rest":Prism.languages.java}}}),Prism.languages.insertBefore("jsp","tag",{"jsp-scriptlet":{pattern:/<%!?[\s\S]*?%>/,greedy:!0,inside:{"jsp-tag":{pattern:/<%!?|%>/,alias:"punctuation"},"rest":Prism.languages.java}},"jsp-expression":{pattern:/\$\{[\s\S]*?\}/,greedy:!0,inside:{"el-punctuation":{pattern:/^\$\{|\}$/,alias:"punctuation"},"rest":Prism.languages.java}},"jsp-el-expression":{pattern:/#\{[\s\S]*?\}/,greedy:!0,inside:{"el-punctuation":{pattern:/^#\{|\}$/,alias:"punctuation"},"rest":Prism.languages.java}}})}}();</script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
-    <script src="js/main.js?v=2.4"></script>
+    <script>!function(){if("undefined"!=typeof Prism&&Prism.languages.markup){Prism.languages.jsp=Prism.languages.extend("markup",{});Prism.languages.insertBefore("jsp","prolog",{"jsp-comment":{pattern:/<%--[\s\S]*?--%>/,greedy:!0,alias:"comment"}}),Prism.languages.insertBefore("jsp","doctype",{"jsp-directive":{pattern:/<%@[\s\S]*?%>/,greedy:!0,inside:{"jsp-tag":{pattern:/<%@|%>/,alias:"punctuation"},keyword:/\b(?:page|include|taglib|attribute|variable)\b/i,string:/(["'])(?:\\.|(?!\1)[^\\\r\n])*\1/,"rest":Prism.languages.java}}}),Prism.languages.insertBefore("jsp","tag",{"jsp-scriptlet":{pattern:/<%!?[\s\S]*?%>/,greedy:!0,inside:{"jsp-tag":{pattern:/<%!?|%>/,alias:"punctuation"},"rest":Prism.languages.java}},"jsp-expression":{pattern:/\$\{[\s\S]*?\}/,greedy:!0,inside:{"el-punctuation":{pattern:/^\$\{|\}$/,alias:"punctuation"},"rest":Prism.languages.java}},"jsp-el-expression":{pattern:/#\{[\s\S]*?\}/,greedy:!0,inside:{"el-punctuation":{pattern:/^#\{|\}$/,alias:"punctuation"},"rest":Prism.languages.java}}})}}();</script>
+    <script src="js/main.js?v=2.5"></script>
     </body>
 </html>

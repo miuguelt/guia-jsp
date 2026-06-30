@@ -6,8 +6,8 @@ Rebuild css/styles.css from modules but with fixes for broken boundaries.
 Each module is made self-contained by adding missing braces.
 """
 
-MODULES_DIR = r'C:\Users\Miguel\Documents\Aplicaciones\_projects\guia-jsp\web\css\modules'
-OUTPUT = r'C:\Users\Miguel\Documents\Aplicaciones\_projects\guia-jsp\web\css\styles.css'
+MODULES_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'css', 'modules')
+OUTPUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'css', 'styles.css')
 
 MODULE_ORDER = [
     'base.css',
@@ -21,6 +21,7 @@ MODULE_ORDER = [
     'quiz-search.css',
     'enhancements.css',
     'ux-enhancements.css',
+    'flutter-theme.css',
 ]
 
 # Known boundary fixes: (filename, leading_braces_to_add, trailing_braces_to_add)

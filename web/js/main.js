@@ -98,17 +98,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // BÚSQUEDA GLOBAL (Ctrl+K)
     // ============================================
     function openSearch() {
+        if (!searchModal) return;
         searchModal.classList.add('active');
-        setTimeout(() => searchInput.focus(), 100);
+        setTimeout(() => { if (searchInput) searchInput.focus(); }, 100);
     }
 
     function closeSearch() {
+        if (!searchModal) return;
         searchModal.classList.remove('active');
-        searchInput.value = '';
+        if (searchInput) searchInput.value = '';
         highlightedIndex = -1;
     }
 
     function performSearch(query) {
+        if (!searchResults) return;
         if (!query) {
             searchResults.innerHTML = `
                 <div class="no-results">
@@ -190,13 +193,14 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('keydown', (e) => {
         if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
             e.preventDefault();
-            openSearch();
+            if (searchModal) openSearch();
         }
-        if (e.key === 'Escape' && searchModal.classList.contains('active')) {
+        if (e.key === 'Escape' && searchModal?.classList.contains('active')) {
             closeSearch();
         }
-        if (searchModal.classList.contains('active')) {
-            const items = searchResults.querySelectorAll('.search-result-item');
+        if (searchModal?.classList.contains('active')) {
+            const items = searchResults?.querySelectorAll('.search-result-item');
+            if (!items) return;
             if (e.key === 'ArrowDown') {
                 e.preventDefault();
                 highlightedIndex = Math.min(highlightedIndex + 1, items.length - 1);
@@ -213,7 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             if (e.key === 'Enter' && highlightedIndex >= 0) {
                 e.preventDefault();
-                items[highlightedIndex].click();
+                if (items[highlightedIndex]) items[highlightedIndex].click();
             }
         }
     });
@@ -245,22 +249,33 @@ document.addEventListener('DOMContentLoaded', () => {
     // MODO LECTURA
     // ============================================
     const readingModeToggle = document.getElementById('readingModeToggle');
-    function toggleReadingMode() {
-        document.body.classList.toggle('reading-mode');
-        const isActive = document.body.classList.contains('reading-mode');
-        localStorage.setItem('guide-reading-mode', isActive);
+    const readingModeExitBtn = document.getElementById('readingModeExitBtn');
+    function activateReadingMode() {
+        document.body.classList.add('reading-mode');
         if (readingModeToggle) {
-            readingModeToggle.classList.toggle('active', isActive);
-            readingModeToggle.title = isActive ? 'Salir del modo lectura' : 'Modo lectura';
-        }
-    }
-    if (readingModeToggle) {
-        if (localStorage.getItem('guide-reading-mode') === 'true') {
-            document.body.classList.add('reading-mode');
             readingModeToggle.classList.add('active');
             readingModeToggle.title = 'Salir del modo lectura';
         }
+    }
+    function deactivateReadingMode() {
+        document.body.classList.remove('reading-mode');
+        if (readingModeToggle) {
+            readingModeToggle.classList.remove('active');
+            readingModeToggle.title = 'Modo lectura';
+        }
+    }
+    function toggleReadingMode() {
+        if (document.body.classList.contains('reading-mode')) {
+            deactivateReadingMode();
+        } else {
+            activateReadingMode();
+        }
+    }
+    if (readingModeToggle) {
         readingModeToggle.addEventListener('click', toggleReadingMode);
+    }
+    if (readingModeExitBtn) {
+        readingModeExitBtn.addEventListener('click', deactivateReadingMode);
     }
 
     // ============================================
@@ -1637,7 +1652,7 @@ document.addEventListener('DOMContentLoaded', () => {
         buildPageSwitcher();
         buildMobileNav();
     } catch (e) {
-        console.warn('Error al inicialar mejoras UI/UX:', e);
+        console.warn('Error al inicializar mejoras UI/UX:', e);
     }
 
     console.log('%c🎓 Guía JSP + MVC | SENA ADSO v2.0', 'font-size: 20px; font-weight: bold; color: #00664a;');

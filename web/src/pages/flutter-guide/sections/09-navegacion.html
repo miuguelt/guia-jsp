@@ -1,0 +1,145 @@
+            <section class="section section-alt" id="navegacion">
+                <div class="container">
+                    <div class="breadcrumbs">
+                        <div class="breadcrumb-item"><a href="#inicio">Inicio</a>
+                        </div><i class="fas fa-chevron-right breadcrumb-separator"></i>
+                        <div class="breadcrumb-item breadcrumb-current">
+                            Navegación
+                        </div><span class="reading-time"><i class="fas fa-clock"></i>20 min</span>
+                    </div>
+                    <div class="section-header">
+                        <div class="section-number">
+                            08
+                        </div>
+                        <h2 class="section-title">
+                            4. Navegación con GoRouter
+                        </h2>
+                        <p class="section-subtitle">
+                            Rutas declarativas, redirecciones y protección de rutas
+                        </p>
+                    </div>
+                    <div class="content-grid">
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fas fa-route"></i>
+                            </div>
+                            <h3>
+                                Configuración de GoRouter
+                            </h3>
+                            <p>
+                                GoRouter reemplaza al Navigator tradicional con un enfoque declarativo.
+                            </p>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title">router.dart</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-dart">import 'package:go_router/go_router.dart';
+
+final routerProvider = Provider&lt;GoRouter&gt;((ref) {
+  final authState = ref.watch(authProvider);
+
+  return GoRouter(
+    initialLocation: '/productos',
+    redirect: (context, state) {
+      final estaLogueado = authState.estaAutenticado;
+      final login = state.matchedLocation == '/login';
+
+      if (!estaLogueado && !login) return '/login';
+      if (estaLogueado && login) return '/productos';
+      return null;
+    },
+    routes: [
+      GoRoute(
+        path: '/login',
+        builder: (_, __) => LoginScreen(),
+      ),
+      GoRoute(
+        path: '/productos',
+        builder: (_, __) => ProductosScreen(),
+        routes: [
+          GoRoute(
+            path: ':id',
+            builder: (_, state) =>
+              ProductoDetalleScreen(
+                id: int.parse(state.pathParameters['id']!),
+              ),
+          ),
+        ],
+      ),
+    ],
+  );
+});</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content-card">
+                            <div class="card-icon"><i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h3>
+                                Rutas Protegidas
+                            </h3>
+                            <p>
+                                El redirect de GoRouter evalúa cada navegación y redirige según el estado de autenticación.
+                            </p>
+                            <div class="code-window">
+                                <div class="window-header">
+                                    <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                    </div><span class="window-title">auth_guard.dart</span>
+                                    <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                    </button>
+                                </div>
+                                <div class="window-body">
+                                    <pre><code class="language-dart">// Provider de autenticación
+@riverpod
+class Auth extends _$Auth {
+  @override
+  AuthState build() => AuthState.noAutenticado();
+
+  Future&lt;void&gt; login(String user, String pass) async {
+    state = const AuthState.cargando();
+    try {
+      final token = await api.login(user, pass);
+      state = AuthState.autenticado(token);
+    } catch (e) {
+      state = AuthState.error(e.toString());
+    }
+  }
+
+  void logout() => state = AuthState.noAutenticado();
+}
+
+// Uso en widgets
+class LoginScreen extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Scaffold(
+      body: Center(
+        child: FilledButton(
+          onPressed: () => ref.read(authProvider.notifier).login(
+            'admin', '1234',
+          ),
+          child: Text('Iniciar sesión'),
+        ),
+      ),
+    );
+  }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info-banner" style="background:var(--accent-light, #e8f5e9);border-left:4px solid #28a745;"><i class="fas fa-rocket" style="color:#28a745;"></i>
+                        <div>
+                            <h4>
+                                Buenas prácticas
+                            </h4>
+                            <p>
+                                Usa<code>GoRouter.refresh()</code>cuando cambie el estado de auth para forzar la re-evaluación del redirect. El Provider de Riverpod lo hace automáticamente.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
