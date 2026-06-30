@@ -1,7 +1,8 @@
 package com.sena.inventario.util;
 
-import java.security.Key;
 import java.util.Date;
+
+import javax.crypto.SecretKey;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -44,7 +45,7 @@ public class JwtUtil {
     private static final String SECRET_KEY = "sena-adso-jwt-secret-key-2026-cambiar-en-produccion";
     private static final long EXPIRATION_MS = 3_600_000; // 1 hora
 
-    private static Key getSigningKey() {
+    private static SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
     }
 

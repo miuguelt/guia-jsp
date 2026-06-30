@@ -8,9 +8,13 @@
 FROM maven:3.9-eclipse-temurin-21 AS build
 WORKDIR /app
 
+# Configurar Maven para redes lentas y memoria limitada
+ENV MAVEN_OPTS="-Xmx512m -XX:+UseG1GC -Dmaven.wagon.http.retryHandler.count=5 -Dmaven.wagon.http.retryHandler.requestSentEnabled=true -Dhttp.keepAlive=false"
+RUN mvn --version
+
 # Copiar solo pom.xml primero para cachear dependencias
 COPY recursos/codigo-ejemplo/pom.xml .
-RUN mvn dependency:resolve -B
+RUN mvn dependency:resolve dependency:resolve-plugins -B
 
 # Copiar código fuente y compilar
 COPY recursos/codigo-ejemplo/src ./src
