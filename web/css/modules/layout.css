@@ -283,6 +283,8 @@
 
 .main-content {
     margin-top: var(--header-height);
+    min-height: calc(100vh - var(--header-height));
+    min-height: calc(100dvh - var(--header-height));
 }
 
 

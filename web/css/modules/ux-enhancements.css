@@ -248,6 +248,8 @@ body.reading-mode .main-content {
     width: 100%;
     margin: 0 auto;
     padding: 2rem 3rem;
+    min-height: 100vh;
+    min-height: 100dvh;
 }@media (min-width: 1200px) {
     body.reading-mode .main-content {
         padding: 2rem 6rem;

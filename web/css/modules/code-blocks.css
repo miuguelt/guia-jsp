@@ -137,16 +137,14 @@
 }
 
 /* ── 4. OVERFLOW INTELIGENTE ────────────────────────────────────────────── */
-/* Default: pre-wrap para evitar scroll horizontal, el código se ajusta solo */
+/* Default: scroll horizontal profesional (VS Code / GitHub style) */
 .window-body pre,
 .tech-module pre[class*="language-"],
 .code-block pre {
     margin: 0;
-    overflow-x: hidden;
+    overflow-x: auto;
     overflow-y: hidden;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    word-break: break-word;
+    white-space: pre;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
     font-family: var(--font-mono);
@@ -185,9 +183,7 @@
     background-color: transparent !important;
     padding: 0;
     tab-size: 2;
-    white-space: pre-wrap;
-    word-break: break-word;
-    overflow-wrap: break-word;
+    white-space: pre;
 }
 
 /* ── 5b. INDENT GUIDES — Líneas verticales que muestran la estructura ───── */
@@ -516,7 +512,8 @@ pre::-webkit-scrollbar-thumb:hover {
 @media (max-width: 768px) {
     .window-body pre {
         padding: 14px;
-        font-size: 0.8rem;
+        font-size: 0.75rem;
+        line-height: 1.55;
     }
 
     .window-header {

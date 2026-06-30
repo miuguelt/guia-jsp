@@ -427,7 +427,7 @@
 /* Cuerpo del código — scroll horizontal controlado */
 .code-body,
 .code-block pre {
-    overflow-x: hidden;
+    overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     margin: 0;
     padding: 0.75rem 1rem;
@@ -438,9 +438,7 @@
     font-size: 0.75rem;
     line-height: 1.5;
     color: var(--code-text);
-    white-space: pre-wrap;
-    word-break: break-word;
-    word-wrap: break-word;
+    white-space: pre;
 }
 
 /* ── Responsive: Tablet sm: (640px+) ────────────────────────────────────── */
@@ -994,9 +992,16 @@
 .step-card {
     background: var(--bg-primary);
     border-radius: var(--radius-lg);
-    overflow: hidden;
     box-shadow: var(--shadow-md);
     border: 1px solid var(--border-light);
+}
+
+.step-header:first-child {
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.step-card > :last-child {
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
 }
 
 .step-header {
@@ -1035,7 +1040,26 @@
 }
 
 .step-content {
-    padding: 28px;
+    padding: 20px 28px;
+}
+
+.step-content .code-window {
+    margin-left: -28px;
+    margin-right: -28px;
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+}
+
+.step-content .code-window:first-child {
+    margin-top: -20px;
+    border-top: none;
+    border-radius: 0;
+}
+
+.step-content .code-window:last-child {
+    margin-bottom: -20px;
+    border-bottom: none;
 }
 
 .step-content h4 {

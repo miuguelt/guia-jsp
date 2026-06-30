@@ -21,7 +21,8 @@ Todo bloque de código debe seguir este estándar **exactamente como se ve en `i
 
 4. **Comentarios separados con `// ---`** para secciones dentro del código.
 
-5. **Sin scroll horizontal** — El CSS ya fuerza `white-space: pre-wrap` con `overflow-x: hidden`. Confiar en esto, NO usar `<pre style="...">` inline.
+5. **Sin wrap que rompa indentación** — Usar `white-space: pre` con `overflow-x: auto`. El scroll horizontal preserva la indentación visual. NO usar `pre-wrap` porque las líneas cortadas pierden la indentación.
+6. **Ancho completo** — Los code-windows dentro de `.step-content` usan márgenes negativos para ocupar todo el ancho disponible. No poner padding lateral extra alrededor de bloques de código.
 
 ### Indentación por Lenguaje
 

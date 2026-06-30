@@ -4464,56 +4464,86 @@ import java.util.List;
 @WebServlet("/productos")
 public class ProductoServlet extends HttpServlet {
 
-    private final ProductoDAO productoDAO = new ProductoDAO();
+    private final ProductoDAO dao = new ProductoDAO();
 
+    // --- GET: listar, nuevo, editar, eliminar ---
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
-        String accion = request.getParameter("accion");
+        String accion = req.getParameter("accion");
         if (accion == null) accion = "listar";
         switch (accion) {
-            case "nuevo" -> mostrarFormularioNuevo(request, response);
-            case "editar" -> mostrarFormularioEditar(request, response);
-            case "eliminar" -> eliminarProducto(request, response);
-            default -> listarProductos(request, response);
+            case "nuevo" -> mostrarFormularioNuevo(req, res);
+            case "editar" -> mostrarFormularioEditar(req, res);
+            case "eliminar" -> eliminarProducto(req, res);
+            default -> listarProductos(req, res);
         }
     }
 
+    // --- POST: guardar producto ---
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
-        if ("guardar".equals(request.getParameter("accion"))) {
-            guardarProducto(request, response);
+        if ("guardar".equals(req.getParameter("accion")))
+            guardarProducto(req, res);
+    }
+
+    // --- Listar todos los productos ---
+    private void listarProductos(HttpServletRequest req, HttpServletResponse res)
+            throws ServletException, IOException {
+        req.setAttribute("productos", dao.listarTodos());
+        req.getRequestDispatcher("/productos/lista.jsp").forward(req, res);
+    }
+
+    // --- Mostrar formulario nuevo ---
+    private void mostrarFormularioNuevo(HttpServletRequest req, HttpServletResponse res)
+            throws ServletException, IOException {
+        req.setAttribute("modo", "crear");
+        req.getRequestDispatcher("/productos/formulario.jsp").forward(req, res);
+    }
+
+    // --- Mostrar formulario editar ---
+    private void mostrarFormularioEditar(HttpServletRequest req, HttpServletResponse res)
+            throws ServletException, IOException {
+        int id = Integer.parseInt(req.getParameter("id"));
+        Producto p = dao.buscarPorId(id);
+        if (p == null) {
+            req.setAttribute("error", "Producto no encontrado");
+            listarProductos(req, res);
+            return;
         }
+        req.setAttribute("producto", p);
+        req.setAttribute("modo", "editar");
+        req.getRequestDispatcher("/productos/formulario.jsp").forward(req, res);
     }
 
-    private void listarProductos(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        List&lt;Producto&gt; productos = productoDAO.listarTodos();
-        req.setAttribute("productos", productos);
-        req.getRequestDispatcher("/productos/lista.jsp").forward(req, resp);
-    }
-
-    private void guardarProducto(HttpServletRequest request, HttpServletResponse response)
+    // --- Guardar (crear o actualizar) ---
+    private void guardarProducto(HttpServletRequest req, HttpServletResponse res)
             throws IOException {
-        String idStr = request.getParameter("id");
-        String codigo = request.getParameter("codigo");
-        String nombre = request.getParameter("nombre");
-        String descripcion = request.getParameter("descripcion");
-        BigDecimal precio = new BigDecimal(request.getParameter("precio"));
-        int stock = Integer.parseInt(request.getParameter("stock"));
-        String categoria = request.getParameter("categoria");
+        String id = req.getParameter("id");
+        String codigo = req.getParameter("codigo");
+        String nombre = req.getParameter("nombre");
+        String descripcion = req.getParameter("descripcion");
+        BigDecimal precio = new BigDecimal(req.getParameter("precio"));
+        int stock = Integer.parseInt(req.getParameter("stock"));
+        String categoria = req.getParameter("categoria");
 
-        if (idStr == null || idStr.isEmpty()) {
-            Producto producto = new Producto(codigo, nombre, descripcion, precio, stock, categoria);
-            productoDAO.insertar(producto);
+        if (id == null || id.isEmpty()) {
+            dao.insertar(new Producto(codigo, nombre, descripcion, precio, stock, categoria));
         } else {
-            int id = Integer.parseInt(idStr);
-            boolean estado = "on".equals(request.getParameter("estado"));
-            Producto producto = new Producto(id, codigo, nombre, descripcion, precio, stock, categoria, estado);
-            productoDAO.actualizar(producto);
+            boolean estado = "on".equals(req.getParameter("estado"));
+            dao.actualizar(new Producto(
+                Integer.parseInt(id), codigo, nombre, descripcion,
+                precio, stock, categoria, estado));
         }
-        response.sendRedirect(request.getContextPath() + "/productos");
+        res.sendRedirect(req.getContextPath() + "/productos");
+    }
+
+    // --- Eliminar producto por ID ---
+    private void eliminarProducto(HttpServletRequest req, HttpServletResponse res)
+            throws IOException {
+        dao.eliminar(Integer.parseInt(req.getParameter("id")));
+        res.sendRedirect(req.getContextPath() + "/productos");
     }
 }</code></pre>
                                     </div>

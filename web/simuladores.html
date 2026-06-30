@@ -44,6 +44,12 @@
             line-height: 1.6;
             padding: 20px;
             transition: background 0.3s, color 0.3s;
+            min-height: 100vh;
+            min-height: 100dvh;
+        }
+
+        @media (max-width: 480px) {
+            body { padding: 12px; }
         }
 
         .container { max-width: 1200px; margin: 0 auto; }
@@ -58,9 +64,17 @@
         }
 
         .header h1 {
-            font-size: 1.8rem;
+            font-size: 1.4rem;
             font-weight: 800;
             color: var(--primary);
+        }
+
+        @media (min-width: 640px) {
+            .header h1 { font-size: 1.6rem; }
+        }
+
+        @media (min-width: 1024px) {
+            .header h1 { font-size: 1.8rem; }
         }
 
         .header-actions { display: flex; gap: 8px; }

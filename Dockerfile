@@ -17,7 +17,7 @@ COPY recursos/codigo-ejemplo/src ./src
 RUN mvn clean package -DskipTests -B
 
 # ---- Stage 2: Run ----
-FROM tomcat:10.1-jdk21-temurin-jakarta
+FROM tomcat:10.1-jdk21-temurin
 
 LABEL maintainer="ADSO SENA <adso@sena.edu.co>"
 LABEL version="1.0"
