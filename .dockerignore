@@ -1,16 +1,67 @@
+# =========================================================================
+# .dockerignore — Guía JSP MVC
+# =========================================================================
+# Contexto de build mínimo para imagen Docker de producción (Coolify)
+# Solo lo necesario para compilar el WAR y ejecutar Tomcat
+# =========================================================================
+
+# === Git y control de versiones ===
 .git/
 .gitignore
 .gitattributes
 .dockerignore
+
+# === Variables de entorno (secretos — Coolify las inyecta) ===
+.env
+.env.example
+.env.*.local
+
+# === Entorno local de desarrollo ===
 .devbrain/
-logs/
-node_modules/
-web/node_modules/
 .vscode/
 .idea/
+logs/
+scratch/
+node_modules/
+web/node_modules/
+
+# === Documentos y assets no necesarios en runtime ===
 *.md
+*.docx
+*.pdf
+GUIA_USO.md
+README.md
+
+# === Scripts de Windows (no aplican en Docker) ===
+start-windows.ps1
+start-fullstack.ps1
+start-flutter.ps1
+run-project-jsp.ps1
+Makefile.ps1
+
+# === Python scripts locales ===
+generar_guia.py
+validate_guide.py
+web/build.py
+web/rebuild_css.py
+__pycache__/
+venv/
+
+# === Build de la guía web (se genera aparte) ===
+web/node_modules/
+web/dist/
+
+# === Builds locales de Java ===
+**/target/
+**/*.war
+
+# === Otros recursos de stacking (no aplican al build JSP) ===
+recursos/fastapi-inventario/
+recursos/frontend-inventario/
+recursos/flutter-inventario/
+recursos/docker/
+
+# === Sistema ===
 .DS_Store
 Thumbs.db
-start-windows.ps1
-generar_guia.py
-Guia_Aprendizaje_JSP_MVC.docx
+mcp-lightning-proxy-*.pid

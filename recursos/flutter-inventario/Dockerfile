@@ -26,8 +26,11 @@ RUN flutter pub get
 # Copiar el resto del código fuente
 COPY . .
 
+# ARG para inyectar URL de API via --dart-define (Coolify / docker-compose)
+ARG API_BASE_URL=http://localhost:8000/api
+
 # Construir la aplicación para web con optimización de producción
-RUN flutter build web --release
+RUN flutter build web --release --dart-define=API_BASE_URL=$API_BASE_URL
 
 # ---------------------------------------------------------------------------
 # Etapa 2 — Servir con Nginx

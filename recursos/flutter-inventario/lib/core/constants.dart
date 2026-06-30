@@ -7,8 +7,12 @@ class AppConstants {
   //  API
   // =========================================================================
   /// URL base de la API REST de FastAPI.
-  /// Debe coincidir con el servidor donde corre el backend.
-  static const String apiBaseUrl = 'http://localhost:8000/api';
+  /// Se inyecta via --dart-define=API_BASE_URL=... en build.
+  /// Default para desarrollo local.
+  static const String apiBaseUrl = String.fromEnvironment(
+    'API_BASE_URL',
+    defaultValue: 'http://localhost:8000/api',
+  );
 
   // =========================================================================
   //  Almacenamiento local (SharedPreferences)

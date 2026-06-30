@@ -13,8 +13,13 @@ import java.util.logging.Logger;
  * Clase utilitaria para gestionar la conexión a la base de datos PostgreSQL.
  * Implementa el patrón Singleton para reutilizar la configuración.
  * 
- * Esta clase lee las credenciales desde el archivo db.properties
- * ubicado en src/main/resources/
+ * Prioridad de configuración (de mayor a menor):
+ *   1. DATABASE_URL (variable de entorno — Coolify / Docker)
+ *   2. DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD (env vars individuales)
+ *   3. db.properties (archivo de configuración local — solo dev)
+ * 
+ * Convención Java: las variables de entorno se leen con System.getenv()
+ * No usar .env directamente en Java (solo en docker-compose / Coolify).
  */
 public class ConexionDB {
     

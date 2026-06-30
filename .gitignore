@@ -1,0 +1,67 @@
+# =========================================================================
+# .gitignore — Guía JSP MVC (SENA ADSO)
+# =========================================================================
+# Repositorio público → no subir secretos, builds, ni residuos locales
+# Dual mode: Windows nativo (dev) + Coolify Docker (prod)
+# =========================================================================
+
+# === Variables de entorno (secretos) ===
+.env
+.env.local
+.env.*.local
+
+# === IDE / Editor ===
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# === Build outputs ===
+recursos/codigo-ejemplo/target/
+recursos/codigo-ejemplo/*.war
+**/dist/
+**/build/
+
+# === Python (guía builder y recursos) ===
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+*.egg-info/
+
+# === Node (solo si hay frontend standalone) ===
+node_modules/
+web/node_modules/
+
+# === Java / Maven ===
+**/.mvn/
+**/mvnw
+**/mvnw.cmd
+**/*.jar
+**/*.war
+
+# === Logs ===
+logs/
+*.log
+
+# === Docker ===
+.dockerignore
+
+# === DevBrain ===
+.devbrain/
+
+# === Flutter ===
+recursos/flutter-inventario/.dart_tool/
+recursos/flutter-inventario/.flutter-plugins*
+recursos/flutter-inventario/build/
+recursos/flutter-inventario/.packages
+recursos/flutter-inventario/.pub/
+
+# === Misc ===
+scratch/
+*.docx
+mcp-lightning-proxy-*.pid
