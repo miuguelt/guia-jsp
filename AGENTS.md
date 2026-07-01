@@ -53,3 +53,46 @@ Todo bloque de código debe seguir este estándar **exactamente como se ve en `i
 ### Inspiración
 
 El estándar probado y aprobado está en `flutter-guide/sections/01-inicio.html` bloque `inventario_app.dart`. Todo bloque de código en el sitio debe verse igual de limpio.
+
+---
+
+## Prevención de Overflow (Desbordamiento a la Derecha)
+
+### Regla de Oro
+**Ningún bloque `<pre><code>` debe tener todo su contenido en una sola línea HTML.** Cada statement, comando o directorio debe estar en su propia línea con `\n` real.
+
+### Lo que causa overflow
+| Causa | Ejemplo MAL |
+|-------|-------------|
+| SQL sin newlines | `<pre><code>CREATE TABLE roles (...);INSERT INTO roles VALUES(...)</code></pre>` |
+| Directorio tree en 1 línea | `<pre><code>proyecto/├── src/├── test/</code></pre>` |
+| Comentario + comando pegados | `<pre><code># Verificarjava --version</code></pre>` |
+| bash flags sin `\` real | `<pre><code>docker run -d -p 8080:8080 \  -e DB_HOST=host</code></pre>` |
+
+### Correcto vs Incorrecto
+```
+// INCORRECTO (overflow asegurado)
+// Comentariocomando siguiente
+// Comentario 2otro comando
+
+// CORRECTO
+// Comentario
+comando siguiente
+// Comentario 2
+otro comando
+```
+
+### Verificación
+Siempre ejecutar después de editar archivos HTML:
+```python
+import re
+with open('web/index.html') as f:
+    content = f.read()
+blocks = re.findall(r'<pre><code[^>]*>(.*?)</code></pre>', content, re.DOTALL)
+for i, b in enumerate(blocks):
+    if '\n' not in b.strip() and len(b.strip()) > 120:
+        print(f'OVERFLOW: Block {i} - {len(b)} chars - REQUIERE FIX')
+```
+
+### Estándar completo
+Ver `.devbrain/knowledge/estandar_overflow.md` para la guía detallada con ejemplos por tipo de contenido y límites máximos por formato.

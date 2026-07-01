@@ -161,8 +161,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(() => {
                     const target = document.querySelector(targetId);
                     if (target) {
-                        const offset = target.offsetTop - 80;
+                        const offset = target.offsetTop - getHeaderOffset();
                         window.scrollTo({ top: offset, behavior: 'smooth' });
+                        history.pushState(null, '', targetId);
                     }
                 }, 200);
             });
@@ -347,10 +348,17 @@ document.addEventListener('DOMContentLoaded', () => {
     loadProgress();
 
     // ============================================
-    // NAVEGACIÓN
+    // NAVEGACIÓN — offset dinámico según altura real del header
     // ============================================
+    function getHeaderOffset() {
+        const header = document.querySelector('.header');
+        const headerHeight = header ? header.offsetHeight : 72;
+        // 16px extra de separación para que el contenido no quede pegado
+        return headerHeight + 16;
+    }
+
     function updateActiveNav() {
-        const scrollPos = window.scrollY + 150;
+        const scrollPos = window.scrollY + getHeaderOffset();
         
         sections.forEach(section => {
             const top = section.offsetTop;
@@ -368,7 +376,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Scroll suave para enlaces del sidebar
+    // Scroll suave para enlaces del sidebar con actualización de URL
     sidebarLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             const href = link.getAttribute('href');
@@ -376,8 +384,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.preventDefault();
                 const target = document.querySelector(href);
                 if (target) {
-                    const offset = target.offsetTop - 80;
+                    const offset = target.offsetTop - getHeaderOffset();
                     window.scrollTo({ top: offset, behavior: 'smooth' });
+                    history.pushState(null, '', href);
                 }
             }
         });
@@ -717,11 +726,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!isActive) {
             module.classList.add('active');
             
-            // Scroll suave al módulo
+            // Scroll suave al módulo después de que termine la animación (0.4s)
+            // Usamos getBoundingClientRect porque .tech-stack-section
+            // tiene position:relative y offsetTop sería relativo a la sección
             setTimeout(() => {
-                const offset = module.offsetTop - 100;
+                const rect = module.getBoundingClientRect();
+                const offset = window.scrollY + rect.top - getHeaderOffset();
                 window.scrollTo({ top: offset, behavior: 'smooth' });
-            }, 100);
+            }, 450);
             
             // Re-highlight del código si Prism está disponible
             if (typeof Prism !== 'undefined') {
@@ -816,14 +828,19 @@ document.addEventListener('DOMContentLoaded', () => {
     copyBtns.forEach(btn => {
         btn.addEventListener('click', function() {
             const codeBlock = this.closest('.code-block');
-            if (!codeBlock) return;
-            const code = codeBlock.querySelector('code')?.textContent || '';
+            const codeWindow = this.closest('.code-window');
+            const container = codeBlock || codeWindow;
+            if (!container) return;
+            const code = container.querySelector('code')?.textContent || '';
             navigator.clipboard.writeText(code).then(() => {
                 const original = this.innerHTML;
                 this.innerHTML = '<i class="fas fa-check"></i> Copiado';
                 this.classList.add('copied');
                 showToast('Código copiado al portapapeles', 'success', 2000);
-                setTimeout(() => { this.innerHTML = original; this.classList.remove('copied'); }, 2000);
+                setTimeout(() => {
+                    this.innerHTML = original;
+                    this.classList.remove('copied');
+                }, 2000);
             });
         });
     });
@@ -971,7 +988,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 if (entry.isIntersecting) {
                     if (!readData[id]?.completed) {
-                        markSectionReading(id);
+                        markSectionRead(id);
                     }
                     // Update quick nav active
                     document.querySelectorAll('.quick-nav-dot').forEach(d => d.classList.remove('active-section'));
@@ -1049,8 +1066,9 @@ document.addEventListener('DOMContentLoaded', () => {
             dot.addEventListener('click', () => {
                 const target = document.getElementById(id);
                 if (target) {
-                    const offset = target.offsetTop - 80;
+                    const offset = target.offsetTop - getHeaderOffset();
                     window.scrollTo({ top: offset, behavior: 'smooth' });
+                    history.pushState(null, '', '#' + id);
                 }
             });
             
@@ -1440,9 +1458,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ============================================
-    // SCROLL TO TOP ON PAGE LOAD
+    // SCROLL TO HASH OR TOP ON PAGE LOAD
     // ============================================
-    if (!window.location.hash) {
+    if (window.location.hash) {
+        setTimeout(() => {
+            const target = document.querySelector(window.location.hash);
+            if (target) {
+                const offset = target.offsetTop - getHeaderOffset();
+                window.scrollTo({ top: offset });
+            }
+        }, 100);
+    } else {
         window.scrollTo(0, 0);
     }
 
@@ -1504,7 +1530,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const href = link.getAttribute('href');
                 const target = document.querySelector(href);
                 if (target) {
-                    const offset = target.offsetTop - 80;
+                    const offset = target.offsetTop - getHeaderOffset();
                     window.scrollTo({ top: offset, behavior: 'smooth' });
                     history.pushState(null, '', href);
                 }
@@ -1624,7 +1650,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const href = targetLink.getAttribute('href');
                 const target = document.querySelector(href);
                 if (target) {
-                    const offset = target.offsetTop - 80;
+                    const offset = target.offsetTop - getHeaderOffset();
                     window.scrollTo({ top: offset, behavior: 'smooth' });
                     history.pushState(null, '', href);
                 }

@@ -255,7 +255,31 @@ curl "http://localhost:8000/sumar?a=10&b=20"
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-text">fastapi-inventario/├── main.py                  # Punto de entrada (como index.jsp)├── config.py                # Config con pydantic-settings (lee .env)├── database.py              # Conexión SQLAlchemy (como ConexionDB.java)├── alembic.ini              # Migraciones (como Flyway en Java)├── migrations/              # Scripts de migración automáticos│   ├── env.py               # Config de Alembic│   ├── script.py.mako       # Template para nuevas migraciones│   └── versions/            # Migraciones generadas├── .env / .env.example      # Variables de entorno (DB, JWT, CORS)├── tests/                   # Pruebas automatizadas (pytest)│   └── test_api.py          # 8 tests: health, auth, CRUD, paginación├── models/                  # Modelos SQLAlchemy (tablas con relaciones FK)│   ├── producto.py          # Producto — FK → usuario_creador_id│   ├── rol.py               # Rol — PK referenciada por Usuario│   └── usuario.py           # Usuario — FK → roles.id├── schemas/                 # Esquemas Pydantic (validación)│   ├── producto.py          # Schema request/response + PaginatedResponse│   └── usuario.py           # Schema + Rol + Login + Token├── routers/                 # Rutas de la API (como Servlets)│   ├── producto.py          # CRUD productos con paginación (JWT)│   ├── auth.py              # Login/Register + JWT + verificación de roles│   ├── usuario.py           # CRUD usuarios (solo Admin)│   └── rol.py               # CRUD roles (Admin)└── requirements.txt         # Dependencias (como pom.xml)</code></pre>
+                                        <pre><code class="language-text">fastapi-inventario/
+├── main.py                  # Punto de entrada (como index.jsp)
+├── config.py                # Config con pydantic-settings (lee .env)
+├── database.py              # Conexión SQLAlchemy (como ConexionDB.java)
+├── alembic.ini              # Migraciones (como Flyway en Java)
+├── migrations/
+│   ├── env.py               # Config de Alembic
+│   ├── script.py.mako       # Template para nuevas migraciones
+│   └── versions/            # Migraciones generadas
+├── .env / .env.example      # Variables de entorno (DB, JWT, CORS)
+├── tests/
+│   └── test_api.py          # 8 tests: health, auth, CRUD, paginación
+├── models/
+│   ├── producto.py          # Producto — FK → usuario_creador_id
+│   ├── rol.py               # Rol — PK referenciada por Usuario
+│   └── usuario.py           # Usuario — FK → roles.id
+├── schemas/
+│   ├── producto.py          # Schema request/response + PaginatedResponse
+│   └── usuario.py           # Schema + Rol + Login + Token
+├── routers/
+│   ├── producto.py          # CRUD productos con paginación (JWT)
+│   ├── auth.py              # Login/Register + JWT + verificación de roles
+│   ├── usuario.py           # CRUD usuarios (solo Admin)
+│   └── rol.py               # CRUD roles (Admin)
+└── requirements.txt         # Dependencias (como pom.xml)</code></pre>
                                     </div>
                                 </div>
                                 <h4>
@@ -269,7 +293,20 @@ curl "http://localhost:8000/sumar?a=10&b=20"
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-bash"># Equivalente a Flyway/Liquibase en Java# pero nativo de Python con Alembic# 1. Crear migración automática (detecta cambios en modelos/)alembic revision --autogenerate -m "agregar tabla categorias"# 2. Aplicar migraciones pendientesalembic upgrade head# 3. Revertir última migraciónalembic downgrade -1# 4. Ver historialalembic history</code></pre>
+                                        <pre><code class="language-bash"># Equivalente a Flyway/Liquibase en Java
+# pero nativo de Python con Alembic
+
+# 1. Crear migración automática (detecta cambios en modelos/)
+alembic revision --autogenerate -m "agregar tabla categorias"
+
+# 2. Aplicar migraciones pendientes
+alembic upgrade head
+
+# 3. Revertir última migración
+alembic downgrade -1
+
+# 4. Ver historial
+alembic history</code></pre>
                                     </div>
                                 </div>
                                 <div class="recommendation-box"><i class="fas fa-code-branch"></i>
@@ -411,7 +448,13 @@ CORS_ORIGINS=http://localhost:5173,http://localhost:3000</code></pre>
 uvicorn==0.31.0
 sqlalchemy==2.0.35
 psycopg2-binary==2.9.9
-pydantic==2.9.0</code></pre>
+pydantic==2.9.0
+pydantic-settings==2.5.0      # Config con variables de entorno
+python-jose[cryptography]==3.3.0  # JWT
+passlib[bcrypt]==1.7.4         # Hash de contraseñas
+alembic==1.13.0                # Migraciones de BD
+httpx==0.27.0                  # Testing HTTP
+pytest==8.3.0                  # Testing unitario</code></pre>
                                     </div>
                                 </div>
                                 <div class="code-window">
@@ -1068,7 +1111,10 @@ pytest tests/ -v
                                             <div class="comparison-item old">
                                                 <h5><i class="fas fa-times-circle"></i>JSP (sin logs automáticos)
                                                 </h5>
-                                                <pre><code class="language-java">// En JSP tocaba agregar logger manual// en cada Servlet:Logger.getLogger("ProductoServlet")      .info("Producto creado");</code></pre>
+                                                <pre><code class="language-java">// En JSP tocaba agregar logger manual
+// en cada Servlet:
+Logger.getLogger("ProductoServlet")
+    .info("Producto creado");</code></pre>
                                             </div>
                                             <div class="comparison-arrow"><i class="fas fa-arrow-right"></i>
                                             </div>
@@ -1226,46 +1272,455 @@ curl "http://localhost:8000/api/productos/?pagina=2&tamano=5"
                                 Transición: De FastAPI (Backend) a React (Frontend)
                             </h3>
                             <p>
-                                Ya tienes tu API REST con JWT funcionando con FastAPI. Ahora necesitas una interfaz de usuario que consuma esos endpoints protegidos. Así como en JSP usabas<strong>JSTL + Expression Language</strong>y<code>session.getAttribute("usuario")</code>, en React usarás<strong>Componentes + Hooks + AuthContext</strong>y el JWT se guarda en<strong>localStorage</strong>y se envía automáticamente con cada petición.
+                                Ya tienes tu API REST con JWT funcionando con FastAPI. Ahora necesitas una interfaz de usuario que consuma esos endpoints protegidos. Así como en JSP usabas <strong>JSTL + Expression Language</strong> y <code>session.getAttribute("usuario")</code>, en React usarás <strong>Componentes + Hooks + AuthContext</strong> y el JWT se guarda en <strong>localStorage</strong> y se envía automáticamente con cada petición vía Axios Interceptor.
                             </p>
-                            <div class="transition-comparison">
-                                <div class="transition-old">
-                                    <h5><i class="fas fa-times-circle"></i>🏢 JSP (Monolito)
-                                    </h5>
-                                    <ul>
-                                        <li>
-                                            HTML + JSTL en servidor
-                                        </li>
-                                        <li>
-                                            HttpSession para auth
-                                        </li>
-                                        <li>
-                                            Cada clic recarga la página
-                                        </li>
-                                        <li>
-                                            LoginSession.java + filter
-                                        </li>
-                                    </ul>
+
+                            <!-- ===== CÓDIGO COMPARATIVO: JSP vs React ===== -->
+                            <h4 style="margin-top:1.5rem;color:var(--text);"><i class="fas fa-code"></i> El Mismo CRUD: Código JSP vs Código React</h4>
+                            <p>La mejor forma de entender la transición es ver el mismo caso de uso implementado en ambos stacks:</p>
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:0.75rem;">
+                                <div style="background:var(--code-bg);padding:0.75rem;border-radius:8px;border:1px solid var(--border);overflow-x:auto;">
+                                    <h5 style="color:var(--accent);margin-bottom:0.5rem;"><i class="fas fa-times-circle" style="color:#dc3545;"></i> JSP + Servlet (Monolito)</h5>
+                                    <pre style="font-size:0.65rem;line-height:1.5;font-family:monospace;"><code>// ── Servlet: recibe petición ──
+@WebServlet("/productos")
+public class ProductoServlet {
+
+    ProductoDAO dao = new ProductoDAO();
+
+    protected void doGet(...) {
+        // Obtener datos
+        List&lt;Producto&gt; lista = dao.listarTodos();
+        // Poner en request
+        req.setAttribute("productos", lista);
+        // Forward a JSP
+        req.getRequestDispatcher(
+            "/lista.jsp").forward(req, resp);
+    }
+}
+
+&lt;%-- ── JSP: renderiza HTML ──  --%&gt;
+&lt;c:forEach var="p" items="${productos}"&gt;
+    &lt;tr&gt;
+        &lt;td&gt;${p.nombre}&lt;/td&gt;
+        &lt;td&gt;${p.precio}&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/c:forEach&gt;</code></pre>
                                 </div>
-                                <div class="transition-arrow"><i class="fas fa-long-arrow-alt-right"></i>
+                                <div style="background:var(--code-bg);padding:0.75rem;border-radius:8px;border:1px solid var(--border);overflow-x:auto;">
+                                    <h5 style="color:#28a745;margin-bottom:0.5rem;"><i class="fas fa-check-circle"></i> FastAPI + React (Microservicios)</h5>
+                                    <pre style="font-size:0.65rem;line-height:1.5;font-family:monospace;"><code># ── Router FastAPI: sirve JSON ──
+@router.get("/productos/")
+async def listar(db: Session = Depends(get_db)):
+    productos = db.query(ProductoDB).all()
+    return productos
+    # FastAPI convierte automáticamente
+    # SQLAlchemy → Pydantic → JSON
+
+// ── Componente React: consume API ──
+function ProductoLista() {
+    const [productos, setProductos]
+        = useState([]);
+
+    useEffect(() =&gt; {
+        fetch("/api/productos/")
+            .then(r =&gt; r.json())
+            .then(setProductos);
+    }, []);
+
+    return (
+        &lt;table&gt;
+            {productos.map(p =&gt;
+                &lt;tr key={p.id}&gt;
+                    &lt;td&gt;{p.nombre}&lt;/td&gt;
+                    &lt;td&gt;{p.precio}&lt;/td&gt;
+                &lt;/tr&gt;
+            )}
+        &lt;/table&gt;
+    );
+}</code></pre>
                                 </div>
-                                <div class="transition-new">
-                                    <h5><i class="fas fa-check-circle"></i>🔗 React (Microservicios)
-                                    </h5>
-                                    <ul>
-                                        <li>
-                                            Componentes JSX en navegador
-                                        </li>
-                                        <li>
-                                            JWT en localStorage + Axios interceptor
-                                        </li>
-                                        <li>
-                                            SPA: sin recargas de página
-                                        </li>
-                                        <li>
-                                            AuthContext + ProtectedRoute
-                                        </li>
-                                    </ul>
+                            </div>
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:0.75rem;">
+                                <div style="background:var(--code-bg);padding:0.75rem;border-radius:8px;border:1px solid var(--border);overflow-x:auto;">
+                                    <h5 style="color:var(--accent);margin-bottom:0.5rem;"><i class="fas fa-times-circle" style="color:#dc3545;"></i> Login JSP (HttpSession)</h5>
+                                    <pre style="font-size:0.65rem;line-height:1.5;font-family:monospace;"><code>// Servlet login
+String user = req.getParameter("user");
+String pass = req.getParameter("pass");
+Usuario u = dao.login(user, pass);
+if (u != null) {
+    // Guarda en sesión del servidor
+    HttpSession sesion = req.getSession();
+    sesion.setAttribute("usuario", u);
+    sesion.setMaxInactiveInterval(1800);
+    resp.sendRedirect("productos");
+} else {
+    resp.sendRedirect("login.jsp?error=1");
+}</code></pre>
+                                </div>
+                                <div style="background:var(--code-bg);padding:0.75rem;border-radius:8px;border:1px solid var(--border);overflow-x:auto;">
+                                    <h5 style="color:#28a745;margin-bottom:0.5rem;"><i class="fas fa-check-circle"></i> Login React (JWT)</h5>
+                                    <pre style="font-size:0.65rem;line-height:1.5;font-family:monospace;"><code>// AuthContext (React)
+async function login(username, password) {
+    const res = await axios.post(
+        "/api/auth/login",
+        { username, password }
+    );
+    // Guarda token en el navegador
+    const token = res.data.access_token;
+    localStorage.setItem("token", token);
+
+    // Configura header automático
+    axios.defaults.headers.common[
+        "Authorization"
+    ] = `Bearer ${token}`;
+
+    navigate("/productos");
+}</code></pre>
+                                </div>
+                            </div>
+
+                            <!-- ===== CORS ===== -->
+                            <h4 style="margin-top:1.5rem;color:var(--text);"><i class="fas fa-globe"></i> CORS: El Problema que Aparece al Separar Frontend y Backend</h4>
+                            <p>Cuando el frontend (React en :5173) y el backend (FastAPI en :8000) están en <strong>distintos puertos</strong>, el navegador bloquea las peticiones por seguridad. Esto se llama CORS (Cross-Origin Resource Sharing). En JSP no existía porque el frontend y backend estaban en el mismo servidor.</p>
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:0.75rem;">
+                                <div style="background:var(--code-bg);padding:0.75rem;border-radius:8px;border:1px solid var(--border);">
+                                    <h5 style="color:var(--accent);">❌ Sin CORS: Error en consola</h5>
+                                    <pre style="font-size:0.7rem;line-height:1.4;margin-top:0.25rem;"><code>Access to fetch at 'http://localhost:8000/'
+from origin 'http://localhost:5173'
+has been blocked by CORS policy:
+No 'Access-Control-Allow-Origin' header</code></pre>
+                                </div>
+                                <div style="background:var(--code-bg);padding:0.75rem;border-radius:8px;border:1px solid var(--border);">
+                                    <h5 style="color:#28a745;">✅ Con CORS: FastAPI lo resuelve</h5>
+                                    <pre style="font-size:0.7rem;line-height:1.4;margin-top:0.25rem;"><code># FastAPI: un middleware lo soluciona
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "http://localhost:3000",
+    ],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)</code></pre>
+                                </div>
+                            </div>
+                            <div class="info-banner" style="margin-top:0.75rem;background:var(--accent-light, #fff3cd);border-left:4px solid #ffc107;">
+                                <i class="fas fa-info-circle" style="color:#ffc107;"></i>
+                                <div>
+                                    <h4>JSP vs CORS: ¿Por qué en JSP no existía este problema?</h4>
+                                    <p>En el monolito JSP, el frontend (JSP) y el backend (Servlet) están en <strong>el mismo WAR, el mismo Tomcat, el mismo puerto</strong> (:8080). El navegador ve todo como un mismo origen. No hay CORS. Al separar frontend y backend en <strong>distintos servidores y puertos</strong>, el navegador exige que el backend declare explícitamente qué orígenes están permitidos.</p>
+                                </div>
+                            </div>
+
+                            <!-- ===== FLUJO DE AUTENTICACIÓN DETALLADO ===== -->
+                            <h4 style="margin-top:1.5rem;color:var(--text);"><i class="fas fa-exchange-alt"></i> Flujo de Datos: PostgreSQL → FastAPI → React</h4>
+                            <div style="background:var(--code-bg);padding:0.75rem;border-radius:8px;overflow-x:auto;font-size:0.75rem;line-height:1.5;font-family:monospace;white-space:pre;color:var(--text);margin-top:0.75rem;"><code>┌────────────┐      ┌────────────┐      ┌────────────┐      ┌────────────┐
+│ PostgreSQL │      │  FastAPI   │      │   React    │      │  Usuario   │
+│  (datos)   │      │  (API)     │      │  (SPA)     │      │            │
+└─────┬──────┘      └─────┬──────┘      └─────┬──────┘      └─────┬──────┘
+      │                   │                   │                   │
+      │                   │   1. GET /api/productos/             │
+      │                   │←─────────────────────────────────────│
+      │                   │                   │  useEffect()     │
+      │                   │                   │  llama a Axios   │
+      │   2. SELECT *     │                   │                   │
+      │   FROM productos  │                   │                   │
+      │←──────────────────│                   │                   │
+      │                   │                   │                   │
+      │   3. Filas como   │                   │                   │
+      │   tuplas raw      │                   │                   │
+      │───────────────────→│  4. SQLAlchemy   │                   │
+      │                   │  mapea a objetos  │                   │
+      │                   │  Pydantic valida  │                   │
+      │                   │                   │                   │
+      │                   │  5. JSON array    │                   │
+      │                   │  [{"id":1, ...}]  │                   │
+      │                   │──────────────────→│                   │
+      │                   │                   │  6. setState()   │
+      │                   │                   │  React renderiza │
+      │                   │                   │  ProductoCard[]  │
+      │                   │                   │                   │
+      │                   │                   │  7. HTML en      │
+      │                   │                   │  el navegador    │
+      │                   │                   │──────────────────→│
+</code></div>
+
+                            <!-- ===== FLUJO DE AUTENTICACIÓN ===== -->
+                            <h4 style="margin-top:1.5rem;color:var(--text);"><i class="fas fa-key"></i> Flujo Completo de Autenticación: Login → JWT → Petición Protegida</h4>
+                            <div style="background:var(--code-bg);padding:0.75rem;border-radius:8px;overflow-x:auto;font-size:0.72rem;line-height:1.5;font-family:monospace;white-space:pre;color:var(--text);margin-top:0.75rem;"><code>┌────────────────────────────────────────────────────────────────────────────────────┐
+│ LOGIN: usuario envía credenciales, recibe JWT                                      │
+│                                                                                    │
+│  React                      FastAPI                       PostgreSQL               │
+│   │                           │                             │                      │
+│   │  POST /api/auth/login     │                             │                      │
+│   │  {                        │                             │                      │
+│   │   "username": "admin",    │                             │                      │
+│   │   "password": "1234"     │                             │                      │
+│   │  }                       │                             │                      │
+│   │─────────────────────────→│                             │                      │
+│   │                           │  SELECT * FROM usuarios    │                      │
+│   │                           │  WHERE username='admin'    │                      │
+│   │                           │───────────────────────────→│                      │
+│   │                           │←───────────────────────────│                      │
+│   │                           │  Verifica password con     │                      │
+│   │                           │  bcrypt (hash)             │                      │
+│   │                           │  Genera JWT:               │                      │
+│   │                           │  jwt.encode({              │                      │
+│   │                           │   "sub": "admin",          │                      │
+│   │                           │   "rol": "Administrador",  │                      │
+│   │                           │   "exp": 1719561600        │                      │
+│   │                           │  }, SECRET_KEY)            │                      │
+│   │                           │                             │                      │
+│   │  200 OK                  │                             │                      │
+│   │  {                       │                             │                      │
+│   │   "access_token":        │                             │                      │
+│   │    "eyJhbGciOiJ...",     │                             │                      │
+│   │   "token_type": "bearer",│                             │                      │
+│   │   "usuario": {           │                             │                      │
+│   │    "username": "admin",  │                             │                      │
+│   │    "rol": "Admin"        │                             │                      │
+│   │   }                      │                             │                      │
+│   │  }                       │                             │                      │
+│   │←─────────────────────────│                             │                      │
+│   │                           │                             │                      │
+│   │  localStorage.setItem(    │                             │                      │
+│   │   "token", token)        │                             │                      │
+│   │  AuthContext.setUsuario()│                             │                      │
+│   │                           │                             │                      │
+│   │  ─────────────────────────────────────────────────────────────────────────      │
+│   │                           │                             │                      │
+│   │ PETICIÓN PROTEGIDA: Axios envía JWT automáticamente                            │
+│   │                           │                             │                      │
+│   │  GET /api/productos/      │                             │                      │
+│   │  Headers: {               │                             │                      │
+│   │   Authorization:          │                             │                      │
+│   │    "Bearer eyJhbGci..."   │                             │                      │
+│   │  }                        │                             │                      │
+│   │─────────────────────────→│                             │                      │
+│   │                           │  Valida JWT:               │                      │
+│   │                           │  jwt.decode(token,         │                      │
+│   │                           │    SECRET_KEY,             │                      │
+│   │                           │    algorithms=["HS256"])   │                      │
+│   │                           │  Extrae: "sub":"admin"     │                      │
+│   │                           │  Extrae: "rol":"Admin"     │                      │
+│   │                           │                             │                      │
+│   │                           │  ¿El rol tiene permiso     │                      │
+│   │                           │  para este endpoint?       │                      │
+│   │                           │  ✅ Sí → ejecuta consulta  │                      │
+│   │                           │                             │                      │
+│   │                           │  SELECT * FROM productos   │                      │
+│   │                           │  (solo si el rol tiene     │                      │
+│   │                           │   permisos)                │                      │
+│   │                           │───────────────────────────→│                      │
+│   │                           │←───────────────────────────│                      │
+│   │  200 OK                  │                             │                      │
+│   │  [{"id":1,"nombre":...}] │                             │                      │
+│   │←─────────────────────────│                             │                      │
+└────────────────────────────────────────────────────────────────────────────────────┘</code></div>
+
+                            <!-- ===== SSR vs CSR ===== -->
+                            <h4 style="margin-top:1.5rem;color:var(--text);"><i class="fas fa-code"></i> Comparación: Server-Side Rendering vs Client-Side Rendering</h4>
+                            <div class="rubric-section" style="margin-top:0.75rem;">
+                                <div class="rubric-table">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Dimensión</th>
+                                                <th>🏢 SSR — JSP (Server-Side)</th>
+                                                <th>🔗 CSR — React (Client-Side)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Renderizado</strong></td>
+                                                <td>Tomcat genera HTML completo y lo envía al navegador</td>
+                                                <td>El navegador descarga JS, ejecuta React, genera HTML localmente</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Estado de página</strong></td>
+                                                <td>Desaparece al recargar (hay que volver a consultar la BD)</td>
+                                                <td>Persiste en memoria (React state) mientras la SPA esté abierta</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Navegación</strong></td>
+                                                <td>Cada clic = recarga completa de página + viaje al servidor</td>
+                                                <td>Transiciones instantáneas: solo viaja el JSON, no el HTML</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>SEO</strong></td>
+                                                <td>✅ Excelente: el HTML ya viene con contenido indexable</td>
+                                                <td>⚠️ Requiere SSR (Next.js) o prerendering para contenido público</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Carga inicial</strong></td>
+                                                <td>Rápida: el servidor envía HTML listo para mostrar</td>
+                                                <td>Lenta: descarga JS (+250KB), ejecuta, luego renderiza</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Carga siguientes</strong></td>
+                                                <td>Lenta: cada página recarga todo el HTML (más ancho de banda)</td>
+                                                <td>Rápida: solo viaja JSON (datos puros, sin HTML duplicado)</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>UX / Interactividad</strong></td>
+                                                <td>Limitada: cada acción recarga la página (parpadeo blanco)</td>
+                                                <td>Excelente: animaciones, transiciones, feedback instantáneo</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Offline / PWA</strong></td>
+                                                <td>❌ No posible: depende del servidor para todo</td>
+                                                <td>✅ Posible: Service Workers, cache de datos, modo offline</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- ===== ESTADO DE SESIÓN ===== -->
+                            <h4 style="margin-top:1.5rem;color:var(--text);"><i class="fas fa-shield-alt"></i> Estado de Sesión: HttpSession vs JWT vs Context API</h4>
+                            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.75rem;margin-top:0.75rem;">
+                                <div style="background:var(--code-bg);padding:0.75rem;border-radius:8px;border:1px solid var(--border);">
+                                    <h5 style="color:#dc3545;"><i class="fas fa-server"></i> HttpSession (JSP)</h5>
+                                    <p style="font-size:0.75rem;margin-top:0.25rem;">El servidor guarda el usuario en RAM. <strong>Stateful</strong>: si el servidor se cae, pierdes la sesión. No escalable horizontalmente sin sticky sessions.</p>
+                                    <pre style="font-size:0.65rem;margin-top:0.5rem;"><code>// Guardar en servidor
+req.getSession()
+  .setAttribute("usuario", u);
+
+// Leer en JSP
+${sessionScope.usuario.nombre}
+
+// Cerrar sesión
+req.getSession().invalidate();</code></pre>
+                                </div>
+                                <div style="background:var(--code-bg);padding:0.75rem;border-radius:8px;border:1px solid var(--border);">
+                                    <h5 style="color:#ffc107;"><i class="fas fa-key"></i> JWT (FastAPI)</h5>
+                                    <p style="font-size:0.75rem;margin-top:0.25rem;">Token firmado que el <strong>cliente</strong> guarda. <strong>Stateless</strong>: cualquier servidor puede validarlo sin compartir sesión. Escalable horizontalmente.</p>
+                                    <pre style="font-size:0.65rem;margin-top:0.5rem;"><code>// Generar en backend
+token = jwt.encode({
+    "sub": user,
+    "rol": "Admin",
+    "exp": time + 3600
+}, SECRET_KEY)
+
+// Validar en backend
+payload = jwt.decode(
+    token, SECRET_KEY,
+    algorithms=["HS256"]
+)</code></pre>
+                                </div>
+                                <div style="background:var(--code-bg);padding:0.75rem;border-radius:8px;border:1px solid var(--border);">
+                                    <h5 style="color:#28a745;"><i class="fas fa-database"></i> Context API (React)</h5>
+                                    <p style="font-size:0.75rem;margin-top:0.25rem;">Estado global en memoria del navegador. El AuthContext provee usuario y token a toda la SPA sin pasarlos por props.</p>
+                                    <pre style="font-size:0.65rem;margin-top:0.5rem;"><code>// Proveer contexto
+&lt;AuthContext.Provider
+ value={{user, token, login, logout}}&gt;
+  &lt;App /&gt;
+&lt;/AuthContext.Provider&gt;
+
+// Consumir en cualquier
+// componente hijo
+const { user, login }
+  = useContext(AuthContext);</code></pre>
+                                </div>
+                            </div>
+
+                            <!-- ===== BUILD PIPELINE ===== -->
+                            <h4 style="margin-top:1.5rem;color:var(--text);"><i class="fas fa-cogs"></i> Pipeline de Build y Despliegue: JSP vs React</h4>
+                            <div class="rubric-section" style="margin-top:0.75rem;">
+                                <div class="rubric-table">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Paso</th>
+                                                <th>🏢 JSP (WAR)</th>
+                                                <th>🔗 React (Vite)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Código fuente</strong></td>
+                                                <td><code>.java</code>, <code>.jsp</code>, <code>pom.xml</code></td>
+                                                <td><code>.jsx</code>, <code>.tsx</code>, <code>package.json</code></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Dependencias</strong></td>
+                                                <td><code>mvn dependency:resolve</code> (descarga .jar)</td>
+                                                <td><code>npm install</code> (descarga node_modules)</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Compilación</strong></td>
+                                                <td><code>javac</code> compila .java → .class</td>
+                                                <td><code>vite build</code> compila JSX → JS estático</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Output</strong></td>
+                                                <td><code>.war</code> (Web Archive, ~10-30MB)</td>
+                                                <td>Carpeta <code>dist/</code> (archivos estáticos, ~200KB)</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Servidor</strong></td>
+                                                <td>Tomcat despliega el WAR (interpreta .class)</td>
+                                                <td>Nginx sirve archivos estáticos (no necesita ejecución)</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Hot reload</strong></td>
+                                                <td>Requiere reiniciar Tomcat o usar JRebel</td>
+                                                <td>Vite HMR: los cambios se reflejan en milisegundos</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Comando</strong></td>
+                                                <td><code>mvn clean package cargo:run</code></td>
+                                                <td><code>npm run dev</code> (desarrollo) / <code>npm run build</code> (producción)</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- ===== STATE MANAGEMENT ===== -->
+                            <h4 style="margin-top:1.5rem;color:var(--text);"><i class="fas fa-sitemap"></i> Manejo de Estado en React: ¿Cuándo usar qué?</h4>
+                            <p>En JSP el estado era simple: request, session, application. En React hay más opciones. Aquí una guía de decisión:</p>
+                            <div style="background:var(--code-bg);padding:0.75rem;border-radius:8px;overflow-x:auto;font-size:0.72rem;line-height:1.6;font-family:monospace;white-space:pre;color:var(--text);margin-top:0.75rem;"><code>┌─────────────────────────────────────────────────────────────────────────────┐
+│  ¿El dato lo usa solo un componente?                                        │
+│  │                                                                           │
+│  ├─ Sí → ¿Cambia con el tiempo?                                             │
+│  │       │                                                                   │
+│  │       ├─ Sí → useState (ej: valor de input, toggle, contador)            │
+│  │       │       const [nombre, setNombre] = useState("")                    │
+│  │       │                                                                   │
+│  │       └─ No → variable normal o useRef (ej: intervalo, timeout)          │
+│  │               const intervalRef = useRef(null)                            │
+│  │                                                                           │
+│  ├─ No → ¿Lo necesitan varios componentes hermanos?                          │
+│  │       │                                                                   │
+│  │       ├─ Sí → Lifting state up (elevar estado al padre)                  │
+│  │       │       &lt;Padre&gt;                                                     │
+│  │       │         &lt;HijoA valor={estado} /&gt;                                  │
+│  │       │         &lt;HijoB onChange={setEstado} /&gt;                            │
+│  │       │       &lt;/Padre&gt;                                                    │
+│  │       │                                                                   │
+│  │       └─ No → ¿Lo necesitan componentes en distintas ramas?              │
+│  │               │                                                           │
+│  │               ├─ Sí → Context API (ej: auth, tema, idioma)              │
+│  │               │       const AuthContext = createContext()                  │
+│  │               │       &lt;AuthContext.Provider value={user}&gt;                 │
+│  │               │         &lt;App /&gt;                                           │
+│  │               │       &lt;/AuthContext.Provider&gt;                             │
+│  │               │                                                           │
+│  │               └─ No y el estado es complejo → useReducer                │
+│  │                       (ej: carrito de compras, formularios grandes)       │
+│  │                                                                           │
+│  └── ¿Miles de componentes y estado muy complejo? → Redux / Zustand         │
+│       (solo cuando Context API + useReducer se quedan cortos)               │
+└─────────────────────────────────────────────────────────────────────────────┘</code></div>
+
+                            <div class="recommendation-box" style="margin-top:1.5rem;">
+                                <i class="fas fa-lightbulb"></i>
+                                <div>
+                                    <h4>Resumen: Del viaje completo al viaje ligero</h4>
+                                    <p><strong>JSP:</strong> cada clic = viaje redondo al servidor (request → Servlet → DAO → BD → DAO → Servlet → JSP → HTML → navegador). Todo el HTML se regenera aunque solo cambie un número. La página parpadea al recargar.</p>
+                                    <p><strong>React + FastAPI:</strong> carga inicial más pesada (descargar React), pero después solo viaja JSON. El navegador actualiza solo la parte de la pantalla que cambia. Sin recargas, sin parpadeos. Menos ancho de banda, más velocidad percibida.</p>
+                                    <p style="margin-top:0.5rem;">La API de FastAPI no solo sirve a React — puede servir a <strong>apps móviles (Flutter), otros servicios, o integraciones de terceros</strong>. El JSP solo servía HTML para navegadores.</p>
                                 </div>
                             </div>
                         </div>

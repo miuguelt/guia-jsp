@@ -106,6 +106,13 @@ db.password=tu_password_aqui
                                     <div class="url-part"><code>/inventario_db</code><span>Nombre de la base de datos (debe existir)</span>
                                     </div>
                                 </div>
+                                <div class="info-banner" style="margin-top:0.5rem;background:var(--accent-light, #fff3cd);border-left:4px solid #ffc107;">
+                                    <i class="fas fa-info-circle" style="color:#ffc107;"></i>
+                                    <div>
+                                        <h4>Puerto compartido: usa 5434 si es la BD central</h4>
+                                        <p>Si estás usando el PostgreSQL compartido del ecosistema DevBrain, el puerto es <strong>5434</strong> en lugar de 5432. La URL quedaría: <code>jdbc:postgresql://localhost:5434/inventario_db</code>.</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="config-step">
@@ -127,24 +134,23 @@ db.password=tu_password_aqui
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-java">package com.sena.inventario.dao;
-import java.sql.Connection;
+                                        <pre><code class="language-java">import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+
 public class TestConexion {
     public static void main(String[] args) {
         try (Connection conn = ConexionDB.conectar();
-        Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM productos")) {
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM productos")) {
             if (rs.next()) {
                 System.out.println("✓ Conexión exitosa!");
                 System.out.println("Productos en BD: " + rs.getInt(1));
             }
+        } catch (Exception e) {
+            System.err.println("✗ Error: " + e.getMessage());
+        }
     }
-catch (Exception e) {
-    System.err.println("✗ Error: " + e.getMessage());
-}
-}
 }</code></pre>
                                     </div>
                                 </div>

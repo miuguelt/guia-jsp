@@ -1,4 +1,4 @@
-            <section class="tech-stack-section">
+            <section class="tech-stack-section" id="stack">
                 <div class="container">
                     <div class="section-header">
                         <h2 class="section-title">
@@ -199,16 +199,23 @@ System.out.println(p.nombre());
                                             <p>
                                                 Validación de tipos simplificada
                                             </p>
-                                            <pre><code class="language-java">// Antes (verbose):if (obj instanceof String) {
+                                            <pre><code class="language-java">// Antes (verbose):
+if (obj instanceof String) {
     String s = (String) obj;
     System.out.println(s.length());
-}// Ahora (conciso):if (obj instanceof String s) {
-System.out.println(s.length());
-}// Con switch:String tipo = switch (obj) {
-case Integer i -&gt; "Número entero: " + i;
-case String s  -&gt; "Texto: " + s;
-case null      -&gt; "Nulo";
-default        -&gt; "Otro tipo";
+}
+
+// Ahora (conciso):
+if (obj instanceof String s) {
+    System.out.println(s.length());
+}
+
+// Con switch:
+String tipo = switch (obj) {
+    case Integer i -> "Número entero: " + i;
+    case String s  -> "Texto: " + s;
+    case null      -> "Nulo";
+    default        -> "Otro tipo";
 };</code></pre>
                                         </div>
                                         <div class="feature-card">
@@ -218,14 +225,16 @@ default        -&gt; "Otro tipo";
                                             <p>
                                                 Concurrencia masiva eficiente
                                             </p>
-                                            <pre><code class="language-java">// Crear 1 millón de threads sin problemastry (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
+                                            <pre><code class="language-java">// Crear 1 millón de threads sin problemas
+try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
     IntStream.range(0, 1_000_000).forEach(i -&gt; {
         executor.submit(() -&gt; {
             Thread.sleep(Duration.ofSeconds(1));
             return i;
         });
-});
-}// Cada thread es ligero (~1KB vs ~1MB de threads tradicionales)</code></pre>
+    });
+}
+// Cada thread es ligero (~1KB vs ~1MB de threads tradicionales)</code></pre>
                                         </div>
                                         <div class="feature-card">
                                             <h5>
@@ -234,19 +243,26 @@ default        -&gt; "Otro tipo";
                                             <p>
                                                 Sintaxis moderna con flechas
                                             </p>
-                                            <pre><code class="language-java">// Switch tradicional (antiguo):String nombre;
+                                            <pre><code class="language-java">// Switch tradicional (antiguo):
+String nombre;
 switch (dia) {
-    case 1: nombre = "Lunes";
-    break;
-    case 2: nombre = "Martes";
-    break;
-    default: nombre = "Otro";
-    break;
-}// Switch expression (moderno):String nombre = switch (dia) {
-case 1 -&gt; "Lunes";
-case 2 -&gt; "Martes";
-case 3 -&gt; "Miércoles";
-default -&gt; "Otro día";
+    case 1:
+        nombre = "Lunes";
+        break;
+    case 2:
+        nombre = "Martes";
+        break;
+    default:
+        nombre = "Otro";
+        break;
+}
+
+// Switch expression (moderno):
+String nombre = switch (dia) {
+    case 1 -> "Lunes";
+    case 2 -> "Martes";
+    case 3 -> "Miércoles";
+    default -> "Otro día";
 };</code></pre>
                                         </div>
                                     </div>
@@ -266,8 +282,10 @@ default -&gt; "Otro día";
                                             <div><strong>Instalar y configurar JAVA_HOME</strong>
                                                 <div class="code-block">
                                                     <pre><code class="language-bash"># Windows (PowerShell como administrador):
-[System.Environment]::SetEnvironmentVariable('JAVA_HOME', 'C:\Program Files\Eclipse Adoptium\jdk-21.0.0.0-hotspot', 'Machine')
-[System.Environment]::SetEnvironmentVariable('Path', $env:Path + ';C:\Program Files\Eclipse Adoptium\jdk-21.0.0.0-hotspot\bin', 'Machine')
+$ruta = 'C:\Program Files\Eclipse Adoptium\jdk-21.0.0.0-hotspot'
+[System.Environment]::SetEnvironmentVariable('JAVA_HOME', $ruta, 'Machine')
+[System.Environment]::SetEnvironmentVariable(
+    'Path', $env:Path + ";$ruta\bin", 'Machine')
 
 # Linux/Mac (en ~/.bashrc o ~/.zshrc):
 export JAVA_HOME=/usr/lib/jvm/java-21-openjdk
@@ -278,7 +296,10 @@ export PATH=$JAVA_HOME/bin:$PATH</code></pre>
                                         <div class="install-step"><span class="step-num">3</span>
                                             <div><strong>Verificar instalación</strong>
                                                 <div class="code-block">
-                                                    <pre><code class="language-bash">java --version# Debe mostrar: openjdk 21.x.xjavac --version# Debe mostrar: javac 21.x.x</code></pre>
+                                                    <pre><code class="language-bash">java --version
+# Debe mostrar: openjdk 21.x.x
+javac --version
+# Debe mostrar: javac 21.x.x</code></pre>
                                                 </div>
                                             </div>
                                         </div>
@@ -782,7 +803,22 @@ CREATE DATABASE inventario_db;
                                     <h4><i class="fas fa-folder-tree"></i>Estructura de Directorios
                                     </h4>
                                     <div class="code-block">
-                                        <pre><code class="language-text">apache-tomcat-10.1.x/├── bin/              # Scripts de inicio/parada│   ├── startup.bat   # Iniciar en Windows│   ├── shutdown.bat  # Parar en Windows│   ├── startup.sh    # Iniciar en Linux/Mac│   └── shutdown.sh   # Parar en Linux/Mac├── conf/             # Configuración│   ├── server.xml    # Configuración principal│   ├── web.xml       # Configuración global│   └── tomcat-users.xml  # Usuarios y roles├── webapps/          # Aplicaciones desplegadas│   ├── ROOT/         # Aplicación raíz│   └── mi-app.war    # Tu aplicación├── logs/             # Logs del servidor├── lib/              # Librerías compartidas└── temp/             # Archivos temporales</code></pre>
+                                        <pre><code class="language-text">apache-tomcat-10.1.x/
+├── bin/              # Scripts de inicio/parada
+│   ├── startup.bat   # Iniciar en Windows
+│   ├── shutdown.bat  # Parar en Windows
+│   ├── startup.sh    # Iniciar en Linux/Mac
+│   └── shutdown.sh   # Parar en Linux/Mac
+├── conf/             # Configuración
+│   ├── server.xml    # Configuración principal
+│   ├── web.xml       # Configuración global
+│   └── tomcat-users.xml  # Usuarios y roles
+├── webapps/          # Aplicaciones desplegadas
+│   ├── ROOT/         # Aplicación raíz
+│   └── mi-app.war    # Tu aplicación
+├── logs/             # Logs del servidor
+├── lib/              # Librerías compartidas
+└── temp/             # Archivos temporales</code></pre>
                                     </div>
                                 </div>
                                 <div class="module-section">
@@ -1040,7 +1076,15 @@ logs\localhost.YYYY-MM-DD.log</code></pre>
                                         <div class="install-step"><span class="step-num">2</span>
                                             <div><strong>Extraer y configurar</strong>
                                                 <div class="code-block">
-                                                    <pre><code class="language-bash"># Extraer a C:\apache-maven-3.9.x# Windows (PowerShell como administrador):[System.Environment]::SetEnvironmentVariable('MAVEN_HOME', 'C:\apache-maven-3.9.x', 'Machine')[System.Environment]::SetEnvironmentVariable('Path', $env:Path + ';C:\apache-maven-3.9.x\bin', 'Machine')# Linux/Mac (en ~/.bashrc):export MAVEN_HOME=/opt/apache-maven-3.9.xexport PATH=$MAVEN_HOME/bin:$PATH</code></pre>
+                                                    <pre><code class="language-bash"># Extraer a C:\apache-maven-3.9.x
+
+# Windows (PowerShell como administrador):
+[System.Environment]::SetEnvironmentVariable('MAVEN_HOME', 'C:\apache-maven-3.9.x', 'Machine')
+[System.Environment]::SetEnvironmentVariable('Path', $env:Path + ';C:\apache-maven-3.9.x\bin', 'Machine')
+
+# Linux/Mac (en ~/.bashrc):
+export MAVEN_HOME=/opt/apache-maven-3.9.x
+export PATH=$MAVEN_HOME/bin:$PATH</code></pre>
                                                 </div>
                                             </div>
                                         </div>
@@ -1154,7 +1198,9 @@ CMD ["catalina.sh", "run"]</code></pre>
                                             <h5>
                                                 Construir imagen
                                             </h5>
-                                            <pre><code class="language-bash">docker build -t inventario-mvc:1.0 .# -t = tag (nombre:versión)# . = contexto actual</code></pre>
+                                            <pre><code class="language-bash">docker build -t inventario-mvc:1.0 .
+# -t = tag (nombre:versión)
+# . = contexto actual</code></pre>
                                         </div>
                                         <div class="command-card">
                                             <h5>
@@ -1166,25 +1212,48 @@ CMD ["catalina.sh", "run"]</code></pre>
                                             <h5>
                                                 Ejecutar contenedor
                                             </h5>
-                                            <pre><code class="language-bash">docker run -d -p 8080:8080 \  -e DB_HOST=host.docker.internal \  -e DB_PORT=5432 \  -e DB_NAME=inventario_db \  -e DB_USER=postgres \  -e DB_PASSWORD=tu_password \  --name inventario-app \  inventario-mvc:1.0# -d = detached (segundo plano)# -p = mapeo de puertos (host:contenedor)# -e = variables de entorno# --name = nombre del contenedor</code></pre>
+                                            <pre><code class="language-bash">docker run -d -p 8080:8080 \
+  -e DB_HOST=host.docker.internal \
+  -e DB_PORT=5432 \
+  -e DB_NAME=inventario_db \
+  -e DB_USER=postgres \
+  -e DB_PASSWORD=tu_password \
+  --name inventario-app \
+  inventario-mvc:1.0
+
+# -d = detached (segundo plano)
+# -p = mapeo de puertos (host:contenedor)
+# -e = variables de entorno
+# --name = nombre del contenedor</code></pre>
                                         </div>
                                         <div class="command-card">
                                             <h5>
                                                 Listar contenedores
                                             </h5>
-                                            <pre><code class="language-bash">docker ps# Muestra contenedores en ejecucióndocker ps -a# Muestra todos (incluyendo parados)</code></pre>
+                                            <pre><code class="language-bash">docker ps
+# Muestra contenedores en ejecución
+docker ps -a
+# Muestra todos (incluyendo parados)</code></pre>
                                         </div>
                                         <div class="command-card">
                                             <h5>
                                                 Ver logs
                                             </h5>
-                                            <pre><code class="language-bash">docker logs inventario-app# Muestra logs del contenedordocker logs -f inventario-app# -f = follow (tiempo real)</code></pre>
+                                            <pre><code class="language-bash">docker logs inventario-app
+# Muestra logs del contenedor
+docker logs -f inventario-app
+# -f = follow (tiempo real)</code></pre>
                                         </div>
                                         <div class="command-card">
                                             <h5>
                                                 Parar/Eliminar
                                             </h5>
-                                            <pre><code class="language-bash">docker stop inventario-app# Para el contenedordocker rm inventario-app# Elimina el contenedordocker rmi inventario-mvc:1.0# Elimina la imagen</code></pre>
+                                            <pre><code class="language-bash">docker stop inventario-app
+# Para el contenedor
+docker rm inventario-app
+# Elimina el contenedor
+docker rmi inventario-mvc:1.0
+# Elimina la imagen</code></pre>
                                         </div>
                                     </div>
                                 </div>
@@ -1272,7 +1341,10 @@ docker compose down -v</code></pre>
                                         <div class="install-step"><span class="step-num">3</span>
                                             <div><strong>Verificar instalación</strong>
                                                 <div class="code-block">
-                                                    <pre><code class="language-bash">docker --version# Debe mostrar: Docker version 24.x.xdocker compose version# Debe mostrar: Docker Compose version v2.x.x</code></pre>
+                                                    <pre><code class="language-bash">docker --version
+# Debe mostrar: Docker version 24.x.x
+docker compose version
+# Debe mostrar: Docker Compose version v2.x.x</code></pre>
                                                 </div>
                                             </div>
                                         </div>
@@ -1354,10 +1426,27 @@ docker compose down -v</code></pre>
                                             <p>
                                                 Validación de datos con tipos Python
                                             </p>
-                                            <pre><code class="language-python">from pydantic
-import BaseModelfrom decimal
-import Decimalfrom datetime
-import datetimeclass Producto(BaseModel):    id: int | None = None    codigo: str    nombre: str    precio: Decimal    stock: int = 0    categoria: str | None = None    estado: bool = True    fecha_registro: datetime | None = None# Uso con validación automática:p = Producto(codigo="P001", nombre="Laptop",             precio=2500000.00, stock=15)print(p.model_dump())# {"codigo": "P001", "nombre": "Laptop",#  "precio": Decimal('2500000.00'), "stock": 15,#  "estado": True, "categoria": None, ...}</code></pre>
+                                            <pre><code class="language-python">from pydantic import BaseModel
+from decimal import Decimal
+from datetime import datetime
+
+class Producto(BaseModel):
+    id: int | None = None
+    codigo: str
+    nombre: str
+    precio: Decimal
+    stock: int = 0
+    categoria: str | None = None
+    estado: bool = True
+    fecha_registro: datetime | None = None
+
+# Uso con validación automática:
+p = Producto(codigo="P001", nombre="Laptop",
+             precio=2500000.00, stock=15)
+print(p.model_dump())
+# {"codigo": "P001", "nombre": "Laptop",
+#  "precio": Decimal('2500000.00'), "stock": 15,
+#  "estado": True, "categoria": None, ...}</code></pre>
                                         </div>
                                         <div class="feature-card">
                                             <h5>
@@ -1366,10 +1455,22 @@ import datetimeclass Producto(BaseModel):    id: int | None = None    codigo: st
                                             <p>
                                                 Parámetros de ruta y query con tipos
                                             </p>
-                                            <pre><code class="language-python">from fastapi
-import FastAPIapp = FastAPI()@app.get("/productos")async
-def listar_productos(    categoria: str | None = None,    stock_min: int = 0):    """GET /productos?categoria=Tecnologia&stock_min=10"""    return {"categoria": categoria,            "stock_min": stock_min}@app.get("/productos/{id}")async
-def obtener_producto(id: int):    """GET /productos/5    Retorna: {"id": 5, "nombre": "Laptop", ...}"""    return {"id": id, "nombre": "Ejemplo"}</code></pre>
+                                            <pre><code class="language-python">from fastapi import FastAPI
+
+app = FastAPI()
+
+@app.get("/productos")
+async def listar_productos(
+    categoria: str | None = None,
+    stock_min: int = 0
+):
+    """GET /productos?categoria=Tecnologia&stock_min=10"""
+    return {"categoria": categoria, "stock_min": stock_min}
+
+@app.get("/productos/{id}")
+async def obtener_producto(id: int):
+    """GET /productos/5 - Retorna: {"id": 5, ...}"""
+    return {"id": id, "nombre": "Ejemplo"}</code></pre>
                                         </div>
                                         <div class="feature-card">
                                             <h5>
@@ -1378,7 +1479,12 @@ def obtener_producto(id: int):    """GET /productos/5    Retorna: {"id": 5, "nom
                                             <p>
                                                 UI interactiva automática en /docs
                                             </p>
-                                            <pre><code class="language-text"># FastAPI genera automáticamente:# http://localhost:8000/docs → Swagger UI# http://localhost:8000/redoc → ReDoc## Puedes probar los endpoints directamente# desde el navegador sin Postman</code></pre>
+                                            <pre><code class="language-text"># FastAPI genera automáticamente:
+# http://localhost:8000/docs → Swagger UI
+# http://localhost:8000/redoc → ReDoc
+#
+# Puedes probar los endpoints directamente
+# desde el navegador sin Postman</code></pre>
                                         </div>
                                         <div class="feature-card">
                                             <h5>
@@ -1387,9 +1493,18 @@ def obtener_producto(id: int):    """GET /productos/5    Retorna: {"id": 5, "nom
                                             <p>
                                                 ORM moderno con soporte async
                                             </p>
-                                            <pre><code class="language-python">from sqlalchemy
-import create_enginefrom sqlalchemy.orm
-import Session# Conexión a PostgreSQL (como con JDBC)engine = create_engine(    "postgresql://postgres:pass@localhost:5432/inventario_db")# Equivalente al PreparedStatement de JDBCwith Session(engine) as session:    productos = session.query(ProductoDB).all()    # Retorna lista de objetos ProductoDB</code></pre>
+                                            <pre><code class="language-python">from sqlalchemy import create_engine
+from sqlalchemy.orm import Session
+
+# Conexión a PostgreSQL (como con JDBC)
+engine = create_engine(
+    "postgresql://postgres:pass@localhost:5432/inventario_db"
+)
+
+# Equivalente al PreparedStatement de JDBC
+with Session(engine) as session:
+    productos = session.query(ProductoDB).all()
+    # Retorna lista de objetos ProductoDB</code></pre>
                                         </div>
                                     </div>
                                 </div>
@@ -1418,10 +1533,12 @@ public class ProductoServlet extends HttpServlet {
                                         <div class="comparison-item new">
                                             <h5><i class="fab fa-python"></i>FastAPI (Python)
                                             </h5>
-                                            <pre><code class="language-python"># productos_api.py - 10 líneas@router.get("/productos")async
-def listar_productos(db: Session = Depends(get_db)):    """GET /api/productos → JSON array"""    productos = db.query(ProductoDB).all()
-return [Producto.model_validate(p)
-for p in productos]</code></pre>
+                                            <pre><code class="language-python"># productos_api.py - 10 líneas
+@router.get("/productos")
+async def listar_productos(db: Session = Depends(get_db)):
+    """GET /api/productos → JSON array"""
+    productos = db.query(ProductoDB).all()
+    return [Producto.model_validate(p) for p in productos]</code></pre>
                                         </div>
                                     </div>
                                 </div>
@@ -1439,14 +1556,29 @@ for p in productos]</code></pre>
                                         <div class="install-step"><span class="step-num">2</span>
                                             <div><strong>Crear entorno virtual e instalar</strong>
                                                 <div class="code-block">
-                                                    <pre><code class="language-bash"># Crear entorno virtualpython -m venv venv# Activar (Windows)venv\Scripts\activate# Activar (Linux/Mac)source venv/bin/activate# Instalar FastAPI + servidor + ORMpip install fastapi uvicorn sqlalchemy psycopg2-binary pydantic</code></pre>
+                                                    <pre><code class="language-bash"># Crear entorno virtual
+python -m venv venv
+
+# Activar (Windows)
+venv\Scripts\activate
+
+# Activar (Linux/Mac)
+source venv/bin/activate
+
+# Instalar FastAPI + servidor + ORM
+pip install fastapi uvicorn sqlalchemy psycopg2-binary pydantic</code></pre>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="install-step"><span class="step-num">3</span>
                                             <div><strong>Verificar instalación</strong>
                                                 <div class="code-block">
-                                                    <pre><code class="language-bash">python -c "import fastapi; print(fastapi.__version__)"# Debe mostrar: 0.111.0 o superior# Iniciar servidor de pruebauvicorn main:app --reload# http://localhost:8000/docs → Swagger UI</code></pre>
+                                                    <pre><code class="language-bash">python -c "import fastapi; print(fastapi.__version__)"
+# Debe mostrar: 0.111.0 o superior
+
+# Iniciar servidor de prueba
+uvicorn main:app --reload
+# http://localhost:8000/docs → Swagger UI</code></pre>
                                                 </div>
                                             </div>
                                         </div>
@@ -1528,10 +1660,29 @@ for p in productos]</code></pre>
                                             <p>
                                                 UI como funciones JavaScript
                                             </p>
-                                            <pre><code class="language-jsx">function ProductoCard({
-    producto
-}) {
-    return (        &lt;div className="producto-card"&gt;            &lt;h3&gt;{producto.nombre}&lt;/h3&gt;            &lt;p className="precio"&gt;                ${Number(producto.precio).toLocaleString()}            &lt;/p&gt;            &lt;span className={`stock                ${producto.stock &lt; 10 ? 'bajo' : 'normal'}`}&gt;                {producto.stock} unidades            &lt;/span&gt;        &lt;/div&gt;    );}// Uso:// &lt;ProductoCard producto={{nombre:"Laptop", precio:2500000, stock:15}} /&gt;// Resultado renderizado:// ┌─────────────────────────┐// │ Laptop                  │// │ $2,500,000              │// │ 15 unidades (normal)    │// └─────────────────────────┘</code></pre>
+                                            <pre><code class="language-jsx">function ProductoCard({ producto }) {
+    return (
+        &lt;div className="producto-card"&gt;
+            &lt;h3&gt;{producto.nombre}&lt;/h3&gt;
+            &lt;p className="precio"&gt;
+                ${Number(producto.precio).toLocaleString()}
+            &lt;/p&gt;
+            &lt;span className={stock ${producto.stock &lt; 10 ? 'bajo' : 'normal'}}&gt;
+                {producto.stock} unidades
+            &lt;/span&gt;
+        &lt;/div&gt;
+    );
+}
+
+// Uso:
+// &lt;ProductoCard producto={{nombre:"Laptop", precio:2500000, stock:15}} /&gt;
+
+// Resultado renderizado:
+// ┌─────────────────────────┐
+// │ Laptop                  │
+// │ $2,500,000              │
+// │ 15 unidades (normal)    │
+// └─────────────────────────┘</code></pre>
                                         </div>
                                         <div class="feature-card">
                                             <h5>
@@ -1540,26 +1691,30 @@ for p in productos]</code></pre>
                                             <p>
                                                 Estado local y llamadas a API
                                             </p>
-                                            <pre><code class="language-jsx">import {
-    useState, useEffect
-    } from 'react';
+                                            <pre><code class="language-jsx">import { useState, useEffect } from 'react';
 import axios from 'axios';
+
 function ListaProductos() {
     const [productos, setProductos] = useState([]);
     const [cargando, setCargando] = useState(true);
+
     useEffect(() =&gt; {
-            // Equivalente a: ProductoDAO.listarTodos()        axios.get('http://localhost:8000/api/productos')            .then(res =&gt; setProductos(res.data))            .finally(() =&gt; setCargando(false));
-            }, []);
-    if (cargando)
-    return &lt;p&gt;Cargando...&lt;/p&gt;;
-    return (        &lt;div className="grid"&gt;            {
-            productos.map(p =&gt; (                &lt;ProductoCard key={
-                        p.id
-                        } producto={
-                        p
-                        } /&gt;            ))
-            }        &lt;/div&gt;    );
-    }</code></pre>
+        // Equivalente a: ProductoDAO.listarTodos()
+        axios.get('http://localhost:8000/api/productos')
+            .then(res =&gt; setProductos(res.data))
+            .finally(() =&gt; setCargando(false));
+    }, []);
+
+    if (cargando) return &lt;p&gt;Cargando...&lt;/p&gt;;
+
+    return (
+        &lt;div className="grid"&gt;
+            {productos.map(p =&gt; (
+                &lt;ProductoCard key={p.id} producto={p} /&gt;
+            ))}
+        &lt;/div&gt;
+    );
+}</code></pre>
                                         </div>
                                         <div class="feature-card">
                                             <h5>
@@ -1570,24 +1725,30 @@ function ListaProductos() {
                                             </p>
                                             <pre><code class="language-jsx">function FormularioProducto() {
     const [form, setForm] = useState({
-            codigo: '', nombre: '', precio: '', stock: 0
-            });
+        codigo: '', nombre: '', precio: '', stock: 0
+    });
+
     const handleSubmit = async (e) =&gt; {
         e.preventDefault();
         // POST a FastAPI (como Servlet doPost)
-        await axios.post(            'http://localhost:8000/api/productos',            form        );
+        await axios.post(
+            'http://localhost:8000/api/productos',
+            form
+        );
         alert('Producto creado!');
-        };
-    return (        &lt;form onSubmit={
-            handleSubmit
-            }&gt;            &lt;input name="codigo" value={
-            form.codigo
-            }                   onChange={
-            e =&gt; setForm({
-                    ...form,                       codigo: e.target.value
-                    })
-            } /&gt;            &lt;button type="submit"&gt;Guardar&lt;/button&gt;        &lt;/form&gt;    );
-    }</code></pre>
+    };
+
+    return (
+        &lt;form onSubmit={handleSubmit}&gt;
+            &lt;input
+                name="codigo"
+                value={form.codigo}
+                onChange={e =&gt; setForm({ ...form, codigo: e.target.value })}
+            /&gt;
+            &lt;button type="submit"&gt;Guardar&lt;/button&gt;
+        &lt;/form&gt;
+    );
+}</code></pre>
                                         </div>
                                         <div class="feature-card">
                                             <h5>
@@ -1596,18 +1757,23 @@ function ListaProductos() {
                                             <p>
                                                 Navegación SPA sin recargar
                                             </p>
-                                            <pre><code class="language-jsx">import {
-    BrowserRouter, Routes, Route
-    } from 'react-router-dom';
+                                            <pre><code class="language-jsx">import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
 function App() {
-    return (        &lt;BrowserRouter&gt;            &lt;nav&gt;                &lt;Link to="/"&gt;Inicio&lt;/Link&gt;                &lt;Link to="/productos"&gt;Productos&lt;/Link&gt;            &lt;/nav&gt;            &lt;Routes&gt;                &lt;Route path="/" element={
-            &lt;Inicio /&gt;
-                } /&gt;                &lt;Route path="/productos"                       element={
-                &lt;ListaProductos /&gt;
-                    } /&gt;                &lt;Route path="/productos/nuevo"                       element={
-                    &lt;FormularioProducto /&gt;
-                        } /&gt;            &lt;/Routes&gt;        &lt;/BrowserRouter&gt;    );
-                }</code></pre>
+    return (
+        &lt;BrowserRouter&gt;
+            &lt;nav&gt;
+                &lt;Link to="/"&gt;Inicio&lt;/Link&gt;
+                &lt;Link to="/productos"&gt;Productos&lt;/Link&gt;
+            &lt;/nav&gt;
+            &lt;Routes&gt;
+                &lt;Route path="/" element={&lt;Inicio /&gt;} /&gt;
+                &lt;Route path="/productos" element={&lt;ListaProductos /&gt;} /&gt;
+                &lt;Route path="/productos/nuevo" element={&lt;FormularioProducto /&gt;} /&gt;
+            &lt;/Routes&gt;
+        &lt;/BrowserRouter&gt;
+    );
+}</code></pre>
                                         </div>
                                     </div>
                                 </div>
@@ -1660,14 +1826,38 @@ function App() {
                                         <div class="install-step"><span class="step-num">2</span>
                                             <div><strong>Crear proyecto con Vite</strong>
                                                 <div class="code-block">
-                                                    <pre><code class="language-bash"># Crear proyecto React con Vitenpm create vite@latest frontend-inventario -- --template react# Entrar e instalar dependenciascd frontend-inventarionpm installnpm install axios react-router-dom# Iniciar en desarrollonpm run dev# http://localhost:5173</code></pre>
+                                                    <pre><code class="language-bash"># Crear proyecto React con Vite
+npm create vite@latest frontend-inventario -- --template react
+
+# Entrar e instalar dependencias
+cd frontend-inventario
+npm install
+npm install axios react-router-dom
+
+# Iniciar en desarrollo
+npm run dev
+# http://localhost:5173</code></pre>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="install-step"><span class="step-num">3</span>
                                             <div><strong>Estructura del proyecto</strong>
                                                 <div class="code-block">
-                                                    <pre><code class="language-text">frontend-inventario/├── src/│   ├── components/      # Componentes reutilizables│   │   ├── ProductoCard.jsx│   │   └── Navbar.jsx│   ├── pages/           # Páginas (vistas)│   │   ├── Inicio.jsx│   │   ├── ListaProductos.jsx│   │   └── FormularioProducto.jsx│   ├── services/        # Llamadas a la API│   │   └── api.js│   ├── App.jsx          # Componente raíz│   └── main.jsx         # Punto de entrada├── index.html└── package.json</code></pre>
+                                                    <pre><code class="language-text">frontend-inventario/
+├── src/
+│   ├── components/      # Componentes reutilizables
+│   │   ├── ProductoCard.jsx
+│   │   └── Navbar.jsx
+│   ├── pages/           # Páginas (vistas)
+│   │   ├── Inicio.jsx
+│   │   ├── ListaProductos.jsx
+│   │   └── FormularioProducto.jsx
+│   ├── services/        # Llamadas a la API
+│   │   └── api.js
+│   ├── App.jsx          # Componente raíz
+│   └── main.jsx         # Punto de entrada
+├── index.html
+└── package.json</code></pre>
                                                 </div>
                                             </div>
                                         </div>

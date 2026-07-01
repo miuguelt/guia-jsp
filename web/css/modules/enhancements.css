@@ -317,14 +317,8 @@ body.sidebar-collapsed .reading-progress {
 }
 
 /* ============================================
-   ULTRAWIDE / TV  (1920px+)
+   IMPRENTA
    ============================================ */
-@media (min-width: 1920px) {
-    html { font-size: clamp(17px, 0.8vw + 0.3rem, 22px); }
-    .container { max-width: 1800px; }
-    .feature-grid-detailed { grid-template-columns: repeat(3, 1fr); gap: 2rem; }
-}
-
 @media print {
     .main-sidebar,
     .sidebar-show-btn,

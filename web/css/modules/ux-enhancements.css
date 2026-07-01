@@ -227,7 +227,7 @@ img[loading="lazy"][complete] {
 
 /* 10. SMOOTH ANCHOR SCROLLING con offset */
 html {
-    scroll-padding-top: calc(var(--header-height) + 1rem);
+    scroll-padding-top: calc(var(--header-height) + 16px);
 }
 
 /* 11. READING MODE - Vista limpia para lectura */
@@ -403,8 +403,10 @@ section,
     opacity: 0;
     padding: 0 1.5rem;
     overflow: hidden;
+    min-width: 0;
 }
 .module-content > * {
+    min-width: 0;
     min-height: 0;
 }
 .tech-module.active .module-content {

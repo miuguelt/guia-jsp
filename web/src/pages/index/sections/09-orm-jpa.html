@@ -5,7 +5,7 @@
                         </div><i class="fas fa-chevron-right breadcrumb-separator"></i>
                         <div class="breadcrumb-item breadcrumb-current">
                             ORM: JPA/Hibernate
-                        </div><span class="reading-time"><i class="fas fa-clock"></i>10 min</span>
+                        </div><span class="reading-time"><i class="fas fa-clock"></i>15 min</span>
                     </div>
                     <div class="section-header">
                         <div class="section-number">
@@ -15,7 +15,7 @@
                             ORM: JPA/Hibernate vs JDBC
                         </h2>
                         <p class="section-subtitle">
-                            Del SQL manual a la persistencia con objetos
+                            Del SQL manual a la persistencia con objetos — todas las comparaciones
                         </p>
                     </div>
                     <div class="comparison-intro">
@@ -26,80 +26,70 @@
                                 ¿Qué es un ORM?
                             </h3>
                             <p>
-                                Un ORM (Object-Relational Mapping) mapea automáticamente objetos Java a tablas de base de datos, eliminando la necesidad de escribir SQL manual. Es el equivalente a<strong>SQLAlchemy</strong>en Flask/Python.
+                                Un ORM (Object-Relational Mapping) mapea automáticamente objetos Java a tablas de base de datos, eliminando la necesidad de escribir SQL manual. JPA (Jakarta Persistence) es el estándar, Hibernate es la implementación más popular. Es el equivalente a <strong>SQLAlchemy</strong> en Flask/Python.
                             </p>
                         </div>
                     </div>
+
+                    <!-- ===== COMPARACIÓN LADO A LADO: JDBC vs JPA ===== -->
                     <div class="orm-comparison">
                         <div class="orm-side jdbc">
                             <div class="orm-header"><i class="fas fa-database"></i>
-                                <h3>
-                                    JDBC Puro (Actual)
-                                </h3>
+                                <h3>JDBC Puro</h3>
                             </div>
                             <div class="orm-content">
-                                <h4>
-                                    Entidad (Record)
-                                </h4>
+                                <h4>Entidad (Record)</h4>
                                 <div class="code-block small">
                                     <pre><code class="language-java">public record Producto(
     int id,
     String codigo,
     String nombre,
-    BigDecimal precio
-) {</code></pre>
+    BigDecimal precio,
+    int stock
+) {}</code></pre>
                                 </div>
-                                <h4>
-                                    DAO con SQL manual
-                                </h4>
+                                <h4>DAO con SQL manual</h4>
                                 <div class="code-block small">
-                                    <pre><code class="language-java">public boolean insertar(Producto p) {
-    try (Connection conn = ConexionDB.conectar();
-    PreparedStatement ps = conn.prepareStatement(         "INSERT INTO productos " +         "(codigo, nombre, precio) " +         "VALUES (?, ?, ?)")) {
-        ps.setString(1, p.codigo());
-        ps.setString(2, p.nombre());
-        ps.setBigDecimal(3, p.precio());
-        return ps.executeUpdate() &gt; 0;
+                                    <pre><code class="language-java">public class ProductoDAO {
+    private static final String SQL_INSERT =
+        "INSERT INTO (codigo, nombre, " +
+        "precio, stock) VALUES (?,?,?,?)";
+
+    public boolean insertar(Producto p) {
+        try (Connection c = ConexionDB.conectar();
+             PreparedStatement ps =
+                 c.prepareStatement(SQL_INSERT)) {
+            ps.setString(1, p.codigo());
+            ps.setString(2, p.nombre());
+            ps.setBigDecimal(3, p.precio());
+            ps.setInt(4, p.stock());
+            return ps.executeUpdate() &gt; 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }</code></pre>
                                 </div>
-                                <div class="pros-cons">
-                                    <div class="pros">
-                                        <h5><i class="fas fa-check"></i>Ventajas
-                                        </h5>
-                                        <ul>
-                                            <li>
-                                                Control total del SQL
-                                            </li>
-                                            <li>
-                                                Sin dependencias extra
-                                            </li>
-                                            <li>
-                                                Ideal para aprender
-                                            </li>
-                                            <li>
-                                                Performance predecible
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="cons">
-                                        <h5><i class="fas fa-times"></i>Desventajas
-                                        </h5>
-                                        <ul>
-                                            <li>
-                                                Mucho código boilerplate
-                                            </li>
-                                            <li>
-                                                SQL repetido en cada DAO
-                                            </li>
-                                            <li>
-                                                Mapeo manual ResultSet → Objeto
-                                            </li>
-                                            <li>
-                                                Difícil mantener en proyectos grandes
-                                            </li>
-                                        </ul>
-                                    </div>
+                                <h4>Mapeo manual ResultSet → Objeto</h4>
+                                <div class="code-block small">
+                                    <pre><code class="language-java">public Producto buscarPorId(int id) {
+    String sql = "SELECT * FROM productos WHERE id=?";
+    try (var ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, id);
+        try (var rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return new Producto(
+                    rs.getInt("id"),
+                    rs.getString("codigo"),
+                    rs.getString("nombre"),
+                    rs.getBigDecimal("precio"),
+                    rs.getInt("stock")
+                );
+            }
+            return null;
+        }
+    }
+}</code></pre>
                                 </div>
                             </div>
                         </div>
@@ -107,135 +97,940 @@
                         </div>
                         <div class="orm-side jpa">
                             <div class="orm-header"><i class="fas fa-magic"></i>
-                                <h3>
-                                    JPA/Hibernate (ORM)
-                                </h3>
+                                <h3>JPA/Hibernate</h3>
                             </div>
                             <div class="orm-content">
-                                <h4>
-                                    Entidad (@Entity)
-                                </h4>
+                                <h4>Entidad (@Entity)</h4>
                                 <div class="code-block small">
-                                    <pre><code class="language-java">public class Producto {
+                                    <pre><code class="language-java">@Entity
+@Table(name = "productos")
+public class Producto {
+    @Id @GeneratedValue
     private int id;
+    @Column(nullable = false, unique = true)
     private String codigo;
+    @Column(nullable = false)
     private String nombre;
+    @Column(precision = 10, scale = 2)
     private BigDecimal precio;
-    // Getters y setters
+    private int stock;
+
+    // Getters y setters (obligatorios)
 }</code></pre>
                                 </div>
-                                <h4>
-                                    Repository (sin SQL)
-                                </h4>
+                                <h4>Repository (sin SQL manual)</h4>
                                 <div class="code-block small">
-                                    <pre><code class="language-java">{
-    em.persist(p);
-    // ¡Eso es todo!
-}
-public Producto buscar(int id) {
-    return em.find(Producto.class, id);
-}
+                                    <pre><code class="language-java">@Repository
+public class ProductoRepository {
+    @PersistenceContext
+    private EntityManager em;
+
+    public void insertar(Producto p) {
+        em.persist(p);
+    }
+
+    public Producto buscar(int id) {
+        return em.find(Producto.class, id);
+    }
+
+    public List&lt;Producto&gt; listar() {
+        return em.createQuery(
+            "SELECT p FROM Producto p",
+            Producto.class).getResultList();
+    }
 }</code></pre>
                                 </div>
-                                <div class="pros-cons">
-                                    <div class="pros">
-                                        <h5><i class="fas fa-check"></i>Ventajas
-                                        </h5>
-                                        <ul>
-                                            <li>
-                                                Menos código (70% menos)
-                                            </li>
-                                            <li>
-                                                SQL generado automáticamente
-                                            </li>
-                                            <li>
-                                                Como SQLAlchemy en Flask
-                                            </li>
-                                            <li>
-                                                Fácil de mantener
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="cons">
-                                        <h5><i class="fas fa-times"></i>Desventajas
-                                        </h5>
-                                        <ul>
-                                            <li>
-                                                Dependencia de Hibernate
-                                            </li>
-                                            <li>
-                                                Menos control del SQL
-                                            </li>
-                                            <li>
-                                                Curva de aprendizaje
-                                            </li>
-                                            <li>
-                                                Performance puede variar
-                                            </li>
-                                        </ul>
-                                    </div>
+                                <h4>Sin mapeo manual — automático</h4>
+                                <div class="code-block small">
+                                    <pre><code class="language-java">// JPA mapea automáticamente:
+// productos.id → Producto.id (int)
+// productos.codigo → Producto.codigo (String)
+// productos.precio → Producto.precio (BigDecimal)
+// Sin ResultSet, sin getInt/getString manual</code></pre>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="flask-analogy">
-                        <h3><i class="fab fa-python"></i>Analogía con Flask + SQLAlchemy
-                        </h3>
+
+                    <!-- ===== COMPARACIÓN DETALLADA ===== -->
+                    <div class="comparison-table" style="margin-top:2rem;">
+                        <h3><i class="fas fa-list"></i> Comparación Detallada: JDBC vs JPA/Hibernate</h3>
+                        <div class="rubric-section">
+                            <div class="rubric-table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Dimensión</th>
+                                            <th>JDBC Puro</th>
+                                            <th>JPA / Hibernate</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Código boilerplate</strong></td>
+                                            <td>Alto: try/catch/finally, PreparedStatement, ResultSet</td>
+                                            <td>Mínimo: persist(), find(), createQuery()</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Mapeo Objeto-Relacional</strong></td>
+                                            <td>Manual: rs.getInt() → setter, columna por columna</td>
+                                            <td>Automático via @Entity, @Column, @Id</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>SQL generado</strong></td>
+                                            <td>Escrito a mano (control total)</td>
+                                            <td>Generado automáticamente (configurable)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Relaciones (FK)</strong></td>
+                                            <td>JOIN manual + mapeo manual de objetos anidados</td>
+                                            <td>@OneToMany, @ManyToOne — carga automática</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Transacciones</strong></td>
+                                            <td>Manual: conn.setAutoCommit(false), commit(), rollback()</td>
+                                            <td>@Transactional — propagación automática</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Cache</strong></td>
+                                            <td>Ninguno (cada consulta va a la BD)</td>
+                                            <td>1er nivel (sesión) + 2do nivel (opcional, compartido)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Lazy Loading</strong></td>
+                                            <td>No aplica (cargas todo explícitamente)</td>
+                                            <td>@OneToMany(fetch=LAZY) — carga bajo demanda</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Optimización</strong></td>
+                                            <td>Control total del SQL, índices, planes de ejecución</td>
+                                            <td>JPQL/HQL + Criteria API + query hints</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Curva de aprendizaje</strong></td>
+                                            <td>Baja: solo SQL + JDBC API</td>
+                                            <td>Media: anotaciones, JPQL, ciclo de vida, proxies</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Portabilidad BD</strong></td>
+                                            <td>SQL específico del motor (cambia al migrar)</td>
+                                            <td>Dialect cambia: Hibernate genera SQL óptimo para cada motor</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Testing</strong></td>
+                                            <td>Fácil: SQL directo, sin contexto</td>
+                                            <td>Requiere bootstrap de EntityManagerFactory</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Performance</strong></td>
+                                            <td>Predecible: tú controlas cada query</td>
+                                            <td>Variable: puede ser mejor (cache) o peor (N+1, lazy)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Proyectos ideales</strong></td>
+                                            <td>Pequeños, aprendizaje, consultas complejas, reporting</td>
+                                            <td>Grandes, CRUD intensivo, relaciones complejas, equipo</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ===== MAPEO DE TIPOS ===== -->
+                    <div class="comparison-table" style="margin-top:2rem;">
+                        <h3><i class="fas fa-code"></i> Mapeo de Tipos: Java ↔ SQL ↔ JDBC</h3>
+                        <div class="rubric-section">
+                            <div class="rubric-table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Tipo Java</th>
+                                            <th>Tipo SQL (PostgreSQL)</th>
+                                            <th>JDBC getter/setter</th>
+                                            <th>Anotación JPA</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><code>int / Integer</code></td>
+                                            <td><code>INTEGER</code></td>
+                                            <td><code>rs.getInt()</code> / <code>ps.setInt()</code></td>
+                                            <td><code>@Column</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>long / Long</code></td>
+                                            <td><code>BIGINT</code></td>
+                                            <td><code>rs.getLong()</code> / <code>ps.setLong()</code></td>
+                                            <td><code>@Column</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>String</code></td>
+                                            <td><code>VARCHAR(n)</code> / <code>TEXT</code></td>
+                                            <td><code>rs.getString()</code> / <code>ps.setString()</code></td>
+                                            <td><code>@Column(length=100)</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>BigDecimal</code></td>
+                                            <td><code>NUMERIC(p,s)</code></td>
+                                            <td><code>rs.getBigDecimal()</code> / <code>ps.setBigDecimal()</code></td>
+                                            <td><code>@Column(precision=10, scale=2)</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>boolean / Boolean</code></td>
+                                            <td><code>BOOLEAN</code></td>
+                                            <td><code>rs.getBoolean()</code> / <code>ps.setBoolean()</code></td>
+                                            <td><code>@Column</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>LocalDate</code></td>
+                                            <td><code>DATE</code></td>
+                                            <td><code>rs.getDate()</code> → <code>.toLocalDate()</code></td>
+                                            <td><code>@Temporal(TemporalType.DATE)</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>LocalDateTime</code></td>
+                                            <td><code>TIMESTAMP</code></td>
+                                            <td><code>rs.getTimestamp()</code> → <code>.toLocalDateTime()</code></td>
+                                            <td><code>@Temporal(TemporalType.TIMESTAMP)</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>byte[]</code></td>
+                                            <td><code>BYTEA</code></td>
+                                            <td><code>rs.getBytes()</code> / <code>ps.setBytes()</code></td>
+                                            <td><code>@Lob</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>Enum</code></td>
+                                            <td><code>VARCHAR</code> o <code>INTEGER</code></td>
+                                            <td>Manual: toString/valueOf</td>
+                                            <td><code>@Enumerated(EnumType.STRING)</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>UUID</code></td>
+                                            <td><code>UUID</code></td>
+                                            <td><code>rs.getObject()</code> → <code>(UUID)</code></td>
+                                            <td><code>@Column(columnDefinition = "UUID")</code></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ===== RELACIONES: JDBC vs JPA ===== -->
+                    <div class="comparison-table" style="margin-top:2rem;">
+                        <h3><i class="fas fa-link"></i> Relaciones (FK): La Gran Diferencia</h3>
+                        <p>El manejo de relaciones es donde JPA realmente brilla. Veamos la diferencia con un ejemplo concreto:</p>
+                        <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:1rem;margin-top:1rem;">
+                            <div style="background:var(--code-bg);padding:1rem;border-radius:8px;border:1px solid var(--border);">
+                                <h4 style="color:var(--accent);margin-bottom:0.5rem;"><i class="fas fa-times-circle" style="color:#dc3545;"></i> JDBC Manual</h4>
+                                <pre style="font-size:0.75rem;line-height:1.5;overflow-x:auto;"><code class="language-java">// Producto + Categoria: 2 queries + mapeo manual
+String sqlProd = "SELECT p.*, c.nombre as cat_nom " +
+    "FROM productos p " +
+    "JOIN categorias c ON p.cat_id = c.id " +
+    "WHERE p.id = ?";
+try (var ps = conn.prepareStatement(sqlProd)) {
+    ps.setInt(1, id);
+    try (var rs = ps.executeQuery()) {
+        if (rs.next()) {
+            Categoria c = new Categoria(
+                rs.getInt("cat_id"),
+                rs.getString("cat_nom")
+            );
+            return new Producto(
+                rs.getInt("id"),
+                rs.getString("nombre"),
+                c  // mapeo manual
+            );
+        }
+    }
+}
+// Si hay lista: bucle manual para agrupar</code></pre>
+                            </div>
+                            <div style="display:flex;align-items:center;font-size:2rem;color:var(--text-muted);">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                            <div style="background:var(--code-bg);padding:1rem;border-radius:8px;border:1px solid var(--border);">
+                                <h4 style="color:#28a745;margin-bottom:0.5rem;"><i class="fas fa-check-circle"></i> JPA Automático</h4>
+                                <pre style="font-size:0.75rem;line-height:1.5;overflow-x:auto;"><code class="language-java">@Entity
+@Table(name = "productos")
+public class Producto {
+    @Id @GeneratedValue
+    private int id;
+    private String nombre;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cat_id")
+    private Categoria categoria;
+    // Categoria se carga automáticamente
+    // cuando se accede a producto.getCategoria()
+}
+
+// Buscar: 1 línea, sin JOIN manual
+Producto p = em.find(Producto.class, id);
+// p.getCategoria().getNombre() → carga lazy</code></pre>
+                            </div>
+                        </div>
+
+                        <h4 style="margin-top:1.5rem;">Anotaciones de Relaciones en JPA</h4>
+                        <div class="rubric-section">
+                            <div class="rubric-table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Anotación</th>
+                                            <th>Relación SQL</th>
+                                            <th>Ejemplo</th>
+                                            <th>Fetch por defecto</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><code>@OneToOne</code></td>
+                                            <td>1:1 (FK única)</td>
+                                            <td>Usuario ↔ Perfil</td>
+                                            <td><code>EAGER</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>@OneToMany</code></td>
+                                            <td>1:N (FK en hija)</td>
+                                            <td>Categoria → Productos</td>
+                                            <td><code>LAZY</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>@ManyToOne</code></td>
+                                            <td>N:1 (FK en actual)</td>
+                                            <td>Producto → Categoria</td>
+                                            <td><code>EAGER</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>@ManyToMany</code></td>
+                                            <td>N:N (tabla intermedia)</td>
+                                            <td>Producto ↔ Proveedor</td>
+                                            <td><code>LAZY</code></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ===== TRANSACCIONES ===== -->
+                    <div class="comparison-table" style="margin-top:2rem;">
+                        <h3><i class="fas fa-exchange-alt"></i> Manejo de Transacciones</h3>
+                        <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:1rem;margin-top:1rem;">
+                            <div style="background:var(--code-bg);padding:1rem;border-radius:8px;">
+                                <h4 style="color:var(--accent);margin-bottom:0.5rem;">JDBC Manual</h4>
+                                <pre style="font-size:0.75rem;line-height:1.5;"><code class="language-java">Connection conn = null;
+try {
+    conn = ConexionDB.conectar();
+    conn.setAutoCommit(false); // inicio
+
+    dao1.insertar(a, conn);
+    dao2.actualizar(b, conn);
+
+    conn.commit(); // confirmar
+} catch (SQLException e) {
+    conn.rollback(); // deshacer
+    throw e;
+} finally {
+    conn.close();
+}
+// Boilerplate: 15+ líneas por operación</code></pre>
+                            </div>
+                            <div style="display:flex;align-items:center;font-size:2rem;color:var(--text-muted);">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                            <div style="background:var(--code-bg);padding:1rem;border-radius:8px;">
+                                <h4 style="color:#28a745;margin-bottom:0.5rem;">JPA @Transactional</h4>
+                                <pre style="font-size:0.75rem;line-height:1.5;"><code class="language-java">@Service
+public class ProductoService {
+    @Autowired
+    private ProductoRepository repo;
+
+    @Transactional
+    public void transferirStock(
+            int origen, int destino, int qty) {
+        var p1 = repo.buscar(origen);
+        var p2 = repo.buscar(destino);
+        p1.setStock(p1.getStock() - qty);
+        p2.setStock(p2.getStock() + qty);
+        // 1 anotación = commit automático
+        // Si falla: rollback automático
+    }
+}
+// Sin try/catch/finally
+// Sin commit/rollback manual</code></pre>
+                            </div>
+                        </div>
+                        <div class="info-banner" style="margin-top:1rem;">
+                            <i class="fas fa-info-circle"></i>
+                            <div>
+                                <h4>Propagación @Transactional</h4>
+                                <p><code>REQUIRED</code> (default) — usa transacción existente o crea una nueva. <code>REQUIRES_NEW</code> — siempre crea una nueva (suspende la actual). <code>MANDATORY</code> — lanza error si no hay transacción activa.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ===== CACHING ===== -->
+                    <div class="comparison-table" style="margin-top:2rem;">
+                        <h3><i class="fas fa-memory"></i> Caching: JDBC vs JPA</h3>
+                        <div class="rubric-section">
+                            <div class="rubric-table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Nivel</th>
+                                            <th>JDBC</th>
+                                            <th>JPA/Hibernate</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>1er nivel</strong></td>
+                                            <td>No existe</td>
+                                            <td>Siempre activo (Session). Misma entidad dentro de la misma transacción no consulta BD dos veces</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>2do nivel</strong></td>
+                                            <td>No existe</td>
+                                            <td>Opcional (Ehcache, Redis). Compartido entre sesiones. Configurable por entidad</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Cache de queries</strong></td>
+                                            <td>No existe</td>
+                                            <td>Opcional: cachea results de JPQL/HQL si la consulta no ha cambiado</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Actualización</strong></td>
+                                            <td>Siempre datos frescos de la BD</td>
+                                            <td>Automática: Hibernate detecta cambios y hace flush antes del commit</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ===== PROBLEMA N+1 ===== -->
+                    <div class="recommendation-box" style="margin-top:2rem;background:#fff3cd;border-left:4px solid #ffc107;">
+                        <i class="fas fa-exclamation-triangle" style="color:#ffc107;"></i>
+                        <div>
+                            <h4>⚠️ El Problema N+1 (y cómo evitarlo)</h4>
+                            <p>El error más común al migrar de JDBC a JPA:</p>
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:0.5rem;">
+                                <div style="background:#fff;padding:0.75rem;border-radius:6px;color:#333;">
+                                    <h5 style="color:#dc3545;">❌ N+1 Query (LENTO)</h5>
+                                    <pre style="font-size:0.7rem;line-height:1.4;"><code>// 1 query para categorias
+// + N queries para productos
+// = 4 queries para 3 categorias!
+List&lt;Categoria&gt; cats = em
+  .createQuery("FROM Categoria", Categoria.class)
+  .getResultList();
+for (Categoria c : cats) {
+  c.getProductos().size(); // ← query aquí!
+}</code></pre>
+                                </div>
+                                <div style="background:#fff;padding:0.75rem;border-radius:6px;color:#333;">
+                                    <h5 style="color:#28a745;">✅ JOIN FETCH (RÁPIDO)</h5>
+                                    <pre style="font-size:0.7rem;line-height:1.4;"><code>// 1 query con JOIN = 1 sola
+// llamada a la BD
+List&lt;Categoria&gt; cats = em
+  .createQuery(
+    "SELECT DISTINCT c FROM Categoria c " +
+    "LEFT JOIN FETCH c.productos",
+    Categoria.class)
+  .getResultList();
+for (Categoria c : cats) {
+  c.getProductos().size(); // ya cargado
+}</code></pre>
+                                </div>
+                            </div>
+                            <p style="margin-top:0.5rem;"><strong>Solución JDBC:</strong> haces JOIN una vez y mapeas manualmente. <strong>Solución JPA:</strong> usa <code>JOIN FETCH</code> en JPQL, <code>@EntityGraph</code> o <code>FetchType.EAGER</code> con criterio.</p>
+                        </div>
+                    </div>
+
+                    <!-- ===== CONFIGURACIÓN HIBERNATE ===== -->
+                    <div class="flask-analogy" style="margin-top:2rem;">
+                        <h3><i class="fas fa-cog"></i> Configuración de Hibernate (JPA)</h3>
                         <div class="analogy-grid">
                             <div class="analogy-item">
-                                <div class="analogy-label">
-                                    Flask (Python)
+                                <div class="analogy-label">Dependencias Maven (pom.xml)</div>
+                                <div class="code-block small">
+                                    <pre><code class="language-xml">&lt;!-- Hibernate (implementación JPA) --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.hibernate.orm&lt;/groupId&gt;
+    &lt;artifactId&gt;hibernate-core&lt;/artifactId&gt;
+    &lt;version&gt;6.3.0.Final&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;!-- Driver PostgreSQL --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.postgresql&lt;/groupId&gt;
+    &lt;artifactId&gt;postgresql&lt;/artifactId&gt;
+    &lt;version&gt;42.7.1&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;!-- Pool de conexiones --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;com.zaxxer&lt;/groupId&gt;
+    &lt;artifactId&gt;HikariCP&lt;/artifactId&gt;
+    &lt;version&gt;5.1.0&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
                                 </div>
+                            </div>
+                            <div class="analogy-arrow"><i class="fas fa-arrow-right"></i><span>+</span><i class="fas fa-arrow-right"></i>
+                            </div>
+                            <div class="analogy-item">
+                                <div class="analogy-label">persistence.xml (src/main/resources/META-INF/)</div>
+                                <div class="code-block small">
+                                    <pre><code class="language-xml">&lt;persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+    version="3.0"&gt;
+    &lt;persistence-unit name="inventarioPU"&gt;
+        &lt;provider&gt;org.hibernate.jpa.HibernatePersistenceProvider&lt;/provider&gt;
+        &lt;properties&gt;
+            &lt;!-- Conexión --&gt;
+            &lt;property name="jakarta.persistence.jdbc.url"
+                value="jdbc:postgresql://localhost:5432/inventario_db"/&gt;
+            &lt;property name="jakarta.persistence.jdbc.user"
+                value="postgres"/&gt;
+            &lt;property name="jakarta.persistence.jdbc.password"
+                value="sena_adso_2026"/&gt;
+
+            &lt;!-- Pool HikariCP --&gt;
+            &lt;property name="hibernate.hikari.connectionTimeout"
+                value="20000"/&gt;
+            &lt;property name="hibernate.hikari.maximumPoolSize"
+                value="10"/&gt;
+
+            &lt;!-- DDL automático --&gt;
+            &lt;property name="jakarta.persistence.schema-generation"
+                value="none"/&gt;
+            &lt;!-- none | create | create-drop | update --&gt;
+
+            &lt;!-- SQL log --&gt;
+            &lt;property name="hibernate.show_sql"
+                value="true"/&gt;
+            &lt;property name="hibernate.format_sql"
+                value="true"/&gt;
+
+            &lt;!-- Dialect PostgreSQL --&gt;
+            &lt;property name="hibernate.dialect"
+                value="org.hibernate.dialect.PostgreSQLDialect"/&gt;
+        &lt;/properties&gt;
+    &lt;/persistence-unit&gt;
+&lt;/persistence&gt;</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ===== HERRAMIENTAS ADICIONALES ===== -->
+                    <div class="comparison-table" style="margin-top:2rem;">
+                        <h3><i class="fas fa-tools"></i> Herramientas del Ecosistema</h3>
+                        <div class="rubric-section">
+                            <div class="rubric-table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Necesidad</th>
+                                            <th>JDBC Puro</th>
+                                            <th>JPA/Hibernate</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Pool de conexiones</strong></td>
+                                            <td>HikariCP, DBCP2 (configuración manual)</td>
+                                            <td>HikariCP integrado (vía hibernate.hikari.*)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Migraciones BD</strong></td>
+                                            <td>Flyway, Liquibase (scripts SQL versionados)</td>
+                                            <td>Flyway/Liquibase + hibernate.ddl-auto (dev)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Auditoría</strong></td>
+                                            <td>Manual: columnas fecha_creacion, trigger</td>
+                                            <td>@CreatedDate, @LastModifiedDate (Spring Data)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Validación</strong></td>
+                                            <td>Manual en Servlet o DAO</td>
+                                            <td>@NotBlank, @Size, @NotNull (Bean Validation)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Paginación</strong></td>
+                                            <td>LIMIT + OFFSET manual en SQL</td>
+                                            <td>setFirstResult(), setMaxResults() en Query</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Logging SQL</strong></td>
+                                            <td>System.out o Logger manual</td>
+                                            <td>hibernate.show_sql=true (formateado automático)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>DTO projections</strong></td>
+                                            <td>JOIN manual + constructor en Record</td>
+                                            <td>JPQL SELECT new + constructor expression</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ===== JPQL vs SQL ===== -->
+                    <div class="comparison-table" style="margin-top:2rem;">
+                        <h3><i class="fas fa-code"></i> JPQL vs SQL: El Mismo Lenguaje, Distinta Sintaxis</h3>
+                        <div class="rubric-section">
+                            <div class="rubric-table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Operación</th>
+                                            <th>SQL (JDBC)</th>
+                                            <th>JPQL (JPA)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>SELECT todos</strong></td>
+                                            <td><code>SELECT * FROM productos</code></td>
+                                            <td><code>SELECT p FROM Producto p</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>WHERE con parámetro</strong></td>
+                                            <td><code>WHERE nombre LIKE ?</code></td>
+                                            <td><code>WHERE p.nombre LIKE :nombre</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>JOIN con condición</strong></td>
+                                            <td><code>JOIN categorias c ON p.cat_id=c.id</code></td>
+                                            <td><code>JOIN p.categoria c</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>INSERT</strong></td>
+                                            <td><code>INSERT INTO productos VALUES (?,?)</code></td>
+                                            <td><code>em.persist(producto)</code> (no hay INSERT JPQL)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>UPDATE</strong></td>
+                                            <td><code>UPDATE productos SET nombre=? WHERE id=?</code></td>
+                                            <td><code>UPDATE Producto p SET p.nombre=:nom WHERE p.id=:id</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>DELETE</strong></td>
+                                            <td><code>DELETE FROM productos WHERE id=?</code></td>
+                                            <td><code>DELETE FROM Producto p WHERE p.id=:id</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Paginación</strong></td>
+                                            <td><code>LIMIT 10 OFFSET 20</code></td>
+                                            <td><code>q.setFirstResult(20).setMaxResults(10)</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Agregación</strong></td>
+                                            <td><code>SELECT COUNT(*), AVG(precio) FROM productos</code></td>
+                                            <td><code>SELECT COUNT(p), AVG(p.precio) FROM Producto p</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Native SQL</strong></td>
+                                            <td>Es SQL mismo</td>
+                                            <td><code>em.createNativeQuery("SELECT * FROM productos")</code></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="info-banner" style="margin-top:1rem;">
+                            <i class="fas fa-lightbulb"></i>
+                            <div>
+                                <h4>Diferencia clave: Trabajas con objetos, no con tablas</h4>
+                                <p>En SQL seleccionas columnas (<code>SELECT nombre FROM productos</code>). En JPQL seleccionas objetos (<code>SELECT p.nombre FROM Producto p</code>). El alias <code>p</code> representa una instancia de la clase <code>Producto</code>, no una fila de la tabla.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ===== PERFORMANCE ===== -->
+                    <div class="comparison-table" style="margin-top:2rem;">
+                        <h3><i class="fas fa-tachometer-alt"></i> Performance: Cuándo usar cada uno</h3>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem;">
+                            <div style="background:var(--code-bg);padding:1.2rem;border-radius:8px;border:1px solid var(--border);">
+                                <h4 style="color:var(--accent);">✅ Gana JDBC</h4>
+                                <ul style="margin-top:0.5rem;line-height:1.8;padding-left:1.2rem;">
+                                    <li>Consultas masivas de solo lectura (reportes)</li>
+                                    <li>Bulk INSERT/UPDATE/DELETE de miles de registros</li>
+                                    <li>Consultas con SQL complejo (CTEs, window functions)</li>
+                                    <li>Operaciones batch sin necesidad de objetos en memoria</li>
+                                    <li>Proyectos pequeños (&lt; 10 tablas) donde JPA es overkill</li>
+                                </ul>
+                            </div>
+                            <div style="background:var(--code-bg);padding:1.2rem;border-radius:8px;border:1px solid var(--border);">
+                                <h4 style="color:#28a745;">✅ Gana JPA/Hibernate</h4>
+                                <ul style="margin-top:0.5rem;line-height:1.8;padding-left:1.2rem;">
+                                    <li>CRUD con relaciones complejas (muchas FK)</li>
+                                    <li>Cache de 1er nivel evita consultas repetitivas</li>
+                                    <li>Dirty checking: solo actualiza columnas cambiadas</li>
+                                    <li>Aplicaciones con muchas transacciones pequeñas</li>
+                                    <li>Equipos grandes: menos código, menos errores</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ===== ANALOGÍA FLASK ===== -->
+                    <div class="flask-analogy" style="margin-top:2rem;">
+                        <h3><i class="fab fa-python"></i> Analogía con Flask + SQLAlchemy</h3>
+                        <div class="analogy-grid">
+                            <div class="analogy-item">
+                                <div class="analogy-label">Flask (Python)</div>
                                 <div class="code-block small">
                                     <pre><code class="language-python"># Modelo SQLAlchemy
 class Producto(db.Model):
+    __tablename__ = "productos"
     id = db.Column(db.Integer, primary_key=True)
-    codigo = db.Column(db.String(50))
+    codigo = db.Column(db.String(50), unique=True)
     nombre = db.Column(db.String(100))
     precio = db.Column(db.Numeric(10,2))
 
 # Guardar
 p = Producto(codigo="P1", nombre="Laptop")
 db.session.add(p)
-db.session.commit()</code></pre>
+db.session.commit()
+
+# Buscar
+Producto.query.get(1)
+Producto.query.filter_by(codigo="P1").first()</code></pre>
                                 </div>
                             </div>
                             <div class="analogy-arrow"><i class="fas fa-arrow-right"></i><span>Equivalente en</span><i class="fas fa-arrow-right"></i>
                             </div>
                             <div class="analogy-item">
-                                <div class="analogy-label">
-                                    Jakarta EE (Java)
-                                </div>
+                                <div class="analogy-label">Jakarta EE (Java)</div>
                                 <div class="code-block small">
-                                    <pre><code class="language-java">// Entidad JPA
-
-(name = "productos")
+                                    <pre><code class="language-java">@Entity
+@Table(name = "productos")
 public class Producto {
+    @Id @GeneratedValue
     private int id;
+    @Column(unique = true)
     private String codigo;
     private String nombre;
+    @Column(precision = 10, scale = 2)
     private BigDecimal precio;
 }
+
 // Guardar
-em.persist(producto);</code></pre>
+em.persist(producto);
+
+// Buscar
+em.find(Producto.class, 1);
+em.createQuery("FROM Producto WHERE codigo=:c",
+    Producto.class)
+    .setParameter("c", "P1")
+    .getSingleResult();</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rubric-section" style="margin-top:1rem;">
+                            <div class="rubric-table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Concepto</th>
+                                            <th>Flask/SQLAlchemy</th>
+                                            <th>Jakarta EE/JPA</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Modelo</td>
+                                            <td><code>class Producto(db.Model)</code></td>
+                                            <td><code>@Entity class Producto</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Columna</td>
+                                            <td><code>db.Column(db.String(50))</code></td>
+                                            <td><code>@Column(length=50) String</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Insert</td>
+                                            <td><code>db.session.add(obj)</code></td>
+                                            <td><code>em.persist(obj)</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Commit</td>
+                                            <td><code>db.session.commit()</code></td>
+                                            <td><code>@Transactional</code> (automático)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Query by ID</td>
+                                            <td><code>Modelo.query.get(id)</code></td>
+                                            <td><code>em.find(Entidad.class, id)</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Query filtrada</td>
+                                            <td><code>.filter_by(codigo="X")</code></td>
+                                            <td><code>WHERE p.codigo=:x</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Relaciones</td>
+                                            <td><code>db.relationship()</code></td>
+                                            <td><code>@OneToMany, @ManyToOne</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Migraciones</td>
+                                            <td><code>flask db migrate</code></td>
+                                            <td><code>Flyway: mvn flyway:migrate</code></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ===== PROS/CONS EXTENDIDO ===== -->
+                    <div style="margin-top:2rem;">
+                        <h3><i class="fas fa-balance-scale"></i> Pros y Contras Detallados</h3>
+                        <div class="pros-cons" style="grid-template-columns:1fr 1fr;display:grid;gap:1.5rem;margin-top:1rem;">
+                            <div class="pros" style="background:var(--code-bg);padding:1.2rem;border-radius:8px;border:1px solid var(--border);">
+                                <h5><i class="fas fa-check" style="color:#28a745;"></i> JDBC Puro — Ventajas</h5>
+                                <ul style="margin-top:0.5rem;line-height:1.8;">
+                                    <li>Control total del SQL generado</li>
+                                    <li>Sin dependencias pesadas (solo driver JDBC)</li>
+                                    <li>Ideal para aprender cómo funciona la persistencia</li>
+                                    <li>Performance predecible y fácil de depurar</li>
+                                    <li>Sin sorpresas: lo que ves (SQL) es lo que obtienes</li>
+                                    <li>Funciona con cualquier versión de Java</li>
+                                </ul>
+                                <h5 style="margin-top:1rem;"><i class="fas fa-times" style="color:#dc3545;"></i> JDBC Puro — Desventajas</h5>
+                                <ul style="margin-top:0.5rem;line-height:1.8;">
+                                    <li>70% más código que JPA para el mismo CRUD</li>
+                                    <li>Mapeo manual propenso a errores (columnas mal escritas)</li>
+                                    <li>Sin cache: cada consulta viaja a la BD</li>
+                                    <li>Sin lazy loading: cargas todo explícitamente</li>
+                                    <li>Sin dirty checking: debes escribir UPDATE aunque solo cambie 1 campo</li>
+                                    <li>Difícil de mantener en proyectos con muchas relaciones</li>
+                                </ul>
+                            </div>
+                            <div class="pros" style="background:var(--code-bg);padding:1.2rem;border-radius:8px;border:1px solid var(--border);">
+                                <h5><i class="fas fa-check" style="color:#28a745;"></i> JPA/Hibernate — Ventajas</h5>
+                                <ul style="margin-top:0.5rem;line-height:1.8;">
+                                    <li>70% menos código boilerplate</li>
+                                    <li>SQL generado automáticamente (consistente)</li>
+                                    <li>Cache de 1er nivel gratis (misma sesión)</li>
+                                    <li>Lazy loading: carga solo lo que necesitas</li>
+                                    <li>Dirty checking: UPDATE automático de columnas cambiadas</li>
+                                    <li>Portabilidad: cambia dialect y funciona con MySQL, Oracle, etc.</li>
+                                </ul>
+                                <h5 style="margin-top:1rem;"><i class="fas fa-times" style="color:#dc3545;"></i> JPA/Hibernate — Desventajas</h5>
+                                <ul style="margin-top:0.5rem;line-height:1.8;">
+                                    <li>Curva de aprendizaje: anotaciones, ciclo de vida, proxies</li>
+                                    <li>Problema N+1: puede generar consultas ineficientes</li>
+                                    <li>Menos control del SQL generado (hay que tunear)</li>
+                                    <li>Dependencia pesada (Hibernate core ~7MB)</li>
+                                    <li>Lazy loading fuera de transacción → LazyInitializationException</li>
+                                    <li>Debugging más complejo: el error no está en tu código sino en Hibernate</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ===== GUÍA DE MIGRACIÓN ===== -->
+                    <div class="recommendation-box" style="margin-top:2rem;background:#e8f5e9;border-left:4px solid #28a745;">
+                        <i class="fas fa-road" style="color:#28a745;"></i>
+                        <div>
+                            <h4>Hoja de Ruta: Migración Gradual JDBC → JPA/Hibernate</h4>
+                            <p>No necesitas migrar todo de golpe. Esta guía te muestra cómo hacerlo de forma incremental:</p>
+                            <div class="rubric-section" style="margin-top:0.5rem;">
+                                <div class="rubric-table">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Fase</th>
+                                                <th>Qué hacer</th>
+                                                <th>Duración</th>
+                                                <th>Riesgo</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>1. Aprende JDBC</strong></td>
+                                                <td>Domina Connection, PreparedStatement, ResultSet, DAO pattern. Haz CRUD completo manual.</td>
+                                                <td>2-3 semanas</td>
+                                                <td>Bajo</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>2. Entiende ORM</strong></td>
+                                                <td>Conceptos: mapeo objeto-relacional, session, transaction, cache. Compara con tu código JDBC.</td>
+                                                <td>1 semana</td>
+                                                <td>Bajo</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>3. JPA básico</strong></td>
+                                                <td>Configura Hibernate en un proyecto nuevo. Migra 1 entidad simple (sin relaciones).</td>
+                                                <td>1 semana</td>
+                                                <td>Medio</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>4. Relaciones</strong></td>
+                                                <td>Agrega @OneToMany, @ManyToOne. Compara JOIN manual vs automático. Detecta N+1.</td>
+                                                <td>1 semana</td>
+                                                <td>Medio</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>5. JPA avanzado</strong></td>
+                                                <td>Cache 2do nivel, Criteria API, Entity Graphs, batch processing, locking optimista.</td>
+                                                <td>2 semanas</td>
+                                                <td>Alto</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>6. Producción</strong></td>
+                                                <td>Monitorea SQL generado, ajusta fetch plans, usa Flyway para migraciones, profiling JPA.</td>
+                                                <td>Continua</td>
+                                                <td>Alto</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <p style="margin-top:0.5rem;"><strong>Recomendación:</strong> No migres todo a la vez. Empieza con las entidades más simples y de bajo tráfico. Mantén JDBC para los reportes complejos y JPA para el CRUD transaccional.</p>
+                        </div>
+                    </div>
+
+                    <!-- ===== ANALOGÍA FINAL: JDBC es como cocinar, JPA es como pedir delivery ===== -->
+                    <div class="flask-analogy" style="margin-top:2rem;">
+                        <h3><i class="fas fa-lightbulb"></i> Analogía Final: Cocinar vs Pedir Delivery</h3>
+                        <div class="analogy-grid">
+                            <div class="analogy-item">
+                                <div class="analogy-label">🍳 JDBC = Cocinar</div>
+                                <div class="code-block small" style="font-size:0.85rem;line-height:1.6;">
+                                    <p>Tú controlas cada ingrediente: eliges la verdura, la cortas tú mismo, controlas el fuego, sazonas al gusto. Sabes exactamente qué está pasando en cada paso. Pero si cocinas para 100 personas, es agotador.</p>
+                                </div>
+                            </div>
+                            <div class="analogy-arrow"><i class="fas fa-arrow-right"></i>
+                            </div>
+                            <div class="analogy-item">
+                                <div class="analogy-label">📦 JPA = Delivery</div>
+                                <div class="code-block small" style="font-size:0.85rem;line-height:1.6;">
+                                    <p>Pides lo que quieres y llega. No ves la cocina, pero es eficiente para la mayoría de casos. Si quieres algo muy específico, puedes dar instrucciones especiales (queries nativas). Pero si el delivery se equivoca, es más difícil depurar.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="recommendation-box"><i class="fas fa-lightbulb"></i>
+
+                    <!-- ===== RECOMENDACIÓN FINAL ===== -->
+                    <div class="recommendation-box" style="margin-top:2rem;">
+                        <i class="fas fa-lightbulb"></i>
                         <div>
-                            <h4>
-                                Recomendación para el Aprendiz
-                            </h4>
-                            <p><strong>Aprende primero JDBC puro</strong>(como en esta guía) para entender cómo funciona realmente la persistencia. Luego, cuando domines los conceptos, migra a JPA/Hibernate para proyectos más grandes. Esta base sólida te permitirá entender qué hace el ORM "bajo el capó".
-                            </p>
+                            <h4>Recomendación para el Aprendiz</h4>
+                            <p><strong>Aprende primero JDBC puro</strong> (como en esta guía) para entender cómo funciona realmente la persistencia. Luego, cuando domines los conceptos, migra a JPA/Hibernate para proyectos más grandes. Esta base sólida te permitirá entender qué hace el ORM "bajo el capó" y evitar los errores clásicos (N+1, lazy sin transacción, etc.).</p>
                         </div>
                     </div>
+
                     <div class="diagram-container">
-                        <h3>
-                            Comparación Visual: JDBC vs ORM
-                        </h3><img src="img/jdbc-vs-orm.svg" alt="Comparación JDBC vs ORM" class="diagram-svg">
+                        <h3>Comparación Visual: JDBC vs ORM</h3>
+                        <img src="img/jdbc-vs-orm.svg" alt="Comparación JDBC vs ORM" class="diagram-svg">
                     </div>
                 </div>
             </section>
-            <!-- Simuladores -->

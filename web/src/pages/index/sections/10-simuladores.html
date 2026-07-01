@@ -86,14 +86,56 @@
                         </div></a>
                     </div>
                     <div class="diagram-container">
-                        <h3>
-                            Diagrama de Arquitectura MVC Completo
-                        </h3><img src="img/arquitectura-mvc.svg" alt="Arquitectura MVC" class="diagram-svg">
+                        <h3>Diagrama de Arquitectura MVC Completo</h3>
+                        <div style="background:var(--code-bg);padding:1rem;border-radius:8px;overflow-x:auto;font-size:0.75rem;line-height:1.6;font-family:monospace;white-space:pre;color:var(--text);"><code>┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│             │     │             │     │             │
+│   VISTA     │────→│ CONTROLADOR │────→│   MODELO    │
+│  (JSP+JSTL) │     │  (Servlet)  │     │ (Record+DAO)│
+│             │←────│             │←────│             │
+└─────────────┘     └─────────────┘     └──────┬──────┘
+                                               │
+                                          ┌────▼──────┐
+                                          │ POSTGRESQL│
+                                          │    BD     │
+                                          └───────────┘
+
+Flujo:
+1. El usuario interactúa con la Vista (JSP)
+2. La Vista envía la petición al Controlador (Servlet)
+3. El Controlador procesa e invoca al Modelo (DAO)
+4. El Modelo accede a PostgreSQL y retorna datos
+5. El Controlador selecciona la Vista y pasa los datos
+6. La Vista renderiza el HTML y lo muestra al usuario</code></div>
                     </div>
                     <div class="diagram-container">
-                        <h3>
-                            Flujo Completo de una Petición HTTP (CRUD Crear)
-                        </h3><img src="img/flujo-http.svg" alt="Flujo HTTP" class="diagram-svg">
+                        <h3>Flujo Completo de una Petición HTTP (CRUD Crear)</h3>
+                        <div style="background:var(--code-bg);padding:1rem;border-radius:8px;overflow-x:auto;font-size:0.75rem;line-height:1.6;font-family:monospace;white-space:pre;color:var(--text);"><code>CLIENTE                    SERVIDOR TOMCAT                 POSTGRESQL
+  │                            │                              │
+  │  POST /productos           │                              │
+  │  (codigo=P1, nombre=Laptop)│                              │
+  │───────────────────────────→│                              │
+  │                            │  1. ProductoServlet.doPost() │
+  │                            │  2. Extrae parámetros        │
+  │                            │  3. Crea Producto Record     │
+  │                            │  4. Invoca ProductoDAO       │
+  │                            │─────────────────────────────→│
+  │                            │  5. INSERT INTO productos    │
+  │                            │  (codigo,nombre,precio,...)  │
+  │                            │  VALUES (?,?,?,...)          │
+  │                            │←─────────────────────────────│
+  │                            │  6. Resultado: filas>0        │
+  │                            │                              │
+  │  Redirect GET /productos   │                              │
+  │←───────────────────────────│                              │
+  │                            │                              │
+  │  GET /productos            │                              │
+  │───────────────────────────→│                              │
+  │                            │  7. ProductoDAO.listarTodos()│
+  │                            │─────────────────────────────→│
+  │                            │  8. SELECT * FROM productos  │
+  │                            │←─────────────────────────────│
+  │  HTML con tabla            │                              │
+  │←───────────────────────────│                              │</code></div>
                     </div>
                 </div>
             </section>

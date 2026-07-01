@@ -143,88 +143,256 @@
                                 De Monolito (JSP) a Microservicios (FastAPI + React)
                             </h3>
                             <p>
-                                Hasta ahora has construido un<strong>monolito JSP</strong>: todo en un solo WAR (lógica, vistas, auth con sesiones). Ahora evolucionamos a una arquitectura de<strong>microservicios</strong>donde cada componente es independiente, escalable y desplegable por separado.
+                                Hasta ahora has construido un <strong>monolito JSP</strong>: todo en un solo WAR (lógica, vistas, auth con sesiones). Ahora evolucionamos a una arquitectura de <strong>microservicios</strong> donde cada componente es independiente, escalable y desplegable por separado. La base de datos y las reglas de negocio se mantienen — lo que cambia es <strong>cómo se comunican</strong> las piezas.
                             </p>
-                            <div class="transition-comparison">
-                                <div class="transition-old">
-                                    <h5><i class="fas fa-times-circle"></i>🏢 Monolito JSP
-                                    </h5>
-                                    <ul>
-                                        <li>
-                                            Un solo WAR: login.jsp + productos.jsp + DAOs + Servlets
-                                        </li>
-                                        <li><strong>Sesión en servidor</strong>(HttpSession)
-                                        </li>
-                                        <li>
-                                            Todo en Tomcat (un solo punto de fallo)
-                                        </li>
-                                        <li>
-                                            Escalar = escalar TODO
-                                        </li>
-                                        <li>
-                                            Java obligatorio para todo
-                                        </li>
+
+                            <h4 style="margin-top:1.5rem;color:var(--text);"><i class="fas fa-balance-scale"></i> Comparación Detallada: Monolito vs Microservicios</h4>
+                            <div class="rubric-section" style="margin-top:0.75rem;">
+                                <div class="rubric-table">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Dimensión</th>
+                                                <th>🏢 Monolito JSP</th>
+                                                <th>🔗 Microservicios FastAPI + React</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Empaquetado</strong></td>
+                                                <td>1 solo archivo WAR desplegado en Tomcat</td>
+                                                <td>N contenedores Docker independientes</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Comunicación</strong></td>
+                                                <td>Llamadas directas entre clases (Java methods)</td>
+                                                <td>HTTP/REST entre servicios (JSON sobre la red)</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Estado de sesión</strong></td>
+                                                <td>Stateful: HttpSession en memoria del servidor</td>
+                                                <td>Stateless: JWT en localStorage del cliente</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Frontend</strong></td>
+                                                <td>Server-side: JSP + JSTL renderiza HTML en Tomcat</td>
+                                                <td>Client-side: React renderiza componentes en el navegador</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>API</strong></td>
+                                                <td>No hay API explícita (Servlet + JSP directo)</td>
+                                                <td>API REST documentada con Swagger/OpenAPI</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Base de datos</strong></td>
+                                                <td>Compartida: todos los DAOs apuntan a la misma BD</td>
+                                                <td>Por servicio: cada microservicio puede tener su propia BD</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Escalabilidad</strong></td>
+                                                <td>Vertical: escalas todo el WAR o nada</td>
+                                                <td>Horizontal: escalas solo el servicio con demanda</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Despliegue</strong></td>
+                                                <td>Reemplazar WAR completo → reiniciar Tomcat</td>
+                                                <td>Actualizar solo el contenedor del servicio afectado</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Tecnología</strong></td>
+                                                <td>Java obligatorio para todo el stack</td>
+                                                <td>Cada servicio elige su tecnología óptima</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Testing</strong></td>
+                                                <td>Manual (abrir navegador, probar CRUD)</td>
+                                                <td>Automatizado: pytest para API, Vitest para React</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Equipo</strong></td>
+                                                <td>Equipo full-stack Java (perfil único)</td>
+                                                <td>Equipos especializados: backend, frontend, DevOps</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Tiempo de inicio</strong></td>
+                                                <td>30-60s (iniciar Tomcat + cargar WAR)</td>
+                                                <td>2-5s por servicio (contenedor ligero)</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <h4 style="margin-top:1.5rem;color:var(--text);"><i class="fas fa-code-branch"></i> Mapa de Equivalencias: Concepto JSP → Microservicio</h4>
+                            <div class="rubric-section" style="margin-top:0.75rem;">
+                                <div class="rubric-table">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Concepto JSP + MVC</th>
+                                                <th>Equivalente en Microservicios</th>
+                                                <th>Lo que cambia</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><code>Producto.java</code> (Record)</td>
+                                                <td><code>schemas/producto.py</code> (Pydantic)</td>
+                                                <td>Java → Python, validación automática</td>
+                                            </tr>
+                                            <tr>
+                                                <td><code>ProductoDAO.java</code></td>
+                                                <td><code>models/producto.py</code> (SQLAlchemy)</td>
+                                                <td>JDBC manual → ORM automático</td>
+                                            </tr>
+                                            <tr>
+                                                <td><code>ProductoServlet.java</code></td>
+                                                <td><code>routers/producto.py</code> (FastAPI)</td>
+                                                <td>@WebServlet → @router.get(), JSON response</td>
+                                            </tr>
+                                            <tr>
+                                                <td><code>lista.jsp</code> (JSP + JSTL)</td>
+                                                <td><code>components/ProductoLista.jsx</code></td>
+                                                <td>Render en servidor → render en navegador</td>
+                                            </tr>
+                                            <tr>
+                                                <td><code>LoginServlet.java</code></td>
+                                                <td><code>routers/auth.py</code> (JWT)</td>
+                                                <td>HttpSession stateful → JWT stateless</td>
+                                            </tr>
+                                            <tr>
+                                                <td><code>ConexionDB.java</code></td>
+                                                <td><code>database.py</code> + <code>get_db()</code></td>
+                                                <td>try-with-resources → context manager</td>
+                                            </tr>
+                                            <tr>
+                                                <td><code>db.properties</code></td>
+                                                <td><code>.env</code> + <code>pydantic-settings</code></td>
+                                                <td>Archivo fijo → variables de entorno</td>
+                                            </tr>
+                                            <tr>
+                                                <td><code>pom.xml</code></td>
+                                                <td><code>requirements.txt</code> + <code>pyproject.toml</code></td>
+                                                <td>XML → texto plano</td>
+                                            </tr>
+                                            <tr>
+                                                <td><code>Tomcat + WAR</code></td>
+                                                <td><code>Uvicorn + contenedor Docker</code></td>
+                                                <td>Servidor pesado → proceso ligero</td>
+                                            </tr>
+                                            <tr>
+                                                <td><code>Flyway / SQL scripts</code></td>
+                                                <td><code>Alembic</code></td>
+                                                <td>Java → Python, autogenerate</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <h4 style="margin-top:1.5rem;color:var(--text);"><i class="fas fa-road"></i> Estrategia de Migración: Strangler Fig Pattern</h4>
+                            <p>No migres todo de golpe. Usa el <strong>Patron Strangler Fig</strong> (Higuera Estranguladora): reemplaza el monolito pieza por pieza mientras ambas versiones coexisten.</p>
+                            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.75rem;margin-top:1rem;">
+                                <div style="background:var(--code-bg);padding:0.75rem;border-radius:8px;border:1px solid var(--border);text-align:center;">
+                                    <div style="font-size:1.5rem;font-weight:700;color:#dc3545;">1</div>
+                                    <h5 style="margin:0.25rem 0;">Identificar</h5>
+                                    <p style="font-size:0.75rem;">Encuentra el módulo con menos dependencias (ej. Catálogo de productos)</p>
+                                </div>
+                                <div style="background:var(--code-bg);padding:0.75rem;border-radius:8px;border:1px solid var(--border);text-align:center;">
+                                    <div style="font-size:1.5rem;font-weight:700;color:#ffc107;">2</div>
+                                    <h5 style="margin:0.25rem 0;">Extraer</h5>
+                                    <p style="font-size:0.75rem;">Crea el microservicio con su propia API y BD. Ambos sistemas apuntan a la misma BD inicialmente</p>
+                                </div>
+                                <div style="background:var(--code-bg);padding:0.75rem;border-radius:8px;border:1px solid var(--border);text-align:center;">
+                                    <div style="font-size:1.5rem;font-weight:700;color:#28a745;">3</div>
+                                    <h5 style="margin:0.25rem 0;">Redirigir</h5>
+                                    <p style="font-size:0.75rem;">El frontend (React) consume el nuevo microservicio. El monolito deja de recibir tráfico para ese módulo</p>
+                                </div>
+                                <div style="background:var(--code-bg);padding:0.75rem;border-radius:8px;border:1px solid var(--border);text-align:center;">
+                                    <div style="font-size:1.5rem;font-weight:700;color:#007bff;">4</div>
+                                    <h5 style="margin:0.25rem 0;">Remover</h5>
+                                    <p style="font-size:0.75rem;">Elimina el código antiguo del monolito. Repite con el siguiente módulo hasta que el monolito desaparezca</p>
+                                </div>
+                            </div>
+
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.5rem;">
+                                <div style="background:var(--code-bg);padding:1rem;border-radius:8px;border:1px solid var(--border);">
+                                    <h5 style="color:var(--accent);"><i class="fas fa-fw fa-check-circle" style="color:#28a745;"></i> Lo que SE MANTIENE igual</h5>
+                                    <ul style="margin-top:0.5rem;line-height:1.8;padding-left:1rem;">
+                                        <li><strong>PostgreSQL</strong> — misma BD, mismas tablas, mismos datos</li>
+                                        <li><strong>Reglas de negocio</strong> — validaciones, cálculos, lógica de inventario</li>
+                                        <li><strong>Modelo de datos</strong> — roles, usuarios, productos (PK/FK iguales)</li>
+                                        <li><strong>JWT Secret Key</strong> — misma clave firmada, mismo token portable</li>
+                                        <li><strong>Frontend React</strong> — puede consumir TANTO el JSP como FastAPI</li>
                                     </ul>
                                 </div>
-                                <div class="transition-arrow"><i class="fas fa-long-arrow-alt-right"></i>
-                                </div>
-                                <div class="transition-new">
-                                    <h5><i class="fas fa-check-circle"></i>🔗 Microservicios FastAPI + React
-                                    </h5>
-                                    <ul>
-                                        <li>
-                                            Servicios separados: Auth API, Productos API, React SPA
-                                        </li>
-                                        <li><strong>Token JWT stateless</strong>(sin sesión en servidor)
-                                        </li>
-                                        <li>
-                                            Cada servicio en su contenedor
-                                        </li>
-                                        <li>
-                                            Escalar solo lo que necesitas
-                                        </li>
-                                        <li>
-                                            Cada servicio con su tecnología óptima
-                                        </li>
+                                <div style="background:var(--code-bg);padding:1rem;border-radius:8px;border:1px solid var(--border);">
+                                    <h5 style="color:var(--accent);"><i class="fas fa-fw fa-exchange-alt"></i> Lo que CAMBIA</h5>
+                                    <ul style="margin-top:0.5rem;line-height:1.8;padding-left:1rem;">
+                                        <li><strong>Comunicación:</strong> métodos Java internos → HTTP/REST</li>
+                                        <li><strong>Estado:</strong> HttpSession en servidor → JWT en cliente</li>
+                                        <li><strong>Vistas:</strong> JSP renderiza en servidor → React renderiza en navegador</li>
+                                        <li><strong>API:</strong> implícita (Servlet forward) → explícita (Swagger docs)</li>
+                                        <li><strong>Despliegue:</strong> 1 WAR → N contenedores Docker</li>
+                                        <li><strong>Escalamiento:</strong> vertical (más RAM a Tomcat) → horizontal (más réplicas del servicio)</li>
                                     </ul>
                                 </div>
                             </div>
-                            <div class="architecture-evolution" style="margin-top:2rem;padding:1.5rem;background:rgba(255,255,255,0.05);border-radius:12px;">
-                                <h4 style="color:#e0e0e0;margin-bottom:1rem;">
-                                    Evolución de la arquitectura
-                                </h4>
-                                <pre style="font-size:0.8rem;color:#a0a0b0;line-height:1.7;font-family:monospace;white-space:pre;overflow-x:auto;"><code class="language-text">┌─────────────────────────────────────────────────────────────────┐
-│                                                                 │
-│  FASE 1: 🏢 MONOLITO JSP                                       │
-│  ┌──────────────────────────────────────────────────────┐      │
-│  │                   Tomcat (1 WAR)                     │      │
-│  │  ┌─────────┐  ┌─────────┐  ┌─────────┐              │      │
-│  │  │ Login   │  │Productos│  │ Usuarios│              │      │
-│  │  │ Servlet │←→│ Servlet │←→│ Servlet │              │      │
-│  │  └────┬────┘  └────┬────┘  └────┬────┘              │      │
-│  │       │            │            │                   │      │
-│  │  ┌────▼────────────▼────────────▼────┐              │      │
-│  │  │      DAOs (ProductoDAO, etc.)     │              │      │
-│  │  └────────────────┬──────────────────┘              │      │
-│  │                   │                                 │      │
-│  │              ┌────▼────┐                            │      │
-│  │              │PostgreSQL│                           │      │
-│  │              └─────────┘                            │      │
-│  └──────────────────────────────────────────────────────┘      │
-│                                                                 │
-│  FASE 2: 🔗 MICROSERVICIOS FastAPI + React                     │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐      │
-│  │  React   │  │  Auth    │  │  Product │  │  Usuario │      │
-│  │  SPA     │←→│  Service │←→│  Service │←→│  Service │      │
-│  │ :5173    │  │ :8001    │  │ :8002    │  │ :8003    │      │
-│  └──────────┘  └────┬─────┘  └────┬─────┘  └────┬─────┘      │
-│                     │             │             │             │
-│                ┌────▼─────────────▼─────────────▼────┐        │
-│                │          PostgreSQL                 │        │
-│                └────────────────────────────────────┘        │
-│                                                                 │
-│  Beneficios: Escalabilidad · Aislamiento · Tecnología libre    │
-└─────────────────────────────────────────────────────────────────┘</code></pre>
+
+                            <h4 style="margin-top:1.5rem;color:var(--text);"><i class="fas fa-project-diagram"></i> Evolución de la Arquitectura: 3 Fases</h4>
+                            <div style="display:grid;grid-template-columns:1fr;gap:1rem;margin-top:0.75rem;">
+                                <div style="background:var(--code-bg);padding:1rem;border-radius:8px;overflow-x:auto;font-size:0.7rem;line-height:1.5;font-family:monospace;white-space:pre;color:var(--text);"><code>┌──────────────────────────────────────────────────────────────────────┐
+│ 🏢 FASE 1: MONOLITO JSP (todo en un WAR, todo en Java)             │
+│ ┌──────────────────────────────────────────────────────────────┐    │
+│ │                     TOMCAT (1 WAR)                          │    │
+│ │  ┌──────────┐  ┌──────────┐  ┌──────────┐                   │    │
+│ │  │  Login   │  │Productos │  │ Usuarios │                   │    │
+│ │  │ Servlet  │←→│ Servlet  │←→│ Servlet  │                   │    │
+│ │  └────┬─────┘  └────┬─────┘  └────┬─────┘                   │    │
+│ │       │              │             │                         │    │
+│ │  ┌────▼──────────────▼─────────────▼────┐                    │    │
+│ │  │         DAOs (JDBC manual)           │                    │    │
+│ │  └────────────────┬─────────────────────┘                    │    │
+│ │                   │                                          │    │
+│ │              ┌────▼────┐                                     │    │
+│ │              │PostgreSQL│                                     │    │
+│ │              └─────────┘                                     │    │
+│ └──────────────────────────────────────────────────────────────┘    │
+│                                                                      │
+│ 🔗 FASE 2: COEXISTENCIA (Strangler Fig - migración gradual)         │
+│ ┌──────────┐  ┌────────────────────┐  ┌──────────────────────┐     │
+│ │          │  │  M O N O L I T O   │  │  M I C R O S E R V. │     │
+│ │  React   │  │  (sigue corriendo  │  │  (nuevo: un módulo  │     │
+│ │  SPA     │←→│  para módulos no   │←→│  extraído, ej.      │     │
+│ │ :5173    │  │  migrados aún)     │  │  Productos API)     │     │
+│ └──────────┘  └────────┬───────────┘  └──────────┬───────────┘     │
+│                        │                         │                 │
+│                   ┌────▼─────────────────────────▼────┐            │
+│                   │      PostgreSQL (COMPARTIDA)       │            │
+│                   └──────────────────────────────────┘            │
+│                                                                      │
+│ 🚀 FASE 3: MICROSERVICIOS PUROS (cada servicio independiente)     │
+│ ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐           │
+│ │  React   │  │  Auth    │  │  Product │  │  Usuario │           │
+│ │  SPA     │←→│  Service │←→│  Service │←→│  Service │           │
+│ │ :5173    │  │ :8001    │  │ :8002    │  │ :8003    │           │
+│ └──────────┘  └────┬─────┘  └────┬─────┘  └────┬─────┘           │
+│                ┌────▼─────────────▼─────────────▼────┐            │
+│                │     PostgreSQL o BD por servicio     │            │
+│                └────────────────────────────────────┘            │
+│                                                                      │
+│  Beneficios: Escalabilidad individual · Aislamiento de fallos       │
+│              Tecnología óptima por servicio · Despliegue            │
+│              independiente · Equipos autónomos                      │
+└──────────────────────────────────────────────────────────────────────┘</code></div>
+                            </div>
+
+                            <div class="recommendation-box" style="margin-top:1.5rem;">
+                                <i class="fas fa-lightbulb"></i>
+                                <div>
+                                    <h4>¿Por qué esta guía enseña ambos enfoques?</h4>
+                                    <p>El <strong>monolito JSP</strong> te enseña los fundamentos: cómo funciona realmente el HTTP, las sesiones, el MVC, el JDBC. El <strong>stack moderno FastAPI + React</strong> te muestra la evolución natural: APIs REST, JWT, SPA, contenedores. No son enfoques rivales — el primero es la base conceptual del segundo. Los ingenieros que entienden el monolito construyen mejores microservicios porque saben qué problema resuelve cada abstracción.</p>
+                                </div>
                             </div>
                         </div>
                     </div>

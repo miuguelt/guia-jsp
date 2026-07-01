@@ -165,12 +165,8 @@
 
 html {
     scroll-behavior: smooth;
-    scroll-padding-top: calc(var(--header-height) + 20px);
+    scroll-padding-top: calc(var(--header-height) + 16px);
     font-size: clamp(14px, 0.5vw + 0.5rem, 20px);
-}
-
-html {
-    min-height: 100%;
     min-height: 100dvh;
 }
 
@@ -182,8 +178,41 @@ body {
     background-color: var(--bg-primary);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    min-height: 100vh;
     min-height: 100dvh;
+    overflow-x: hidden;
+}
+
+/* Accesibilidad: secciones con margen de scroll para anclas */
+section[id] {
+    scroll-margin-top: calc(var(--header-height) + 16px);
+}
+
+/* Focus visible solo para navegación por teclado */
+:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+:focus:not(:focus-visible) {
+    outline: none;
+}
+
+/* Safe-guard: nada debe desbordar el viewport horizontal */
+img, table, pre, code, video, iframe, svg {
+    max-width: 100%;
+}
+
+/* Respetar preferencia de animaciones reducidas */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
 }
 
 /* ── Container Responsive Mobile-First ─────────────────────────────────── */

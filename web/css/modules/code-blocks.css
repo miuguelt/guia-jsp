@@ -7,36 +7,37 @@
 /* ── 1. CONTENEDOR PRINCIPAL ─────────────────────────────────────────────── */
 .code-window {
     box-shadow: var(--shadow-xl);
-    transition: var(--transition);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     border: 1px solid rgba(255, 255, 255, 0.08);
-    margin: 16px 0;
+    margin: 24px 0;
     background: var(--code-bg);
     border-radius: var(--radius-lg);
 }
 
 .code-window:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 20px 60px rgba(0, 102, 74, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.3);
 }
 
 /* ── 2. WINDOW HEADER (CHROME) ──────────────────────────────────────────── */
 .window-header {
     padding: 12px 16px;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.04);
     display: flex;
     align-items: center;
     gap: 12px;
     justify-content: space-between;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .window-header .window-title {
     flex: 1;
     text-align: left;
     font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.55);
     font-family: var(--font-mono);
     font-weight: 500;
+    letter-spacing: 0.01em;
 }
 
 .window-header .window-title i {
@@ -57,7 +58,7 @@
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    transition: var(--transition);
+    transition: transform 0.2s ease;
 }
 
 .dot:hover {
@@ -71,25 +72,31 @@
 .copy-btn {
     background: rgba(255, 255, 255, 0.06);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
+    border-radius: 6px;
     color: rgba(255, 255, 255, 0.5);
-    padding: 4px 10px;
+    padding: 5px 12px;
     font-size: 0.75rem;
     cursor: pointer;
-    transition: var(--transition);
+    transition: all 0.2s ease;
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 5px;
     font-family: var(--font-sans);
+    min-height: 32px;
 }
 
 .copy-btn:hover {
     background: rgba(255, 255, 255, 0.12);
     color: white;
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.copy-btn:active {
+    transform: scale(0.95);
 }
 
 .copy-btn.copied {
-    background: rgba(40, 202, 66, 0.2);
+    background: rgba(40, 202, 66, 0.15);
     color: #28ca42;
     border-color: rgba(40, 202, 66, 0.3);
 }
@@ -117,9 +124,10 @@
     width: 3ch;
     margin-right: 1.5ch;
     text-align: right;
-    color: rgba(255, 255, 255, 0.25);
+    color: rgba(255, 255, 255, 0.2);
     font-variant-numeric: tabular-nums;
     user-select: none;
+    font-size: 0.8em;
 }
 
 .code-window pre code .line-number,
@@ -133,11 +141,18 @@
 .tech-module pre code .line-number:hover::before,
 .code-block pre code .line-number:hover::before {
     color: var(--primary-light);
-    opacity: 0.9;
+    opacity: 1;
 }
 
 /* ── 4. OVERFLOW INTELIGENTE ────────────────────────────────────────────── */
-/* Default: scroll horizontal profesional (VS Code / GitHub style) */
+pre {
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+}
+
 .window-body pre,
 .tech-module pre[class*="language-"],
 .code-block pre {
@@ -154,7 +169,6 @@
     background-color: transparent !important;
 }
 
-/* Wrap mode: toggle con clase .pre-wrap en el contenedor */
 .code-window.pre-wrap pre,
 .code-block.pre-wrap pre,
 .tech-module.pre-wrap pre[class*="language-"] {
@@ -164,10 +178,9 @@
     overflow-x: hidden;
 }
 
-/* ── 5. CODE BODY (padding del contenido) ────────────────────────────────── */
+/* ── 5. CODE BODY ────────────────────────────────────────────────────────── */
 .window-body {
     padding: 0;
-    overflow: hidden;
 }
 
 .window-body pre {
@@ -183,14 +196,12 @@
     background-color: transparent !important;
     padding: 0;
     tab-size: 2;
-    white-space: pre;
 }
 
-/* ── 5b. INDENT GUIDES — Líneas verticales que muestran la estructura ───── */
-/* Cada nivel de indentación (2 espacios) tiene una guía sutil */
-.window-body pre code,
-.code-block pre code,
-.tech-module pre code {
+/* ── 5b. INDENT GUIDES ───────────────────────────────────────────────────── */
+.window-body pre,
+.code-block pre,
+.tech-module pre {
     background-image: repeating-linear-gradient(
         to right,
         transparent 0px,
@@ -201,9 +212,9 @@
     background-attachment: local;
 }
 
-[data-theme="dark"] .window-body pre code,
-[data-theme="dark"] .code-block pre code,
-[data-theme="dark"] .tech-module pre code {
+[data-theme="dark"] .window-body pre,
+[data-theme="dark"] .code-block pre,
+[data-theme="dark"] .tech-module pre {
     background-image: repeating-linear-gradient(
         to right,
         transparent 0px,
@@ -213,8 +224,7 @@
     );
 }
 
-/* ── 6. SINTASIS GLOBAL (Prism.js tokens — One Dark Pro palette) ────────── */
-/* Aplica a TODO bloque de código sin importar el contenedor */
+/* ── 6. SINTASIS GLOBAL (Prism.js tokens) ────────────────────────────────── */
 pre[class*="language-"] .token,
 code[class*="language-"] .token {
     background: transparent !important;
@@ -243,7 +253,7 @@ code[class*="language-"] .token {
 .token.comment,
 .token.documentation,
 .token.shebang {
-    color: #5c6370;
+    color: #636d83;
     font-style: italic;
 }
 
@@ -339,7 +349,7 @@ code[class*="language-"] .token {
 .token.prolog,
 .token.doctype,
 .token.cdata {
-    color: #5c6370;
+    color: #636d83;
 }
 
 .token.selector,
@@ -366,7 +376,7 @@ code:not(pre code):not([class*="language-"]) {
     color: var(--primary);
     border: 1px solid var(--border-light);
     white-space: normal;
-    word-break: break-all;
+    word-break: break-word;
     overflow-wrap: break-word;
 }
 
@@ -416,7 +426,7 @@ code:not(pre code):not([class*="language-"]) {
     color: rgba(255, 255, 255, 0.5);
     font-size: 0.65rem;
     cursor: pointer;
-    transition: var(--transition);
+    transition: all 0.2s ease;
     display: inline-flex;
     align-items: center;
     gap: 4px;
@@ -434,19 +444,25 @@ code:not(pre code):not([class*="language-"]) {
     border: 2px solid var(--primary);
     border-radius: var(--radius-lg);
     overflow: hidden;
-    margin: 16px 0;
+    margin: 20px 0;
     box-shadow: var(--shadow-lg);
 }
 
 .result-header {
     background: var(--primary);
     color: white;
-    padding: 8px 16px;
+    padding: 10px 18px;
     font-size: 0.8rem;
     font-weight: 600;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
+    letter-spacing: 0.01em;
+}
+
+.result-header i {
+    font-size: 0.9rem;
+    opacity: 0.9;
 }
 
 .result-content {
@@ -456,7 +472,7 @@ code:not(pre code):not([class*="language-"]) {
 
 .result-content code {
     display: block;
-    padding: 16px;
+    padding: 20px;
     background: var(--code-bg);
     color: var(--code-text);
     font-size: 0.85rem;
@@ -469,10 +485,10 @@ code:not(pre code):not([class*="language-"]) {
     white-space: pre;
 }
 
-/* ── 10. SCROLLBAR DELGADA PARA PRE BLOCKS ──────────────────────────────── */
+/* ── 10. SCROLLBAR ───────────────────────────────────────────────────────── */
 pre::-webkit-scrollbar {
-    height: 6px;
-    width: 6px;
+    height: 7px;
+    width: 7px;
 }
 
 pre::-webkit-scrollbar-track {
@@ -480,16 +496,15 @@ pre::-webkit-scrollbar-track {
 }
 
 pre::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 4px;
 }
 
 pre::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.25);
 }
 
-/* ── 11. TECH-MODULE SPECIFIC OVERRIDES ─────────────────────────────────── */
-/* Estos co-existen con el estándar global arriba */
+/* ── 11. TECH-MODULE OVERRIDES ──────────────────────────────────────────── */
 .tech-module pre {
     background: var(--code-bg) !important;
     border-radius: 8px;
@@ -510,9 +525,13 @@ pre::-webkit-scrollbar-thumb:hover {
 
 /* ── 12. RESPONSIVE ─────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
+    .code-window {
+        margin: 16px 0;
+    }
+
     .window-body pre {
         padding: 14px;
-        font-size: 0.75rem;
+        font-size: 0.78rem;
         line-height: 1.55;
     }
 
@@ -533,13 +552,19 @@ pre::-webkit-scrollbar-thumb:hover {
     .copy-btn {
         font-size: 0.7rem;
         padding: 3px 8px;
+        min-height: 28px;
+    }
+
+    .result-content code {
+        padding: 14px;
+        font-size: 0.78rem;
     }
 }
 
 @media (max-width: 480px) {
     .window-body pre {
         padding: 10px;
-        font-size: 0.75rem;
+        font-size: 0.72rem;
     }
 
     .window-dots {

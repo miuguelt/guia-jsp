@@ -173,7 +173,25 @@ export default App;</code></pre>
                             <div class="result-box">
                                 <div class="result-header"><i class="fas fa-eye"></i><span>Resultado en http://localhost:5173</span>
                                 </div>
-                                <pre class="result-content"><code class="language-text">┌──────────────────────────────────────────────────────────────┐│                                                              ││           ¡Hola Mundo desde React 19!                       ││           Mi primer componente en React 🚀                   ││                                                              ││           Bienvenido, Miguel                                 ││                                                              ││           ┌────────────────────────────────────┐             ││           │ Fecha actual: 28/6/2026, 1:00 PM   │             ││           └────────────────────────────────────┘             ││           ─────────────────────────────                      ││           Equivalencias con JSP                              ││           ✅ JSP → JSX (JavaScript XML)                      ││           ✅ ${variable} → {variable}                        ││           ✅ Servidor (Tomcat) → Navegador (Cliente)         ││           ✅ HTML estático → Componentes dinámicos           ││                                                              │└──────────────────────────────────────────────────────────────┘</code></pre>
+                                <pre class="result-content"><code class="language-text">┌──────────────────────────────────────────────────────────────┐
+│                                                              │
+│           ¡Hola Mundo desde React 19!                       │
+│           Mi primer componente en React                      │
+│                                                              │
+│           Bienvenido, Miguel                                 │
+│                                                              │
+│           ┌────────────────────────────────────┐             │
+│           │ Fecha actual: 28/6/2026, 12:00 PM  │             │
+│           └────────────────────────────────────┘             │
+│                                                              │
+│           ─────────────────────────────                       │
+│           Equivalencias con JSP                              │
+│           ✅ JSP → JSX (JavaScript XML)                      │
+│           ✅ ${variable} → {variable}                        │
+│           ✅ Servidor (Tomcat) → Navegador (Cliente)         │
+│           ✅ HTML estático → Componentes dinámicos           │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘</code></pre>
                             </div>
                             <h4>
                                 Paso 4: Consumir datos desde la API de FastAPI
@@ -303,7 +321,29 @@ npm run dev
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-text">frontend-inventario/├── .env / .env.example         # VITE_API_URL=http://localhost:8000/api├── src/│   ├── contexts/│   │   └── AuthContext.jsx       # Estado global de auth + JWT│   ├── services/│   │   └── api.js                # Axios + Interceptor JWT + env vars│   ├── components/│   │   ├── Navbar.jsx            # Barra con user/login/logout│   │   ├── ProtectedRoute.jsx    # Guard de rutas (roles)│   │   ├── ProductoCard.jsx      # Tarjeta de producto (como fragmento JSP)│   │   ├── ProductoLista.jsx     # Lista de productos (como lista.jsp)│   │   └── ProductoForm.jsx      # Formulario crear/editar│   ├── pages/│   │   ├── Login.jsx             # Login con JWT│   │   ├── Register.jsx          # Registro de usuarios│   │   └── AdminUsuarios.jsx     # Admin: CRUD usuarios│   ├── App.jsx                   # Raíz + AuthProvider + Rutas protegidas│   ├── App.css                   # Estilos globales│   └── main.jsx                  # Punto de entrada├── index.html├── vite.config.js└── package.json</code></pre>
+                                        <pre><code class="language-text">frontend-inventario/
+├── .env / .env.example         # VITE_API_URL=http://localhost:8000/api
+├── src/
+│   ├── contexts/
+│   │   └── AuthContext.jsx       # Estado global de auth + JWT
+│   ├── services/
+│   │   └── api.js                # Axios + Interceptor JWT + env vars
+│   ├── components/
+│   │   ├── Navbar.jsx            # Barra con user/login/logout
+│   │   ├── ProtectedRoute.jsx    # Guard de rutas (roles)
+│   │   ├── ProductoCard.jsx      # Tarjeta (como fragmento JSP)
+│   │   ├── ProductoLista.jsx     # Lista (como lista.jsp)
+│   │   └── ProductoForm.jsx      # Formulario crear/editar
+│   ├── pages/
+│   │   ├── Login.jsx             # Login con JWT
+│   │   ├── Register.jsx          # Registro de usuarios
+│   │   └── AdminUsuarios.jsx     # Admin: CRUD usuarios
+│   ├── App.jsx                   # Raíz + AuthProvider + Rutas
+│   ├── App.css                   # Estilos globales
+│   └── main.jsx                  # Punto de entrada
+├── index.html
+├── vite.config.js
+└── package.json</code></pre>
                                     </div>
                                 </div>
                                 <h4>
@@ -317,7 +357,12 @@ npm run dev
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-bash"># Las variables VITE_ son expuestas automáticamente por Vite# .env (copiar de .env.example)VITE_API_URL=http://localhost:8000/api# En el código:# const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api'</code></pre>
+                                        <pre><code class="language-bash"># Las variables VITE_ son expuestas automáticamente por Vite
+# .env (copiar de .env.example)
+VITE_API_URL=http://localhost:8000/api
+
+# En el código:
+# const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api'</code></pre>
                                     </div>
                                 </div>
                                 <div class="recommendation-box"><i class="fas fa-info-circle"></i>
@@ -376,9 +421,11 @@ npm run dev
                                     </div>
                                     <div class="window-body">
                                         <pre><code class="language-bash"># Eliminar archivos de ejemplo que Vite crea
-rm src/App.css src/index.css src/assets/react.svg
+# Windows: del src\App.css src\index.css src\assets\react.svg
+# Linux/Mac: rm src/App.css src/index.css src/assets/react.svg
+Remove-Item src/App.css, src/index.css, src/assets/react.svg
 # Crear directorios para nuestros componentes
-mkdir src/services src/components
+mkdir src/services, src/components
 # Resultado final:
 # src/
 # ├── App.jsx        # Vamos a editar
@@ -421,18 +468,23 @@ mkdir src/services src/components
                                     </div>
                                     <div class="window-body">
                                         <pre><code class="language-javascript">import axios from 'axios';
-// URL base de nuestra API FastAPI// Equivalente a db.properties → URL de conexiónconst API_URL = 'http://localhost:8000/api';
+
+// URL base de nuestra API FastAPI
+// Equivalente a db.properties → URL de conexión
+const API_URL = 'http://localhost:8000/api';
 const api = axios.create({
-    baseURL: API_URL,    headers: {
+    baseURL: API_URL,
+    headers: {
         'Content-Type': 'application/json'
     },
 });
-// ===== CRUD Productos =====// Equivalente a ProductoDAO.java pero con promesasexport const listarProductos = async (categoria = null) =&gt; {
-    // GET /api/productos/?categoria=Tecnologia    // Equivalente a: ProductoDAO.listarTodos()
-    const params = categoria ? {
-        categoria
-    } : {
-    };
+
+// ===== CRUD Productos =====
+// Equivalente a ProductoDAO.java pero con promesas
+export const listarProductos = async (categoria = null) =&gt; {
+    // GET /api/productos/?categoria=Tecnologia
+    // Equivalente a: ProductoDAO.listarTodos()
+    const params = categoria ? { categoria } : {};
     const response = await api.get('/productos/', {
         params
     });
@@ -441,35 +493,24 @@ const api = axios.create({
 };
 export const obtenerProducto = async (id) =&gt; {
     // GET /api/productos/5    // Equivalente a: ProductoDAO.buscarPorId(id)
-    const response = await api.get(`/productos/${
-        id
-    }`);
+    const response = await api.get(`/productos/${id}`);
     return response.data;
 };
 export const crearProducto = async (producto) =&gt; {
-    // POST /api/productos/ body: {
-        codigo, nombre, precio, ...
-    }
+    // POST /api/productos/ body: { codigo, nombre, precio, ... }
     // Equivalente a: ProductoDAO.insertar(producto)
     const response = await api.post('/productos/', producto);
     return response.data;
-    // Retorna producto creado con ID
 };
 export const actualizarProducto = async (id, producto) =&gt; {
-    // PUT /api/productos/5 body: {
-        codigo, nombre, precio, ...
-    }
+    // PUT /api/productos/5 body: { codigo, nombre, precio, ... }
     // Equivalente a: ProductoDAO.actualizar(producto)
-    const response = await api.put(`/productos/${
-        id
-    }`, producto);
+    const response = await api.put(`/productos/${id}`, producto);
     return response.data;
 };
 export const eliminarProducto = async (id) =&gt; {
     // DELETE /api/productos/5    // Equivalente a: ProductoDAO.eliminar(id)
-    await api.delete(`/productos/${
-        id
-    }`);
+    await api.delete(`/productos/${id}`);
 };</code></pre>
                                     </div>
                                 </div>
@@ -502,111 +543,160 @@ export const eliminarProducto = async (id) =&gt; {
                                     </div>
                                     <div class="window-body">
                                         <pre><code class="language-jsx">import './ProductoCard.css';
-export default function ProductoCard({
-        producto, onEliminar
-        }) {
-    // Formatear precio a moneda colombiana    const formatoPrecio = new Intl.NumberFormat('es-CO', {
-            style: 'currency',        currency: 'COP',        minimumFractionDigits: 0,
-            });
-    // Clase CSS condicional para stock bajo    const stockClase = producto.stock &lt; 10 ? 'stock-bajo' : 'stock-normal';
-    return (        &lt;div className="producto-card"&gt;            &lt;div className="producto-header"&gt;                &lt;span className="producto-codigo"&gt;{
-            producto.codigo
-            }&lt;/span&gt;                &lt;span className={
-            `producto-estado ${
-                producto.estado ? 'activo' : 'inactivo'
-                }`
-            }&gt;                    {
-            producto.estado ? 'Activo' : 'Inactivo'
-            }                &lt;/span&gt;            &lt;/div&gt;            &lt;h3 className="producto-nombre"&gt;{
-            producto.nombre
-            }&lt;/h3&gt;            {
-            producto.descripcion && (                &lt;p className="producto-descripcion"&gt;{
-                    producto.descripcion
-                    }&lt;/p&gt;            )
-            }            &lt;div className="producto-detalles"&gt;                &lt;div className="producto-precio"&gt;                    &lt;span className="label"&gt;Precio:&lt;/span&gt;                    &lt;span className="valor"&gt;{
-            formatoPrecio.format(producto.precio)
-            }&lt;/span&gt;                &lt;/div&gt;                &lt;div className="producto-stock"&gt;                    &lt;span className="label"&gt;Stock:&lt;/span&gt;                    &lt;span className={
-            `valor ${
-                stockClase
-                }`
-            }&gt;                        {
-            producto.stock
-            } unidades                    &lt;/span&gt;                &lt;/div&gt;                &lt;div className="producto-categoria"&gt;                    &lt;span className="label"&gt;Categoría:&lt;/span&gt;                    &lt;span className="valor"&gt;{
-            producto.categoria || 'Sin categoría'
-            }&lt;/span&gt;                &lt;/div&gt;            &lt;/div&gt;            &lt;div className="producto-acciones"&gt;                &lt;a href={
-            `/productos/${
-                producto.id
-                }/editar`
-            } className="btn-editar"&gt;                    &lt;i className="fas fa-edit"&gt;&lt;/i&gt; Editar                &lt;/a&gt;                &lt;button onClick={
-            () =&gt; onEliminar(producto.id)
-            } className="btn-eliminar"&gt;                    &lt;i className="fas fa-trash"&gt;&lt;/i&gt; Eliminar                &lt;/button&gt;            &lt;/div&gt;        &lt;/div&gt;    );
-    }// ===== ESTILOS (ProductoCard.css) =====/*.producto-card {
+
+export default function ProductoCard({ producto, onEliminar }) {
+    const formatoPrecio = new Intl.NumberFormat('es-CO', {
+        style: 'currency',
+        currency: 'COP',
+        minimumFractionDigits: 0,
+    });
+    const stockClase = producto.stock &lt; 10
+        ? 'stock-bajo'
+        : 'stock-normal';
+
+    return (
+        &lt;div className="producto-card"&gt;
+            &lt;div className="producto-header"&gt;
+                &lt;span className="producto-codigo"&gt;{producto.codigo}&lt;/span&gt;
+                &lt;span className={producto.estado ? 'activo' : 'inactivo'}&gt;
+                    {producto.estado ? 'Activo' : 'Inactivo'}
+                &lt;/span&gt;
+            &lt;/div&gt;
+
+            &lt;h3 className="producto-nombre"&gt;{producto.nombre}&lt;/h3&gt;
+
+            {producto.descripcion && (
+                &lt;p className="producto-descripcion"&gt;{producto.descripcion}&lt;/p&gt;
+            )}
+
+            &lt;div className="producto-detalles"&gt;
+                &lt;div className="producto-precio"&gt;
+                    &lt;span className="label"&gt;Precio:&lt;/span&gt;
+                    &lt;span className="valor"&gt;
+                        {formatoPrecio.format(producto.precio)}
+                    &lt;/span&gt;
+                &lt;/div&gt;
+
+                &lt;div className="producto-stock"&gt;
+                    &lt;span className="label"&gt;Stock:&lt;/span&gt;
+                    &lt;span className={stockClase}&gt;
+                        {producto.stock} unidades
+                    &lt;/span&gt;
+                &lt;/div&gt;
+
+                &lt;div className="producto-categoria"&gt;
+                    &lt;span className="label"&gt;Categoría:&lt;/span&gt;
+                    &lt;span className="valor"&gt;
+                        {producto.categoria || 'Sin categoría'}
+                    &lt;/span&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div className="producto-acciones"&gt;
+                &lt;a href={/productos/${producto.id}/editar}
+                    className="btn-editar"&gt;
+                    &lt;i className="fas fa-edit"&gt;&lt;/i&gt; Editar
+                &lt;/a&gt;
+                &lt;button onClick={() =&gt; onEliminar(producto.id)}
+                    className="btn-eliminar"&gt;
+                    &lt;i className="fas fa-trash"&gt;&lt;/i&gt; Eliminar
+                &lt;/button&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    );
+}</code></pre>
+                                    </div>
+                                </div>
+                                <h4>
+                                    ProductoCard.css — Estilos del componente
+                                </h4>
+                                <div class="code-window">
+                                    <div class="window-header">
+                                        <div class="window-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                        </div><span class="window-title"><i class="fab fa-css3"></i>src/components/ProductoCard.css</span>
+                                        <button class="copy-btn"><i class="fas fa-copy"></i>Copiar
+                                        </button>
+                                    </div>
+                                    <div class="window-body">
+                                        <pre><code class="language-css">.producto-card {
     background: var(--card-bg);
     border-radius: 12px;
     padding: 1.5rem;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     transition: transform 0.2s;
-    }.producto-card:hover {
+}
+.producto-card:hover {
     transform: translateY(-2px);
-    }.producto-header {
+}
+.producto-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 0.75rem;
-    }.producto-codigo {
+}
+.producto-codigo {
     font-family: monospace;
     font-size: 0.85rem;
     color: var(--text-muted);
     background: var(--bg-muted);
     padding: 0.2rem 0.5rem;
     border-radius: 4px;
-    }.producto-estado {
+}
+.producto-estado {
     font-size: 0.75rem;
     padding: 0.2rem 0.6rem;
     border-radius: 10px;
-    }.producto-estado.activo {
+}
+.producto-estado.activo {
     background: #d4edda;
     color: #155724;
-    }.producto-estado.inactivo {
+}
+.producto-estado.inactivo {
     background: #f8d7da;
     color: #721c24;
-    }.producto-nombre {
+}
+.producto-nombre {
     margin: 0 0 0.5rem 0;
     font-size: 1.1rem;
-    }.producto-detalles {
+}
+.producto-detalles {
     display: grid;
     gap: 0.4rem;
     margin: 0.75rem 0;
-    }.producto-detalles .label {
+}
+.producto-detalles .label {
     font-size: 0.8rem;
     color: var(--text-muted);
-    }.producto-detalles .valor {
+}
+.producto-detalles .valor {
     font-weight: 600;
-    }.stock-bajo {
-    color: #dc3545;
-    }.stock-normal {
-    color: #28a745;
-    }.producto-acciones {
+}
+.stock-bajo { color: #dc3545; }
+.stock-normal { color: #28a745; }
+.producto-acciones {
     display: flex;
     gap: 0.5rem;
     margin-top: 1rem;
     padding-top: 1rem;
     border-top: 1px solid var(--border);
-    }.btn-editar, .btn-eliminar {
+}
+.btn-editar, .btn-eliminar {
     padding: 0.4rem 1rem;
     border-radius: 6px;
     font-size: 0.85rem;
     cursor: pointer;
     text-decoration: none;
-    }.btn-editar {
+}
+.btn-editar {
     background: #007bff;
     color: white;
     border: none;
-    }.btn-eliminar {
+}
+.btn-eliminar {
     background: #dc3545;
     color: white;
     border: none;
-    }*/</code></pre>
+}</code></pre>
                                     </div>
                                 </div>
                                 <h4>
@@ -615,7 +705,19 @@ export default function ProductoCard({
                                 <div class="result-box">
                                     <div class="result-header"><i class="fas fa-eye"></i><span>Vista renderizada en el navegador</span>
                                     </div>
-                                    <pre class="result-content"><code class="language-text">┌──────────────────────────────────────────────┐│  PROD-001                          [ Activo ] ││                                              ││  Laptop HP Pavilion                          ││  Laptop 15.6" Intel Core i5 8GB RAM         ││                                              ││  Precio:     $ 2.500.000                     ││  Stock:      15 unidades  ✓                  ││  Categoría:  Tecnología                      ││                                              ││  ────────────────────────────────────────    ││  [✏ Editar]    [🗑 Eliminar]                  │└──────────────────────────────────────────────┘</code></pre>
+                                     <pre class="result-content"><code class="language-text">┌──────────────────────────────────────────────┐
+│  PROD-001                          [ Activo ] │
+│                                               │
+│  Laptop HP Pavilion                           │
+│  Laptop 15.6" Intel Core i5 8GB RAM          │
+│                                               │
+│  Precio:     $ 2.500.000                      │
+│  Stock:      15 unidades  ✓                   │
+│  Categoría:  Tecnología                       │
+│                                               │
+│  ────────────────────────────────────────     │
+│  [✏ Editar]    [🗑 Eliminar]                   │
+└──────────────────────────────────────────────┘</code></pre>
                                 </div>
                             </div>
                         </div>
@@ -645,90 +747,121 @@ export default function ProductoCard({
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-jsx">import {
-    useState, useEffect
-    } from 'react';
-import {
-    listarProductos, eliminarProducto
-    } from '../services/api';
+                                        <pre><code class="language-jsx">import { useState, useEffect } from 'react';
+import { listarProductos, eliminarProducto } from '../services/api';
 import ProductoCard from './ProductoCard';
 import Mensaje from './Mensaje';
+
 export default function ProductoLista() {
     const [productos, setProductos] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(null);
     const [filtro, setFiltro] = useState('');
     const [mensaje, setMensaje] = useState(null);
-    // Cargar productos al montar el componente    // Equivalente a: doGet() → ProductoDAO.listarTodos() → forward a lista.jsp    useEffect(() =&gt; {
-            cargarProductos();
-            }, []);
+
+    useEffect(() =&gt; {
+        cargarProductos();
+    }, []);
+
     async function cargarProductos() {
         try {
             setCargando(true);
             const data = await listarProductos();
             setProductos(data);
             setError(null);
-            }
-        catch (err) {
+        } catch (err) {
             setError('Error al cargar productos: ' + err.message);
-            } finally {
+        } finally {
             setCargando(false);
-            }
         }
+    }
+
     async function handleEliminar(id) {
         if (!confirm('¿Eliminar este producto?')) return;
         try {
             await eliminarProducto(id);
-            setMensaje({
-                    tipo: 'exito', texto: 'Producto eliminado'
-                    });
+            setMensaje({ tipo: 'exito', texto: 'Producto eliminado' });
             cargarProductos();
-            // Recargar lista
-            }
-        catch (err) {
-            setMensaje({
-                    tipo: 'error', texto: 'Error al eliminar'
-                    });
-            }
-        }    // Filtro local (sin llamar a la API)
-    const productosFiltrados = filtro        ? productos.filter(p =&gt;            p.nombre.toLowerCase().includes(filtro.toLowerCase()) ||            p.codigo.toLowerCase().includes(filtro.toLowerCase()))        : productos;
-    // Estado: Cargando    if (cargando) {
-        return (            &lt;div className="estado-container"&gt;                &lt;div className="spinner"&gt;&lt;/div&gt;                &lt;p&gt;Cargando productos...&lt;/p&gt;            &lt;/div&gt;        );
-        }    // Estado: Error    if (error) {
-        return (            &lt;div className="estado-container error"&gt;                &lt;i className="fas fa-exclamation-triangle"&gt;&lt;/i&gt;                &lt;p&gt;{
-                error
-                }&lt;/p&gt;                &lt;button onClick={
-                cargarProductos
-                } className="btn-reintentar"&gt;                    Reintentar                &lt;/button&gt;            &lt;/div&gt;        );
+        } catch (err) {
+            setMensaje({ tipo: 'error', texto: 'Error al eliminar' });
         }
-    return (        &lt;div className="producto-lista"&gt;            {
-            mensaje && (                &lt;Mensaje tipo={
-                    mensaje.tipo
-                    } texto={
-                    mensaje.texto
-                    }                    onCerrar={
-                    () =&gt; setMensaje(null)
-                    } /&gt;            )
-            }            &lt;div className="lista-header"&gt;                &lt;h2&gt;Productos ({
-                productosFiltrados.length
-                })&lt;/h2&gt;                &lt;div className="lista-acciones"&gt;                    &lt;input                        type="text"                        placeholder="Buscar producto..."                        value={
-            filtro
-            }                        onChange={
-            e =&gt; setFiltro(e.target.value)
-            }                        className="buscador"                    /&gt;                    &lt;a href="/productos/nuevo" className="btn-crear"&gt;                        + Nuevo Producto                    &lt;/a&gt;                &lt;/div&gt;            &lt;/div&gt;            {
-            productosFiltrados.length === 0 ? (                &lt;div className="vacio"&gt;                    &lt;i className="fas fa-box-open"&gt;&lt;/i&gt;                    &lt;p&gt;{
-                    filtro ? 'Sin resultados para "' + filtro + '"' : 'No hay productos'
-                    }&lt;/p&gt;                &lt;/div&gt;            ) : (                &lt;div className="productos-grid"&gt;                    {
-                    productosFiltrados.map(producto =&gt; (                        &lt;ProductoCard                            key={
-                                producto.id
-                                }                            producto={
-                                producto
-                                }                            onEliminar={
-                                handleEliminar
-                                }                        /&gt;                    ))
-                    }                &lt;/div&gt;            )
-            }        &lt;/div&gt;    );
-    }</code></pre>
+    }
+
+    const productosFiltrados = filtro
+        ? productos.filter(p =&gt;
+            p.nombre.toLowerCase().includes(filtro.toLowerCase()) ||
+            p.codigo.toLowerCase().includes(filtro.toLowerCase()))
+        : productos;
+
+    if (cargando) {
+        return (
+            &lt;div className="estado-container"&gt;
+                &lt;div className="spinner"&gt;&lt;/div&gt;
+                &lt;p&gt;Cargando productos...&lt;/p&gt;
+            &lt;/div&gt;
+        );
+    }
+
+    if (error) {
+        return (
+            &lt;div className="estado-container error"&gt;
+                &lt;i className="fas fa-exclamation-triangle"&gt;&lt;/i&gt;
+                &lt;p&gt;{error}&lt;/p&gt;
+                &lt;button onClick={cargarProductos} className="btn-reintentar"&gt;
+                    Reintentar
+                &lt;/button&gt;
+            &lt;/div&gt;
+        );
+    }
+
+    return (
+        &lt;div className="producto-lista"&gt;
+            {mensaje && (
+                &lt;Mensaje
+                    tipo={mensaje.tipo}
+                    texto={mensaje.texto}
+                    onCerrar={() =&gt; setMensaje(null)}
+                /&gt;
+            )}
+
+            &lt;div className="lista-header"&gt;
+                &lt;h2&gt;Productos ({productosFiltrados.length})&lt;/h2&gt;
+                &lt;div className="lista-acciones"&gt;
+                    &lt;input
+                        type="text"
+                        placeholder="Buscar producto..."
+                        value={filtro}
+                        onChange={e =&gt; setFiltro(e.target.value)}
+                        className="buscador"
+                    /&gt;
+                    &lt;a href="/productos/nuevo" className="btn-crear"&gt;
+                        + Nuevo Producto
+                    &lt;/a&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+
+            {productosFiltrados.length === 0 ? (
+                &lt;div className="vacio"&gt;
+                    &lt;i className="fas fa-box-open"&gt;&lt;/i&gt;
+                    &lt;p&gt;{filtro
+                        ? 'Sin resultados para "' + filtro + '"'
+                        : 'No hay productos'}
+                    &lt;/p&gt;
+                &lt;/div&gt;
+            ) : (
+                &lt;div className="productos-grid"&gt;
+                    {productosFiltrados.map(producto =&gt; (
+                        &lt;ProductoCard
+                            key={producto.id}
+                            producto={producto}
+                            onEliminar={handleEliminar}
+                        /&gt;
+                    ))}
+                &lt;/div&gt;
+            )}
+        &lt;/div&gt;
+    );
+}</code></pre>
                                     </div>
                                 </div>
                                 <h4>
@@ -737,7 +870,31 @@ export default function ProductoLista() {
                                 <div class="result-box">
                                     <div class="result-header"><i class="fas fa-eye"></i><span>Vista renderizada: Lista de productos desde la API</span>
                                     </div>
-                                    <pre class="result-content"><code class="language-text">┌──────────────────────────────────────────────────────────────┐│  Productos (3)              [🔍 Buscar producto...] [+ Nuevo] │├──────────────────────────────────────────────────────────────┤│  ┌────────────────────┐  ┌────────────────────┐              ││  │ PROD-001 [Activo]  │  │ PROD-002 [Activo]  │              ││  │ Laptop HP Pavilion │  │ Mouse Logitech     │              ││  │ $ 2.500.000        │  │ $ 45.000           │              ││  │ 15 unidades  ✓     │  │ 50 unidades  ✓     │              ││  │ [Editar] [Eliminar]│  │ [Editar] [Eliminar]│              ││  └────────────────────┘  └────────────────────┘              ││  ┌────────────────────┐                                      ││  │ PROD-003 [Activo]  │                                      ││  │ Teclado Mecánico   │                                      ││  │ $ 180.000          │                                      ││  │ 30 unidades  ✓     │                                      ││  │ [Editar] [Eliminar]│                                      ││  └────────────────────┘                                      │└──────────────────────────────────────────────────────────────┘</code></pre>
+                                    <pre class="result-content"><code class="language-text">┌──────────────────────────────────────────────────────────────┐
+│  Productos (5)              [🔍 Buscar producto...] [+ Nuevo] │
+├──────────────────────────────────────────────────────────────┤
+│  ┌──────────────────────┐  ┌──────────────────────┐          │
+│  │ PROD-001   [Activo]  │  │ PROD-002   [Activo]  │          │
+│  │ Laptop HP Pavilion   │  │ Mouse Logitech M185  │          │
+│  │ $ 2.500.000          │  │ $ 45.000             │          │
+│  │ 15 unidades  ✓       │  │ 50 unidades  ✓       │          │
+│  │ [Editar] [Eliminar]  │  │ [Editar] [Eliminar]  │          │
+│  └──────────────────────┘  └──────────────────────┘          │
+│  ┌──────────────────────┐  ┌──────────────────────┐          │
+│  │ PROD-003   [Activo]  │  │ PROD-004   [Activo]  │          │
+│  │ Teclado Mecánico     │  │ Monitor Samsung 24"  │          │
+│  │ $ 180.000            │  │ $ 650.000            │          │
+│  │ 30 unidades  ✓       │  │ 20 unidades  ✓       │          │
+│  │ [Editar] [Eliminar]  │  │ [Editar] [Eliminar]  │          │
+│  └──────────────────────┘  └──────────────────────┘          │
+│  ┌──────────────────────┐                                    │
+│  │ PROD-005   [Activo]  │                                    │
+│  │ Audífonos Sony WH-…  │                                    │
+│  │ $ 1.200.000          │                                    │
+│  │ 25 unidades  ✓       │                                    │
+│  │ [Editar] [Eliminar]  │                                    │
+│  └──────────────────────┘                                    │
+└──────────────────────────────────────────────────────────────┘</code></pre>
                                 </div>
                             </div>
                         </div>
@@ -767,105 +924,135 @@ export default function ProductoLista() {
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-jsx">import {
-    useState, useEffect
-    } from 'react';
-import {
-    useNavigate, useParams
-    } from 'react-router-dom';
-import {
-    crearProducto, actualizarProducto, obtenerProducto
-    } from '../services/api';
+                                        <pre><code class="language-jsx">import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { crearProducto, actualizarProducto, obtenerProducto } from '../services/api';
+
 export default function ProductoForm() {
     const navigate = useNavigate();
-    const {
-        id
-        } = useParams();
-    // Si hay :id en la ruta, es edición    const esEdicion = Boolean(id);
+    const { id } = useParams();
+    const esEdicion = Boolean(id);
+
     const [form, setForm] = useState({
-            codigo: '',        nombre: '',        descripcion: '',        precio: '',        stock: '0',        categoria: '',
-            });
+        codigo: '', nombre: '', descripcion: '',
+        precio: '', stock: '0', categoria: '',
+    });
     const [enviando, setEnviando] = useState(false);
     const [error, setError] = useState(null);
-    // Si es edición, cargar datos del producto    useEffect(() =&gt; {
-            if (id) {
-                obtenerProducto(id)                .then(data =&gt; setForm({
-                            codigo: data.codigo,                    nombre: data.nombre,                    descripcion: data.descripcion || '',                    precio: data.precio.toString(),                    stock: data.stock.toString(),                    categoria: data.categoria || '',
-                            }))                .catch(err =&gt; setError('Error al cargar producto'));
-                }
-            }, [id]);
+
+    useEffect(() =&gt; {
+        if (id) {
+            obtenerProducto(id)
+                .then(data =&gt; setForm({
+                    codigo: data.codigo,
+                    nombre: data.nombre,
+                    descripcion: data.descripcion || '',
+                    precio: data.precio.toString(),
+                    stock: data.stock.toString(),
+                    categoria: data.categoria || '',
+                }))
+                .catch(err =&gt; setError('Error al cargar producto'));
+        }
+    }, [id]);
+
     const handleChange = (e) =&gt; {
-        setForm({
-                ...form, [e.target.name]: e.target.value
-                });
-        };
+        setForm({ ...form, [e.target.name]: e.target.value });
+    };
+
     const handleSubmit = async (e) =&gt; {
         e.preventDefault();
         setEnviando(true);
         setError(null);
         try {
             const datos = {
-                ...form,                precio: parseFloat(form.precio),                stock: parseInt(form.stock),
-                };
+                ...form,
+                precio: parseFloat(form.precio),
+                stock: parseInt(form.stock),
+            };
             if (esEdicion) {
                 await actualizarProducto(id, datos);
                 alert('Producto actualizado exitosamente');
-                } else {
+            } else {
                 await crearProducto(datos);
                 alert('Producto creado exitosamente');
-                }            navigate('/');
-            // Volver a la lista
             }
-        catch (err) {
+            navigate('/');
+        } catch (err) {
             setError(err.response?.data?.detail || 'Error al guardar producto');
-            } finally {
+        } finally {
             setEnviando(false);
-            }
-        };
-    return (        &lt;div className="producto-form-container"&gt;            &lt;h2&gt;{
-            esEdicion ? 'Editar Producto' : 'Nuevo Producto'
-            }&lt;/h2&gt;            {
-            error && (                &lt;div className="error-banner"&gt;                    &lt;i className="fas fa-exclamation-circle"&gt;&lt;/i&gt; {
-                    error
-                    }                &lt;/div&gt;            )
-            }            &lt;form onSubmit={
-            handleSubmit
-            } className="producto-form"&gt;                &lt;div className="form-grid"&gt;                    &lt;div className="form-group"&gt;                        &lt;label&gt;Código *&lt;/label&gt;                        &lt;input name="codigo" value={
-            form.codigo
-            }                            onChange={
-            handleChange
-            } required minLength={
-            3
-            } /&gt;                    &lt;/div&gt;                    &lt;div className="form-group"&gt;                        &lt;label&gt;Nombre *&lt;/label&gt;                        &lt;input name="nombre" value={
-            form.nombre
-            }                            onChange={
-            handleChange
-            } required /&gt;                    &lt;/div&gt;                    &lt;div className="form-group full-width"&gt;                        &lt;label&gt;Descripción&lt;/label&gt;                        &lt;textarea name="descripcion" value={
-            form.descripcion
-            }                            onChange={
-            handleChange
-            } rows={
-            3
-            } /&gt;                    &lt;/div&gt;                    &lt;div className="form-group"&gt;                        &lt;label&gt;Precio *&lt;/label&gt;                        &lt;input name="precio" type="number" step="0.01"                            value={
-            form.precio
-            } onChange={
-            handleChange
-            } required /&gt;                    &lt;/div&gt;                    &lt;div className="form-group"&gt;                        &lt;label&gt;Stock *&lt;/label&gt;                        &lt;input name="stock" type="number"                            value={
-            form.stock
-            } onChange={
-            handleChange
-            } required /&gt;                    &lt;/div&gt;                    &lt;div className="form-group"&gt;                        &lt;label&gt;Categoría&lt;/label&gt;                        &lt;select name="categoria" value={
-            form.categoria
-            }                            onChange={
-            handleChange
-            }&gt;                            &lt;option value=""&gt;Seleccionar...&lt;/option&gt;                            &lt;option value="Tecnología"&gt;Tecnología&lt;/option&gt;                            &lt;option value="Accesorios"&gt;Accesorios&lt;/option&gt;                            &lt;option value="Audio"&gt;Audio&lt;/option&gt;                        &lt;/select&gt;                    &lt;/div&gt;                &lt;/div&gt;                &lt;div className="form-acciones"&gt;                    &lt;button type="button" onClick={
-            () =&gt; navigate('/')
-            }                        className="btn-cancelar"&gt;                        Cancelar                    &lt;/button&gt;                    &lt;button type="submit" disabled={
-            enviando
-            }                        className="btn-guardar"&gt;                        {
-            enviando ? 'Guardando...' : (esEdicion ? 'Actualizar' : 'Crear Producto')
-            }                    &lt;/button&gt;                &lt;/div&gt;            &lt;/form&gt;        &lt;/div&gt;    );
-    }</code></pre>
+        }
+    };
+
+    return (
+        &lt;div className="producto-form-container"&gt;
+            &lt;h2&gt;{esEdicion ? 'Editar Producto' : 'Nuevo Producto'}&lt;/h2&gt;
+
+            {error && (
+                &lt;div className="error-banner"&gt;
+                    &lt;i className="fas fa-exclamation-circle"&gt;&lt;/i&gt; {error}
+                &lt;/div&gt;
+            )}
+
+            &lt;form onSubmit={handleSubmit} className="producto-form"&gt;
+                &lt;div className="form-grid"&gt;
+                    &lt;div className="form-group"&gt;
+                        &lt;label&gt;Código *&lt;/label&gt;
+                        &lt;input name="codigo" value={form.codigo}
+                            onChange={handleChange} required minLength={3} /&gt;
+                    &lt;/div&gt;
+
+                    &lt;div className="form-group"&gt;
+                        &lt;label&gt;Nombre *&lt;/label&gt;
+                        &lt;input name="nombre" value={form.nombre}
+                            onChange={handleChange} required /&gt;
+                    &lt;/div&gt;
+
+                    &lt;div className="form-group full-width"&gt;
+                        &lt;label&gt;Descripción&lt;/label&gt;
+                        &lt;textarea name="descripcion" value={form.descripcion}
+                            onChange={handleChange} rows={3} /&gt;
+                    &lt;/div&gt;
+
+                    &lt;div className="form-group"&gt;
+                        &lt;label&gt;Precio *&lt;/label&gt;
+                        &lt;input name="precio" type="number" step="0.01"
+                            value={form.precio} onChange={handleChange} required /&gt;
+                    &lt;/div&gt;
+
+                    &lt;div className="form-group"&gt;
+                        &lt;label&gt;Stock *&lt;/label&gt;
+                        &lt;input name="stock" type="number"
+                            value={form.stock} onChange={handleChange} required /&gt;
+                    &lt;/div&gt;
+
+                    &lt;div className="form-group"&gt;
+                        &lt;label&gt;Categoría&lt;/label&gt;
+                        &lt;select name="categoria" value={form.categoria}
+                            onChange={handleChange}&gt;
+                            &lt;option value=""&gt;Seleccionar...&lt;/option&gt;
+                            &lt;option value="Tecnología"&gt;Tecnología&lt;/option&gt;
+                            &lt;option value="Accesorios"&gt;Accesorios&lt;/option&gt;
+                            &lt;option value="Audio"&gt;Audio&lt;/option&gt;
+                        &lt;/select&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+
+                &lt;div className="form-acciones"&gt;
+                    &lt;button type="button" onClick={() =&gt; navigate('/')}
+                        className="btn-cancelar"&gt;
+                        Cancelar
+                    &lt;/button&gt;
+                    &lt;button type="submit" disabled={enviando}
+                        className="btn-guardar"&gt;
+                        {enviando ? 'Guardando...'
+                            : (esEdicion ? 'Actualizar' : 'Crear Producto')}
+                    &lt;/button&gt;
+                &lt;/div&gt;
+            &lt;/form&gt;
+        &lt;/div&gt;
+    );
+}</code></pre>
                                     </div>
                                 </div>
                                 <h4>
@@ -874,7 +1061,24 @@ export default function ProductoForm() {
                                 <div class="result-box">
                                     <div class="result-header"><i class="fas fa-eye"></i><span>Vista renderizada: Nuevo Producto</span>
                                     </div>
-                                    <pre class="result-content"><code class="language-text">┌──────────────────────────────────────────────────┐│  Nuevo Producto                                  │├──────────────────────────────────────────────────┤│  ┌──────────────┐  ┌──────────────────────┐      ││  │ Código *     │  │ Nombre *             │      ││  │ [PROD-006    ]  │ [Teclado Mecánico    ]      ││  └──────────────┘  └──────────────────────┘      ││  ┌──────────────────────────────────────┐        ││  │ Descripción                          │        ││  │ [Teclado mecánico RGB retroilumi... ]        ││  └──────────────────────────────────────┘        ││  ┌──────────┐  ┌──────────┐  ┌───────────┐     ││  │ Precio * │  │ Stock *  │  │ Categoría │     ││  │ [180000 ]  │ [30      ]  │ [Accesorios▼]     ││  └──────────┘  └──────────┘  └───────────┘     ││                                                  ││  [ Cancelar ]        [ Crear Producto ]          │└──────────────────────────────────────────────────┘</code></pre>
+                                    <pre class="result-content"><code class="language-text">┌──────────────────────────────────────────────────┐
+│  Nuevo Producto                                  │
+├──────────────────────────────────────────────────┤
+│  ┌──────────────┐  ┌──────────────────────┐     │
+│  │ Código *     │  │ Nombre *             │     │
+│  │ [PROD-009    ]  │ [Tablet Samsung      │     │
+│  └──────────────┘  └──────────────────────┘     │
+│  ┌──────────────────────────────────────┐       │
+│  │ Descripción                          │       │
+│  │ [Tablet Samsung Galaxy Tab S9 256GB ]       │
+│  └──────────────────────────────────────┘       │
+│  ┌──────────┐  ┌──────────┐  ┌───────────┐    │
+│  │ Precio * │  │ Stock *  │  │ Categoría │    │
+│  │ [2800000 ]  │ [12      ]  │ [Tecnología▼]    │
+│  └──────────┘  └──────────┘  └───────────┘    │
+│                                                 │
+│  [ Cancelar ]        [ Crear Producto ]         │
+└──────────────────────────────────────────────────┘</code></pre>
                                 </div>
                             </div>
                         </div>
@@ -904,25 +1108,47 @@ export default function ProductoForm() {
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-jsx">import {
-    BrowserRouter, Routes, Route
-    } from 'react-router-dom';
+                                        <pre><code class="language-jsx">import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import ProductoLista from './components/ProductoLista';
 import ProductoForm from './components/ProductoForm';
+
 function Inicio() {
-    return (        &lt;div className="inicio"&gt;            &lt;h1&gt;Sistema de Inventario&lt;/h1&gt;            &lt;p&gt;API REST con FastAPI + Frontend React&lt;/p&gt;            &lt;div className="inicio-stats"&gt;                &lt;div className="stat-card"&gt;                    &lt;i className="fas fa-boxes"&gt;&lt;/i&gt;                    &lt;h3&gt;Gestión de Productos&lt;/h3&gt;                    &lt;p&gt;CRUD completo desde React consumiendo FastAPI&lt;/p&gt;                &lt;/div&gt;                &lt;div className="stat-card"&gt;                    &lt;i className="fas fa-bolt"&gt;&lt;/i&gt;                    &lt;h3&gt;Rendimiento&lt;/h3&gt;                    &lt;p&gt;FastAPI + React: respuesta en milisegundos&lt;/p&gt;                &lt;/div&gt;            &lt;/div&gt;        &lt;/div&gt;    );
-    }export default function App() {
-    return (        &lt;BrowserRouter&gt;            &lt;Navbar /&gt;            &lt;main className="contenido"&gt;                &lt;Routes&gt;                    &lt;Route path="/" element={
-            &lt;Inicio /&gt;
-                } /&gt;                    &lt;Route path="/productos" element={
-                &lt;ProductoLista /&gt;
-                    } /&gt;                    &lt;Route path="/productos/nuevo" element={
-                    &lt;ProductoForm /&gt;
-                        } /&gt;                    &lt;Route path="/productos/:id/editar" element={
-                        &lt;ProductoForm /&gt;
-                            } /&gt;                &lt;/Routes&gt;            &lt;/main&gt;        &lt;/BrowserRouter&gt;    );
-                    }</code></pre>
+    return (
+        &lt;div className="inicio"&gt;
+            &lt;h1&gt;Sistema de Inventario&lt;/h1&gt;
+            &lt;p&gt;API REST con FastAPI + Frontend React&lt;/p&gt;
+            &lt;div className="inicio-stats"&gt;
+                &lt;div className="stat-card"&gt;
+                    &lt;i className="fas fa-boxes"&gt;&lt;/i&gt;
+                    &lt;h3&gt;Gestión de Productos&lt;/h3&gt;
+                    &lt;p&gt;CRUD completo desde React consumiendo FastAPI&lt;/p&gt;
+                &lt;/div&gt;
+                &lt;div className="stat-card"&gt;
+                    &lt;i className="fas fa-bolt"&gt;&lt;/i&gt;
+                    &lt;h3&gt;Rendimiento&lt;/h3&gt;
+                    &lt;p&gt;FastAPI + React: respuesta en milisegundos&lt;/p&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    );
+}
+
+export default function App() {
+    return (
+        &lt;BrowserRouter&gt;
+            &lt;Navbar /&gt;
+            &lt;main className="contenido"&gt;
+                &lt;Routes&gt;
+                    &lt;Route path="/" element={&lt;Inicio /&gt;} /&gt;
+                    &lt;Route path="/productos" element={&lt;ProductoLista /&gt;} /&gt;
+                    &lt;Route path="/productos/nuevo" element={&lt;ProductoForm /&gt;} /&gt;
+                    &lt;Route path="/productos/:id/editar" element={&lt;ProductoForm /&gt;} /&gt;
+                &lt;/Routes&gt;
+            &lt;/main&gt;
+        &lt;/BrowserRouter&gt;
+    );
+}</code></pre>
                                     </div>
                                 </div>
                                 <h4>
@@ -936,13 +1162,29 @@ function Inicio() {
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-jsx">import {
-    Link
-    } from 'react-router-dom';
+                                        <pre><code class="language-jsx">import { Link } from 'react-router-dom';
 import './Navbar.css';
+
 export default function Navbar() {
-    return (        &lt;nav className="navbar"&gt;            &lt;div className="navbar-brand"&gt;                &lt;i className="fas fa-boxes"&gt;&lt;/i&gt;                &lt;span&gt;Inventario SENA&lt;/span&gt;            &lt;/div&gt;            &lt;div className="navbar-links"&gt;                &lt;Link to="/"&gt;Inicio&lt;/Link&gt;                &lt;Link to="/productos"&gt;Productos&lt;/Link&gt;                &lt;Link to="/productos/nuevo" className="btn-nav-crear"&gt;                    + Nuevo                &lt;/Link&gt;            &lt;/div&gt;        &lt;/nav&gt;    );
-    }// ===== ESTILOS (Navbar.css) =====/*.navbar {
+    return (
+        &lt;nav className="navbar"&gt;
+            &lt;div className="navbar-brand"&gt;
+                &lt;i className="fas fa-boxes"&gt;&lt;/i&gt;
+                &lt;span&gt;Inventario SENA&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div className="navbar-links"&gt;
+                &lt;Link to="/"&gt;Inicio&lt;/Link&gt;
+                &lt;Link to="/productos"&gt;Productos&lt;/Link&gt;
+                &lt;Link to="/productos/nuevo" className="btn-nav-crear"&gt;
+                    + Nuevo
+                &lt;/Link&gt;
+            &lt;/div&gt;
+        &lt;/nav&gt;
+    );
+}
+
+/* ===== ESTILOS (Navbar.css) ===== */
+.navbar {
     background: var(--primary);
     color: white;
     padding: 0 2rem;
@@ -950,17 +1192,20 @@ export default function Navbar() {
     justify-content: space-between;
     align-items: center;
     height: 60px;
-    }.navbar-brand {
+}
+.navbar-brand {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     font-size: 1.2rem;
     font-weight: 700;
-    }.navbar-links {
+}
+.navbar-links {
     display: flex;
     gap: 1rem;
     align-items: center;
-    }.navbar-links a {
+}
+.navbar-links a {
     color: white;
     text-decoration: none;
     padding: 0.5rem 1rem;
@@ -980,7 +1225,31 @@ export default function Navbar() {
                                 <div class="result-box">
                                     <div class="result-header"><i class="fas fa-eye"></i><span>Aplicación completa: FastAPI + React</span>
                                     </div>
-                                    <pre class="result-content"><code class="language-text">┌──────────────────────────────────────────────────────────────┐│  [■ Inventario SENA]     Inicio  Productos  [+ Nuevo]       │├──────────────────────────────────────────────────────────────┤│                                                              ││  Sistema de Inventario                                       ││  API REST con FastAPI + Frontend React                      ││                                                              ││  ┌──────────────────────┐  ┌──────────────────────┐         ││  │  📦 Gestión de       │  │  ⚡ Rendimiento      │         ││  │     Productos        │  │                      │         ││  │  CRUD completo desde │  │  FastAPI + React     │         ││  │  React consumiendo   │  │  respuesta en        │         ││  │  FastAPI             │  │  milisegundos        │         ││  └──────────────────────┘  └──────────────────────┘         ││                                                              ││  ──── FastAPI (backend) ────     ──── React (frontend) ──── ││  http://localhost:8000/docs      http://localhost:5173       ││  http://localhost:8000/api/      npm run dev                 ││  uvicorn main:app --reload                                  │└──────────────────────────────────────────────────────────────┘</code></pre>
+                                    <pre class="result-content"><code class="language-text">┌──────────────────────────────────────────────────────────────┐
+│  [■ Inventario SENA]     Inicio  Productos  [+ Nuevo]       │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Sistema de Inventario                                       │
+│  API REST con FastAPI + Frontend React                      │
+│                                                              │
+│  ┌─────────────────────────┐  ┌─────────────────────────┐   │
+│  │  📦 Gestión de          │  │  ⚡ Rendimiento         │   │
+│  │     Productos           │  │                         │   │
+│  │  CRUD completo desde    │  │  FastAPI + React        │   │
+│  │  React consumiendo      │  │  respuesta en           │   │
+│  │  FastAPI                │  │  milisegundos           │   │
+│  └─────────────────────────┘  └─────────────────────────┘   │
+│                                                              │
+│  ──────────── FastAPI (backend) ────────────                 │
+│  http://localhost:8000/docs                                  │
+│  http://localhost:8000/api/                                  │
+│  uvicorn main:app --reload                                   │
+│                                                              │
+│  ──────────── React (frontend) ─────────────                 │
+│  http://localhost:5173                                       │
+│  npm run dev                                                 │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘</code></pre>
                                 </div>
                             </div>
                         </div>
@@ -1082,7 +1351,20 @@ npm run dev
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-bash"># ===========================================================# 🐳 DOCKER (un solo comando, todo encapsulado)# ===========================================================docker compose -f docker-compose.fullstack.yml up -d# Prueba:  http://localhost# ===========================================================# 🪟 NATIVO WINDOWS (tres terminales, máximo control)# ===========================================================# Terminal 1: PostgreSQL (servicio Windows) + FastAPI# Terminal 2: React# ⚡ O usa el script automático:.\start-fullstack.ps1# Prueba:  http://localhost:5173</code></pre>
+                                        <pre><code class="language-bash"># ===========================================================
+# 🐳 DOCKER (un solo comando, todo encapsulado)
+# ===========================================================
+docker compose -f docker-compose.fullstack.yml up -d
+# Prueba:  http://localhost
+
+# ===========================================================
+# 🪟 NATIVO WINDOWS (tres terminales, máximo control)
+# ===========================================================
+# Terminal 1: PostgreSQL (servicio Windows) + FastAPI
+# Terminal 2: React
+# ⚡ O usa el script automático:
+.\start-fullstack.ps1
+# Prueba:  http://localhost:5173</code></pre>
                                     </div>
                                 </div>
                                 <!-- Ejercicios React -->
@@ -1275,7 +1557,9 @@ npm run dev
                                                     <p>
                                                         🪟 Nativo: Terminal 1 inicia API en<code>:8000</code>
                                                     </p>
-                                                    <pre><code>cd recursos/fastapi-inventariovenv\Scripts\activateuvicorn main:app --reload --port 8000</code></pre>
+                                                    <pre><code>cd recursos/fastapi-inventario
+venv\Scripts\activate
+uvicorn main:app --reload --port 8000</code></pre>
                                                 </div>
                                             </div>
                                             <div class="checklist-item">
@@ -1289,7 +1573,9 @@ npm run dev
                                                     <p>
                                                         🪟 Nativo: Terminal 2 inicia frontend en<code>:5173</code>
                                                     </p>
-                                                    <pre><code>cd recursos/frontend-inventarionpm installnpm run dev</code></pre>
+                                                    <pre><code>cd recursos/frontend-inventario
+npm install
+npm run dev</code></pre>
                                                 </div>
                                             </div>
                                             <div class="checklist-item">
@@ -1306,7 +1592,8 @@ npm run dev
                                                     <p>
                                                         ⚡ Script automático:<code>.\start-fullstack.ps1</code>
                                                     </p>
-                                                    <pre><code># Deberías ver el sistema de inventario# con datos provenientes de FastAPI → PostgreSQL</code></pre>
+                                                    <pre><code># Deberías ver el sistema de inventario
+# con datos provenientes de FastAPI → PostgreSQL</code></pre>
                                                 </div>
                                             </div>
                                         </div>

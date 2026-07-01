@@ -173,12 +173,8 @@
 
 html {
     scroll-behavior: smooth;
-    scroll-padding-top: calc(var(--header-height) + 20px);
+    scroll-padding-top: calc(var(--header-height) + 16px);
     font-size: clamp(14px, 0.5vw + 0.5rem, 20px);
-}
-
-html {
-    min-height: 100%;
     min-height: 100dvh;
 }
 
@@ -190,8 +186,41 @@ body {
     background-color: var(--bg-primary);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    min-height: 100vh;
     min-height: 100dvh;
+    overflow-x: hidden;
+}
+
+/* Accesibilidad: secciones con margen de scroll para anclas */
+section[id] {
+    scroll-margin-top: calc(var(--header-height) + 16px);
+}
+
+/* Focus visible solo para navegación por teclado */
+:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+:focus:not(:focus-visible) {
+    outline: none;
+}
+
+/* Safe-guard: nada debe desbordar el viewport horizontal */
+img, table, pre, code, video, iframe, svg {
+    max-width: 100%;
+}
+
+/* Respetar preferencia de animaciones reducidas */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
 }
 
 /* ── Container Responsive Mobile-First ─────────────────────────────────── */
@@ -247,17 +276,17 @@ body {
 /* ============================================
    STACKING CONTEXT (z-index)
    ============================================
-   100000+  → skip-link, elementos críticos de accesibilidad
-   99999    → toast-container
-   99998    → celebration-overlay
-   10002    → search-modal, shortcuts-modal
-   10001    → code-block.focus-mode
-   10000    → code-overlay, reading-mode-exit-btn
-   1003     → sidebar-link-preview (tooltips que salen del sidebar)
-   1002     → main-sidebar, quick-nav-tooltip
-   1001     → quick-nav-panel, sidebar-show-btn, header.scrolled
-   1000     → header, [data-tooltip]::after
-   999      → scroll-top-btn, reading-progress, toc-wrapper, mobile-page-nav
+    100000+  → skip-link, elementos críticos de accesibilidad
+    99999    → toast-container
+    99998    → celebration-overlay
+    10002    → search-modal, shortcuts-modal
+    10001    → code-block.focus-mode
+    10000    → code-overlay, reading-mode-exit-btn
+    1003     → sidebar-link-preview (tooltips que salen del sidebar), sidebar-show-btn
+    1002     → main-sidebar, quick-nav-tooltip
+    1001     → quick-nav-panel, header.scrolled
+    1000     → header, [data-tooltip]::after
+    999      → scroll-top-btn, reading-progress, toc-wrapper, mobile-page-nav
    900      → section-nav, quick-nav-panel (legacy)
    ============================================ */
 
@@ -539,7 +568,6 @@ body {
 
 .hero-section {
     position: relative;
-    min-height: calc(100vh - var(--header-height));
     min-height: calc(100dvh - var(--header-height));
     display: flex;
     flex-direction: column;
@@ -547,15 +575,9 @@ body {
     justify-content: center;
     padding: 1rem;
     gap: 1.5rem;
-    overflow: hidden;
+    overflow: clip;
     margin: 0 auto;
     text-align: center;
-}
-
-@media (min-width: 1024px) {
-    .hero-section {
-        overflow: clip;
-    }
 }
 
 .hero-bg {
@@ -2008,6 +2030,8 @@ body {
 .info-table td {
     padding: 18px 24px;
     vertical-align: top;
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
 .info-label {
@@ -2327,41 +2351,39 @@ body {
 /* ── Bloque de Código Responsive Mobile-First ──────────────────────────── */
 .code-block {
     border-radius: var(--radius-lg);
-    margin: 1rem 0;
+    margin: 20px 0;
     border: 1px solid rgba(255, 255, 255, 0.1);
     background: var(--code-bg);
+    box-shadow: var(--shadow-xl);
 }
 
-/* Header del código — SIEMPRE visible con file path */
 .code-header {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 0.75rem;
-    background: rgba(255, 255, 255, 0.05);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    gap: 0.75rem;
+    padding: 0.625rem 1rem;
+    background: rgba(255, 255, 255, 0.04);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     flex-wrap: wrap;
 }
 
-/* Lenguaje + ícono */
 .code-lang {
     display: flex;
     align-items: center;
     gap: 0.375rem;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     font-weight: 600;
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(255, 255, 255, 0.65);
     font-family: var(--font-mono);
     flex-shrink: 0;
 }
 
-/* Ruta del archivo — se trunca en móvil */
 .code-file {
     display: flex;
     align-items: center;
     gap: 0.375rem;
-    font-size: 0.65rem;
-    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.45);
     font-family: var(--font-mono);
     flex: 1;
     min-width: 0;
@@ -2375,100 +2397,35 @@ body {
     font-size: 0.7rem;
 }
 
-/* Botón copiar — touch target 44px en móvil */
-.copy-btn {
-    padding: 0.375rem 0.625rem;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 0.25rem;
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 0.7rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    flex-shrink: 0;
-    min-height: 32px;
-    display: flex;
-    align-items: center;
-    gap: 0.375rem;
-}
-
-.copy-btn:hover {
-    background: rgba(255, 255, 255, 0.15);
-    color: white;
-}
-
-.copy-btn.copied {
-    background: var(--success);
-    color: white;
-    border-color: var(--success);
-}
-
-/* Cuerpo del código — scroll horizontal controlado */
 .code-body,
 .code-block pre {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     margin: 0;
-    padding: 0.75rem 1rem;
+    padding: 1rem;
 }
 
 .code-block code {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
-    line-height: 1.5;
+    font-size: 0.85rem;
+    line-height: 1.6;
     color: var(--code-text);
     white-space: pre;
 }
 
-/* ── Responsive: Tablet sm: (640px+) ────────────────────────────────────── */
-@media (min-width: 640px) {
-    .code-header {
-        padding: 0.625rem 1rem;
-        gap: 0.75rem;
-    }
-    
-    .code-lang {
-        font-size: 0.75rem;
-    }
-    
-    .code-file {
-        font-size: 0.7rem;
-    }
-    
-    .code-block pre {
-        padding: 1rem 1.25rem;
-    }
-    
-    .code-block code {
-        font-size: 0.8rem;
-        line-height: 1.6;
-    }
-}
-
-/* ── Responsive: Portátil lg: (1024px+) ─────────────────────────────────── */
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
     .code-header {
         padding: 0.75rem 1.25rem;
     }
-    
+
+    .code-body,
     .code-block pre {
         padding: 1.25rem 1.5rem;
     }
-    
-    .code-block code {
-        font-size: 0.85rem;
-    }
-}
 
-/* ── Responsive: Desktop xl: (1280px+) ──────────────────────────────────── */
-@media (min-width: 1280px) {
-    .code-block pre {
-        padding: 1.5rem 2rem;
-    }
-    
     .code-block code {
         font-size: 0.875rem;
-        line-height: 1.7;
+        line-height: 1.65;
     }
 }
 
@@ -3028,6 +2985,7 @@ body {
     border-left: none;
     border-right: none;
     border-radius: 0;
+    max-width: calc(100% + 56px);
 }
 
 .step-content .code-window:first-child {
@@ -3400,6 +3358,8 @@ body {
     text-align: left;
     border: 1px solid var(--border);
     font-size: 0.85rem;
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
 .rubric-table th {
@@ -3732,36 +3692,37 @@ body {
 /* ── 1. CONTENEDOR PRINCIPAL ─────────────────────────────────────────────── */
 .code-window {
     box-shadow: var(--shadow-xl);
-    transition: var(--transition);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     border: 1px solid rgba(255, 255, 255, 0.08);
-    margin: 16px 0;
+    margin: 24px 0;
     background: var(--code-bg);
     border-radius: var(--radius-lg);
 }
 
 .code-window:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 20px 60px rgba(0, 102, 74, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.3);
 }
 
 /* ── 2. WINDOW HEADER (CHROME) ──────────────────────────────────────────── */
 .window-header {
     padding: 12px 16px;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.04);
     display: flex;
     align-items: center;
     gap: 12px;
     justify-content: space-between;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .window-header .window-title {
     flex: 1;
     text-align: left;
     font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.55);
     font-family: var(--font-mono);
     font-weight: 500;
+    letter-spacing: 0.01em;
 }
 
 .window-header .window-title i {
@@ -3782,7 +3743,7 @@ body {
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    transition: var(--transition);
+    transition: transform 0.2s ease;
 }
 
 .dot:hover {
@@ -3796,25 +3757,31 @@ body {
 .copy-btn {
     background: rgba(255, 255, 255, 0.06);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
+    border-radius: 6px;
     color: rgba(255, 255, 255, 0.5);
-    padding: 4px 10px;
+    padding: 5px 12px;
     font-size: 0.75rem;
     cursor: pointer;
-    transition: var(--transition);
+    transition: all 0.2s ease;
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 5px;
     font-family: var(--font-sans);
+    min-height: 32px;
 }
 
 .copy-btn:hover {
     background: rgba(255, 255, 255, 0.12);
     color: white;
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.copy-btn:active {
+    transform: scale(0.95);
 }
 
 .copy-btn.copied {
-    background: rgba(40, 202, 66, 0.2);
+    background: rgba(40, 202, 66, 0.15);
     color: #28ca42;
     border-color: rgba(40, 202, 66, 0.3);
 }
@@ -3842,9 +3809,10 @@ body {
     width: 3ch;
     margin-right: 1.5ch;
     text-align: right;
-    color: rgba(255, 255, 255, 0.25);
+    color: rgba(255, 255, 255, 0.2);
     font-variant-numeric: tabular-nums;
     user-select: none;
+    font-size: 0.8em;
 }
 
 .code-window pre code .line-number,
@@ -3858,11 +3826,18 @@ body {
 .tech-module pre code .line-number:hover::before,
 .code-block pre code .line-number:hover::before {
     color: var(--primary-light);
-    opacity: 0.9;
+    opacity: 1;
 }
 
 /* ── 4. OVERFLOW INTELIGENTE ────────────────────────────────────────────── */
-/* Default: scroll horizontal profesional (VS Code / GitHub style) */
+pre {
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+}
+
 .window-body pre,
 .tech-module pre[class*="language-"],
 .code-block pre {
@@ -3879,7 +3854,6 @@ body {
     background-color: transparent !important;
 }
 
-/* Wrap mode: toggle con clase .pre-wrap en el contenedor */
 .code-window.pre-wrap pre,
 .code-block.pre-wrap pre,
 .tech-module.pre-wrap pre[class*="language-"] {
@@ -3889,10 +3863,9 @@ body {
     overflow-x: hidden;
 }
 
-/* ── 5. CODE BODY (padding del contenido) ────────────────────────────────── */
+/* ── 5. CODE BODY ────────────────────────────────────────────────────────── */
 .window-body {
     padding: 0;
-    overflow: hidden;
 }
 
 .window-body pre {
@@ -3908,14 +3881,12 @@ body {
     background-color: transparent !important;
     padding: 0;
     tab-size: 2;
-    white-space: pre;
 }
 
-/* ── 5b. INDENT GUIDES — Líneas verticales que muestran la estructura ───── */
-/* Cada nivel de indentación (2 espacios) tiene una guía sutil */
-.window-body pre code,
-.code-block pre code,
-.tech-module pre code {
+/* ── 5b. INDENT GUIDES ───────────────────────────────────────────────────── */
+.window-body pre,
+.code-block pre,
+.tech-module pre {
     background-image: repeating-linear-gradient(
         to right,
         transparent 0px,
@@ -3926,9 +3897,9 @@ body {
     background-attachment: local;
 }
 
-[data-theme="dark"] .window-body pre code,
-[data-theme="dark"] .code-block pre code,
-[data-theme="dark"] .tech-module pre code {
+[data-theme="dark"] .window-body pre,
+[data-theme="dark"] .code-block pre,
+[data-theme="dark"] .tech-module pre {
     background-image: repeating-linear-gradient(
         to right,
         transparent 0px,
@@ -3938,8 +3909,7 @@ body {
     );
 }
 
-/* ── 6. SINTASIS GLOBAL (Prism.js tokens — One Dark Pro palette) ────────── */
-/* Aplica a TODO bloque de código sin importar el contenedor */
+/* ── 6. SINTASIS GLOBAL (Prism.js tokens) ────────────────────────────────── */
 pre[class*="language-"] .token,
 code[class*="language-"] .token {
     background: transparent !important;
@@ -3968,7 +3938,7 @@ code[class*="language-"] .token {
 .token.comment,
 .token.documentation,
 .token.shebang {
-    color: #5c6370;
+    color: #636d83;
     font-style: italic;
 }
 
@@ -4064,7 +4034,7 @@ code[class*="language-"] .token {
 .token.prolog,
 .token.doctype,
 .token.cdata {
-    color: #5c6370;
+    color: #636d83;
 }
 
 .token.selector,
@@ -4091,7 +4061,7 @@ code:not(pre code):not([class*="language-"]) {
     color: var(--primary);
     border: 1px solid var(--border-light);
     white-space: normal;
-    word-break: break-all;
+    word-break: break-word;
     overflow-wrap: break-word;
 }
 
@@ -4141,7 +4111,7 @@ code:not(pre code):not([class*="language-"]) {
     color: rgba(255, 255, 255, 0.5);
     font-size: 0.65rem;
     cursor: pointer;
-    transition: var(--transition);
+    transition: all 0.2s ease;
     display: inline-flex;
     align-items: center;
     gap: 4px;
@@ -4159,19 +4129,25 @@ code:not(pre code):not([class*="language-"]) {
     border: 2px solid var(--primary);
     border-radius: var(--radius-lg);
     overflow: hidden;
-    margin: 16px 0;
+    margin: 20px 0;
     box-shadow: var(--shadow-lg);
 }
 
 .result-header {
     background: var(--primary);
     color: white;
-    padding: 8px 16px;
+    padding: 10px 18px;
     font-size: 0.8rem;
     font-weight: 600;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
+    letter-spacing: 0.01em;
+}
+
+.result-header i {
+    font-size: 0.9rem;
+    opacity: 0.9;
 }
 
 .result-content {
@@ -4181,7 +4157,7 @@ code:not(pre code):not([class*="language-"]) {
 
 .result-content code {
     display: block;
-    padding: 16px;
+    padding: 20px;
     background: var(--code-bg);
     color: var(--code-text);
     font-size: 0.85rem;
@@ -4194,10 +4170,10 @@ code:not(pre code):not([class*="language-"]) {
     white-space: pre;
 }
 
-/* ── 10. SCROLLBAR DELGADA PARA PRE BLOCKS ──────────────────────────────── */
+/* ── 10. SCROLLBAR ───────────────────────────────────────────────────────── */
 pre::-webkit-scrollbar {
-    height: 6px;
-    width: 6px;
+    height: 7px;
+    width: 7px;
 }
 
 pre::-webkit-scrollbar-track {
@@ -4205,16 +4181,15 @@ pre::-webkit-scrollbar-track {
 }
 
 pre::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 4px;
 }
 
 pre::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.25);
 }
 
-/* ── 11. TECH-MODULE SPECIFIC OVERRIDES ─────────────────────────────────── */
-/* Estos co-existen con el estándar global arriba */
+/* ── 11. TECH-MODULE OVERRIDES ──────────────────────────────────────────── */
 .tech-module pre {
     background: var(--code-bg) !important;
     border-radius: 8px;
@@ -4235,9 +4210,13 @@ pre::-webkit-scrollbar-thumb:hover {
 
 /* ── 12. RESPONSIVE ─────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
+    .code-window {
+        margin: 16px 0;
+    }
+
     .window-body pre {
         padding: 14px;
-        font-size: 0.75rem;
+        font-size: 0.78rem;
         line-height: 1.55;
     }
 
@@ -4258,13 +4237,19 @@ pre::-webkit-scrollbar-thumb:hover {
     .copy-btn {
         font-size: 0.7rem;
         padding: 3px 8px;
+        min-height: 28px;
+    }
+
+    .result-content code {
+        padding: 14px;
+        font-size: 0.78rem;
     }
 }
 
 @media (max-width: 480px) {
     .window-body pre {
         padding: 10px;
-        font-size: 0.75rem;
+        font-size: 0.72rem;
     }
 
     .window-dots {
@@ -4316,7 +4301,6 @@ pre::-webkit-scrollbar-thumb:hover {
     background: var(--bg-primary);
     border-radius: var(--radius-lg);
     border: 1px solid var(--border-light);
-    overflow: hidden;
     transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), 
                 box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), 
                 border-color 0.3s ease;
@@ -4552,36 +4536,44 @@ pre::-webkit-scrollbar-thumb:hover {
 
 .feature-highlights {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 16px;
-    margin: 20px 0;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+@media (min-width: 1024px) {
+    .feature-highlights {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.25rem;
+    }
 }
 
 .highlight-item {
     display: flex;
-    gap: 12px;
-    padding: 16px;
+    gap: 1rem;
+    padding: 1.25rem;
     background: var(--bg-secondary);
     border-radius: var(--radius-md);
     border: 1px solid var(--border-light);
 }
 
 .highlight-item i {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     background: var(--primary);
     color: white;
     border-radius: var(--radius-sm);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     flex-shrink: 0;
 }
 
 .highlight-item strong {
     display: block;
     color: var(--text-primary);
+    font-size: 0.95rem;
     margin-bottom: 4px;
 }
 
@@ -4589,15 +4581,17 @@ pre::-webkit-scrollbar-thumb:hover {
     font-size: 0.85rem;
     color: var(--text-muted);
     margin: 0;
+    line-height: 1.5;
 }
 
 /* ── Feature Grid Responsive Mobile-First ───────────────────────────────── */
-/* 1 col móvil → 2 col tablet → 3 col desktop */
+/* 1 col móvil → 2 col max — prioriza legibilidad, evita saturación */
 .feature-grid-detailed {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 1.25rem;
     margin: 1.5rem 0;
+    min-width: 0;
 }
 
 .feature-card {
@@ -4606,6 +4600,7 @@ pre::-webkit-scrollbar-thumb:hover {
     border-radius: var(--radius-lg);
     border: 1px solid var(--border-light);
     transition: all 0.2s ease;
+    min-width: 0;
 }
 
 .feature-card:hover {
@@ -4636,42 +4631,27 @@ pre::-webkit-scrollbar-thumb:hover {
     font-family: var(--font-mono);
     font-size: 0.75rem;
     overflow-x: auto;
+    overflow-y: hidden;
     margin: 0;
     line-height: 1.5;
+    white-space: pre;
+    word-wrap: normal;
 }
 
-/* ── Responsive: Tablet sm: (640px+) ────────────────────────────────────── */
-@media (min-width: 640px) {
+/* ── Responsive: tablet landscape+ (1024px+) — max 2 columnas ──────────── */
+@media (min-width: 1024px) {
     .feature-grid-detailed {
         grid-template-columns: repeat(2, 1fr);
-        gap: 1.25rem;
+        gap: 1.5rem;
     }
-    
+
     .feature-card {
         padding: 1.5rem;
     }
-    
+
     .feature-card pre {
         padding: 1rem;
-        font-size: 0.8rem;
-    }
-}
-
-/* ── Responsive: Portátil lg: (1024px+) ─────────────────────────────────── */
-@media (min-width: 1024px) {
-    .feature-grid-detailed {
-        gap: 1.5rem;
-    }
-    
-    .feature-card pre {
         font-size: 0.85rem;
-    }
-}
-
-/* ── Responsive: Desktop xl: (1280px+) ──────────────────────────────────── */
-@media (min-width: 1280px) {
-    .feature-grid-detailed {
-        grid-template-columns: repeat(3, 1fr);
     }
 }
 
@@ -5005,7 +4985,7 @@ pre::-webkit-scrollbar-thumb:hover {
     color: var(--text-primary);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1023px) {
     .feature-highlights,
     .feature-grid-detailed,
     .components-grid,
@@ -5391,6 +5371,7 @@ pre::-webkit-scrollbar-thumb:hover {
 .code-block.small pre {
     padding: 12px;
     font-size: 0.8rem;
+    overflow-x: auto;
 }
 
 .pros-cons {
@@ -5502,6 +5483,8 @@ pre::-webkit-scrollbar-thumb:hover {
     background: var(--bg-secondary);
     border-radius: var(--radius-md);
     border: 1px solid var(--border);
+    min-width: 0;
+    overflow-x: auto;
 }
 
 .analogy-label {
@@ -6056,6 +6039,7 @@ pre::-webkit-scrollbar-thumb:hover {
     margin-top: var(--header-height);
     min-height: 100vh;
     transition: margin-left 0.3s ease, margin-top 0.3s ease;
+    padding-right: 8px;
 }
 
 body.sidebar-collapsed .main-content {
@@ -6070,7 +6054,7 @@ body.sidebar-collapsed .main-sidebar {
 /* Botón flotante para mostrar sidebar cuando está oculto */
 .sidebar-show-btn {
     position: fixed;
-    top: calc(var(--header-height) + 8px);
+    top: calc((var(--header-height) - 40px) / 2);
     left: 16px;
     width: 40px;
     height: 40px;
@@ -6079,7 +6063,7 @@ body.sidebar-collapsed .main-sidebar {
     border: none;
     border-radius: var(--radius-sm);
     cursor: pointer;
-    z-index: 1001;
+    z-index: 1003;
     display: none;
     align-items: center;
     justify-content: center;
@@ -6090,7 +6074,7 @@ body.sidebar-collapsed .main-sidebar {
 
 @media (max-width: 480px) {
     .sidebar-show-btn {
-        top: calc(var(--header-height) + 4px);
+        top: calc((var(--header-height) - 36px) / 2);
         left: 8px;
         width: 36px;
         height: 36px;
@@ -6465,14 +6449,8 @@ body.sidebar-collapsed .reading-progress {
 }
 
 /* ============================================
-   ULTRAWIDE / TV  (1920px+)
+   IMPRENTA
    ============================================ */
-@media (min-width: 1920px) {
-    html { font-size: clamp(17px, 0.8vw + 0.3rem, 22px); }
-    .container { max-width: 1800px; }
-    .feature-grid-detailed { grid-template-columns: repeat(3, 1fr); gap: 2rem; }
-}
-
 @media print {
     .main-sidebar,
     .sidebar-show-btn,
@@ -8029,7 +8007,7 @@ img[loading="lazy"][complete] {
 
 /* 10. SMOOTH ANCHOR SCROLLING con offset */
 html {
-    scroll-padding-top: calc(var(--header-height) + 1rem);
+    scroll-padding-top: calc(var(--header-height) + 16px);
 }
 
 /* 11. READING MODE - Vista limpia para lectura */
@@ -8205,8 +8183,10 @@ section,
     opacity: 0;
     padding: 0 1.5rem;
     overflow: hidden;
+    min-width: 0;
 }
 .module-content > * {
+    min-width: 0;
     min-height: 0;
 }
 .tech-module.active .module-content {

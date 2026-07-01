@@ -262,7 +262,15 @@ String token = JwtUtil.generarToken("admin", "Administrador");
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-bash"># Verificar JDK 21java --version# Debe mostrar: java 21.x.x# Verificar Mavenmvn --version# Debe mostrar: Apache Maven 3.9.x# Verificar PostgreSQLpsql --version# Debe mostrar: psql (PostgreSQL) 12 o superior</code></pre>
+                                        <pre><code class="language-bash"># Verificar JDK 21
+java --version
+# Debe mostrar: java 21.x.x
+# Verificar Maven
+mvn --version
+# Debe mostrar: Apache Maven 3.9.x
+# Verificar PostgreSQL
+psql --version
+# Debe mostrar: psql (PostgreSQL) 12 o superior</code></pre>
                                     </div>
                                 </div>
                                 <h4>
@@ -276,7 +284,11 @@ String token = JwtUtil.generarToken("admin", "Administrador");
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-bash"># Navegar al directorio de Tomcatcd C:\apache-tomcat-10.1.x\bin# Iniciar servidorstartup.bat# Verificar en: http://localhost:8080</code></pre>
+                                        <pre><code class="language-bash"># Navegar al directorio de Tomcat
+cd C:\apache-tomcat-10.1.x\bin
+# Iniciar servidor
+startup.bat
+# Verificar en: http://localhost:8080</code></pre>
                                     </div>
                                 </div>
                             </div>
@@ -328,8 +340,60 @@ CREATE DATABASE inventario_db;
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-sql">-- Tabla de RolesCREATE TABLE roles (    id SERIAL PRIMARY KEY,    nombre VARCHAR(50) NOT NULL UNIQUE,    descripcion VARCHAR(200),    estado BOOLEAN DEFAULT TRUE,    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP);-- Insertar rolesINSERT INTO roles (nombre, descripcion) VALUES('Administrador', 'Acceso completo al sistema'),('Cliente', 'Acceso limitado para consultas'),('Invitado', 'Acceso de solo lectura');-- Tabla de UsuariosCREATE TABLE usuarios (    id SERIAL PRIMARY KEY,    username VARCHAR(50) NOT NULL UNIQUE,    password VARCHAR(255) NOT NULL,    nombre_completo VARCHAR(100) NOT NULL,    email VARCHAR(100) NOT NULL UNIQUE,    rol_id INTEGER NOT NULL,    estado BOOLEAN DEFAULT TRUE,    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-CONSTRAINT fk_usuarios_roles FOREIGN KEY (rol_id)         REFERENCES roles(id));-- Insertar usuarios (password: admin123)INSERT INTO usuarios (username, password, nombre_completo, email, rol_id) VALUES('admin', '$2a$10$N9qo8uLOickgx2ZMRZoMye...', 'Administrador', 'admin@sena.edu.co', 1),('cliente1', '$2a$10$N9qo8uLOickgx2ZMRZoMye...', 'Juan Pérez', 'juan@sena.edu.co', 2);-- Tabla de ProductosCREATE TABLE productos (    id SERIAL PRIMARY KEY,    codigo VARCHAR(50) NOT NULL UNIQUE,    nombre VARCHAR(100) NOT NULL,    descripcion TEXT,    precio DECIMAL(10,2) NOT NULL CHECK (precio &gt;= 0),    stock INTEGER NOT NULL DEFAULT 0 CHECK (stock &gt;= 0),    categoria VARCHAR(50),    estado BOOLEAN DEFAULT TRUE,    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP);-- Insertar productos de ejemploINSERT INTO productos (codigo, nombre, descripcion, precio, stock, categoria) VALUES('PROD-001', 'Laptop HP Pavilion', 'Laptop 15.6" Intel Core i5 8GB', 2500000.00, 15, 'Tecnología'),('PROD-002', 'Mouse Logitech M185', 'Mouse inalámbrico', 45000.00, 50, 'Accesorios'),('PROD-003', 'Teclado Mecánico Redragon', 'Teclado mecánico RGB', 180000.00, 30, 'Accesorios'),('PROD-004', 'Monitor Samsung 24"', 'Monitor Full HD IPS', 650000.00, 20, 'Tecnología'),('PROD-005', 'Audífonos Sony WH-1000XM4', 'Audífonos con cancelación de ruido', 1200000.00, 25, 'Audio');</code></pre>
+                                        <pre><code class="language-sql">-- Tabla de Roles
+CREATE TABLE roles (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL UNIQUE,
+    descripcion VARCHAR(200),
+    estado BOOLEAN DEFAULT TRUE,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Insertar roles
+INSERT INTO roles (nombre, descripcion) VALUES
+    ('Administrador', 'Acceso completo al sistema'),
+    ('Cliente', 'Acceso limitado para consultas'),
+    ('Invitado', 'Acceso de solo lectura');
+
+-- Tabla de Usuarios
+CREATE TABLE usuarios (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    nombre_completo VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    rol_id INTEGER NOT NULL,
+    CONSTRAINT fk_usuarios_roles FOREIGN KEY (rol_id)
+        REFERENCES roles(id),
+    estado BOOLEAN DEFAULT TRUE,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Insertar usuarios (password: admin123)
+INSERT INTO usuarios (username, password, nombre_completo, email, rol_id) VALUES
+    ('admin', '$2a$10$N9qo8uLOickgx2ZMRZoMye...', 'Administrador', 'admin@sena.edu.co', 1),
+    ('cliente1', '$2a$10$N9qo8uLOickgx2ZMRZoMye...', 'Juan Pérez', 'juan@sena.edu.co', 2);
+
+-- Tabla de Productos
+CREATE TABLE productos (
+    id SERIAL PRIMARY KEY,
+    codigo VARCHAR(50) NOT NULL UNIQUE,
+    nombre VARCHAR(100) NOT NULL,
+    descripcion TEXT,
+    precio DECIMAL(10,2) NOT NULL CHECK (precio &gt;= 0),
+    stock INTEGER NOT NULL DEFAULT 0 CHECK (stock &gt;= 0),
+    categoria VARCHAR(50),
+    estado BOOLEAN DEFAULT TRUE,
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Insertar productos de ejemplo
+INSERT INTO productos (codigo, nombre, descripcion, precio, stock, categoria) VALUES
+    ('PROD-001', 'Laptop HP Pavilion', 'Laptop 15.6" Intel Core i5 8GB', 2500000.00, 15, 'Tecnología'),
+    ('PROD-002', 'Mouse Logitech M185', 'Mouse inalámbrico', 45000.00, 50, 'Accesorios'),
+    ('PROD-003', 'Teclado Mecánico Redragon', 'Teclado mecánico RGB', 180000.00, 30, 'Accesorios'),
+    ('PROD-004', 'Monitor Samsung 24"', 'Monitor Full HD IPS', 650000.00, 20, 'Tecnología'),
+    ('PROD-005', 'Audífonos Sony WH-1000XM4', 'Audífonos con cancelación de ruido', 1200000.00, 25, 'Audio');</code></pre>
                                     </div>
                                 </div>
                             </div>
@@ -360,7 +424,41 @@ CONSTRAINT fk_usuarios_roles FOREIGN KEY (rol_id)         REFERENCES roles(id));
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-text">inventario-mvc/├── pom.xml├── src/main/│   ├── java/com/sena/inventario/│   │   ├── modelo/│   │   │   ├── Rol.java│   │   │   ├── Usuario.java│   │   │   └── Producto.java│   │   ├── dao/│   │   │   ├── ConexionDB.java│   │   │   ├── RolDAO.java│   │   │   ├── UsuarioDAO.java│   │   │   └── ProductoDAO.java│   │   ├── controlador/│   │   │   ├── LoginServlet.java│   │   │   ├── ProductoServlet.java│   │   │   └── UsuarioServlet.java│   │   └── util/│   │       └── PasswordUtil.java│   ├── resources/│   │   └── db.properties│   └── webapp/│       ├── WEB-INF/│       │   └── web.xml│       ├── productos/│       │   ├── lista.jsp│       │   └── formulario.jsp│       ├── usuarios/│       │   ├── lista.jsp│       │   └── formulario.jsp│       ├── css/│       │   └── estilo.css│       ├── index.jsp│       └── login.jsp└── Dockerfile</code></pre>
+                                        <pre><code class="language-text">inventario-mvc/
+├── pom.xml
+├── src/main/
+│   ├── java/com/sena/inventario/
+│   │   ├── modelo/
+│   │   │   ├── Rol.java
+│   │   │   ├── Usuario.java
+│   │   │   └── Producto.java
+│   │   ├── dao/
+│   │   │   ├── ConexionDB.java
+│   │   │   ├── RolDAO.java
+│   │   │   ├── UsuarioDAO.java
+│   │   │   └── ProductoDAO.java
+│   │   ├── controlador/
+│   │   │   ├── LoginServlet.java
+│   │   │   ├── ProductoServlet.java
+│   │   │   └── UsuarioServlet.java
+│   │   └── util/
+│   │       └── PasswordUtil.java
+│   ├── resources/
+│   │   └── db.properties
+│   └── webapp/
+│       ├── WEB-INF/
+│       │   └── web.xml
+│       ├── productos/
+│       │   ├── lista.jsp
+│       │   └── formulario.jsp
+│       ├── usuarios/
+│       │   ├── lista.jsp
+│       │   └── formulario.jsp
+│       ├── css/
+│       │   └── estilo.css
+│       ├── index.jsp
+│       └── login.jsp
+└── Dockerfile</code></pre>
                                     </div>
                                 </div>
                                 <h4>
@@ -711,12 +809,14 @@ public class ProductoServlet extends HttpServlet {
         String categoria = req.getParameter("categoria");
 
         if (id == null || id.isEmpty()) {
-            dao.insertar(new Producto(codigo, nombre, descripcion, precio, stock, categoria));
+            dao.insertar(new Producto(
+                codigo, nombre, descripcion, precio, stock, categoria));
         } else {
             boolean estado = "on".equals(req.getParameter("estado"));
             dao.actualizar(new Producto(
                 Integer.parseInt(id), codigo, nombre, descripcion,
-                precio, stock, categoria, estado));
+                precio, stock, categoria, estado, LocalDateTime.now(),
+                LocalDateTime.now()));
         }
         res.sendRedirect(req.getContextPath() + "/productos");
     }
@@ -834,7 +934,9 @@ public class ProductoServlet extends HttpServlet {
                                         </button>
                                     </div>
                                     <div class="window-body">
-                                        <pre><code class="language-bash"># Ejecute el script en la raíz del proyecto para automatizar puertos, base de datos y Tomcat:.\run-project-jsp.ps1</code></pre>
+                                        <pre><code class="language-bash"># Ejecute el script en la raíz del proyecto
+# para automatizar puertos, base de datos y Tomcat:
+.\run-project-jsp.ps1</code></pre>
                                     </div>
                                 </div>
                                 <h4>
